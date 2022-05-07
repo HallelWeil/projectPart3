@@ -1,0 +1,3 @@
+module ZerliClient {
+	requires ZerliCommon;
+}

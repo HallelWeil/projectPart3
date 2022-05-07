@@ -22,6 +22,7 @@ public class MsgController {
 	private ArrayList<Order> orders;
 	private Order order;
 	private Survey survey;
+	private User user;
 
 	public MsgController() {
 		resetParser();
@@ -35,6 +36,7 @@ public class MsgController {
 		this.orders = null;
 		this.order = null;
 		this.survey = null;
+		this.user = null;
 	}
 
 	/**
@@ -72,8 +74,10 @@ public class MsgController {
 		case RETURN_ALL_ORDERS:
 			orders = (ArrayList<Order>) newMsg.data;
 			break;
-		case RETURN_PAYMENT_APPROVAL:
 		case APPROVE_LOGIN:
+			user = (User) newMsg.data;
+			break;
+		case RETURN_PAYMENT_APPROVAL:
 		case APPROVE_LOGOUT:
 		case EXIT:
 		case ERROR:
@@ -192,7 +196,7 @@ public class MsgController {
 	 * 
 	 * @return
 	 */
-	public static Msg createACTIVATE_PROMOTIONMsg(int pageNumber, String category) {
+	public static Msg createGET_CATALOG_PAGEMsg(int pageNumber, String category) {
 		Msg msg = new Msg();
 		msg.type = MsgType.GET_CATALOG_PAGE;
 		ArrayList<Serializable> data = new ArrayList<Serializable>();
@@ -282,10 +286,10 @@ public class MsgController {
 	 * 
 	 * @return
 	 */
-	public static Msg createGET_SURVEYMsg() {
+	public static Msg createGET_SURVEYMsg(int surveyNumber) {
 		Msg msg = new Msg();
 		msg.type = MsgType.GET_SURVEY;
-		msg.data = null;
+		msg.data = surveyNumber;
 		return msg;
 	}
 

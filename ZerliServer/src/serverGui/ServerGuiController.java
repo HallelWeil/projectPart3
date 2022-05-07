@@ -1,4 +1,4 @@
-package serverGUI;
+package serverGui;
 
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;

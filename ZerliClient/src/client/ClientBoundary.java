@@ -3,7 +3,6 @@ package client;
 import java.io.IOException;
 
 import msg.Msg;
-import msg.MsgController;
 import order.Order;
 
 /**

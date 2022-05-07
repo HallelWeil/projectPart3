@@ -2,6 +2,8 @@ package shop;
 
 import cart.Cart;
 import catalog.Product;
+import order.DeliveryDetails;
+import order.Order;
 
 public class CartController {
 
@@ -40,5 +42,22 @@ public class CartController {
 	 */
 	public double calculatePrice() {
 		return 0;
+	}
+	
+	/**
+	 * add/replace greeting card
+	 */
+	public void addGreetingCard(String card) {
+		
+	}
+	public void addDeliveryDetails(DeliveryDetails d) {
+		
+	}
+	/**
+	 * place the order, send to server and return the order object
+	 */
+	public Order placeOrder() {
+		return null;
+		
 	}
 }

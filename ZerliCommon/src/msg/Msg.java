@@ -7,12 +7,12 @@ public class Msg implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3L;
-	public String type;
+	private static final long serialVersionUID = 4L;
+	public MsgType type;
 	public Serializable data;	
 	
 	
 	public String toString() {
-		return type;	
+		return type.toString();	
 	}	
 }

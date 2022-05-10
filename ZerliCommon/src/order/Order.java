@@ -2,6 +2,7 @@ package order;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  * Order entity, implements Serializable and can be used in messages
@@ -14,7 +15,7 @@ public class Order implements Serializable {
 	/**
 	 * the order version, must be the same in both client and server
 	 */
-	private static final long serialVersionUID = 5L;
+	private static final long serialVersionUID = 6L;
 	/**
 	 * max size for the greeting card field
 	 */
@@ -23,13 +24,16 @@ public class Order implements Serializable {
 	 * The unique order id number
 	 */
 	private int orderID;
-	private double price;
-	private String greetingCard;
-	private String color;
-	private String shop;
-	private Timestamp date;
 	private Timestamp orderDate;
-	private String dOrder;
+	private Timestamp arrivalDate;
+	private String branchName;
+	private boolean homeDelivery;
+	private double price;
+	private String personalLetter;
+	private OrderStatus orderStatus;
+	private String data;
+	private ArrayList<ProductInOrder> items;
+	private DeliveryDetails deliveryDetails;
 
 	/**
 	 * Set the order data string, up to 45 characters
@@ -37,7 +41,7 @@ public class Order implements Serializable {
 	 * @param OrderData
 	 */
 	public void setOrderData(String OrderData) {
-		dOrder = OrderData;
+		data = OrderData;
 	}
 
 	/**
@@ -46,7 +50,7 @@ public class Order implements Serializable {
 	 * @return the order data string
 	 */
 	public String getOrderData() {
-		return dOrder;
+		return data;
 	}
 
 	/**
@@ -92,8 +96,8 @@ public class Order implements Serializable {
 	 * 
 	 * @return the Greeting Card
 	 */
-	public String getGreetingCard() {
-		return greetingCard;
+	public String getPersonalLetter() {
+		return personalLetter;
 	}
 
 	/**
@@ -101,66 +105,10 @@ public class Order implements Serializable {
 	 * 
 	 * @param greetingCard
 	 */
-	public void setGreetingCard(String greetingCard) {
-		if (greetingCard != null)
-			if (greetingCard.length() <= GREETING_CARD_MAX_SIZE)
-				this.greetingCard = greetingCard;
-	}
-
-	/**
-	 * Get the color string
-	 * 
-	 * @return the color string
-	 */
-	public String getColor() {
-		return color;
-	}
-
-	/**
-	 * Set the color string, up to 45 characters
-	 * 
-	 * @param color
-	 */
-	public void setColor(String color) {
-		if (color != null)
-			this.color = color;
-	}
-
-	/**
-	 * Get the shop string
-	 * 
-	 * @return the shop string
-	 */
-	public String getShop() {
-		return shop;
-	}
-
-	/**
-	 * Set the shop string, up to 45 characters
-	 * 
-	 */
-	public void setShop(String shop) {
-		if (shop != null)
-			this.shop = shop;
-	}
-
-	/**
-	 * Get the order arrival date
-	 * 
-	 * @return the order arrival date
-	 */
-	public Timestamp getDate() {
-		return date;
-	}
-
-	/**
-	 * Set the order arrival date
-	 * 
-	 * @param date
-	 */
-	public void setDate(Timestamp date) {
-		if (date != null)
-			this.date = date;
+	public void setPersonalLetter(String personalLetter) {
+		if (personalLetter != null)
+			if (personalLetter.length() <= GREETING_CARD_MAX_SIZE)
+				this.personalLetter = personalLetter;
 	}
 
 	/**
@@ -182,8 +130,54 @@ public class Order implements Serializable {
 			this.orderDate = orderDate;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	
+	
+	public Timestamp getArrivalDate() {
+		return arrivalDate;
+	}
+
+	public void setArrivalDate(Timestamp arrivalDate) {
+		this.arrivalDate = arrivalDate;
+	}
+
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+
+	public boolean isHomeDelivery() {
+		return homeDelivery;
+	}
+
+	public void setHomeDelivery(boolean homeDelivery) {
+		this.homeDelivery = homeDelivery;
+	}
+
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public ArrayList<ProductInOrder> getItems() {
+		return items;
+	}
+
+	public void setItems(ArrayList<ProductInOrder> items) {
+		this.items = items;
+	}
+
+	public DeliveryDetails getDeliveryDetails() {
+		return deliveryDetails;
+	}
+
+	public void setDeliveryDetails(DeliveryDetails deliveryDetails) {
+		this.deliveryDetails = deliveryDetails;
 	}
 
 	/**
@@ -193,8 +187,8 @@ public class Order implements Serializable {
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		s.append("[ ");
-		s.append(orderID + ", " + price + ", " + color + ", " + shop + ", ");
-		s.append(date + ", " + orderDate + "," + dOrder + "," + greetingCard + "]");
+		s.append(orderID + ", " + price + ", " + branchName + ", ");
+		s.append(data + ", " + orderDate + "," + personalLetter + "]");
 		return s.toString();
 	}
 }

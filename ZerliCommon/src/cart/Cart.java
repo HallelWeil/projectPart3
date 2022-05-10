@@ -1,6 +1,7 @@
 package cart;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import catalog.Product;
@@ -19,6 +20,8 @@ public class Cart implements Serializable {
 	private boolean withHomeDelivery;
 	private String greetingCard;
 	private DeliveryDetails deliveryDetails;
+	private Timestamp arrivalDate;
+	private String branchName;
 
 	public Cart() {
 		productsInCart = new ArrayList<ProductInCart>();
@@ -27,6 +30,7 @@ public class Cart implements Serializable {
 		greetingCard = null;
 		deliveryDetails = null;
 		price = 0;
+		arrivalDate = null;
 	}
 
 	/**
@@ -77,5 +81,43 @@ public class Cart implements Serializable {
 	public void setDeliveryDetails(DeliveryDetails deliveryDetails) {
 		this.deliveryDetails = deliveryDetails;
 	}
+
+	public Timestamp getArrivalDate() {
+		return arrivalDate;
+	}
+
+	public void setArrivalDate(Timestamp arrivalDate) {
+		this.arrivalDate = arrivalDate;
+	}
+
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+
+	public boolean isWithGreetingCard() {
+		return withGreetingCard;
+	}
+
+	public void setWithGreetingCard(boolean withGreetingCard) {
+		this.withGreetingCard = withGreetingCard;
+	}
+
+	public boolean isWithHomeDelivery() {
+		return withHomeDelivery;
+	}
+
+	public void setWithHomeDelivery(boolean withHomeDelivery) {
+		this.withHomeDelivery = withHomeDelivery;
+	}
+
+	public ArrayList<ProductInCart> getProductsInCart() {
+		return productsInCart;
+	}
+	
+	
 
 }

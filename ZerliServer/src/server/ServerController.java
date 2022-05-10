@@ -2,7 +2,6 @@ package server;
 
 import database.DBController;
 import msg.Msg;
-import msg.MsgController;
 import ocsf.server.*;
 import order.Order;
 
@@ -27,7 +26,7 @@ public class ServerController extends AbstractServer {
 	/**
 	 * The massage controller, for parser/msg creation
 	 */
-	private MsgController msgController;
+	private ServerMsgController msgController;
 
 	/**
 	 * the server ip address
@@ -46,7 +45,7 @@ public class ServerController extends AbstractServer {
 		super(port);
 		this.dbController = dbController;
 		this.serverBoundary = sb;
-		msgController = new MsgController();
+		msgController = new ServerMsgController();
 		hostName = "Server";
 	}
 
@@ -60,7 +59,7 @@ public class ServerController extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		Msg returnMsg = new Msg();
 		// default return msg is error->if no other option was relevant
-		returnMsg.type = "error";
+		/*returnMsg.type = "error";
 		if (msg instanceof Msg) {
 			// parse the msg
 			msgController.resetParser();
@@ -86,7 +85,7 @@ public class ServerController extends AbstractServer {
 			default:
 				break;
 			}
-		}
+		}*/
 		// send the response to the client
 		try {
 			client.sendToClient(returnMsg);

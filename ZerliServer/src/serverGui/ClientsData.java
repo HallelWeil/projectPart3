@@ -1,5 +1,6 @@
 package serverGui;
 
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  * Simple class to save the relevant data for each client in the client table

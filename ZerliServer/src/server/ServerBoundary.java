@@ -6,9 +6,9 @@ import database.DBController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import msg.Msg;
-import msg.MsgController;
-import serverGUI.ClientsData;
-import serverGUI.ServerGuiController;
+import serverGui.ClientsData;
+import serverGui.ServerGuiController;
+
 
 /**
  * Boundary for the prototype server, create the server controller, manage
@@ -70,7 +70,7 @@ public class ServerBoundary {
 	 */
 	public void disconnect() {
 		// tell the clients we disconnect
-		Msg msg = MsgController.createExitMsg();
+		Msg msg = ServerMsgController.createEXITMsg();
 		try {
 			server.sendToAllClients(msg);
 		} catch (Exception e) {
@@ -130,7 +130,7 @@ public class ServerBoundary {
 	}
 
 	public void quit() {
-		Msg msg = MsgController.createExitMsg();
+		Msg msg = ServerMsgController.createEXITMsg();
 		try {
 			server.sendToAllClients(msg);
 		} catch (Exception e) {

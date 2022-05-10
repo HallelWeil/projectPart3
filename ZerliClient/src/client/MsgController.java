@@ -10,6 +10,8 @@ import msg.Msg;
 import msg.MsgType;
 import order.Order;
 import promotion.Promotion;
+import report.Report;
+import report.ReportType;
 import survey.Survey;
 import user.User;
 
@@ -23,6 +25,7 @@ public class MsgController {
 	private Order order;
 	private Survey survey;
 	private User user;
+	private Report report;
 
 	public MsgController() {
 		resetParser();
@@ -77,6 +80,9 @@ public class MsgController {
 		case APPROVE_LOGIN:
 			user = (User) newMsg.data;
 			break;
+		case RETURN_REPORT:
+			report = (Report)newMsg.data;
+			break;
 		case RETURN_PAYMENT_APPROVAL:
 		case APPROVE_LOGOUT:
 		case EXIT:
@@ -116,6 +122,10 @@ public class MsgController {
 
 	public Survey getSurvey() {
 		return survey;
+	}
+
+	public Report getReport() {
+		return report;
 	}
 
 	// create msg static methods
@@ -365,6 +375,23 @@ public class MsgController {
 		Msg msg = new Msg();
 		msg.type = MsgType.UPDATE_ORDER_STATUS;
 		msg.data = order;
+		return msg;
+	}
+	/**
+	 * create GET_REPORT msg
+	 * @param type
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public static Msg createGET_REPORTMsg(ReportType type,int year,int month,String branch) {
+		Msg msg = new Msg();
+		ArrayList<Serializable> data = new ArrayList<Serializable>();
+		data.add(type);
+		data.add(year);
+		data.add(month);
+		data.add(branch);
+		msg.data = data;
 		return msg;
 	}
 

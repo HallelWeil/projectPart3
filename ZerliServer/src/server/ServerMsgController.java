@@ -10,6 +10,8 @@ import msg.Msg;
 import msg.MsgType;
 import order.Order;
 import promotion.Promotion;
+import report.Report;
+import report.ReportType;
 import survey.Survey;
 import user.User;
 
@@ -30,6 +32,9 @@ public class ServerMsgController {
 	private String password;
 	private User user;
 	private Order order;
+	private ReportType reportType;
+	private int year,month;
+	private String branch;
 
 	private void resetParser() {
 		this.type = MsgType.NONE;
@@ -47,6 +52,9 @@ public class ServerMsgController {
 		password = null;
 		user = null;
 		order = null;
+		year = 0;
+		month = 0;
+		branch = "";
 	}
 
 	/**
@@ -108,6 +116,13 @@ public class ServerMsgController {
 			break;
 		case UPDATE_ORDER_STATUS:
 			order = (Order) newMsg.data;
+			break;
+		case GET_REPORT:
+			ArrayList<Serializable> reportData = (ArrayList<Serializable>) newMsg.data;
+			reportType = (ReportType)reportData.get(0);
+			year = (int)reportData.get(1);
+			month = (int)reportData.get(2);
+			branch = (String)reportData.get(3);
 			break;
 		case GET_ALL_COMPLAINTS:
 		case GET_ALL_ORDERS:
@@ -326,6 +341,13 @@ public class ServerMsgController {
 		Msg msg = new Msg();
 		msg.type = MsgType.APPROVE_LOGOUT;
 		msg.data = null;
+		return msg;
+	}
+	
+	public static Msg creatRETURN_REPORTMsg(Report report) {
+		Msg msg = new Msg();
+		msg.type = MsgType.RETURN_REPORT;
+		msg.data = report;
 		return msg;
 	}
 }

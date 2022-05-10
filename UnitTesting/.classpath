@@ -8,5 +8,11 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="clientUT"/>
 	<classpathentry kind="src" path="serverUT"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ZerliClient">
+		<attributes>
+			<attribute name="module" value="true"/>
+			<attribute name="add-exports" value="ZerliClient/shop=UnitTesting"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

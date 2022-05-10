@@ -34,6 +34,17 @@ public class Order implements Serializable {
 	private String data;
 	private ArrayList<ProductInOrder> items;
 	private DeliveryDetails deliveryDetails;
+	private String username;
+	
+	
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 	/**
 	 * Set the order data string, up to 45 characters

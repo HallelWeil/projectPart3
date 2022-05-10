@@ -2,8 +2,11 @@ package complaints;
 
 import java.util.ArrayList;
 
+import client.ClientController;
+import client.MsgController;
 import common.Status;
 import complaint.Complaint;
+import msg.MsgType;
 
 /**
  * manage complaints
@@ -13,6 +16,7 @@ import complaint.Complaint;
  */
 public class ComplaintsController {
 
+	private ClientController clinet;
 	public void createComplaint() {
 
 	}
@@ -27,7 +31,9 @@ public class ComplaintsController {
 	 * @param status
 	 */
 	public void handleComplaint(Complaint complaint, String answer, double compensation, Status status) {
-		//
+		Complaint complaint= new Complaint();
+		MsgController.createCREATE_COMPLAINTMsg(complaint);
+		MsgType.COMPLETED;
 	}
 
 	/**
@@ -36,6 +42,10 @@ public class ComplaintsController {
 	 */
 	public void getComplaints(int complaintnumber) {
 
+		MsgController msgController = clinet.sendMsg(MsgController.createGET_ALL_COMPLAINTSMsg());
+		if(msgController.getType()==MsgType.RETURN_ALL_COMPLAINTS) {
+			msgController.getComplaints();
+		}
 	}
 	
 	/**

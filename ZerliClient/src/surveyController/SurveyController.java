@@ -5,8 +5,8 @@ public class SurveyController {
 	/**
 	 * need to get pdf file and add it to the blob in the entity, to save in db
 	 */
-	public void enterSurveyResults() {
-
+	public void enterSurveyResults(String path) {
+		
 	}
 
 	public void CreateSurvey(String[] questions) {

@@ -27,13 +27,13 @@ public class ServerMsgController {
 	private Survey survey;
 	private Serializable resultFile;
 	private int surveyNumber;
-	private ArrayList<Integer> answers;
+	private int[] answers;
 	private String userName;
 	private String password;
 	private User user;
 	private Order order;
 	private ReportType reportType;
-	private int year,month;
+	private int year, month;
 	private String branch;
 
 	private void resetParser() {
@@ -101,7 +101,12 @@ public class ServerMsgController {
 			resultFile = surveyData.get(1);
 			break;
 		case ADD_SURVEY_ANSWERS:
-			answers = (ArrayList<Integer>) newMsg.data;
+			answers = new int[6];
+			ArrayList<Integer> tempAnswers = (ArrayList<Integer>) newMsg.data;
+			surveyNumber = tempAnswers.get(0);
+			for (int i = 0; i < 6; i++) {
+				answers[i] = tempAnswers.get(i + 1);
+			}
 			break;
 		case GET_SURVEY:
 			surveyNumber = (int) newMsg.data;
@@ -119,10 +124,10 @@ public class ServerMsgController {
 			break;
 		case GET_REPORT:
 			ArrayList<Serializable> reportData = (ArrayList<Serializable>) newMsg.data;
-			reportType = (ReportType)reportData.get(0);
-			year = (int)reportData.get(1);
-			month = (int)reportData.get(2);
-			branch = (String)reportData.get(3);
+			reportType = ((ReportType) reportData.get(0));
+			year = ((int) reportData.get(1));
+			month = ((int) reportData.get(2));
+			branch = ((String) reportData.get(3));
 			break;
 		case GET_ALL_COMPLAINTS:
 		case GET_ALL_ORDERS:
@@ -138,6 +143,22 @@ public class ServerMsgController {
 		return true;
 	}
 	// getters
+
+	public ReportType getReportType() {
+		return reportType;
+	}
+
+	public int getMonth() {
+		return month;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public String getBranch() {
+		return branch;
+	}
 
 	public MsgType getType() {
 		return type;
@@ -179,10 +200,6 @@ public class ServerMsgController {
 		return surveyNumber;
 	}
 
-	public ArrayList<Integer> getAnswers() {
-		return answers;
-	}
-
 	public String getUserName() {
 		return userName;
 	}
@@ -197,6 +214,10 @@ public class ServerMsgController {
 
 	public Order getOrder() {
 		return order;
+	}
+
+	public int[] getAnswers() {
+		return answers;
 	}
 
 	// create msg static methods
@@ -343,7 +364,7 @@ public class ServerMsgController {
 		msg.data = null;
 		return msg;
 	}
-	
+
 	public static Msg creatRETURN_REPORTMsg(Report report) {
 		Msg msg = new Msg();
 		msg.type = MsgType.RETURN_REPORT;

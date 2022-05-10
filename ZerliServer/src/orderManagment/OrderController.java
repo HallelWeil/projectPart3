@@ -18,6 +18,8 @@ import order.ProductInOrder;
  */
 public class OrderController {
 
+	private Order activeOrder;
+
 	public Order placeOrder(Cart cart, int orderNumber) {
 		if (cart == null)
 			return null;
@@ -34,47 +36,21 @@ public class OrderController {
 		newOrder.setPrice(calculateOrderPriceAndGetItems(cart.getProductsInCart(), items));
 		newOrder.setItems(items);
 		newOrder.setPersonalLetter(cart.getGreetingCard());
+		activeOrder = newOrder;
 		return newOrder;
 	}
 
+	public boolean payForOrder(String cardInfo) {
+		return true;
+		
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public Order getActiveOrder() {
+		return activeOrder;
+	}
+
+
+
 	/**
 	 * calculate the products price and place the items in the items list
 	 * 

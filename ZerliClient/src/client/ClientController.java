@@ -18,7 +18,7 @@ public class ClientController {
 	 * @param msg
 	 * @return
 	 */
-	public MsgController sendMsg(Msg msg, MsgType expectedReturnMsg) throws Exception{
+	public MsgController sendMsg(Msg msg){
 		MsgController msgcontroller = new MsgController();
 		//
 		

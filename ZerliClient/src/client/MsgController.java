@@ -166,7 +166,7 @@ public class MsgController {
 	}
 
 	/**
-	 * create new CREATE_COMPLAINT msg
+	 * create new GET_ALL_COMPLAINT msg
 	 * 
 	 * @return
 	 */
@@ -281,7 +281,8 @@ public class MsgController {
 
 	/**
 	 * create new ADD_SURVEY_ANSWERS msg
-	 * 
+	 * in the 0 place we have the survey number
+	 * in the 1-6 we have the answers
 	 * @return
 	 */
 	public static Msg createADD_SURVEY_ANSWERSMsg(ArrayList<Integer> answers) {

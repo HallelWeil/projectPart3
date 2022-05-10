@@ -19,6 +19,10 @@ public class User implements Serializable {
 	private String phoneNumber;
 	private String personID;
 	private UserStatus status;
+	/**
+	 * for branch employee and branch manager only
+	 */
+	private String branchName;
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -76,4 +80,13 @@ public class User implements Serializable {
 		this.status = status;
 	}
 
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+
+	
 }

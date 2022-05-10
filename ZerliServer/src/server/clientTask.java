@@ -80,18 +80,10 @@ public class clientTask {
 			noUserTasks();
 		else {
 			switch (msgController.getType()) {
-			case LOGIN_REQUEST:
-				// get User with userName and Password from db
-				User user = null;// user from db
-				if (user != null) {
-					this.user = user;
-					newMsgToSend = ServerMsgController.createAPPROVE_LOGINMsg(user);
-				} else {
-					newMsgToSend = ServerMsgController.createERRORMsg();
-				}
-				break;
 			case LOG_OUT_REQUEST:
 				// to log out remove the user entity
+				dbController.logout(msgController.getUserName());
+				this.orderController = null;
 				this.user = null;
 				break;
 			case EXIT:
@@ -106,6 +98,7 @@ public class clientTask {
 			}
 		}
 	}
+
 	/**
 	 * handle the request base on the user type
 	 */
@@ -148,9 +141,16 @@ public class clientTask {
 		switch (msgController.getType()) {
 		case LOGIN_REQUEST:
 			// get User with userName and Password from db
-			User user = null;// user from db
+			User user = null;
+			try {
+				user = dbController.login(msgController.getUserName(), msgController.getPassword());
+			} catch (Exception e) {
+				newMsgToSend = ServerMsgController.createERRORMsg();// todo: update to already connected msg
+				break;
+			}
 			if (user != null) {
 				this.user = user;
+				this.orderController = new OrderController();
 				newMsgToSend = ServerMsgController.createAPPROVE_LOGINMsg(user);
 			} else {
 				newMsgToSend = ServerMsgController.createERRORMsg();
@@ -169,19 +169,27 @@ public class clientTask {
 		}
 		newMsgToSend = CompletedMsg;
 	}
+
 	/**
 	 * the branch manager actions
 	 */
 	private void handleBranchManagerRequest() {
 		switch (msgController.getType()) {
 		case UPATE_USER_DATA:
-			// update user data to db
+			if (dbController.updateUserData(msgController.getUser().getUsername(),
+					msgController.getUser().getUserType(), msgController.getUser().getStatus()))
+				newMsgToSend = CompletedMsg;
+			else
+				newMsgToSend = ErrorMsg;
 			break;
 		case UPDATE_ORDER_STATUS:
-			// update order status to db
+			if (dbController.updateOrder(msgController.getOrder()))
+				newMsgToSend = CompletedMsg;
+			else
+				newMsgToSend = ErrorMsg;
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = null;// from db
+			ArrayList<Order> orders = dbController.getAllOrders(user.getBranchName(), null);
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		default:
@@ -189,13 +197,15 @@ public class clientTask {
 			break;
 		}
 	}
+
 	/**
 	 * the ceo actions
 	 */
 	private void handleCEORequest() {
 		switch (msgController.getType()) {
 		case GET_REPORT:
-			Report report = null;// get report from db
+			Report report = dbController.getReport(msgController.getReportType(), msgController.getYear(),
+					msgController.getMonth(), msgController.getBranch());
 			newMsgToSend = ServerMsgController.creatRETURN_REPORTMsg(report);
 			break;
 		default:
@@ -203,6 +213,7 @@ public class clientTask {
 			break;
 		}
 	}
+
 	/**
 	 * the branch employee actions
 	 */
@@ -210,42 +221,60 @@ public class clientTask {
 		switch (msgController.getType()) {
 		case GET_SURVEY:
 			// get survey from db
-			Survey survey = null;// new survey from db
+			Survey survey = dbController.getSurvey(msgController.getSurveyNumber());
 			newMsgToSend = ServerMsgController.createRETURN_SURVEYMsg(survey);
 			break;
 		case GET_ALL_SURVEY:
 			// get all surveys
-			ArrayList<Survey> surveys = null;// from db
+			ArrayList<Survey> surveys = dbController.getAllSurveys();
 			newMsgToSend = ServerMsgController.createRETURN_ALL_SURVEYMsg(surveys);
 			break;
 		case ADD_SURVEY_ANSWERS:
-			// update survey to db
+			if (dbController.addSurveyAnswers(msgController.getAnswers(), msgController.getSurveyNumber()))
+				newMsgToSend = CompletedMsg;
+			else
+				newMsgToSend = ErrorMsg;
 			break;
 		default:
 			//
 			break;
 		}
 	}
+
 	/**
 	 * the customer service employee actions
 	 */
 	private void handleCustomerServiceEmloyeeRequest() {
 		switch (msgController.getType()) {
 		case CREATE_COMPLAINT:
-			// save complaint to db
+			if (dbController.createComplaint(msgController.getComplaint()))
+				newMsgToSend = CompletedMsg;
+			else
+				newMsgToSend = ErrorMsg;
 			break;
 		case UPDATE_COMPLAINT:
-			// update complaint to db
+			Complaint tempComplaint = msgController.getComplaint();
+			if (dbController.updateComplaint(tempComplaint.getAnswer(), tempComplaint.getComplaintsNumber(),
+					tempComplaint.getStatus()))
+				newMsgToSend = CompletedMsg;
+			else
+				newMsgToSend = ErrorMsg;
 			break;
 		case CREATE_SURVEY:
-			// save survey to db
+			if (dbController.createSurvey(msgController.getSurvey()))
+				newMsgToSend = CompletedMsg;
+			else
+				newMsgToSend = ErrorMsg;
 			break;
 		case ADD_SURVEY_RESULT:
-			// update survey to db
+			if (dbController.addSurveyAnswers(msgController.getAnswers(), msgController.getSurveyNumber()))
+				newMsgToSend = CompletedMsg;
+			else
+				newMsgToSend = ErrorMsg;
 			break;
 		case GET_ALL_COMPLAINTS:
 			// get all the relevant complaints from db
-			ArrayList<Complaint> complaints = null;// from db
+			ArrayList<Complaint> complaints = dbController.getAllcomplaints(user.getPersonID());
 			newMsgToSend = ServerMsgController.createRETURN_ALL_COMPLAINTSMsg(complaints);
 			break;
 		default:
@@ -253,22 +282,27 @@ public class clientTask {
 			break;
 		}
 	}
+
 	/**
 	 * the marketing employee actions
 	 */
 	private void handleMArketingEmployeeRequest() {
 		switch (msgController.getType()) {
 		case ACTIVATE_PROMOTION:
-			// save promotion to db
+			// if(dbController.) todo
 			break;
 		case UPDATE_CATALOG:
-			// update product in db
+			if (dbController.updateProduct(msgController.getProduct()))
+				newMsgToSend = CompletedMsg;
+			else
+				newMsgToSend = ErrorMsg;
 			break;
 		default:
 			//
 			break;
 		}
 	}
+
 	/**
 	 * the non authorized customer actions
 	 */
@@ -300,11 +334,11 @@ public class clientTask {
 		switch (msgController.getType()) {
 		case GET_CATALOG_PAGE:
 			// get catalog page
-			ArrayList<Product> catalog = null;// get the page
+			ArrayList<Product> catalog = dbController.getCatalogCategory(msgController.getCategory());
 			newMsgToSend = ServerMsgController.createRETURN_CATALOG_PAGEMsg(catalog);
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = null;// from db
+			ArrayList<Order> orders = dbController.getAllOrders(null, user.getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		case PAY_FOR_ORDER:
@@ -314,7 +348,7 @@ public class clientTask {
 			break;
 		case PLACE_ORDER_REQUEST:
 			// use the order controller
-			Order order = null;// new ordre from order controller
+			Order order = orderController.placeOrder(msgController.getCart(),0);
 			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
 			break;
 		case UPDATE_ORDER_STATUS:

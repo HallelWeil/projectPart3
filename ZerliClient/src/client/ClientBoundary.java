@@ -18,7 +18,7 @@ public class ClientBoundary {
 	// Instance variables **********************************************
 
 	private Msg msg;
-	private zerliClientController client;
+	private ClientController client;
 
 	// Constructors ****************************************************
 	/**
@@ -38,7 +38,7 @@ public class ClientBoundary {
 	 */
 	public boolean connect(String host, int port) {
 		try {
-			client = new zerliClientController(host, port, this);
+			client = new ClientController(host, port,this);
 			System.out.println("connected to server");
 			return true;
 		} catch (IOException e) {
@@ -46,7 +46,7 @@ public class ClientBoundary {
 			return false;
 		}
 	}
-
+/*
 	// Instance methods ************************************************
 	/**
 	 * this method get a order from Client UI and prepare a requestOrder message by
@@ -56,7 +56,7 @@ public class ClientBoundary {
 	 * 
 	 * @param OrderID the ID(Number) of order
 	 * @return return the order that it number is orderID
-	 */
+	 
 	public Order RequestOrder(int Order) {
 		msg = MsgController.createGetOrderMsg(Order);
 		client.handleMessageFromClientUI((Object) msg);
@@ -66,7 +66,7 @@ public class ClientBoundary {
 			return null;
 		}
 	}
-
+    
 	/**
 	 * this method get a old order and new order (updated order) and prepare a
 	 * requestOrder message by MsgController Class and send the msg request to
@@ -77,6 +77,7 @@ public class ClientBoundary {
 	 * @param old the old order
 	 * @param New the new order
 	 */
+	/*
 	public boolean saveOrder(Order old, Order New) {
 		msg = MsgController.createSaveMsg(old, New);
 		client.handleMessageFromClientUI(msg);
@@ -102,8 +103,9 @@ public class ClientBoundary {
 	 * msgController and prepare ExitMsg and send it to server by
 	 * handlemsgfromclientUI
 	 */
+
 	public void quit() {
-		msg = MsgController.createExitMsg();
+	    msg = MsgController.createEXITMsg();
 		client.handleMessageFromClientUI(msg);
 		client.quit();
 	}

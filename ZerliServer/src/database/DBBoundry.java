@@ -22,7 +22,7 @@ public class DBBoundry {
 	 * Send query to the database. Support select and update
 	 * 
 	 * @param query
-	 * @return : RsultSet on select, boolean on update
+	 * @return : RsultSet on select, else return boolean
 	 */
 	public Object sendQueary(String query) {
 		Statement stmt;
@@ -34,6 +34,8 @@ public class DBBoundry {
 			case "SELECT":
 				res = stmt.executeQuery(query);
 				return res;
+			case "INSERT":
+			case "DELETE":
 			case "UPDATE":
 				int res2 = stmt.executeUpdate(query);
 				return res2 == 0 ? false : true;
@@ -79,7 +81,7 @@ public class DBBoundry {
 	 */
 	public boolean disconnectDB() {
 		try {
-			DriverManager.drivers().close();
+			conn.close();
 			return true;
 		} catch (Exception e) {
 			return false;

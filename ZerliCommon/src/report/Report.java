@@ -3,7 +3,7 @@ package report;
 import java.io.Serializable;
 import java.sql.Date;
 
-public abstract class Report implements Serializable {
+public class Report implements Serializable {
 
 	/**
 	 * 

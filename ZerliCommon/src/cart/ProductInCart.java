@@ -45,7 +45,7 @@ public class ProductInCart implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		ProductInCart other = (ProductInCart) obj;
-		return product.equals(other.product);
+		return product.getName().equals(other.product.getName());
 	}
 
 }

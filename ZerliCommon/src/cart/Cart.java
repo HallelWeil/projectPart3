@@ -22,6 +22,7 @@ public class Cart implements Serializable {
 	private DeliveryDetails deliveryDetails;
 	private Timestamp arrivalDate;
 	private String branchName;
+	private ProductInCart tempProduct;
 
 	public Cart() {
 		productsInCart = new ArrayList<ProductInCart>();
@@ -31,6 +32,7 @@ public class Cart implements Serializable {
 		deliveryDetails = null;
 		price = 0;
 		arrivalDate = null;
+		tempProduct= new ProductInCart(new Product(-1),1);
 	}
 
 	/**
@@ -48,7 +50,15 @@ public class Cart implements Serializable {
 		else
 			productsInCart.add(newProduct);
 	}
-
+	public void removeItem(String productName) throws Exception
+	{
+		tempProduct.getProduct().setName(productName);
+		if (productsInCart.contains(tempProduct)) {
+			productsInCart.remove(tempProduct);
+		}
+		throw new Exception("cant remove item from cart");
+		
+	}
 	public double getPrice() {
 		return price;
 	}

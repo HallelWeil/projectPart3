@@ -4,8 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import catalog.Product;
-import complaint.Complaint;
 import order.Order;
 import order.OrderStatus;
 import survey.Survey;
@@ -23,7 +21,7 @@ public class DBObject {
 				order.setHomeDelivery(res.getBoolean("deliveryType"));
 				order.setBranchName(res.getString("branchName"));
 				order.setPrice(res.getDouble("price"));
-				order.setUsername(res.getString("customerID"));
+				order.setUserName(res.getString("customerID"));
 				order.setPersonalLetter(res.getString("personalLetter"));
 				order.setOrderStatus(OrderStatus.valueOf(res.getInt("orderStatus")));
 				order.setOrderData(res.getString("data"));
@@ -55,28 +53,10 @@ public class DBObject {
 		return surveys;
 	}
 	
-
-	public ArrayList<Complaint> complaintDB(ResultSet res) {
-		ArrayList<Complaint> complaints = new ArrayList<>();
-		try {
-			while (res.next()) {
-				Complaint complaint = new Complaint(res.getInt("responsibleEmployeeID"), res.getString("complaint"), res.getInt("customerID"));
-				complaint.setAnswer(res.getString("answer"));
-				complaint.setCompensation(res.getDouble("compensation"));
-				complaint.setComplaintsNumber(res.getInt("complaintNumber"));
-				complaint.setStatus(Status.valueOf(res.getInt("status")));
-				complaints.add(complaint);
-				// need set for participants and answers
-			}
-		} catch (Exception e) {
-		}
-		return complaints;
-	}
-
-	public ArrayList<Product> productDB(ResultSet res) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
+	
+	
 	
 
 }

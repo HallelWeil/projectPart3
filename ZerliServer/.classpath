@@ -7,12 +7,12 @@
 			<attribute name="add-exports" value="ZerliCommon/cart=ZerliServer:ZerliCommon/catalog=ZerliServer:ZerliCommon/common=ZerliServer:ZerliCommon/complaint=ZerliServer:ZerliCommon/msg=ZerliServer:ZerliCommon/order=ZerliServer:ZerliCommon/promotion=ZerliServer:ZerliCommon/report=ZerliServer:ZerliCommon/survey=ZerliServer:ZerliCommon/user=ZerliServer"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/halel/Desktop/ProjectPart3/ZerliServer/lib/mysql-connector-java-8.0.13.jar">
+	<classpathentry kind="lib" path="C:/Users/ommer/git/projectPart3/ZerliServer/lib/mysql-connector-java-8.0.13.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/halel/Desktop/ProjectPart3/ZerliServer/lib/ocsf.jar">
+	<classpathentry kind="lib" path="C:/Users/ommer/git/projectPart3/ZerliServer/lib/ocsf.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
@@ -23,6 +23,14 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+		<accessrules>
+			<accessrule kind="nonaccessible" pattern="javafx/**"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javafx">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

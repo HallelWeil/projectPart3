@@ -4,6 +4,7 @@ import java.io.IOException;
 import msg.Msg;
 import msg.MsgController;
 import ocsf.client.AbstractClient;
+//import ocsf.client.AbstractClient;
 
 /**
  * This class overrides some of the methods defined in the abstract superclass
@@ -22,7 +23,7 @@ public class zerliClientController extends AbstractClient {
 	 * Msg to used in the ClientBoundary methods (connected variable between
 	 * HandleMsgFromServer and ClientBoundary methods)
 	 */
-	public static MsgController CreateMsg;
+	private MsgController CreateMsg;
 	ClientBoundary clientBoundary;
 
 	// Constructors ****************************************************
@@ -36,7 +37,7 @@ public class zerliClientController extends AbstractClient {
 	 */
 	public zerliClientController(String host, int port, ClientBoundary clientBoundary) throws IOException {
 		super(host, port); // Call the superclass constructor
-		CreateMsg = new MsgController();
+		//CreateMsg = new MsgController();
 		openConnection();
 		this.clientBoundary = clientBoundary;
 	}

@@ -93,6 +93,8 @@ public enum MsgType {
 	 * update order status(approve, not approved, canceled, refunded), expected answer=COMPLETED
 	 */
 	UPDATE_ORDER_STATUS,
+	
+	REQUEST_VIEW_REPORT,
 	// server -> client
 	/**
 	 * Approve the login, return the user entity

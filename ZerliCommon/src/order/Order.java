@@ -1,7 +1,9 @@
-package order;
+ package order;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+
+import common.Status;
 
 /**
  * Order entity, implements Serializable and can be used in messages
@@ -30,6 +32,7 @@ public class Order implements Serializable {
 	private Timestamp date;
 	private Timestamp orderDate;
 	private String dOrder;
+    private OrderStatus status= OrderStatus.WaitingForAprroval;
 
 	/**
 	 * Set the order data string, up to 45 characters
@@ -196,5 +199,16 @@ public class Order implements Serializable {
 		s.append(orderID + ", " + price + ", " + color + ", " + shop + ", ");
 		s.append(date + ", " + orderDate + "," + dOrder + "," + greetingCard + "]");
 		return s.toString();
+	}
+
+	public OrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderStatus status) {
+		if(status!=null)
+		{
+		this.status = status;
+		}
 	}
 }

@@ -10,8 +10,11 @@ import msg.Msg;
 import msg.MsgType;
 import order.Order;
 import promotion.Promotion;
+import report.Report;
 import survey.Survey;
 import user.User;
+import usersManagment.BranchManagerBoundary;
+import usersManagment.UserBoundary;
 
 public class MsgController {
 
@@ -47,7 +50,7 @@ public class MsgController {
 	 * @return true if the msg was ok
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean mgsParser(Object msg) {
+	public boolean msgParser(Object msg) {
 		resetParser();
 		if (msg == null)
 			return false;
@@ -116,6 +119,9 @@ public class MsgController {
 
 	public Survey getSurvey() {
 		return survey;
+	}
+	public User getUser() {
+		return user;
 	}
 
 	// create msg static methods
@@ -365,6 +371,14 @@ public class MsgController {
 		Msg msg = new Msg();
 		msg.type = MsgType.UPDATE_ORDER_STATUS;
 		msg.data = order;
+		return msg;
+	}
+	
+	public static Msg createView_ReportMsg(Report report)
+	{
+		Msg msg = new Msg();
+		msg.type = MsgType.REQUEST_VIEW_REPORT;
+		msg.data = report;
 		return msg;
 	}
 

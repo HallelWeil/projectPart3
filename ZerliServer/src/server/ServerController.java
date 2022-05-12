@@ -1,5 +1,7 @@
 package server;
 
+import java.util.HashMap;
+
 import database.DBController;
 import msg.Msg;
 import ocsf.server.*;
@@ -33,6 +35,11 @@ public class ServerController extends AbstractServer {
 	 */
 	private String hostName;
 
+	/**
+	 * 
+	 */
+	private HashMap<ConnectionToClient, ClientTask> clientsTasks;
+
 	// Class Constructor *************************************************
 	/**
 	 * Constructs an instance of the server controller.
@@ -47,6 +54,7 @@ public class ServerController extends AbstractServer {
 		this.serverBoundary = sb;
 		msgController = new ServerMsgController();
 		hostName = "Server";
+		clientsTasks = new HashMap<ConnectionToClient, ClientTask>();
 	}
 
 	/**
@@ -58,35 +66,13 @@ public class ServerController extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		Msg returnMsg = new Msg();
-		// default return msg is error->if no other option was relevant
-		/*returnMsg.type = "error";
-		if (msg instanceof Msg) {
-			// parse the msg
-			msgController.resetParser();
-			msgController.msgParser((Msg) msg);
-			// check the msg type
-			switch (msgController.getType()) {
-			// for order request: get the orderId from the msg and use it to get result from
-			// database, if no such order was found will send null as order
-			case "get order request":
-				Order order = dbController.getOrdrFromDB(msgController.getOrderNum());
-				returnMsg = MsgController.createSendMsg(order);
-				break;
-			// for save order: update the order in the database
-			case "save order":
-				if (dbController.updateOrder(msgController.getOrder())) {
-					returnMsg.type = "completed";// return completed on success
-				}
-				break;
-			case "exit":
-				clientDisconnected(client);
-				returnMsg.type = "completed";
-				break;
-			default:
-				break;
-			}
-		}*/
-		// send the response to the client
+		if(clientsTasks.containsKey(client)) {
+			ClientTask task = clientsTasks.get(client);
+			returnMsg = task.handleTask(msg);
+		}
+		else {
+			//todo handle the error
+		}
 		try {
 			client.sendToClient(returnMsg);
 		} catch (Exception e) {
@@ -108,6 +94,14 @@ public class ServerController extends AbstractServer {
 			tempHost = "local host";
 		serverBoundary.updateClientsTable(client.toString(), "Active", tempHost, client.getName());
 		serverBoundary.setStatus("Client connected to server from " + client);
+		// add the clients to the client tasks map
+		ClientTask newClientTask = new ClientTask(client);
+		if (!clientsTasks.containsKey(client)) {
+			clientsTasks.put(client, newClientTask);
+		} else {
+			clientsTasks.remove(client);
+			clientsTasks.put(client, newClientTask);
+		}
 	}
 
 	/**
@@ -120,6 +114,7 @@ public class ServerController extends AbstractServer {
 	public void clientDisconnected(ConnectionToClient client) {
 		serverBoundary.updateClientsTable(client.toString(), "NotActive", "---", client.getName());
 		serverBoundary.setStatus("Client disconnected from server from " + client);
+		clientsTasks.remove(client);
 	}
 
 	/**

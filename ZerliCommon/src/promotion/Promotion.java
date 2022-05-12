@@ -2,6 +2,8 @@ package promotion;
 
 import java.io.Serializable;
 
+import common.Status;
+
 public class Promotion implements Serializable {
 	/**
 	 * 
@@ -9,22 +11,25 @@ public class Promotion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int productID;
-	private double discount;
 	private String promotionText;
+	private Status status;
 
-	public Promotion(int productID, double discount, String promotionText) {
-		super();
+	public Promotion(int productID, String promotionText) {
 		this.productID = productID;
-		this.discount = discount;
 		this.promotionText = promotionText;
+		status = Status.Active;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public int getProductID() {
 		return productID;
-	}
-
-	public double getDiscount() {
-		return discount;
 	}
 
 	public String getPromotionText() {
@@ -33,10 +38,6 @@ public class Promotion implements Serializable {
 
 	public void setProductID(int productID) {
 		this.productID = productID;
-	}
-
-	public void setDiscount(double discount) {
-		this.discount = discount;
 	}
 
 	public void setPromotionText(String promotionText) {

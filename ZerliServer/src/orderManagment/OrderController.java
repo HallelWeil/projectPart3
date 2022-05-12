@@ -9,6 +9,7 @@ import catalog.Item;
 import order.Order;
 import order.OrderStatus;
 import order.ProductInOrder;
+import paymentManagment.PaymentController;
 
 /**
  * create a order from a cart, manage orders status and approval
@@ -40,8 +41,18 @@ public class OrderController {
 		return newOrder;
 	}
 
+	/**
+	 * pay for the activeOrder, return true if the payment succeed
+	 * @param cardInfo
+	 * @return
+	 */
 	public boolean payForOrder(String cardInfo) {
-		return true;
+		PaymentController paymnetControlelr = new PaymentController();
+		try {
+			return paymnetControlelr.pay(cardInfo, activeOrder.getPrice());
+		}catch(Exception e) {
+			return false;
+		}
 		
 	}
 	

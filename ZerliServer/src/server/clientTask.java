@@ -22,7 +22,7 @@ import user.User;
  * @author halel
  *
  */
-public class clientTask {
+public class ClientTask {
 
 	/**
 	 * to parse the massages
@@ -53,10 +53,10 @@ public class clientTask {
 	 */
 	private Msg newMsgToSend;
 
-	public clientTask(ConnectionToClient client, DBController dbController) {
+	public ClientTask(ConnectionToClient client) {
 		super();
 		this.client = client;
-		this.dbController = dbController;
+		this.dbController = null;// todo
 		user = null;
 		msgController = new ServerMsgController();
 		CompletedMsg = ServerMsgController.createCOMPLETEDMsg();
@@ -69,12 +69,13 @@ public class clientTask {
 	 * available for the active connected user from the client.
 	 * 
 	 * @param msg
+	 * @return
 	 * @throws IOException
 	 */
-	public void handleTask(Msg msg) throws IOException {
+	public Msg handleTask(Object msg) {
 		// if no correct msg was found
 		if (msgController.mgsParser(msg) == false)
-			return;
+			return ErrorMsg;
 		// action for none connected clients
 		if (user == null)
 			noUserTasks();
@@ -97,6 +98,7 @@ public class clientTask {
 				break;
 			}
 		}
+		return newMsgToSend;
 	}
 
 	/**
@@ -348,7 +350,7 @@ public class clientTask {
 			break;
 		case PLACE_ORDER_REQUEST:
 			// use the order controller
-			Order order = orderController.placeOrder(msgController.getCart(),0);
+			Order order = orderController.placeOrder(msgController.getCart(), 0);
 			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
 			break;
 		case UPDATE_ORDER_STATUS:

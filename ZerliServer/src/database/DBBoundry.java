@@ -17,6 +17,7 @@ public class DBBoundry {
 	 * The connection to the database
 	 */
 	static Connection conn;
+	PreparedStatement 
 
 	/**
 	 * Send query to the database. Support select and update

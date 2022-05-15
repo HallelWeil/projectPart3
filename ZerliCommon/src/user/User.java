@@ -19,6 +19,7 @@ public class User implements Serializable {
 	private String phoneNumber;
 	private String personID;
 	private UserStatus status;
+	
 	/**
 	 * for branch employee and branch manager only
 	 */
@@ -86,6 +87,34 @@ public class User implements Serializable {
 
 	public void setBranchName(String branchName) {
 		this.branchName = branchName;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void setPersonID(String personID) {
+		this.personID = personID;
 	}
 
 	

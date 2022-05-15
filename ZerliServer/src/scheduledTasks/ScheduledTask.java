@@ -3,16 +3,14 @@ package scheduledTasks;
 import java.sql.Timestamp;
 
 /**
- * represent scheduled task, needed to be at a specific time
+ * Represent scheduled task, needed to be at a specific time. a runnable class
+ * with run method to handle the task and task time to know when to handle the
+ * task
  * 
-
- *
  */
-abstract class ScheduledTask implements Runnable{
+abstract class ScheduledTask implements Runnable {
 	private Timestamp tasktime;
 
-	
-	
 	public ScheduledTask(Timestamp tasktime) {
 		this.tasktime = tasktime;
 	}

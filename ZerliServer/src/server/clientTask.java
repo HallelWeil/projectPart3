@@ -21,7 +21,7 @@ import user.User;
  *
  */
 public class ClientTask {
-	//class variables
+	// class variables
 	/**
 	 * to parse the massages
 	 */
@@ -66,9 +66,8 @@ public class ClientTask {
 	 * handle single client task, for security each client can only do the tasks
 	 * available for the active connected user from the client.
 	 * 
-	 * @param msg
-	 * @return
-	 * @throws IOException
+	 * @param msg the received message
+	 * @return the return message
 	 */
 	public Msg handleTask(Object msg) {
 		// if no correct msg was found
@@ -78,10 +77,11 @@ public class ClientTask {
 		if (user == null)
 			noUserTasks();
 		else {
+			// some tasks are identical for all the connected users
 			switch (msgController.getType()) {
 			case LOG_OUT_REQUEST:
 				// to log out remove the user entity
-				dbController.DisconnectUser(msgController.getUserName());
+				dbController.disconnectUser(msgController.getUserName());
 				this.orderController = null;
 				this.user = null;
 				break;
@@ -92,6 +92,7 @@ public class ClientTask {
 				// none
 				break;
 			default:
+				// each user handle this tasks differently
 				handleMsgForUserType();
 				break;
 			}
@@ -135,7 +136,7 @@ public class ClientTask {
 
 	// for each client type there are different tasks and different action for each
 	/**
-	 * the action for non connected user
+	 * the action for non connected user, can login
 	 */
 	private void noUserTasks() {
 		switch (msgController.getType()) {
@@ -143,18 +144,13 @@ public class ClientTask {
 			// get User with userName and Password from db
 			User user = null;
 			try {
-				if (dbController.ConnectUser(msgController.getUserName(), msgController.getPassword()))// ??????
+				if (dbController.connectUser(msgController.getUserName(), msgController.getPassword()))
 					user = dbController.getUser(msgController.getUserName());
+				else {// wrong username or password
+					newMsgToSend = ServerMsgController.createERRORMsg("Wrong username and password");
+				}
 			} catch (Exception e) {
-				newMsgToSend = ServerMsgController.createERRORMsg("The user already connected");// todo: update to already connected msg
-				break;
-			}
-			if (user != null) {
-				this.user = user;
-				this.orderController = new OrderController();
-				newMsgToSend = ServerMsgController.createAPPROVE_LOGINMsg(user);
-			} else {
-				newMsgToSend = ServerMsgController.createERRORMsg("Wrong username and password");
+				newMsgToSend = ServerMsgController.createERRORMsg("The user already connected");// already connected msg
 			}
 			break;
 		case EXIT:
@@ -165,58 +161,63 @@ public class ClientTask {
 			break;
 		default:
 			// handle cant do it
-			newMsgToSend = ErrorMsg;
+			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");
 			break;
 		}
 		newMsgToSend = CompletedMsg;
 	}
 
 	/**
-	 * the branch manager actions
+	 * Handle the branch manager actions can update the user data, update the order
+	 * status and get all the order belonging to his branch
 	 */
 	private void handleBranchManagerRequest() {
 		switch (msgController.getType()) {
 		case UPATE_USER_DATA:
-			if (dbController.updateUser(msgController.getUser().getUsername(),
-					msgController.getUser().getUserType(), msgController.getUser().getStatus()))
+			if (dbController.updateUser(msgController.getUser().getUsername(), msgController.getUser().getUserType(),
+					msgController.getUser().getStatus()))
 				newMsgToSend = CompletedMsg;
 			else
-				newMsgToSend = ErrorMsg;
+				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to update the user information");
 			break;
 		case UPDATE_ORDER_STATUS:
 			if (dbController.updateOrder(msgController.getOrder()))
 				newMsgToSend = CompletedMsg;
 			else
-				newMsgToSend = ErrorMsg;
+				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to update the order status");
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(user.getBranchName(), null);
+			ArrayList<Order> orders = dbController.getAllOrdersInBranch(user.getBranchName(), null);
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		default:
-			//
+			// handle cant do it
+			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");
 			break;
 		}
 	}
 
 	/**
-	 * the ceo actions
+	 * Handle the ceo actions, can watch reports
 	 */
 	private void handleCEORequest() {
 		switch (msgController.getType()) {
 		case GET_REPORT:
-			Report report = dbController.getReport(msgController.getReportType(), msgController.getYear(),
-					msgController.getMonth(), msgController.getBranch());
+			Report tempReport = new Report(msgController.getMonth(), msgController.getYear(),
+					msgController.getReportType(), msgController.getBranch());
+			Report report = dbController.getReportFromDB(tempReport);
 			newMsgToSend = ServerMsgController.creatRETURN_REPORTMsg(report);
 			break;
 		default:
-			//
+			// handle cant do it
+			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");
 			break;
 		}
 	}
 
 	/**
-	 * the branch employee actions
+	 * handle the branch employee actions, can get survey, get all the survey and
+	 * add survey answers
 	 */
 	private void handleBranchEmployeeRequest() {
 		switch (msgController.getType()) {
@@ -226,7 +227,7 @@ public class ClientTask {
 			newMsgToSend = ServerMsgController.createRETURN_SURVEYMsg(survey);
 			break;
 		case GET_ALL_SURVEY:
-			// get all surveys
+			// get all the surveys
 			ArrayList<Survey> surveys = dbController.getAllSurvey();
 			newMsgToSend = ServerMsgController.createRETURN_ALL_SURVEYMsg(surveys);
 			break;
@@ -234,24 +235,27 @@ public class ClientTask {
 			if (dbController.addSurveyAnswers(msgController.getAnswers(), msgController.getSurveyNumber()))
 				newMsgToSend = CompletedMsg;
 			else
-				newMsgToSend = ErrorMsg;
+				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to update the survey");
 			break;
 		default:
-			//
+			// handle cant do it
+			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");
 			break;
 		}
 	}
 
 	/**
-	 * the customer service employee actions
+	 * handle the customer service employee actions, can create complaint, update
+	 * complaint, create new survey, add survey result and get all the complaints he
+	 * responsible for
 	 */
 	private void handleCustomerServiceEmloyeeRequest() {
 		switch (msgController.getType()) {
 		case CREATE_COMPLAINT:
-			if (dbController.createComplaint(msgController.getComplaint())!=-1)
+			if (dbController.createComplaint(msgController.getComplaint()) != -1)
 				newMsgToSend = CompletedMsg;
 			else
-				newMsgToSend = ErrorMsg;
+				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to create the complaint");
 			break;
 		case UPDATE_COMPLAINT:
 			Complaint tempComplaint = msgController.getComplaint();
@@ -259,19 +263,19 @@ public class ClientTask {
 					tempComplaint.getStatus()))
 				newMsgToSend = CompletedMsg;
 			else
-				newMsgToSend = ErrorMsg;
+				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to update the complaint");
 			break;
 		case CREATE_SURVEY:
-			if (dbController.createSurvey(msgController.getSurvey())!=-1)
+			if (dbController.createSurvey(msgController.getSurvey()) != -1)
 				newMsgToSend = CompletedMsg;
 			else
-				newMsgToSend = ErrorMsg;
+				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to create the survey");
 			break;
 		case ADD_SURVEY_RESULT:
 			if (dbController.addSurveyAnswers(msgController.getAnswers(), msgController.getSurveyNumber()))
 				newMsgToSend = CompletedMsg;
 			else
-				newMsgToSend = ErrorMsg;
+				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to add the survey result");
 			break;
 		case GET_ALL_COMPLAINTS:
 			// get all the relevant complaints from db
@@ -279,63 +283,75 @@ public class ClientTask {
 			newMsgToSend = ServerMsgController.createRETURN_ALL_COMPLAINTSMsg(complaints);
 			break;
 		default:
-			//
+			// handle cant do it
+			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");
 			break;
 		}
 	}
 
 	/**
-	 * the marketing employee actions
+	 * handle the marketing employee actions, can create new promotion and update
+	 * the catalog
 	 */
 	private void handleMArketingEmployeeRequest() {
 		switch (msgController.getType()) {
 		case ACTIVATE_PROMOTION:
-			// if(dbController.) todo
+			if (dbController.savePromotion(msgController.getPromotion()) != -1) {
+				// the promotion was created
+				// to do -> update the item price
+				newMsgToSend = CompletedMsg;
+			} else
+				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to create the promotion");
 			break;
 		case UPDATE_CATALOG:
 			if (dbController.updateProduct(msgController.getProduct()))
 				newMsgToSend = CompletedMsg;
 			else
-				newMsgToSend = ErrorMsg;
+				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to update the catalog");
 			break;
 		default:
-			//
+			// handle cant do it
+			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");
 			break;
 		}
 	}
 
 	/**
-	 * the non authorized customer actions
+	 * handle the non authorized customer actions, can view the catalog, orders
+	 * history and cancel orders
 	 */
 	private void handleNonAuthorizedCustomerRequest() {
 		switch (msgController.getType()) {
 		case GET_CATALOG_PAGE:
 			// get catalog page
-			ArrayList<Product> catalog = null;// get the page
+			ArrayList<Product> catalog = dbController.getCatalogCategory(msgController.getCategory());// toto
 			newMsgToSend = ServerMsgController.createRETURN_CATALOG_PAGEMsg(catalog);
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = null;// from db
+			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(null, user.getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		case UPDATE_ORDER_STATUS:
-			// update order status to db
+			// update order status in the db
+			dbController.updateOrder(msgController.getOrder());
 			break;
 
 		default:
-			//
+			// handle cant do it
+			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");
 			break;
 		}
 	}
 
 	/**
-	 * the authorized customer actions
+	 * handle the authorized customer actions, can view the catalog, get his orders
+	 * history, pay for order ,place order and update order status
 	 */
 	private void handleAuthorizedCustomerRequest() {
 		switch (msgController.getType()) {
 		case GET_CATALOG_PAGE:
 			// get catalog page
-			ArrayList<Product> catalog =dbController.getCatalogCategory(msgController.getCategory());//toto
+			ArrayList<Product> catalog = dbController.getCatalogCategory(msgController.getCategory());// toto
 			newMsgToSend = ServerMsgController.createRETURN_CATALOG_PAGEMsg(catalog);
 			break;
 		case GET_ALL_ORDERS:
@@ -343,34 +359,51 @@ public class ClientTask {
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		case PAY_FOR_ORDER:
-			// use the order controller for that
-			// send the order to the db
+			// get the card info
+			String cardInfo = dbController.getCardInfo(user.getUsername());
+			// use the order controller to pay
+			if (orderController.payForOrder(cardInfo)) {
+				// payment succeed, save the order!
+				if (dbController.saveOrderToDB(orderController.getActiveOrder())) {
+					// the order saved successfully
+					newMsgToSend = ServerMsgController.createRETURN_PAYMENT_APPROVALMsg();
+				} else {
+					newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to save the order!");
+				}
+			} else {
+				newMsgToSend = ServerMsgController.createERRORMsg("Payment declined!");
+			}
 			// reset the order controller
+			orderController.reset();
 			break;
 		case PLACE_ORDER_REQUEST:
 			// use the order controller
-			Order order = orderController.placeOrder(msgController.getCart(), 0,user.getUsername());
+			Order order = orderController.placeOrder(msgController.getCart(), 0, user.getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
 			break;
 		case UPDATE_ORDER_STATUS:
-			// update order status to db
+			// update order status in the db
+			dbController.updateOrder(msgController.getOrder());
 			break;
 		default:
-			//
+			// handle cant do it
+			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");
 			break;
 		}
 	}
 
 	/**
-	 * the curier actions
+	 * The courier actions. can update order status
 	 */
 	private void handleCourierRequest() {
 		switch (msgController.getType()) {
 		case UPDATE_ORDER_STATUS:
-			// update order status to db
+			// update order status in the db
+			dbController.updateOrder(msgController.getOrder());
 			break;
 		default:
-			//
+			// handle cant do it
+			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");
 			break;
 		}
 	}

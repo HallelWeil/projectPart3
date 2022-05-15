@@ -14,6 +14,13 @@ public class Report implements Serializable {
 	private ReportType type;
 	private String BranchName;
 
+	/**
+	 * 
+	 * @param month
+	 * @param year
+	 * @param type
+	 * @param branchName
+	 */
 	public Report(int month,int year, ReportType type, String branchName) {
 		super();
 		this.month = month;

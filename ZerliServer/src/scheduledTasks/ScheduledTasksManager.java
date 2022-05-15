@@ -11,12 +11,15 @@ import java.util.Comparator;
 
 import complaint.Complaint;
 import database.DBController;
+import report.Report;
 import report.ReportType;
 import user.User;
 
 /**
  * manage all the scheduled tasks. singleton. there is only one tasks manager.
- * any thread can add tasks and the manager will be updated accordingly
+ * any thread can add tasks and the manager will be updated accordingly. create
+ * threads to run each scheduled task when its time. get all the needed tasks
+ * from the database
  * 
  *
  */
@@ -99,7 +102,13 @@ public class ScheduledTasksManager implements Runnable {
 		}
 	}
 
-	// get all the scheduled tasks from the database
+	/**
+	 * get all the scheduled tasks from the database. get all the active complaints
+	 * from the database(need to send reminders). check if we need to create report,
+	 * if we need set the report creation task to 2am
+	 * 
+	 * @return array list with all the new tasks
+	 */
 	public ArrayList<ScheduledTask> getTasks() {
 		long currentTime = System.currentTimeMillis();
 		Timestamp currentTimestamp = new Timestamp(currentTime);
@@ -136,7 +145,8 @@ public class ScheduledTasksManager implements Runnable {
 			month = month - 1;
 		}
 		// check if the last month reports where not created
-		if (dbController.getReport(ReportType.QUARTERLY_SATISFACTION_REPORT, year, month, "ALL") == null) {
+		Report tempReport = new Report(month, year, ReportType.QUARTERLY_SATISFACTION_REPORT, "ALL");
+		if (dbController.getReportFromDB(tempReport) == null) {
 			// add report creation tasks, set to 2am
 			ScheduledReportCreationTask newScheduledReportCreationTask = new ScheduledReportCreationTask(
 					Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.of(2, 0))));

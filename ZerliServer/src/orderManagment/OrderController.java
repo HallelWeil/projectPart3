@@ -22,6 +22,13 @@ public class OrderController {
 	private Order activeOrder;
 
 	/**
+	 * Reset the orderController
+	 */
+	public void reset() {
+		activeOrder = new Order();
+	}
+
+	/**
 	 * Get a cart object, username and order number. Create new order with the given
 	 * number and get the items and other order details from the cart object. for
 	 * each item, calculate the item price and add it to the total order price.

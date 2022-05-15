@@ -1,6 +1,7 @@
 package complaint;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import common.Status;
 
@@ -12,21 +13,23 @@ public class Complaint implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int complaintsNumber;
-	private int responsibleEmployeeID;
+	private String responsibleEmployeeUserName;
 	private String complaint;
 	private String answer;
 	private double compensation;
 	private Status status;
-	private int customerID;
+	private String customerUserName;
+	private Timestamp creationTime;
 
-	public Complaint(int responsibleEmployeeID, String complaint, int customerID) {
+	public Complaint(String responsibleEmployeeUserName, String complaint, String customerUserName) {
 		super();
 		this.complaintsNumber = -1;
-		this.responsibleEmployeeID = responsibleEmployeeID;
+		this.responsibleEmployeeUserName = responsibleEmployeeUserName;
 		this.complaint = complaint;
-		this.customerID = customerID;
+		this.customerUserName = customerUserName;
 		status = Status.Active;
 		compensation = 0;
+		creationTime = new Timestamp(System.currentTimeMillis());
 	}
 
 	public int getComplaintsNumber() {
@@ -43,10 +46,6 @@ public class Complaint implements Serializable {
 
 	public void setAnswer(String answer) {
 		this.answer = answer;
-	}
-
-	public int getCustomerID() {
-		return customerID;
 	}
 
 	public double getCompensation() {
@@ -67,6 +66,34 @@ public class Complaint implements Serializable {
 
 	public String getComplaint() {
 		return complaint;
+	}
+
+	public String getResponsibleEmployeeUserName() {
+		return responsibleEmployeeUserName;
+	}
+
+	public void setResponsibleEmployeeUserName(String responsibleEmployeeUserName) {
+		this.responsibleEmployeeUserName = responsibleEmployeeUserName;
+	}
+
+	public String getCustomerUserName() {
+		return customerUserName;
+	}
+
+	public void setCustomerUserName(String customerUserName) {
+		this.customerUserName = customerUserName;
+	}
+
+	public Timestamp getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
+	}
+
+	public void setComplaint(String complaint) {
+		this.complaint = complaint;
 	}
 
 }

@@ -41,4 +41,10 @@ public class Report implements Serializable {
 		return BranchName;
 	}
 
+
+	public String getStartDate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

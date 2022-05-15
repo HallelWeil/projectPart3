@@ -7,12 +7,10 @@ import catalog.Product;
 import complaint.Complaint;
 import database.DBController;
 import msg.Msg;
-import msg.MsgType;
 import ocsf.server.ConnectionToClient;
 import order.Order;
 import orderManagment.OrderController;
 import report.Report;
-import report.ReportType;
 import survey.Survey;
 import user.User;
 
@@ -23,7 +21,7 @@ import user.User;
  *
  */
 public class ClientTask {
-
+	//class variables
 	/**
 	 * to parse the massages
 	 */
@@ -60,7 +58,7 @@ public class ClientTask {
 		user = null;
 		msgController = new ServerMsgController();
 		CompletedMsg = ServerMsgController.createCOMPLETEDMsg();
-		ErrorMsg = ServerMsgController.createERRORMsg();
+		ErrorMsg = ServerMsgController.createERRORMsg("");
 		orderController = new OrderController();
 	}
 
@@ -83,7 +81,7 @@ public class ClientTask {
 			switch (msgController.getType()) {
 			case LOG_OUT_REQUEST:
 				// to log out remove the user entity
-				dbController.logout(msgController.getUserName());
+				dbController.DisconnectUser(msgController.getUserName());
 				this.orderController = null;
 				this.user = null;
 				break;
@@ -145,9 +143,10 @@ public class ClientTask {
 			// get User with userName and Password from db
 			User user = null;
 			try {
-				user = dbController.login(msgController.getUserName(), msgController.getPassword());
+				if (dbController.ConnectUser(msgController.getUserName(), msgController.getPassword()))// ??????
+					user = dbController.getUser(msgController.getUserName());
 			} catch (Exception e) {
-				newMsgToSend = ServerMsgController.createERRORMsg();// todo: update to already connected msg
+				newMsgToSend = ServerMsgController.createERRORMsg("The user already connected");// todo: update to already connected msg
 				break;
 			}
 			if (user != null) {
@@ -155,7 +154,7 @@ public class ClientTask {
 				this.orderController = new OrderController();
 				newMsgToSend = ServerMsgController.createAPPROVE_LOGINMsg(user);
 			} else {
-				newMsgToSend = ServerMsgController.createERRORMsg();
+				newMsgToSend = ServerMsgController.createERRORMsg("Wrong username and password");
 			}
 			break;
 		case EXIT:
@@ -178,7 +177,7 @@ public class ClientTask {
 	private void handleBranchManagerRequest() {
 		switch (msgController.getType()) {
 		case UPATE_USER_DATA:
-			if (dbController.updateUserData(msgController.getUser().getUsername(),
+			if (dbController.updateUser(msgController.getUser().getUsername(),
 					msgController.getUser().getUserType(), msgController.getUser().getStatus()))
 				newMsgToSend = CompletedMsg;
 			else
@@ -191,7 +190,7 @@ public class ClientTask {
 				newMsgToSend = ErrorMsg;
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = dbController.getAllOrders(user.getBranchName(), null);
+			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(user.getBranchName(), null);
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		default:
@@ -228,7 +227,7 @@ public class ClientTask {
 			break;
 		case GET_ALL_SURVEY:
 			// get all surveys
-			ArrayList<Survey> surveys = dbController.getAllSurveys();
+			ArrayList<Survey> surveys = dbController.getAllSurvey();
 			newMsgToSend = ServerMsgController.createRETURN_ALL_SURVEYMsg(surveys);
 			break;
 		case ADD_SURVEY_ANSWERS:
@@ -249,7 +248,7 @@ public class ClientTask {
 	private void handleCustomerServiceEmloyeeRequest() {
 		switch (msgController.getType()) {
 		case CREATE_COMPLAINT:
-			if (dbController.createComplaint(msgController.getComplaint()))
+			if (dbController.createComplaint(msgController.getComplaint())!=-1)
 				newMsgToSend = CompletedMsg;
 			else
 				newMsgToSend = ErrorMsg;
@@ -263,7 +262,7 @@ public class ClientTask {
 				newMsgToSend = ErrorMsg;
 			break;
 		case CREATE_SURVEY:
-			if (dbController.createSurvey(msgController.getSurvey()))
+			if (dbController.createSurvey(msgController.getSurvey())!=-1)
 				newMsgToSend = CompletedMsg;
 			else
 				newMsgToSend = ErrorMsg;
@@ -276,7 +275,7 @@ public class ClientTask {
 			break;
 		case GET_ALL_COMPLAINTS:
 			// get all the relevant complaints from db
-			ArrayList<Complaint> complaints = dbController.getAllcomplaints(user.getPersonID());
+			ArrayList<Complaint> complaints = dbController.getAllComplaints(user.getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ALL_COMPLAINTSMsg(complaints);
 			break;
 		default:
@@ -336,11 +335,11 @@ public class ClientTask {
 		switch (msgController.getType()) {
 		case GET_CATALOG_PAGE:
 			// get catalog page
-			ArrayList<Product> catalog = dbController.getCatalogCategory(msgController.getCategory());
+			ArrayList<Product> catalog =dbController.getCatalogCategory(msgController.getCategory());//toto
 			newMsgToSend = ServerMsgController.createRETURN_CATALOG_PAGEMsg(catalog);
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = dbController.getAllOrders(null, user.getUsername());
+			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(null, user.getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		case PAY_FOR_ORDER:
@@ -350,7 +349,7 @@ public class ClientTask {
 			break;
 		case PLACE_ORDER_REQUEST:
 			// use the order controller
-			Order order = orderController.placeOrder(msgController.getCart(), 0);
+			Order order = orderController.placeOrder(msgController.getCart(), 0,user.getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
 			break;
 		case UPDATE_ORDER_STATUS:

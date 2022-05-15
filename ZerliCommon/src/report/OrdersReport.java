@@ -1,18 +1,8 @@
 package report;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class OrdersReport extends Report {
-
-	public OrdersReport(int month, int year, ReportType type, String branchName) {
-		super(month, year, type, branchName);
-		this.ordersPerDay = new int[31];
-		this.ordersPerCategory = new HashMap<String, Integer>();
-		totalOrders = 0;
-		mostPopularItem = null;
-		avarageMonthlyOrders = 0;
-	}
 
 	/**
 	 * 
@@ -27,22 +17,30 @@ public class OrdersReport extends Report {
 	private String mostPopularItem;
 	private double avarageMonthlyOrders;
 
+	public OrdersReport(int month, int year, ReportType type, String branchName) {
+		super(month, year, type, branchName);
+		this.ordersPerDay = new int[31];
+		this.ordersPerCategory = new HashMap<String, Integer>();
+		totalOrders = 0;
+		mostPopularItem = null;
+		avarageMonthlyOrders = 0;
+	}
+
 	public void addOrderOnDay(int day) {
 		if (day > 31 || day < 1)
 			return;
 		ordersPerDay[day - 1] += 1;
 	}
 
-	public void addToCategory(String category,int amount) {
+	public void addToCategory(String category, int amount) {
 		Integer number = ordersPerCategory.get(category);
 		if (number == null) {
 			number = amount;
 		} else {
-			number +=amount;
+			number += amount;
 		}
 		ordersPerCategory.put(category, number);
 	}
-
 
 	public int getTotalOrders() {
 		return totalOrders;

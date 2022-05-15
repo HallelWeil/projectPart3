@@ -21,9 +21,9 @@ public class DBObject {
 				order.setHomeDelivery(res.getBoolean("deliveryType"));
 				order.setBranchName(res.getString("branchName"));
 				order.setPrice(res.getDouble("price"));
-				order.setUserName(res.getString("customerID"));
+				order.setUsername(res.getString("customerID"));
 				order.setPersonalLetter(res.getString("personalLetter"));
-				order.setOrderStatus(OrderStatus.valueOf(res.getInt("orderStatus")));
+				//order.setOrderStatus(OrderStatus.valueOf(res.getInt("orderStatus")));
 				order.setOrderData(res.getString("data"));
 				orders.add(order);
 			}

@@ -12,7 +12,7 @@ import order.ProductInOrder;
 import paymentManagment.PaymentController;
 
 /**
- * create a order from a cart, manage orders status and approval
+ * Create a order from a cart, manage orders status and approval
  * 
  * @author halel
  *
@@ -21,10 +21,23 @@ public class OrderController {
 
 	private Order activeOrder;
 
-	public Order placeOrder(Cart cart, int orderNumber) {
+	/**
+	 * Get a cart object, username and order number. Create new order with the given
+	 * number and get the items and other order details from the cart object. for
+	 * each item, calculate the item price and add it to the total order price.
+	 * return the newly created order object aand save the order for future actions.
+	 * 
+	 * @param cart        the cart we want to place as order
+	 * @param orderNumber the order number
+	 * @param username    the user who place the order
+	 * @return
+	 */
+	public Order placeOrder(Cart cart, int orderNumber, String username) {
 		if (cart == null)
 			return null;
+		// create new order
 		Order newOrder = new Order();
+		// add the order data
 		newOrder.setOrderID(orderNumber);
 		newOrder.setBranchName(cart.getBranchName());
 		newOrder.setArrivalDate(cart.getArrivalDate());
@@ -32,6 +45,7 @@ public class OrderController {
 		newOrder.setHomeDelivery(cart.isWithHomeDelivery());
 		newOrder.setDeliveryDetails(cart.getDeliveryDetails());
 		newOrder.setOrderStatus(OrderStatus.WAITING_FOR_PAYMENT);
+		newOrder.setUsername(username);
 		// calculate the price and get the items
 		ArrayList<ProductInOrder> items = new ArrayList<ProductInOrder>();
 		newOrder.setPrice(calculateOrderPriceAndGetItems(cart.getProductsInCart(), items));
@@ -43,6 +57,7 @@ public class OrderController {
 
 	/**
 	 * pay for the activeOrder, return true if the payment succeed
+	 * 
 	 * @param cardInfo
 	 * @return
 	 */
@@ -50,23 +65,26 @@ public class OrderController {
 		PaymentController paymnetControlelr = new PaymentController();
 		try {
 			return paymnetControlelr.pay(cardInfo, activeOrder.getPrice());
-		}catch(Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
-		
+
 	}
-	
+
+	/**
+	 * Get the active order object
+	 * 
+	 * @return
+	 */
 	public Order getActiveOrder() {
 		return activeOrder;
 	}
 
-
-
 	/**
 	 * calculate the products price and place the items in the items list
 	 * 
-	 * @param products
-	 * @param items
+	 * @param products the products list
+	 * @param items    the new ProductInOrder list
 	 * @return
 	 */
 	private double calculateOrderPriceAndGetItems(ArrayList<ProductInCart> products, ArrayList<ProductInOrder> items) {
@@ -88,7 +106,7 @@ public class OrderController {
 			}
 			tempProductInOrder = new ProductInOrder();
 			tempProductInOrder.setAmount(product.getAmount());
-			tempProductInOrder.getCategory();// for future use
+			tempProductInOrder.setCategory(product.getProduct().getCategory());
 			tempProductInOrder.setOrderNumber(0);// no number for now
 			tempProductInOrder.setName(product.getProduct().getName());
 			tempProductInOrder.setPrice(tempPrice);

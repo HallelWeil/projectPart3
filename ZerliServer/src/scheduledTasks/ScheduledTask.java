@@ -5,22 +5,34 @@ import java.sql.Timestamp;
 /**
  * represent scheduled task, needed to be at a specific time
  * 
- * @author halel
+
  *
  */
-abstract class ScheduledTask {
+abstract class ScheduledTask implements Runnable{
 	private Timestamp tasktime;
 
-	/**
-	 * handle the task, should be called on or after the task time
-	 */
-	public abstract void handleTheTask();
+	
+	
+	public ScheduledTask(Timestamp tasktime) {
+		this.tasktime = tasktime;
+	}
 
 	/**
-	 * get the time left antil the task in milliseconds
+	 * get the task time in milliseconds
+	 * 
+	 * @return
 	 */
-	public long returnTimeLeftInMilli() {
-		long time = tasktime.getTime() - System.currentTimeMillis();
+	public long getTimeInMilli() {
+		return tasktime.getTime();
+	}
+
+	/**
+	 * get the time left until the task in milliseconds
+	 */
+	public long getTimeLeftInMilli(long currentTime) {
+		long time = tasktime.getTime() - currentTime;//
+		if (time <= 0)
+			return 0;
 		return time;
 	}
 }

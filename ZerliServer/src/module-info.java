@@ -5,4 +5,5 @@ module ZerliServer {
 	requires javafx.base;
 	requires javafx.controls;
 	requires javafx.fxml;
+	requires mysql.connector.java;
 }

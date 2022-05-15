@@ -6,9 +6,9 @@ import database.DBController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import msg.Msg;
+import scheduledTasks.ScheduledTasksManager;
 import serverGui.ClientsData;
 import serverGui.ServerGuiController;
-
 
 /**
  * Boundary for the prototype server, create the server controller, manage
@@ -62,6 +62,10 @@ public class ServerBoundary {
 			return false;
 		}
 		setStatus("Server active");
+		// init new server scheduled tasks manager
+		ScheduledTasksManager scheduledTasksManager = ScheduledTasksManager.getInstance();
+		Thread scheduledTasksThread = new Thread(scheduledTasksManager);
+		scheduledTasksThread.start();
 		return true;
 	}
 

@@ -238,10 +238,10 @@ public class ServerMsgController {
 	 * 
 	 * @return
 	 */
-	public static Msg createERRORMsg() {
+	public static Msg createERRORMsg(String errorMsg) {
 		Msg msg = new Msg();
 		msg.type = MsgType.ERROR;
-		msg.data = null;
+		msg.data = errorMsg;
 		return msg;
 	}
 

@@ -25,10 +25,10 @@ DROP TABLE IF EXISTS `authorizedcustomer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `authorizedcustomer` (
-  `UserName` varchar(45) NOT NULL,
+  `userName` varchar(45) NOT NULL,
   `cardDetails` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`UserName`),
-  UNIQUE KEY `UserName_UNIQUE` (`UserName`)
+  PRIMARY KEY (`userName`),
+  UNIQUE KEY `UserName_UNIQUE` (`userName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -42,6 +42,81 @@ LOCK TABLES `authorizedcustomer` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `branch`
+--
+
+DROP TABLE IF EXISTS `branch`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `branch` (
+  `branchName` varchar(45) NOT NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`branchName`),
+  UNIQUE KEY `branchName_UNIQUE` (`branchName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `branch`
+--
+
+LOCK TABLES `branch` WRITE;
+/*!40000 ALTER TABLE `branch` DISABLE KEYS */;
+/*!40000 ALTER TABLE `branch` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `complaint`
+--
+
+DROP TABLE IF EXISTS `complaint`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `complaint` (
+  `complaintNumber` int NOT NULL AUTO_INCREMENT,
+  `responsibleEmployeeUsername` varchar(45) DEFAULT NULL,
+  `complaint` varchar(200) DEFAULT NULL,
+  `answer` varchar(200) DEFAULT NULL,
+  `compensation` double DEFAULT NULL,
+  `status` varchar(45) DEFAULT NULL,
+  `customerUsername` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`complaintNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `complaint`
+--
+
+LOCK TABLES `complaint` WRITE;
+/*!40000 ALTER TABLE `complaint` DISABLE KEYS */;
+/*!40000 ALTER TABLE `complaint` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `creditdetails`
+--
+
+DROP TABLE IF EXISTS `creditdetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `creditdetails` (
+  `userID` int NOT NULL,
+  `cardInfo` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`userID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `creditdetails`
+--
+
+LOCK TABLES `creditdetails` WRITE;
+/*!40000 ALTER TABLE `creditdetails` DISABLE KEYS */;
+/*!40000 ALTER TABLE `creditdetails` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `deliverydetails`
 --
 
@@ -49,13 +124,13 @@ DROP TABLE IF EXISTS `deliverydetails`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `deliverydetails` (
-  `OrderID` int NOT NULL,
-  `FirstName` varchar(45) DEFAULT NULL,
-  `LastName` varchar(45) DEFAULT NULL,
-  `Address` varchar(200) DEFAULT NULL,
-  `PhoneNumber` varchar(45) DEFAULT NULL,
-  `Comments` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`OrderID`)
+  `orderNumber` varchar(45) NOT NULL,
+  `firstName` varchar(45) DEFAULT NULL,
+  `lastName` varchar(45) DEFAULT NULL,
+  `address` varchar(200) DEFAULT NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
+  `comments` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`orderNumber`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -69,32 +144,6 @@ LOCK TABLES `deliverydetails` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `iteminorder`
---
-
-DROP TABLE IF EXISTS `iteminorder`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `iteminorder` (
-  `OrderID` int NOT NULL,
-  `ItemName` varchar(45) DEFAULT NULL,
-  `ItemPrice` double DEFAULT NULL,
-  `Amount` int DEFAULT NULL,
-  PRIMARY KEY (`OrderID`),
-  UNIQUE KEY `OrderID_UNIQUE` (`OrderID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `iteminorder`
---
-
-LOCK TABLES `iteminorder` WRITE;
-/*!40000 ALTER TABLE `iteminorder` DISABLE KEYS */;
-/*!40000 ALTER TABLE `iteminorder` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `items`
 --
 
@@ -102,10 +151,10 @@ DROP TABLE IF EXISTS `items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `items` (
-  `itemID` int NOT NULL,
-  `Name` varchar(45) DEFAULT NULL,
-  `Description` varchar(45) DEFAULT NULL,
-  `PriceRange` varchar(45) DEFAULT NULL,
+  `itemID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  `description` varchar(45) DEFAULT NULL,
+  `priceRange` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`itemID`),
   UNIQUE KEY `itemID_UNIQUE` (`itemID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -128,18 +177,18 @@ DROP TABLE IF EXISTS `order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order` (
-  `OrderID` int NOT NULL,
-  `OrderDate` datetime DEFAULT NULL,
-  `ArrivalDate` datetime DEFAULT NULL,
-  `DeliveryType` varchar(45) DEFAULT NULL,
-  `BranchName` varchar(45) DEFAULT NULL,
+  `orderID` int NOT NULL,
+  `orderDate` datetime DEFAULT NULL,
+  `arrivalDate` datetime DEFAULT NULL,
+  `homeDelivery` tinyint DEFAULT NULL,
+  `branchName` varchar(45) DEFAULT NULL,
   `price` double DEFAULT NULL,
-  `CustomerID` int DEFAULT NULL,
-  `PersonalLetter` varchar(200) DEFAULT NULL,
-  `OrderStatus` int DEFAULT NULL,
+  `customerID` int DEFAULT NULL,
+  `personalLetter` varchar(200) DEFAULT NULL,
+  `orderStatus` int DEFAULT NULL,
   `data` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`OrderID`),
-  UNIQUE KEY `OrderID_UNIQUE` (`OrderID`)
+  PRIMARY KEY (`orderID`),
+  UNIQUE KEY `orderID_UNIQUE` (`orderID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -160,14 +209,14 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
-  `ProductID` int NOT NULL,
-  `Name` varchar(45) DEFAULT NULL,
-  `Price` double DEFAULT NULL,
-  `Description` varchar(200) DEFAULT NULL,
-  `Colors` varchar(45) DEFAULT NULL,
+  `productID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
+  `colors` varchar(45) DEFAULT NULL,
   `image` blob,
-  PRIMARY KEY (`ProductID`),
-  UNIQUE KEY `ProductID_UNIQUE` (`ProductID`)
+  PRIMARY KEY (`productID`),
+  UNIQUE KEY `ProductID_UNIQUE` (`productID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -181,6 +230,57 @@ LOCK TABLES `product` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `productinorder`
+--
+
+DROP TABLE IF EXISTS `productinorder`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `productinorder` (
+  `orderNumber` int NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `amount` int DEFAULT NULL,
+  `category` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`orderNumber`),
+  UNIQUE KEY `OrderID_UNIQUE` (`orderNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `productinorder`
+--
+
+LOCK TABLES `productinorder` WRITE;
+/*!40000 ALTER TABLE `productinorder` DISABLE KEYS */;
+/*!40000 ALTER TABLE `productinorder` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `promotion`
+--
+
+DROP TABLE IF EXISTS `promotion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `promotion` (
+  `productID` int NOT NULL AUTO_INCREMENT,
+  `discount` double DEFAULT NULL,
+  `promotionText` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`productID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `promotion`
+--
+
+LOCK TABLES `promotion` WRITE;
+/*!40000 ALTER TABLE `promotion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `promotion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `report`
 --
 
@@ -188,12 +288,13 @@ DROP TABLE IF EXISTS `report`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `report` (
-  `BranchName` varchar(45) NOT NULL,
-  `ReportType` varchar(45) DEFAULT NULL,
-  `ReportDate` date DEFAULT NULL,
-  `ReportData` blob,
-  PRIMARY KEY (`BranchName`),
-  UNIQUE KEY `BranchName_UNIQUE` (`BranchName`)
+  `branchName` varchar(45) NOT NULL,
+  `type` varchar(45) DEFAULT NULL,
+  `year` int DEFAULT NULL,
+  `month` int DEFAULT NULL,
+  `data` blob,
+  PRIMARY KEY (`branchName`),
+  UNIQUE KEY `BranchName_UNIQUE` (`branchName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -203,7 +304,45 @@ CREATE TABLE `report` (
 
 LOCK TABLES `report` WRITE;
 /*!40000 ALTER TABLE `report` DISABLE KEYS */;
+INSERT INTO `report` VALUES ('branch','rev',2020,6,_binary 'rO0ABXNyAAl1c2VyLlVzZXIAAAAAAAAAAgIAC1oACWNvbm5lY3RlZEwABmJyYW5jaHQAEkxqYXZhL2xhbmcvU3RyaW5nO0wABWVtYWlscQB+AAFMAAlmaXJzdE5hbWVxAH4AAUwACGxhc3ROYW1lcQB+AAFMAAhwYXNzd29yZHEAfgABTAAIcGVyc29uSURxAH4AAUwAC3Bob25lTnVtYmVycQB+AAFMAAZzdGF0dXN0ABFMdXNlci9Vc2VyU3RhdHVzO0wACHVzZXJUeXBldAAPTHVzZXIvVXNlclR5cGU7TAAIdXNlcm5hbWVxAH4AAXhwAHBwcHBwcHBwcHQABE9tZXI='),('mainBranch','MONTHLY_ORDERS_REPORT',2000,6,_binary 'rO0ABXNyABNyZXBvcnQuT3JkZXJzUmVwb3J0AAAAAAAAAAECAAVEABRhdmFyYWdlTW9udGhseU9yZGVyc0kAC3RvdGFsT3JkZXJzTAAPbW9zdFBvcHVsYXJJdGVtdAASTGphdmEvbGFuZy9TdHJpbmc7TAARb3JkZXJzUGVyQ2F0ZWdvcnl0ABNMamF2YS91dGlsL0hhc2hNYXA7WwAMb3JkZXJzUGVyRGF5dAACW0l4cgANcmVwb3J0LlJlcG9ydAAAAAAAAAABAgAESQAFbW9udGhJAAR5ZWFyTAAKQnJhbmNoTmFtZXEAfgABTAAEdHlwZXQAE0xyZXBvcnQvUmVwb3J0VHlwZTt4cAAAAAYAAAfQdAAKbWFpbkJyYW5jaH5yABFyZXBvcnQuUmVwb3J0VHlwZQAAAAAAAAAAEgAAeHIADmphdmEubGFuZy5FbnVtAAAAAAAAAAASAAB4cHQAFU1PTlRITFlfT1JERVJTX1JFUE9SVAAAAAAAAAAAAAAABXBzcgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxvYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAAdwgAAAAQAAAAAHh1cgACW0lNumAmduqypQIAAHhwAAAAHwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=');
 /*!40000 ALTER TABLE `report` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `survey`
+--
+
+DROP TABLE IF EXISTS `survey`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `survey` (
+  `surveyNumber` int NOT NULL AUTO_INCREMENT,
+  `q1` varchar(45) DEFAULT NULL,
+  `q2` varchar(45) DEFAULT NULL,
+  `q3` varchar(45) DEFAULT NULL,
+  `q4` varchar(45) DEFAULT NULL,
+  `q5` varchar(45) DEFAULT NULL,
+  `q6` varchar(45) DEFAULT NULL,
+  `a1` int DEFAULT NULL,
+  `a2` int DEFAULT NULL,
+  `a3` int DEFAULT NULL,
+  `a4` int DEFAULT NULL,
+  `a5` int DEFAULT NULL,
+  `a6` int DEFAULT NULL,
+  `participants` int DEFAULT NULL,
+  `surveyResult` blob,
+  PRIMARY KEY (`surveyNumber`),
+  UNIQUE KEY `surveyNumber_UNIQUE` (`surveyNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `survey`
+--
+
+LOCK TABLES `survey` WRITE;
+/*!40000 ALTER TABLE `survey` DISABLE KEYS */;
+/*!40000 ALTER TABLE `survey` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -214,20 +353,19 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `UserName` varchar(45) NOT NULL,
-  `Password` varchar(45) DEFAULT NULL,
-  `UserType` varchar(45) DEFAULT NULL,
-  `Connected` varchar(45) DEFAULT NULL,
-  `FirstName` varchar(45) DEFAULT NULL,
-  `LastName` varchar(45) DEFAULT NULL,
-  `Email` varchar(45) DEFAULT NULL,
-  `PhoneNumber` varchar(45) DEFAULT NULL,
+  `username` varchar(45) NOT NULL,
+  `password` varchar(45) DEFAULT NULL,
+  `userType` varchar(45) DEFAULT NULL,
+  `connected` tinyint DEFAULT NULL,
+  `firstName` varchar(45) DEFAULT NULL,
+  `lastName` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
   `personID` varchar(45) DEFAULT NULL,
-  `Status` varchar(45) DEFAULT NULL,
-  `CustomerID` int DEFAULT NULL,
-  `BranchNmae` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`UserName`),
-  UNIQUE KEY `UserName_UNIQUE` (`UserName`)
+  `status` varchar(45) DEFAULT NULL,
+  `branch` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`username`),
+  UNIQUE KEY `UserName_UNIQUE` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -249,4 +387,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-08 17:14:58
+-- Dump completed on 2022-05-18 19:12:31

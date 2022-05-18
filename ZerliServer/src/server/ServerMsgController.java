@@ -84,7 +84,7 @@ public class ServerMsgController {
 		case GET_CATALOG_PAGE:
 			ArrayList<Serializable> data = (ArrayList<Serializable>) newMsg.data;
 			pageNumber = (int) data.get(0);
-			category = (String) data.get(2);
+			category = (String) data.get(1);
 			break;
 		case PLACE_ORDER_REQUEST:
 			cart = (Cart) newMsg.data;

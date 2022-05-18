@@ -7,7 +7,7 @@ import client.MsgController;
 import msg.MsgType;
 
 public class CatalogController {
-	private ClientController clientController;
+	private ClientController clientController = ClientController.getInstance();
 	/**
 	 * change the category, get the category page(default should be 1)
 	 * 

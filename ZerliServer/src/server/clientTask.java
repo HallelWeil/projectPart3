@@ -58,7 +58,7 @@ public class ClientTask {
 		msgController = new ServerMsgController();
 		CompletedMsg = ServerMsgController.createCOMPLETEDMsg();
 		ErrorMsg = ServerMsgController.createERRORMsg("");
-		orderController = new OrderController();
+		orderController = null;
 	}
 
 	/**
@@ -376,6 +376,7 @@ public class ClientTask {
 			break;
 		case PLACE_ORDER_REQUEST:
 			// use the order controller
+			orderController = new OrderController();
 			Order order = orderController.placeOrder(msgController.getCart(), 0, user.getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
 			break;
@@ -404,6 +405,16 @@ public class ClientTask {
 			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");
 			break;
 		}
+	}
+
+	public void forceLogOut() {
+		if (user != null) {
+			// to log out remove the user entity
+			dbController.disconnectUser(user.getUsername());
+			this.orderController = null;
+			this.user = null;
+		}
+
 	}
 
 }

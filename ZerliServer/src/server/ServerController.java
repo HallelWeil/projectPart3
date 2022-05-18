@@ -114,6 +114,9 @@ public class ServerController extends AbstractServer {
 	public void clientDisconnected(ConnectionToClient client) {
 		serverBoundary.updateClientsTable(client.toString(), "NotActive", "---", client.getName());
 		serverBoundary.setStatus("Client disconnected from server from " + client);
+		if(clientsTasks.containsKey(client)) {
+			clientsTasks.get(client).forceLogOut();
+		}
 		clientsTasks.remove(client);
 	}
 

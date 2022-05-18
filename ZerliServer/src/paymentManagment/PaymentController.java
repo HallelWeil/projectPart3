@@ -17,7 +17,7 @@ public class PaymentController {
 	 * @throws Exception if the card info is not ok
 	 */
 	public boolean pay(String cardInfo, double amount) throws Exception {
-		if (amount <= 0)
+		if (amount < 0)
 			throw new Exception("Cant pay " + amount);
 		// if the credit card info is bad return false
 		// pay the amount

@@ -80,7 +80,7 @@ public class ClientTask {
 			switch (msgController.getType()) {
 			case LOG_OUT_REQUEST:
 				// to log out remove the user entity
-				dbController.disconnectUser(msgController.getUserName());
+				dbController.disconnectUser(user.getUsername());
 				this.orderController = null;
 				this.user = null;
 				break;

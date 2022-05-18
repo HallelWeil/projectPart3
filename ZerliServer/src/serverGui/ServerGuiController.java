@@ -29,6 +29,7 @@ public class ServerGuiController {
 	public ServerGuiController() {
 		this.server = new ServerBoundary(this);
 		tableCreated = false;
+		initLog();
 	}
 
 	public ServerBoundary getBoundary() {
@@ -87,7 +88,7 @@ public class ServerGuiController {
 		try {
 			ServerPort = Integer.parseInt(portField.getText());
 		} catch (Exception e) {
-			updateConsole("Port must be a number");
+			server.setStatus("Port must be a number");
 			return;
 		}
 		ip = ipField.getText();// not used
@@ -97,11 +98,11 @@ public class ServerGuiController {
 		// connect the server
 		try {
 			if (server.connect(ServerPort, DBname, DBuser, DBpassword)) {
-				updateConsole("server connection succeed");
+				server.setStatus("server connection succeed");
 				connectButton.setDisable(true);
 				disconnectButton.setDisable(false);
 			} else {
-				updateConsole("Couldn't connect server");
+				server.setStatus("Couldn't connect server");
 			}
 		} catch (Exception e) {
 			// do nothing
@@ -127,9 +128,9 @@ public class ServerGuiController {
 			server.disconnect();
 			connectButton.setDisable(false);
 			disconnectButton.setDisable(true);
-			updateConsole("Connection is closed");
+			server.setStatus("Connection is closed");
 		} catch (Exception e) {
-			updateConsole("couldn't close");
+			server.setStatus("couldn't close");
 			// e.printStackTrace();
 		}
 		return;
@@ -163,7 +164,18 @@ public class ServerGuiController {
 
 	}
 
-	public synchronized void updateConnectionTable() {
+	public void initLog() {
+		server.LogLines.addListener(new ListChangeListener<String>() {
+			@SuppressWarnings("rawtypes")
+			@Override
+			public void onChanged(Change c) {
+				updateConsole();
+
+			}
+		});
+	}
+
+	public void updateConnectionTable() {
 		// refresh the table
 		connectionsTable.refresh();
 	}
@@ -173,8 +185,14 @@ public class ServerGuiController {
 	 * 
 	 * @param s -> the added line
 	 */
-	public synchronized void updateConsole(String s) {
-		console.appendText(s + "\n");
+	public void updateConsole() {
+		synchronized (server.LogLines) {
+			for (int i = 0; i < server.LogLines.size(); i++) {
+				String s = server.LogLines.get(i);
+				console.appendText(s + "\n");
+				server.LogLines.remove(i);
+			}
+		}
 	}
 
 }

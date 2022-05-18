@@ -23,33 +23,33 @@ import user.UserStatus;
 import user.UserType;
 
 public class DBObject {
-	
+
 	String objectToBlobString(Object object) {
-		byte [] data;
+		byte[] data;
 		String sdata = "";
 		try {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
 			oos.writeObject(object);
 			oos.flush();
-			data = bos.toByteArray(); 
-			sdata  = Base64.getEncoder().encodeToString(data);
+			data = bos.toByteArray();
+			sdata = Base64.getEncoder().encodeToString(data);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return sdata;
 	}
-	
+
 	Object blobToObject(java.sql.Blob blob) {
 		Object object = null;
-		byte [] data;
+		byte[] data;
 		try {
 			blob.getBytes(1, (int) blob.length());
 			data = blob.getBytes(1, (int) blob.length());
 			ByteArrayInputStream bis = new ByteArrayInputStream(Base64.getDecoder().decode(data));
 			ObjectInputStream ois = new ObjectInputStream(bis);
 			object = ois.readObject();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		return object;
@@ -116,8 +116,8 @@ public class DBObject {
 		ArrayList<Complaint> complaints = new ArrayList<>();
 		try {
 			while (res.next()) {
-				Complaint complaint = new Complaint(res.getInt("responsibleEmployeeID"), res.getString("complaint"),
-						res.getInt("customerID"));
+				Complaint complaint = new Complaint(res.getString("responsibleEmployeeID"), res.getString("complaint"),
+						res.getString("customerID"));
 				complaint.setAnswer(res.getString("answer"));
 				complaint.setCompensation(res.getDouble("compensation"));
 				complaint.setComplaintsNumber(res.getInt("complaintNumber"));
@@ -171,7 +171,7 @@ public class DBObject {
 		ArrayList<Report> reports = new ArrayList<>();
 		try {
 			while (res.next()) {
-				reports.add((Report) blobToObject(res.getBlob("data")));		
+				reports.add((Report) blobToObject(res.getBlob("data")));
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -214,6 +214,5 @@ public class DBObject {
 		}
 		return info;
 	}
-	
-	
+
 }

@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1000" maxWidth="1000" minHeight="200" minWidth="200" prefHeight="544.0" prefWidth="347.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="serverGUI.ServerGuiController">
+<AnchorPane maxHeight="1000" maxWidth="1000" minHeight="200" minWidth="200" prefHeight="544.0" prefWidth="347.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="serverGui.ServerGuiController">
    <children>
       <TabPane layoutX="8.0" layoutY="-8.0" prefHeight="544.0" prefWidth="366.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>

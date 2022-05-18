@@ -45,12 +45,15 @@ public class ScheduledTasksManager implements Runnable {
 	 */
 	private boolean isSorted;
 
+	private boolean run;
+
 	/**
 	 * private constructor. init the empty list
 	 */
 	private ScheduledTasksManager() {
 		tasks = new ArrayList<ScheduledTask>();
 		isSorted = true;
+		run = true;
 	}
 
 	/**
@@ -71,23 +74,28 @@ public class ScheduledTasksManager implements Runnable {
 	 */
 	@Override
 	public void run() {
+		run = true;
 		// on start, get all the tasks from the database and add the default task
 		getTasks();
 		// the time antil the next task
 		long timeToWait = 0;
 		// run forever,sleep when not needed
-		while (true) {
+		while (run) {
 			// check the first in line
 			synchronized (tasks) {
-				ScheduledTask task = tasks.get(0);
-				// if the top task really needed to be done, run it
-				if (task.getTimeLeftInMilli(System.currentTimeMillis()) == 0) {
-					tasks.remove(0);
-					Thread thread = new Thread(task);
-					thread.start();
-					timeToWait = 0;
+				if (tasks.isEmpty()) {
+					timeToWait = DAY_IN_MILLISECONDS;
 				} else {
-					timeToWait = tasks.get(0).getTimeLeftInMilli(System.currentTimeMillis());
+					ScheduledTask task = tasks.get(0);
+					// if the top task really needed to be done, run it
+					if (task.getTimeLeftInMilli(System.currentTimeMillis()) == 0) {
+						tasks.remove(0);
+						Thread thread = new Thread(task);
+						thread.start();
+						timeToWait = 0;
+					} else {
+						timeToWait = tasks.get(0).getTimeLeftInMilli(System.currentTimeMillis());
+					}
 				}
 			}
 			// check if need to sleep
@@ -97,6 +105,8 @@ public class ScheduledTasksManager implements Runnable {
 				} catch (InterruptedException e) {
 					// if interrupted before the time ended -> new task was added,
 					// go back to the start of the loop and check the first task again
+					// sort the array
+					sortTasks();
 				}
 			}
 		}
@@ -111,24 +121,25 @@ public class ScheduledTasksManager implements Runnable {
 	 */
 	public ArrayList<ScheduledTask> getTasks() {
 		long currentTime = System.currentTimeMillis();
-		Timestamp currentTimestamp = new Timestamp(currentTime);
 		ArrayList<ScheduledTask> newScheduledTask = new ArrayList<ScheduledTask>();
 		// get the active complaints from yesterday(wasnt handled yet)
-		ArrayList<Complaint> complaints = null;// get from db
-		// for each complaint
-		for (Complaint complaint : complaints) {
-			// if its from the last 24 hours
-			if ((complaint.getCreationTime().getTime() - currentTime) <= DAY_IN_MILLISECONDS) {
-				// add new reminder 24 hours after the creation of the complaint
-				ScheduledReminder newReminder = new ScheduledReminder(
-						new Timestamp(complaint.getCreationTime().getTime() + DAY_IN_MILLISECONDS));
-				// get the responsible employee details from the database
-				User responsibleEmployee = dbController.getUser(complaint.getResponsibleEmployeeUserName());
-				String complaintReminderText = "please handle complaint " + complaint.getComplaintsNumber() + "\n"
-						+ "thanks";
-				newReminder.setEmail(responsibleEmployee.getEmail(), complaintReminderText);
-				newReminder.setSMS(responsibleEmployee.getPhoneNumber(), complaintReminderText);
-				newScheduledTask.add(newReminder);
+		ArrayList<Complaint> complaints = dbController.getAllComplaints(null);
+		if (complaints != null) {
+			// for each complaint
+			for (Complaint complaint : complaints) {
+				// if its from the last 24 hours
+				if ((complaint.getCreationTime().getTime() - currentTime) <= DAY_IN_MILLISECONDS) {
+					// add new reminder 24 hours after the creation of the complaint
+					ScheduledReminder newReminder = new ScheduledReminder(
+							new Timestamp(complaint.getCreationTime().getTime() + DAY_IN_MILLISECONDS));
+					// get the responsible employee details from the database
+					User responsibleEmployee = dbController.getUser(complaint.getResponsibleEmployeeUserName());
+					String complaintReminderText = "please handle complaint " + complaint.getComplaintsNumber() + "\n"
+							+ "thanks";
+					newReminder.setEmail(responsibleEmployee.getEmail(), complaintReminderText);
+					newReminder.setSMS(responsibleEmployee.getPhoneNumber(), complaintReminderText);
+					newScheduledTask.add(newReminder);
+				}
 			}
 		}
 		// get the last month month + year values
@@ -145,8 +156,7 @@ public class ScheduledTasksManager implements Runnable {
 			month = month - 1;
 		}
 		// check if the last month reports where not created
-		Report tempReport = new Report(month, year, ReportType.QUARTERLY_SATISFACTION_REPORT, "ALL");
-		if (dbController.getReportFromDB(tempReport) == null) {
+		if (dbController.getAllQuarterReports(month, month, year).isEmpty()) {
 			// add report creation tasks, set to 2am
 			ScheduledReportCreationTask newScheduledReportCreationTask = new ScheduledReportCreationTask(
 					Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.of(2, 0))));
@@ -192,6 +202,14 @@ public class ScheduledTasksManager implements Runnable {
 				isSorted = true;
 			}
 		}
+	}
+
+	/**
+	 * end the running of the scheduled task manager(if its currently running)
+	 */
+	public void endRunning() {
+		run = false;
+
 	}
 
 	/**

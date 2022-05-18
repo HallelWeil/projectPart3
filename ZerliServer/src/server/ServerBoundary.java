@@ -25,6 +25,7 @@ public class ServerBoundary {
 	private DBController dbController;
 	private ServerGuiController guiController;
 	public ObservableList<ClientsData> clientsTable;
+	public ObservableList<String> LogLines;
 	private int clientsCount = 1;
 
 	public ServerBoundary(ServerGuiController guiController) {
@@ -34,6 +35,7 @@ public class ServerBoundary {
 		status = new ArrayList<String>();
 		dbController = new DBController();
 		clientsTable = FXCollections.observableArrayList();
+		LogLines =  FXCollections.observableArrayList();
 	}
 
 	/**
@@ -89,7 +91,7 @@ public class ServerBoundary {
 		dbController.disConnectFromDB();
 		server = null;
 		setStatus("Server not active");
-
+		ScheduledTasksManager.getInstance().endRunning();
 	}
 
 	/**
@@ -118,7 +120,7 @@ public class ServerBoundary {
 	 */
 	public void setStatus(String s) {
 		status.add(s);
-		guiController.updateConsole(s);
+		LogLines.add(s);
 	}
 
 	/**

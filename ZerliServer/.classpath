@@ -1,31 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ZerliCommon">
-		<attributes>
-			<attribute name="module" value="true"/>
-			<attribute name="add-exports" value="ZerliCommon/cart=ZerliServer:ZerliCommon/catalog=ZerliServer:ZerliCommon/common=ZerliServer:ZerliCommon/complaint=ZerliServer:ZerliCommon/msg=ZerliServer:ZerliCommon/order=ZerliServer:ZerliCommon/promotion=ZerliServer:ZerliCommon/report=ZerliServer:ZerliCommon/survey=ZerliServer:ZerliCommon/user=ZerliServer"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/halel/Desktop/ProjectPart3/ZerliServer/lib/ocsf.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/halel/Desktop/ProjectPart3/ZerliServer/lib/ocsf.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-16">
+	<classpathentry exported="true" kind="lib" path="C:/Users/halel/Desktop/ProjectPart3/ZerliServer/lib/mysql-connector-java-8.0.13.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/halel/Desktop/ProjectPart3/ZerliServer/lib/mysql-connector-java-8.0.13.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/ZerliCommon"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

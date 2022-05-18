@@ -73,7 +73,7 @@ public class DBObjectsManager {
 		try {
 			while (res.next()) {
 				Order order = new Order();
-				order.setOrderNumber(res.getInt("orderID"));
+				order.setOrderNumber(res.getInt("orderNumber"));
 				order.setOrderDate(res.getTimestamp("orderDate"));
 				order.setArrivalDate(res.getTimestamp("arrivalDate"));
 				order.setHomeDelivery(res.getBoolean("deliveryType"));

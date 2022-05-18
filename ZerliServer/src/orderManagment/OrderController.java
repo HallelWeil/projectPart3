@@ -1,5 +1,6 @@
 package orderManagment;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import cart.Cart;
@@ -45,10 +46,11 @@ public class OrderController {
 		// create new order
 		Order newOrder = new Order();
 		// add the order data
+		newOrder.setOrderDate(new Timestamp(System.currentTimeMillis()));
 		newOrder.setOrderNumber(orderNumber);
 		newOrder.setBranchName(cart.getBranchName());
 		newOrder.setArrivalDate(cart.getArrivalDate());
-		newOrder.setOrderData(null);// for future use
+		newOrder.setOrderData("");// for future use
 		newOrder.setHomeDelivery(cart.isWithHomeDelivery());
 		newOrder.setDeliveryDetails(cart.getDeliveryDetails());
 		newOrder.setOrderStatus(OrderStatus.WAITING_FOR_PAYMENT);

@@ -8,9 +8,9 @@ public class AuthorizedCustomerBoundary extends UserBoundary {
 
 	private AuthorizedCustomerController AuthorizedCustomerCon;
 
-	public AuthorizedCustomerBoundary(AuthorizedCustomerController authorizedCustomerCon) {
+	public AuthorizedCustomerBoundary() {
 
-		this.AuthorizedCustomerCon = authorizedCustomerCon;
+		this.AuthorizedCustomerCon = new AuthorizedCustomerController();
 	}
 
 	public ArrayList<Order> getAllOrders() {

@@ -1,5 +1,6 @@
 package shop;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import cart.Cart;
@@ -16,7 +17,7 @@ public class CartController {
 
 	private Cart myCart;
 	private ArrayList<Product> CustomizedProductsInCart = new ArrayList<>();
-	private ClientController clientController;
+	private ClientController clientController = ClientController.getInstance();
 
 	public CartController() {
 		myCart = new Cart();
@@ -173,4 +174,8 @@ public class CartController {
 			return true;
 		return false;
 	} 
+	
+	public void setArrivelOrPickupDateAndTime(Timestamp time) {
+		myCart.setArrivalDate(time);
+	}
 }

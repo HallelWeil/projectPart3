@@ -113,10 +113,11 @@ public class DBController {
 	public boolean saveOrderToDB(Order order) {
 		// LocalDateTime now = LocalDateTime.now();
 		// Timestamp orderTime = Timestamp.valueOf(now);
-		String s = "INSERT INTO " + DBname + "order VALUES ('" + order.getOrderNumber() + "','" + order.getOrderDate()
-				+ "','" + order.getArrivalDate() + "','" + order.isHomeDelivery() + "','" + order.getBranchName()
-				+ order.getPrice() + "','" + order.getUsername() + "','" + order.getPersonalLetter() + "','"
+		String s = "INSERT INTO " + DBname + ".order VALUES ('" + order.getOrderNumber() + "','" + order.getOrderDate()
+				+ "','" + order.getArrivalDate() + "'," + order.isHomeDelivery() + ",'" + order.getBranchName()
+				+ "','" + order.getPrice() + "','" + order.getUsername() + "','" + order.getPersonalLetter() + "','"
 				+ order.getOrderStatus().toString() + "','" + order.getOrderData() + "');";
+		System.out.println(s);
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
@@ -425,8 +426,8 @@ public class DBController {
 		return user;
 	}
 
-	public String getCardInfo(String userID) {
-		String s = "SELECT cardInfo FROM " + DBname + ".users WHERE (userID = '" + userID + "');";
+	public String getCardInfo(String username) {
+		String s = "SELECT cardInfo FROM " + DBname + ".creditdetails WHERE (username = '" + username + "');";
 		// get the result
 		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
 		// get the returned values

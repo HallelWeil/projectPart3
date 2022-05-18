@@ -13,7 +13,7 @@ public class AuthorizedCustomerController {
  * request to view all orders of customer, send to server and return a list of orders
  * @return ArrayList <order>
  */
-	private ClientController clientController;
+	private ClientController clientController = ClientController.getInstance();
 	public ArrayList<Order> getAllOrders() {
 		
 		MsgController msgController = clientController.sendMsg(MsgController.createGET_ALL_ORDERSMsg());

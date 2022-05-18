@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import common.Status;
 import complaint.Complaint;
 import database.DBController;
 import report.Report;
@@ -27,7 +28,7 @@ public class ScheduledTasksManager implements Runnable {
 
 	private static final long DAY_IN_MILLISECONDS = 86400000;
 
-	private DBController dbController;
+	private DBController dbController = DBController.getInstance();
 
 	/**
 	 * The single instance of ScheduledTasksManager
@@ -123,7 +124,7 @@ public class ScheduledTasksManager implements Runnable {
 		long currentTime = System.currentTimeMillis();
 		ArrayList<ScheduledTask> newScheduledTask = new ArrayList<ScheduledTask>();
 		// get the active complaints from yesterday(wasnt handled yet)
-		ArrayList<Complaint> complaints = dbController.getAllComplaints(null);
+		ArrayList<Complaint> complaints = dbController.getAllComplaints(Status.Active);
 		if (complaints != null) {
 			// for each complaint
 			for (Complaint complaint : complaints) {

@@ -33,9 +33,9 @@ public class ServerBoundary {
 		this.guiController = guiController;
 		server = null;
 		status = new ArrayList<String>();
-		dbController = new DBController();
+		dbController = DBController.getInstance();
 		clientsTable = FXCollections.observableArrayList();
-		LogLines =  FXCollections.observableArrayList();
+		LogLines = FXCollections.observableArrayList();
 	}
 
 	/**

@@ -19,7 +19,7 @@ public class ReportsController {
 	/**
 	 * The database controller
 	 */
-	private DBController dbController;
+	private DBController dbController=DBController.getInstance();
 	/**
 	 * save all the monthly order reports
 	 */
@@ -97,8 +97,10 @@ public class ReportsController {
 	 * quarter create the quarterly reports
 	 */
 	public void createAllReports() {
+		//get all the branches
+		branches = dbController.getAllBranchNames();
 		// get all the orders in the time period
-		ArrayList<Order> allOrders = null;// get all the orders in the "month" month
+		ArrayList<Order> allOrders = dbController.getAllOrdersForReport(month, year);// get all the orders in the "month" month
 		// sort the orders by branch
 		HashMap<String, ArrayList<Order>> sortedLists = new HashMap<String, ArrayList<Order>>();
 		for (String branch : branches) {

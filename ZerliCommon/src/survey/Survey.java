@@ -90,4 +90,8 @@ public class Survey implements Serializable {
 		return reultString;
 	}
 
+	public String[] getQuestions() {
+		return questions;
+	}
+
 }

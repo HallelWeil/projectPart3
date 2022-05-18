@@ -54,7 +54,7 @@ public class ClientTask {
 	public ClientTask(ConnectionToClient client) {
 		super();
 		this.client = client;
-		this.dbController = null;// todo
+		this.dbController = DBController.getInstance();
 		user = null;
 		msgController = new ServerMsgController();
 		CompletedMsg = ServerMsgController.createCOMPLETEDMsg();

@@ -5,11 +5,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
-
 import catalog.Product;
 import common.Status;
 import complaint.Complaint;
@@ -22,7 +22,7 @@ import user.User;
 import user.UserStatus;
 import user.UserType;
 
-public class DBObject {
+public class DBObjectsManager {
 
 	String objectToBlobString(Object object) {
 		byte[] data;
@@ -101,10 +101,8 @@ public class DBObject {
 				for (int i = 1; i <= 6; i++) {
 					answers[i] = res.getInt("a" + i);
 				}
-				// survey.addAnswers(answers); will count at 1 participant
 				surveys.add(survey);
 				survey.setSurveyNumber(res.getInt("surveyNumber"));
-				// need set for participants and answers
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -116,8 +114,8 @@ public class DBObject {
 		ArrayList<Complaint> complaints = new ArrayList<>();
 		try {
 			while (res.next()) {
-				Complaint complaint = new Complaint(res.getString("responsibleEmployeeID"), res.getString("complaint"),
-						res.getString("customerID"));
+				Complaint complaint = new Complaint(res.getString("responsibleUsername"), res.getString("complaint"),
+						res.getString("customerUsername"));
 				complaint.setAnswer(res.getString("answer"));
 				complaint.setCompensation(res.getDouble("compensation"));
 				complaint.setComplaintsNumber(res.getInt("complaintNumber"));
@@ -213,6 +211,19 @@ public class DBObject {
 			System.out.println(e.getMessage());
 		}
 		return info;
+	}
+
+	public Blob surveyResultDB(ResultSet res) {
+		java.sql.Blob pdf;
+		try {
+			if (res.next()) {
+				pdf = res.getBlob("surveyResult");
+				// need set for participants and answers
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
 	}
 
 }

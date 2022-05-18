@@ -27,7 +27,7 @@ public class ServerGuiController {
 	private boolean tableCreated;
 
 	public ServerGuiController() {
-		this.server = new ServerBoundary(this);
+		this.server = new ServerBoundary();
 		tableCreated = false;
 		initLog();
 	}

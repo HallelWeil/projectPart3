@@ -9,7 +9,7 @@ import order.ProductInOrder;
 import report.*;
 
 /**
- * Manage creation of the monthly and quarterly reports
+ * Manage creation of the monthly and quarterly reports.
  * 
  * @author halel
  *
@@ -19,7 +19,7 @@ public class ReportsController {
 	/**
 	 * The database controller
 	 */
-	private DBController dbController=DBController.getInstance();
+	private DBController dbController = DBController.getInstance();
 	/**
 	 * save all the monthly order reports
 	 */
@@ -63,7 +63,6 @@ public class ReportsController {
 	 * @param month
 	 * @param year
 	 */
-
 	public ReportsController(int month, int year) {
 		this.year = year;
 		this.month = month;
@@ -97,11 +96,13 @@ public class ReportsController {
 	 * quarter create the quarterly reports
 	 */
 	public void createAllReports() {
-		//get all the branches
+		// get all the branches
 		branches = dbController.getAllBranchNames();
 		// get all the orders in the time period
-		ArrayList<Order> allOrders = dbController.getAllOrdersForReport(month, year);// get all the orders in the "month" month
-		// sort the orders by branch
+		ArrayList<Order> allOrders = dbController.getAllOrdersForReport(month, year);// get all the orders in the
+																						// "month" month
+		// sort the orders by branch, for each branch save arraylist of the branch's
+		// orders
 		HashMap<String, ArrayList<Order>> sortedLists = new HashMap<String, ArrayList<Order>>();
 		for (String branch : branches) {
 			for (Order order : allOrders) {
@@ -123,26 +124,36 @@ public class ReportsController {
 		}
 		// if needed create the quarterly reports
 		if (IsQuarterly) {
-			// create quarterly reports
-			// get all the revenue reports for the time period
-			ArrayList<Report> reportList = null;// dbController.//
-			// create new arraylist for all the revenue reports(including the new ones)
-			ArrayList<RevenueReport> tempRevenueReports = new ArrayList<RevenueReport>(this.revenueReports);
-			// create new arraylist for all the order reports(including the new ones)
-			ArrayList<OrdersReport> tempOrdersReports = new ArrayList<OrdersReport>(this.orderReports);
-			// sort the report to their lists
-			for (Report report : reportList) {
-				if (report.getType() == ReportType.MONTHLY_ORDERS_REPORT) {
-					tempOrdersReports.add((OrdersReport) report);
-				} else if (report.getType() == ReportType.MONTHLY_REVENU_EREPORT) {
-					tempRevenueReports.add((RevenueReport) report);
-				}
-			}
-			createQuarterlyOrdersReport(tempOrdersReports);
-			// the revenue report needs the total orders number from the orders report
-			createQuarterlyRevenueReport(tempRevenueReports, quarterlyOrdersReport.getTotalOrders());
-			createQuarterlySatisfactionReport();
+			createQuarterlyReports();
 		}
+	}
+
+	/**
+	 * Create all the quarterly reports, get all the reports from the last 3 month.
+	 * we just created the last month so we get the other 2 from the database and
+	 * use the reports data for the creation of the orders report and the revenue
+	 * report
+	 */
+	private void createQuarterlyReports() {
+		// create quarterly reports
+		// get all the revenue reports for the time period
+		ArrayList<Report> reportList = null;// dbController.//
+		// create new arraylist for all the revenue reports(including the new ones)
+		ArrayList<RevenueReport> tempRevenueReports = new ArrayList<RevenueReport>(this.revenueReports);
+		// create new arraylist for all the order reports(including the new ones)
+		ArrayList<OrdersReport> tempOrdersReports = new ArrayList<OrdersReport>(this.orderReports);
+		// sort the report to their lists
+		for (Report report : reportList) {
+			if (report.getType() == ReportType.MONTHLY_ORDERS_REPORT) {
+				tempOrdersReports.add((OrdersReport) report);
+			} else if (report.getType() == ReportType.MONTHLY_REVENU_EREPORT) {
+				tempRevenueReports.add((RevenueReport) report);
+			}
+		}
+		createQuarterlyOrdersReport(tempOrdersReports);
+		// the revenue report needs the total orders number from the orders report
+		createQuarterlyRevenueReport(tempRevenueReports, quarterlyOrdersReport.getTotalOrders());
+		createQuarterlySatisfactionReport();
 	}
 
 	/**

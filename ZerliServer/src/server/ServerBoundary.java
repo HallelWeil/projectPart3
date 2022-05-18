@@ -23,14 +23,11 @@ public class ServerBoundary {
 	private ServerController server;
 	private ArrayList<String> status;
 	private DBController dbController;
-	private ServerGuiController guiController;
 	public ObservableList<ClientsData> clientsTable;
 	public ObservableList<String> LogLines;
 	private int clientsCount = 1;
 
-	public ServerBoundary(ServerGuiController guiController) {
-		super();
-		this.guiController = guiController;
+	public ServerBoundary() {
 		server = null;
 		status = new ArrayList<String>();
 		dbController = DBController.getInstance();

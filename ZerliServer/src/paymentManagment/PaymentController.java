@@ -1,7 +1,7 @@
 package paymentManagment;
 
 /**
- * not implemented, for future update manage payment and refund
+ * not implemented, for future update. manage payment and refund
  * 
  * @author halel
  *

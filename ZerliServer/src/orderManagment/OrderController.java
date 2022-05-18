@@ -63,10 +63,11 @@ public class OrderController {
 	}
 
 	/**
-	 * pay for the activeOrder, return true if the payment succeed
+	 * pay for the activeOrder, return true if the payment succeed, use the given
+	 * card info
 	 * 
 	 * @param cardInfo
-	 * @return
+	 * @return true if the payment succeed
 	 */
 	public boolean payForOrder(String cardInfo) {
 		PaymentController paymnetControlelr = new PaymentController();
@@ -88,7 +89,9 @@ public class OrderController {
 	}
 
 	/**
-	 * calculate the products price and place the items in the items list
+	 * calculate the products price and place the items in the items list. get the
+	 * products in card, use the db to check again for each product cost, add the
+	 * cost to the total cost and save the product in order entity to te items list
 	 * 
 	 * @param products the products list
 	 * @param items    the new ProductInOrder list

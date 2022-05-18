@@ -1,7 +1,7 @@
 package remindersManagment;
 
 /**
- * Manage reminders, send SMS or Email
+ * Manage reminders, send SMS or Email. not implemented for future use.
  * 
  * @author halel
  *

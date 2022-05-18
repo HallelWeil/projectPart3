@@ -6,13 +6,16 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
- * Should be called at the end of each day,
+ * Should be called at the end of each day, get all the next day tasks and
+ * create end of day task for the next day
  *
  */
 public class ScheduledEndOfDayTask extends ScheduledTask {
 
-	// System.currentTimeMillis()
-
+	
+	/**
+	 * set the task time to the current day at 23.59.999999
+	 */
 	public ScheduledEndOfDayTask() {
 		super(Timestamp.valueOf(LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MAX)));
 	}
@@ -31,7 +34,7 @@ public class ScheduledEndOfDayTask extends ScheduledTask {
 		ScheduledTasksManager scheduledTasksManager = ScheduledTasksManager.getInstance();
 		ArrayList<ScheduledTask> tasksToAdd = scheduledTasksManager.getTasks();
 		scheduledTasksManager.addTasks(tasksToAdd);
-		
+
 	}
 
 }

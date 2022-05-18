@@ -25,4 +25,8 @@ public enum OrderStatus {
 	 * 
 	 */
 	WAITING_FOR_PAYMENT,
+	/**
+	 * 
+	 */
+	APPROVED, NOT_APPROVED,
 }

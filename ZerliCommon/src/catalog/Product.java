@@ -16,6 +16,7 @@ public class Product implements Serializable {
 	private double price;
 	private String description;
 	private String colors;
+	private String Category;
 	private Blob image;
 
 	public Product(int productID) {
@@ -61,6 +62,16 @@ public class Product implements Serializable {
 
 	public void setImage(Blob image) {
 		this.image = image;
+	}
+
+	
+	
+	public String getCategory() {
+		return Category;
+	}
+
+	public void setCategory(String category) {
+		Category = category;
 	}
 
 	@Override

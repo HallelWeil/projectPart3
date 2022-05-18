@@ -23,7 +23,7 @@ public class Order implements Serializable {
 	/**
 	 * The unique order id number
 	 */
-	private int orderID;
+	private int orderNumber;
 	private Timestamp orderDate;
 	private Timestamp arrivalDate;
 	private String branchName;
@@ -35,9 +35,7 @@ public class Order implements Serializable {
 	private ArrayList<ProductInOrder> items;
 	private DeliveryDetails deliveryDetails;
 	private String username;
-	
-	
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -69,8 +67,8 @@ public class Order implements Serializable {
 	 * 
 	 * @return the order id number
 	 */
-	public int getOrderID() {
-		return orderID;
+	public int getOrderNumber() {
+		return orderNumber;
 	}
 
 	/**
@@ -78,9 +76,9 @@ public class Order implements Serializable {
 	 * 
 	 * @param orderID
 	 */
-	public void setOrderID(int orderID) {
+	public void setOrderNumber(int orderID) {
 		if (orderID >= 0)
-			this.orderID = orderID;
+			this.orderNumber = orderID;
 	}
 
 	/**
@@ -141,8 +139,6 @@ public class Order implements Serializable {
 			this.orderDate = orderDate;
 	}
 
-	
-	
 	public Timestamp getArrivalDate() {
 		return arrivalDate;
 	}
@@ -198,7 +194,7 @@ public class Order implements Serializable {
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		s.append("[ ");
-		s.append(orderID + ", " + price + ", " + branchName + ", ");
+		s.append(orderNumber + ", " + price + ", " + branchName + ", ");
 		s.append(data + ", " + orderDate + "," + personalLetter + "]");
 		return s.toString();
 	}

@@ -3,6 +3,7 @@ package usersManagment;
 import java.util.ArrayList;
 
 
+
 import complaint.Complaint;
 import complaints.ComplaintsController;
 import common.Status;
@@ -15,7 +16,7 @@ public class CustomerServiceEmployeeBoundary {
 	private ComplaintsController complaintsController;
 	private SurveyController surveyController;
 	
-	public void handlingComplaints(Complaint complaint, String answer, double compensation, Status status) 
+	public void handlingComplaints(Complaint complaint, String answer, double compensation, Status status) throws Exception 
 	{
 		complaintsController.handleComplaint(complaint, answer, compensation, status);
 	}
@@ -31,18 +32,19 @@ public class CustomerServiceEmployeeBoundary {
 	
 	/**
 	 * need to get pdf file and send to the server as a blob
+	 * @throws Exception 
 	 */
-	public void enterSurveyResult() //pdf file
+	public void enterSurveyResult(int sNumber, String path) throws Exception //pdf file
 	{
-		surveyController.enterSurveyResults();
+		surveyController.enterSurveyResults(sNumber,path);
 	}
 	
-	public void enterSurveyAnswers(int[] answers)
+	public void enterSurveyAnswers(int[] answers,int surveyNumber) throws Exception
 	{
-		surveyController.enterSurveyAnswers(answers);
+		surveyController.enterSurveyAnswers(answers,surveyNumber);
 	}
 
-	public Survey getSurvey(int surveyNumber)
+	public Survey getSurvey(int surveyNumber) throws Exception
 	{
 		return surveyController.getSurvey(surveyNumber);
 		

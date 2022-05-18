@@ -13,6 +13,16 @@ public class Promotion implements Serializable {
 	private int productID;
 	private String promotionText;
 	private Status status;
+	private double discount;
+	private String productName;
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
 
 	public Promotion(int productID, String promotionText) {
 		this.productID = productID;
@@ -42,6 +52,10 @@ public class Promotion implements Serializable {
 
 	public void setPromotionText(String promotionText) {
 		this.promotionText = promotionText;
+	}
+
+	public double getDiscount() {
+		return discount;
 	}
 
 }

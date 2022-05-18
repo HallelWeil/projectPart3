@@ -6,9 +6,9 @@ import database.DBController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import msg.Msg;
+import scheduledTasks.ScheduledTasksManager;
 import serverGui.ClientsData;
 import serverGui.ServerGuiController;
-
 
 /**
  * Boundary for the prototype server, create the server controller, manage
@@ -23,17 +23,16 @@ public class ServerBoundary {
 	private ServerController server;
 	private ArrayList<String> status;
 	private DBController dbController;
-	private ServerGuiController guiController;
 	public ObservableList<ClientsData> clientsTable;
+	public ObservableList<String> LogLines;
 	private int clientsCount = 1;
 
-	public ServerBoundary(ServerGuiController guiController) {
-		super();
-		this.guiController = guiController;
+	public ServerBoundary() {
 		server = null;
 		status = new ArrayList<String>();
-		dbController = new DBController();
+		dbController = DBController.getInstance();
 		clientsTable = FXCollections.observableArrayList();
+		LogLines = FXCollections.observableArrayList();
 	}
 
 	/**
@@ -62,6 +61,10 @@ public class ServerBoundary {
 			return false;
 		}
 		setStatus("Server active");
+		// init new server scheduled tasks manager
+		ScheduledTasksManager scheduledTasksManager = ScheduledTasksManager.getInstance();
+		Thread scheduledTasksThread = new Thread(scheduledTasksManager);
+		scheduledTasksThread.start();
 		return true;
 	}
 
@@ -85,7 +88,7 @@ public class ServerBoundary {
 		dbController.disConnectFromDB();
 		server = null;
 		setStatus("Server not active");
-
+		ScheduledTasksManager.getInstance().endRunning();
 	}
 
 	/**
@@ -114,7 +117,7 @@ public class ServerBoundary {
 	 */
 	public void setStatus(String s) {
 		status.add(s);
-		guiController.updateConsole(s);
+		LogLines.add(s);
 	}
 
 	/**

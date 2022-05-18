@@ -2,7 +2,6 @@ package client;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import cart.Cart;
 import catalog.Product;
 import complaint.Complaint;
@@ -26,6 +25,7 @@ public class MsgController {
 	private Survey survey;
 	private User user;
 	private Report report;
+	private String errorMsg;
 
 	public MsgController() {
 		resetParser();
@@ -81,12 +81,13 @@ public class MsgController {
 			user = (User) newMsg.data;
 			break;
 		case RETURN_REPORT:
-			report = (Report)newMsg.data;
+			report = (Report) newMsg.data;
 			break;
+		case ERROR:
+			errorMsg = (String) newMsg.data;
 		case RETURN_PAYMENT_APPROVAL:
 		case APPROVE_LOGOUT:
 		case EXIT:
-		case ERROR:
 		case COMPLETED:
 			break;
 		default:// no type was found, return false
@@ -98,6 +99,10 @@ public class MsgController {
 
 	public MsgType getType() {
 		return type;
+	}
+
+	public String getErrorMsg() {
+		return errorMsg;
 	}
 
 	public ArrayList<Complaint> getComplaints() {
@@ -127,6 +132,10 @@ public class MsgController {
 	public Report getReport() {
 		return report;
 	}
+	
+	public User getUser() {
+		return user;
+	}
 
 	// create msg static methods
 	/**
@@ -146,10 +155,10 @@ public class MsgController {
 	 * 
 	 * @return
 	 */
-	public static Msg createERRORMsg() {
+	public static Msg createERRORMsg(String errorMsg) {
 		Msg msg = new Msg();
 		msg.type = MsgType.ERROR;
-		msg.data = null;
+		msg.data = errorMsg;
 		return msg;
 	}
 
@@ -165,6 +174,7 @@ public class MsgController {
 		return msg;
 	}
 
+	
 	/**
 	 * create new GET_ALL_COMPLAINT msg
 	 * 
@@ -280,9 +290,9 @@ public class MsgController {
 	}
 
 	/**
-	 * create new ADD_SURVEY_ANSWERS msg
-	 * in the 0 place we have the survey number
-	 * in the 1-6 we have the answers
+	 * create new ADD_SURVEY_ANSWERS msg in the 0 place we have the survey number in
+	 * the 1-6 we have the answers
+	 * 
 	 * @return
 	 */
 	public static Msg createADD_SURVEY_ANSWERSMsg(ArrayList<Integer> answers) {
@@ -378,15 +388,18 @@ public class MsgController {
 		msg.data = order;
 		return msg;
 	}
+
 	/**
 	 * create GET_REPORT msg
+	 * 
 	 * @param type
 	 * @param year
 	 * @param month
 	 * @return
 	 */
-	public static Msg createGET_REPORTMsg(ReportType type,int year,int month,String branch) {
+	public static Msg createGET_REPORTMsg(ReportType type, int year, int month, String branch) {
 		Msg msg = new Msg();
+		msg.type=MsgType.GET_REPORT;
 		ArrayList<Serializable> data = new ArrayList<Serializable>();
 		data.add(type);
 		data.add(year);

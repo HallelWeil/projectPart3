@@ -13,6 +13,7 @@ import java.sql.Statement;
  * 
  */
 public class DBBoundry {
+
 	/**
 	 * The connection to the database
 	 */
@@ -43,6 +44,7 @@ public class DBBoundry {
 				return null;
 			}
 		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 			return null;
 		}
 	}
@@ -81,9 +83,11 @@ public class DBBoundry {
 	 */
 	public boolean disconnectDB() {
 		try {
+			conn.commit();
 			conn.close();
 			return true;
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return false;
 		}
 	}

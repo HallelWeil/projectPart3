@@ -1,13 +1,13 @@
 package usersManagment;
 
 import java.sql.Date;
-
+import client.ClientBoundary;
 import client.ClientController;
 import client.MsgController;
 import msg.Msg;
 import msg.MsgType;
 import order.Order;
-import order.OrderStatus;
+import order.*;
 import report.Report;
 import report.ReportType;
 import user.User;
@@ -23,8 +23,16 @@ import user.UserType;
  */
 public class BranchManagerBoundary extends UserBoundary {
 
-	private ClientController clientController;
+	/**
+	 * clientController used to communicate with clientController and let the branchManger send to the server 
+	 * msg contains the data or mission we want to received from the server 
+	 * msgController used to create mission or ask message and received the returned data
+	 */
+	private ClientController clientController= ClientController.getInstance();
 	private Msg msg;
+	/**
+	 * in msgController saved the received data (in case we receive ERROR type in the GUI we check the error string)
+	 */
 	private MsgController msgController;
 
 	/**
@@ -35,12 +43,12 @@ public class BranchManagerBoundary extends UserBoundary {
 	 */
 	public boolean requestApproveOrder(int orderNumber, boolean isApproved) {
 		Order order = new Order();
-		order.setOrderID(orderNumber);
+		order.setOrderNumber(orderNumber);
 		if (isApproved) // branchManger approved the request
 		{
-			order.setStatus(OrderStatus.Approved);
+			order.setOrderStatus(OrderStatus.APPROVED);
 		} else {
-			order.setStatus(OrderStatus.NotApproved);
+			order.setOrderStatus(OrderStatus.NOT_APPROVED);
 		}
 		msg = MsgController.createUPDATE_ORDER_STATUSMsg(order);
 		msgController = clientController.sendMsg(msg);
@@ -63,14 +71,15 @@ public class BranchManagerBoundary extends UserBoundary {
 	public boolean requestApproveCancelation(int orderNumber, boolean isApproved, double refundAmount) {
 
 		Order order = new Order();
-		order.setOrderID(orderNumber);
+		order.setOrderNumber(orderNumber);
 		order.setPrice(refundAmount); // in price field we set the refuned value(server get this value for set in
 										// refund field of the user)
 		if (isApproved) // branchManger not approve Cancellation
 		{
 			order.setOrderStatus(OrderStatus.CANECELED);
 		} else {
-			order.setStatus(OrderStatus.Approved); // branchManger didn't accept to cancel then he approved the order
+			order.setOrderStatus(OrderStatus.APPROVED); // branchManger didn't accept to cancel then he approved the
+														// order
 		}
 		msg = MsgController.createUPDATE_ORDER_STATUSMsg(order);
 		msgController = clientController.sendMsg(msg);
@@ -79,7 +88,9 @@ public class BranchManagerBoundary extends UserBoundary {
 		{
 			return true;
 		}
-		return false; // return false mean updated not succeed
+		return false; // return false mean update not succeed
+		//(if GUI received false it should access to msgController of branchMangerBoundary 
+		//and check the Error string and display it)
 
 	}
 
@@ -118,16 +129,16 @@ public class BranchManagerBoundary extends UserBoundary {
 	 * 
 	 * @return
 	 */
-	public Report requestViewReport(ReportType type, String Month, String Year) {
-		String branchNameOfUser = loginResults.getUser().getBranchName(); //get branchName from branchManger user 
-		Report report = new Report(Month, Year, type, branchNameOfUser);
-		msg = MsgController.createView_ReportMsg(report);
-		msgController=clientController.sendMsg(msg);
-		if(msgController.getType().equals(MsgType.RETURN_REPORT));
-		{
+	public Report requestViewReport(ReportType type, int Month, int year) {
+		//String branchNameOfUser = CurrentUser.getBranchName(); // get branchName from branchManger user
+		String branchNameOfUser="Yarka israel hazafon";
+		msg = MsgController.createGET_REPORTMsg(type, year, Month, branchNameOfUser);
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType().equals(MsgType.RETURN_REPORT)) {
 			return msgController.getReport();
 		}
-		return null;  //in case returned msg was ERROR for Example mean Report not found or exist 
+		return null; // in case returned msg was ERROR for Example mean Report not found or exist
 	}
+	
 
 }

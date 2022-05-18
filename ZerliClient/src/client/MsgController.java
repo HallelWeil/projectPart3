@@ -2,7 +2,6 @@ package client;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import cart.Cart;
 import catalog.Product;
 import complaint.Complaint;
@@ -133,6 +132,10 @@ public class MsgController {
 	public Report getReport() {
 		return report;
 	}
+	
+	public User getUser() {
+		return user;
+	}
 
 	// create msg static methods
 	/**
@@ -171,6 +174,7 @@ public class MsgController {
 		return msg;
 	}
 
+	
 	/**
 	 * create new GET_ALL_COMPLAINT msg
 	 * 
@@ -395,6 +399,7 @@ public class MsgController {
 	 */
 	public static Msg createGET_REPORTMsg(ReportType type, int year, int month, String branch) {
 		Msg msg = new Msg();
+		msg.type=MsgType.GET_REPORT;
 		ArrayList<Serializable> data = new ArrayList<Serializable>();
 		data.add(type);
 		data.add(year);

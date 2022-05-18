@@ -45,7 +45,7 @@ public class OrderController {
 		// create new order
 		Order newOrder = new Order();
 		// add the order data
-		newOrder.setOrderID(orderNumber);
+		newOrder.setOrderNumber(orderNumber);
 		newOrder.setBranchName(cart.getBranchName());
 		newOrder.setArrivalDate(cart.getArrivalDate());
 		newOrder.setOrderData(null);// for future use

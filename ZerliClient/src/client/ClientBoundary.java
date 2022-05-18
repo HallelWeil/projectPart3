@@ -1,9 +1,9 @@
 package client;
 
 import java.io.IOException;
-
 import msg.Msg;
 import order.Order;
+import msg.*;
 
 /**
  * boundary of the client , make the zerliClientController,class contains 3
@@ -18,7 +18,8 @@ public class ClientBoundary {
 	// Instance variables **********************************************
 
 	private Msg msg;
-	private ClientController client;
+	//private ClientController client;
+	public static ClientController client;
 
 	// Constructors ****************************************************
 	/**
@@ -38,55 +39,14 @@ public class ClientBoundary {
 	 */
 	public boolean connect(String host, int port) {
 		try {
-			client = new ClientController(host, port,this);
+			//client = new ClientController(host, port,this);
+			client =ClientController.getInstance_WithArguments(host, port, this);
 			System.out.println("connected to server");
 			return true;
 		} catch (IOException e) {
 			System.out.println("Error cant connect to server");
 			return false;
 		}
-	}
-/*
-	// Instance methods ************************************************
-	/**
-	 * this method get a order from Client UI and prepare a requestOrder message by
-	 * MsgController Class and send the msg request to handlingMsgFromClientUI
-	 * method to send to server and waited to save the Details in
-	 * zerliClientController.CreateMsg and return the order
-	 * 
-	 * @param OrderID the ID(Number) of order
-	 * @return return the order that it number is orderID
-	 
-	public Order RequestOrder(int Order) {
-		msg = MsgController.createGetOrderMsg(Order);
-		client.handleMessageFromClientUI((Object) msg);
-		if (zerliClientController.CreateMsg.getType().equals("Send order"))
-			return zerliClientController.CreateMsg.getOrder();
-		else {
-			return null;
-		}
-	}
-    
-	/**
-	 * this method get a old order and new order (updated order) and prepare a
-	 * requestOrder message by MsgController Class and send the msg request to
-	 * handlingMsgFromClientUI method to send to server and waited to save the
-	 * Details in zerliClientController.CreateMsg and return the
-	 * status(success/failed to update order).
-	 * 
-	 * @param old the old order
-	 * @param New the new order
-	 */
-	/*
-	public boolean saveOrder(Order old, Order New) {
-		msg = MsgController.createSaveMsg(old, New);
-		client.handleMessageFromClientUI(msg);
-		if (zerliClientController.CreateMsg.getType().equals("completed")) {
-			return true;
-		} else {
-			return false;
-		}
-
 	}
 
 	/**
@@ -109,5 +69,6 @@ public class ClientBoundary {
 		client.handleMessageFromClientUI(msg);
 		client.quit();
 	}
+	
 
 }

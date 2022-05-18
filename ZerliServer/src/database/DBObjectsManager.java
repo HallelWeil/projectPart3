@@ -73,7 +73,7 @@ public class DBObjectsManager {
 		try {
 			while (res.next()) {
 				Order order = new Order();
-				order.setOrderID(res.getInt("orderID"));
+				order.setOrderNumber(res.getInt("orderID"));
 				order.setOrderDate(res.getTimestamp("orderDate"));
 				order.setArrivalDate(res.getTimestamp("arrivalDate"));
 				order.setHomeDelivery(res.getBoolean("deliveryType"));
@@ -114,8 +114,8 @@ public class DBObjectsManager {
 		ArrayList<Complaint> complaints = new ArrayList<>();
 		try {
 			while (res.next()) {
-				Complaint complaint = new Complaint(res.getString("responsibleUsername"), res.getString("complaint"),
-						res.getString("customerUsername"));
+				Complaint complaint = new Complaint(res.getString("responsibleEmployeeID"), res.getString("complaint"),
+						res.getString("customerID"));
 				complaint.setAnswer(res.getString("answer"));
 				complaint.setCompensation(res.getDouble("compensation"));
 				complaint.setComplaintsNumber(res.getInt("complaintNumber"));
@@ -183,7 +183,7 @@ public class DBObjectsManager {
 			if (res.next()) {
 				user = new User();
 				user.setUsername(res.getString("username"));
-				user.setUserType(UserType.valueOf(res.getString("type")));
+				user.setUserType(UserType.valueOf(res.getString("userType")));
 				user.setConnected(res.getBoolean("connected"));
 				user.setFirstName(res.getString("firstName"));
 				user.setLastName(res.getString("lastName"));
@@ -224,6 +224,18 @@ public class DBObjectsManager {
 			System.out.println(e.getMessage());
 		}
 		return null;
+	}
+
+	public ArrayList<String> branchNameDB(ResultSet res) {
+		ArrayList<String> branches = new ArrayList<>();
+		try {
+			while (res.next()) {
+				branches.add(res.getString("branchName"));
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return branches;
 	}
 
 }

@@ -113,7 +113,7 @@ public class DBController {
 	public boolean saveOrderToDB(Order order) {
 		// LocalDateTime now = LocalDateTime.now();
 		// Timestamp orderTime = Timestamp.valueOf(now);
-		String s = "INSERT INTO " + DBname + "order VALUES ('" + order.getOrderID() + "','" + order.getOrderDate()
+		String s = "INSERT INTO " + DBname + "order VALUES ('" + order.getOrderNumber() + "','" + order.getOrderDate()
 				+ "','" + order.getArrivalDate() + "','" + order.isHomeDelivery() + "','" + order.getBranchName()
 				+ order.getPrice() + "','" + order.getUsername() + "','" + order.getPersonalLetter() + "','"
 				+ order.getOrderStatus().toString() + "','" + order.getOrderData() + "');";
@@ -161,17 +161,17 @@ public class DBController {
 		return res;
 	}
 
-	public ArrayList<String> getItemInOrderFromDB(int orderID, String itemName) {
+	public ArrayList<String> getItemInOrderFromDB(int orderNumber, String itemName) {
 		// create the query
 		ArrayList<String> item = new ArrayList<>();
-		String s = "SELECT * FROM " + DBname + ".iteminorder WHERE (orderID = '" + orderID + "' AND itemName = '"
-				+ itemName + "' );";
+		String s = "SELECT * FROM " + DBname + ".iteminorder WHERE (orderNumber = '" + orderNumber
+				+ "' AND itemName = '" + itemName + "' );";
 		// get the result
 		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
 		// get the returned values
 		try {
 			if (res.next()) {
-				item.add(Integer.toString(res.getInt("orderID")));
+				item.add(Integer.toString(res.getInt("orderNumber")));
 				item.add(res.getString("itemName"));
 				item.add(Double.toString(res.getDouble("itemPrice")));
 				item.add(Integer.toString(res.getInt("amount")));
@@ -184,7 +184,7 @@ public class DBController {
 		return item;
 	}
 
-	public boolean connectUser(String username, String password) {
+	public boolean connectUser(String username, String password) throws Exception {
 		// create the query
 		boolean res = false;
 		String s = "SELECT * FROM " + DBname + ".users WHERE (username = '" + username + "' );";
@@ -192,14 +192,18 @@ public class DBController {
 		ResultSet user = (ResultSet) dbBoundry.sendQueary(s);
 		// get the returned values
 		try {
-			if (user.next() && user.getString("password") == password) {
-				s = "UPDATE  " + DBname + ".users  SET connected = true WHERE (username = '" + username + "');";
+			if (user.next() && user.getString("password").equals(password)) {
+				s = "UPDATE  " + DBname + ".users  SET connected = true WHERE (username = '" + username
+						+ "' AND connected = false) ;";
 				res = (boolean) dbBoundry.sendQueary(s);
 			} else {
 				return false;
 			}
 		} catch (Exception e) {
 			return false;
+		}
+		if (res == false) {
+			throw new Exception("Already connecteds");
 		}
 		return res;
 	}
@@ -210,7 +214,7 @@ public class DBController {
 			String s = "UPDATE  " + DBname + ".users  SET connected = false WHERE (username = '" + username + "');";
 			res = (boolean) dbBoundry.sendQueary(s);
 		} catch (Exception e) {
-			
+
 		}
 		return res;
 	}
@@ -313,9 +317,10 @@ public class DBController {
 
 	public int createComplaint(Complaint complaint) {
 		int lastID = -1;
-		String s = "INSERT INTO " + DBname + ".survey  VALUES ('" + null + "','" + complaint.getResponsibleEmployeeUserName()
-				+ "','" + complaint.getComplaint() + "','" + complaint.getAnswer() + "','" + complaint.getCompensation()
-				+ "','" + complaint.getStatus().toString() + "','" + complaint.getCustomerUserName() + "');";
+		String s = "INSERT INTO " + DBname + ".survey  VALUES ('" + null + "','"
+				+ complaint.getResponsibleEmployeeUserName() + "','" + complaint.getComplaint() + "','"
+				+ complaint.getAnswer() + "','" + complaint.getCompensation() + "','" + complaint.getStatus().toString()
+				+ "','" + complaint.getCustomerUserName() + "');";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		if (res) {
 			s = "select last_insert_id() as last_id from complaint";
@@ -350,7 +355,7 @@ public class DBController {
 		ArrayList<Complaint> complaints = objectManager.complaintDB(res);
 		return complaints;
 	}
-	
+
 	public ArrayList<Complaint> getAllComplaints(Status status) {
 		String s = "SELECT * FROM " + DBname + ".complaint WHERE (status = '" + status.toString() + "');";
 		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
@@ -402,7 +407,7 @@ public class DBController {
 
 	public ArrayList<Report> getAllQuarterReports(int startMonths, int endMonth, int year) {
 		// create the query
-		String s = "SELECT * FROM " + DBname + ".report WHERE (month >= " + startMonths + "AND month <= " + endMonth
+		String s = "SELECT * FROM " + DBname + ".report WHERE (month >= " + startMonths + " AND month <= " + endMonth
 				+ " AND year = " + year + ");";
 		// get the result
 		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
@@ -429,11 +434,18 @@ public class DBController {
 		return info;
 	}
 
+	public ArrayList<String> getAllBranches() {
+		// create the query
+		String s = "SELECT * FROM " + DBname + ".Branch;";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		ArrayList<String> branches = objectManager.branchNameDB(res);
+		return branches;
+	}
+
 	public boolean updateProduct(Product product) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-	public ArrayList<String> getAllBranchNames(){
-		return new ArrayList<String>();
 	}
 }

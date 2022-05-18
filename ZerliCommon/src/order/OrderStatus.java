@@ -28,5 +28,5 @@ public enum OrderStatus {
 	/**
 	 * 
 	 */
-	APPROVED,
+	APPROVED, NOT_APPROVED,
 }

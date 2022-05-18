@@ -336,7 +336,7 @@ public class ServerMsgController {
 	 */
 	public static Msg createAPPROVE_LOGINMsg(User user) {
 		Msg msg = new Msg();
-		msg.type = MsgType.COMPLETED;
+		msg.type = MsgType.APPROVE_LOGIN;
 		msg.data = user;
 		return msg;
 	}

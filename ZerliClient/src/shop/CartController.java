@@ -43,12 +43,13 @@ public class CartController {
 	 * add item to a customized product
 	 * 
 	 * @param item
+	 * @param Productname
 	 */
-	public void addItemToProduct(Item item, String Productname) {
+	public void addItemToProduct(Item item, String productName) {
 
 		for (int i = 0; i < CustomizedProductsInCart.size(); i++) {
 			if (CustomizedProductsInCart.get(i) instanceof CustomizedProduct)
-				if (CustomizedProductsInCart.get(i).getName().equals(Productname)) {
+				if (CustomizedProductsInCart.get(i).getName().equals(productName)) {
 					((CustomizedProduct) CustomizedProductsInCart.get(i)).getItemsList().add(item);
 
 				}
@@ -61,10 +62,10 @@ public class CartController {
 	 * 
 	 * @param item
 	 */
-	public void deleteItemFromProduct(Item item, String Productname) {
+	public void deleteItemFromProduct(Item item, String  productName) {
 		for (int i = 0; i < CustomizedProductsInCart.size(); i++) {
 			if (CustomizedProductsInCart.get(i) instanceof CustomizedProduct)
-				if (CustomizedProductsInCart.get(i).getName().equals(Productname)) {
+				if (CustomizedProductsInCart.get(i).getName().equals( productName)) {
 					((CustomizedProduct) CustomizedProductsInCart.get(i)).getItemsList().remove(item);
 					
 				}
@@ -93,13 +94,13 @@ public class CartController {
 			myCart.removeItem(product.getName());
 			myCart.calculatePrice();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * edit product amount
+	 * edit product amount in cart
 	 * 
 	 * @param product
 	 * @param newAmount
@@ -113,27 +114,46 @@ public class CartController {
 	/**
 	 * calculate the new cart total price
 	 * 
-	 * @return
+	 * @return new price for the cart
 	 */
 	public double calculatePrice() {
 		return myCart.calculatePrice();
 	}
 
 	/**
-	 * add/replace greeting card
+	 * add replace greeting card
 	 */
 	public void addGreetingCard(String card) {
 
 		myCart.setGreetingCard(card);
 	}
+	/**
+	 * adding delivery information when choosing home delivery
+	 * @param details
+	 */
+	
 
-	public void addDeliveryDetails(DeliveryDetails d) {
-		myCart.setDeliveryDetails(d);
+	public void addDeliveryDetails(DeliveryDetails details) {
+		myCart.setDeliveryDetails(details);
 
+	}
+	/**
+	 * change the flag form false to true - home delivery was chosen 
+	 */
+	public void chooseHomeDelivery() {
+		myCart.setWithHomeDelivery(true);
+	}
+	/**
+	 * choose a branch to ship or to pick the order 
+	 * @param branchName
+	 */
+	public void chooseBranchForOrder(String branchName) {
+		myCart.setBranchName(branchName);
 	}
 
 	/**
 	 * place the order, send to server and return the order object
+	 * @return a new order
 	 */
 	public Order placeOrder() {
 		MsgController msgController = clientController.sendMsg(MsgController.createPLACE_ORDER_REQUESTMsg(this.myCart));
@@ -143,4 +163,14 @@ public class CartController {
 		return null;
 
 	}
+	/**
+	 * pay for a new order ,send to server and return true when the payment is approved
+	 * @return false- when payment is not approved ,true - when payment is approved
+	 */
+	public boolean payForOrder() {
+		MsgController msgController = clientController.sendMsg(MsgController.createPAY_FOR_ORDERMsg());
+		if(msgController.getType()==MsgType.RETURN_PAYMENT_APPROVAL)
+			return true;
+		return false;
+	} 
 }

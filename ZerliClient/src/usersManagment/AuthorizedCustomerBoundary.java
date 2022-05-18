@@ -1,24 +1,36 @@
 package usersManagment;
 
+import java.util.ArrayList;
+
+import order.Order;
+
 public class AuthorizedCustomerBoundary extends UserBoundary {
 
-	
-	public String[] getAllOrders() {
-		//call the clientController.getAllOrders with the customerID
-		return null;
+	private AuthorizedCustomerController AuthorizedCustomerCon;
+
+	public AuthorizedCustomerBoundary(AuthorizedCustomerController authorizedCustomerCon) {
+
+		this.AuthorizedCustomerCon = authorizedCustomerCon;
 	}
-	
+
+	public ArrayList<Order> getAllOrders() {
+		return AuthorizedCustomerCon.getAllOrders();
+
+	}
+
 	/**
 	 * create the catalog boundary
 	 */
 	public void requestBrowseTheCatalog() {
-		
+
 	}
+
 	/**
 	 * 
-	 * @param orderNum
+	 * @param order
 	 */
-	public void requestOrderCancellation(int orderNum) {
-		
+	public boolean requestOrderCancellation(Order order) {
+		return AuthorizedCustomerCon.requestOrderCancellation(order);
+
 	}
 }

@@ -97,7 +97,7 @@ public class ReportsController {
 	 */
 	public void createAllReports() {
 		// get all the branches
-		branches = dbController.getAllBranchNames();
+		branches = dbController.getAllBranches();
 		// get all the orders in the time period
 		ArrayList<Order> allOrders = dbController.getAllOrdersForReport(month, year);// get all the orders in the
 																						// "month" month

@@ -141,11 +141,11 @@ public class ClientTask {
 		switch (msgController.getType()) {
 		case LOGIN_REQUEST:
 			// get User with userName and Password from db
-			User user = null;
 			try {
-				if (dbController.connectUser(msgController.getUserName(), msgController.getPassword()))
+				if (dbController.connectUser(msgController.getUserName(), msgController.getPassword())) {
 					user = dbController.getUser(msgController.getUserName());
-				else {// wrong username or password
+					newMsgToSend = ServerMsgController.createAPPROVE_LOGINMsg(user);
+				} else {// wrong username or password
 					newMsgToSend = ServerMsgController.createERRORMsg("Wrong username and password");
 				}
 			} catch (Exception e) {
@@ -163,7 +163,6 @@ public class ClientTask {
 			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");
 			break;
 		}
-		newMsgToSend = CompletedMsg;
 	}
 
 	/**

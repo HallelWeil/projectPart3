@@ -5,15 +5,12 @@ import java.util.ArrayList;
 
 import catalog.Product;
 import order.Order;
-import order.OrderStatus;
 import report.Report;
 import report.ReportType;
 import shop.CartController;
 import shop.CatalogController;
 import user.*;
-import user.UserType;
 import usersManagment.AuthorizedCustomerBoundary;
-import usersManagment.BranchManagerBoundary;
 import usersManagment.CEOBoundary;
 import usersManagment.UserBoundary;
 

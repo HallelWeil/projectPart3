@@ -18,7 +18,7 @@ import main.IGuiController;
 
 public class MainWindowController implements IGuiController {
 
-	private BtnController btnController;
+	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 
 	@FXML
 	private GridPane TopMenu;
@@ -55,26 +55,13 @@ public class MainWindowController implements IGuiController {
 
 	private VBox[] cells;
 
-	public void showMainWindow() {
+	public void openWindow() {
 		emptyWindow();
-		cells[1].getChildren().add(btnController.getHomeBtn());
-		cells[7].getChildren().add(btnController.getAccessibilityBtn());
-		cells[6].getChildren().add(btnController.getLoginBtn());
+		guiObjectsFactory.btnMenuManager.setMainWindowBtns();
 		changeWindowName("MainWindow");
 	}
 
-	public void showLoginWindow() {
-		emptyWindow();
-		resetBtns();
-		cells[1].getChildren().add(btnController.getHomeBtn());
-		cells[7].getChildren().add(btnController.getAccessibilityBtn());
-		cells[6].getChildren().add(btnController.getInfoBtn());
-		bottomBox.getChildren().add(GuiObjectsFactory.getInstance().loginGuiController.getBasePane());
-		changeWindowName("Login");
-	}
-
-	public void init(BtnController btnController) {
-		this.btnController = btnController;
+	public void init() {
 		cells = new VBox[8];
 		cells[0] = topMenuCell0;
 		cells[1] = topMenuCell1;

@@ -1,13 +1,17 @@
 package buttons;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import main.GuiObjectsFactory;
 import main.IGuiController;
 
 public class BtnController implements IGuiController {
+
+	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 
 	@FXML
 	private AnchorPane basePane;
@@ -65,6 +69,101 @@ public class BtnController implements IGuiController {
 	@FXML
 	private Button viewSurveyBtn;
 
+	@FXML
+	private Button userHomeBtn;
+
+	@FXML
+	void goToUserHomepage(ActionEvent event) {
+		guiObjectsFactory.userHomeWindowController.openWindow();
+	}
+
+	@FXML
+	void accessibility(ActionEvent event) {
+
+	}
+
+	@FXML
+	void approvedelivery(ActionEvent event) {
+
+	}
+
+	@FXML
+	void createComplaint(ActionEvent event) {
+
+	}
+
+	@FXML
+	void createPromotion(ActionEvent event) {
+
+	}
+
+	@FXML
+	void getInfo(ActionEvent event) {
+
+	}
+
+	@FXML
+	void goToHomepage(ActionEvent event) {
+		guiObjectsFactory.mainWindowController.openWindow();
+	}
+
+	@FXML
+	void login(ActionEvent event) {
+		guiObjectsFactory.loginGuiController.openWindow();
+	}
+
+	@FXML
+	void logout(ActionEvent event) {
+		guiObjectsFactory.userBaundary.requestLogOut();
+		guiObjectsFactory.resetAll();
+		guiObjectsFactory.mainWindowController.openWindow();
+	}
+
+	@FXML
+	void manageOrders(ActionEvent event) {
+
+	}
+
+	@FXML
+	void manageUsers(ActionEvent event) {
+
+	}
+
+	@FXML
+	void openOrdersHistory(ActionEvent event) {
+
+	}
+
+	@FXML
+	void openReports(ActionEvent event) {
+
+	}
+
+	@FXML
+	void openShop(ActionEvent event) {
+		guiObjectsFactory.shopWindowController.openWindow();
+	}
+
+	@FXML
+	void surveyAnswers(ActionEvent event) {
+
+	}
+
+	@FXML
+	void surveyResult(ActionEvent event) {
+
+	}
+
+	@FXML
+	void updateComplaint(ActionEvent event) {
+
+	}
+
+	@FXML
+	void viewSurvey(ActionEvent event) {
+
+	}
+
 	@Override
 	public Pane getBasePane() {
 		return basePane;
@@ -72,7 +171,7 @@ public class BtnController implements IGuiController {
 
 	@Override
 	public void resetController() {
-		// TODO Auto-generated method stub
+		// accessibilityBtn.setDisable(true);
 	}
 
 	public Button getAccessibilityBtn() {
@@ -145,6 +244,16 @@ public class BtnController implements IGuiController {
 
 	public Button getViewSurveyBtn() {
 		return viewSurveyBtn;
+	}
+
+	public Button getUserHomeBtn() {
+		return userHomeBtn;
+	}
+
+	@Override
+	public void openWindow() {
+		// move to the next window
+		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
 	}
 
 }

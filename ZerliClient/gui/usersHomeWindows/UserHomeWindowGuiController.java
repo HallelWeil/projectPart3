@@ -21,6 +21,17 @@ public class UserHomeWindowGuiController implements IGuiController {
 	private Label welcomeLabel;
 
 	/**
+	 * Go to the user home window
+	 */
+	public void openWindow() {
+		onEntering();
+		// move to the next window
+		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
+		// change to the new menu name
+		guiObjectsFactory.mainWindowController.changeWindowName("Home");
+	}
+
+	/**
 	 * do something while entering the new window
 	 */
 	public void onEntering() {

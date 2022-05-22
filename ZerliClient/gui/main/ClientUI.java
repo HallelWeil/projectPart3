@@ -18,18 +18,20 @@ public class ClientUI extends Application {
 
 	@Override
 	public void start(Stage stage) {
+		GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
+		guiObjectsFactory.clientBoundary.connect("localhost", 5555);
+		guiObjectsFactory.initBoundaries();
 		globalstage = stage;
-
 		try {
-			GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
+
 			guiObjectsFactory.loadAllFxmlFiles();
 			Scene scene = new Scene(guiObjectsFactory.mainWindowController.getMainWindowRoot());
 			stage.setScene(scene);
 			stage.show();
-			guiObjectsFactory.mainWindowController.init(guiObjectsFactory.btnController);
-			guiObjectsFactory.mainWindowController.showMainWindow();
+			guiObjectsFactory.mainWindowController.init();
+			guiObjectsFactory.mainWindowController.openWindow();
+			 
 
-			guiObjectsFactory.mainWindowController.showLoginWindow();
 		} catch (Exception e) {
 			System.out.println("gui problem " + e.getMessage());
 			e.printStackTrace();

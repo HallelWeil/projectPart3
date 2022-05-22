@@ -83,6 +83,7 @@ public class ClientTask {
 				dbController.disconnectUser(user.getUsername());
 				this.orderController = null;
 				this.user = null;
+				newMsgToSend = ServerMsgController.createAPPROVE_LOGOUTMsg();
 				break;
 			case EXIT:
 				// none

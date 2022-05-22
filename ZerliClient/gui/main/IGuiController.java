@@ -12,4 +12,6 @@ public interface IGuiController {
 	public Pane getBasePane();
 	
 	public void resetController();
+	
+	public void openWindow();
 }

@@ -5,9 +5,13 @@ import java.net.URL;
 
 import buttons.BtnController;
 import buttons.BtnMenuManager;
+import client.ClientBoundary;
+import customer.ProductInCartManager;
+import customer.ShopWindowController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import mainWindow.*;
+import shop.ShopBoundary;
 import usersHomeWindows.UserHomeWindowGuiController;
 import usersManagment.UserBoundary;
 
@@ -19,11 +23,16 @@ public class GuiObjectsFactory {
 	public LoginGuiController loginGuiController;
 	public BtnController btnController;
 	public UserHomeWindowGuiController userHomeWindowController;
+	public ShopWindowController shopWindowController;
 
+	// gui manager
 	public BtnMenuManager btnMenuManager;
+	public ProductInCartManager productInCartManager;
 
 	// Boundaries
-	public UserBoundary userBaundary = new UserBoundary();
+	public UserBoundary userBaundary;
+	public ShopBoundary shopBoundary;
+	public ClientBoundary clientBoundary = new ClientBoundary();
 
 	private GuiObjectsFactory() {
 		//
@@ -36,15 +45,24 @@ public class GuiObjectsFactory {
 		return guiObjectsFactoryInstance;
 	}
 
+	/**
+	 * Init the different boundaries, should be called after connected to the server
+	 */
+	public void initBoundaries() {
+
+		userBaundary = new UserBoundary();
+		shopBoundary = new ShopBoundary();
+	}
+
 	public void loadAllFxmlFiles() throws IOException {
 		btnController = (BtnController) loadFxmlFile("/buttons/Buttons.fxml");
 		mainWindowController = (MainWindowController) loadFxmlFile("/mainWindow/MainWindow.fxml");
 		loginGuiController = (LoginGuiController) loadFxmlFile("/mainWindow/LoginWindow.fxml");
 		userHomeWindowController = (UserHomeWindowGuiController) loadFxmlFile("/usersHomeWindows/UserHomeWindow.fxml");
-		
-		
-		//init members
+		shopWindowController = (ShopWindowController) loadFxmlFile("/customer/ShopWindow.fxml");
+		// init members
 		btnMenuManager = new BtnMenuManager();
+		productInCartManager = new ProductInCartManager();
 	}
 
 	/**
@@ -55,11 +73,18 @@ public class GuiObjectsFactory {
 	 * @throws IOException if failed to load the fxml file
 	 */
 	public IGuiController loadFxmlFile(String filePath) throws IOException {
-		Pane rootPane;
 		FXMLLoader loader = new FXMLLoader();
 		final URL resource = getClass().getResource(filePath);
 		loader.setLocation(resource);
-		rootPane = loader.load();
+		System.out.println(resource);
+		loader.load();
 		return (IGuiController) loader.getController();
+	}
+
+	public void resetAll() {
+		mainWindowController.resetController();
+		loginGuiController.resetController();
+		userHomeWindowController.resetController();
+
 	}
 }

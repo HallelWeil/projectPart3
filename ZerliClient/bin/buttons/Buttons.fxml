@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="basePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="848.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="buttons.BtnController">
    <children>
-      <Button fx:id="infoBtn" contentDisplay="TOP" layoutX="210.0" layoutY="21.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Information" textFill="WHITE">
+      <Button fx:id="infoBtn" contentDisplay="TOP" layoutX="210.0" layoutY="21.0" mnemonicParsing="false" onAction="#getInfo" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Information" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="11.0" />
          </font>
@@ -20,8 +20,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="shopBtn" contentDisplay="TOP" layoutX="308.0" layoutY="21.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Shop" textFill="WHITE">
+      <Button fx:id="shopBtn" contentDisplay="TOP" layoutX="308.0" layoutY="21.0" mnemonicParsing="false" onAction="#openShop" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Shop" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>
@@ -32,8 +35,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="accessibilityBtn" contentDisplay="TOP" layoutX="402.0" layoutY="21.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Accessibility" textFill="WHITE">
+      <Button fx:id="accessibilityBtn" contentDisplay="TOP" layoutX="402.0" layoutY="21.0" mnemonicParsing="false" onAction="#accessibility" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Accessibility" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="11.0" />
          </font>
@@ -44,8 +50,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="logoutBtn" contentDisplay="TOP" layoutX="496.0" layoutY="21.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Logout" textFill="WHITE">
+      <Button fx:id="logoutBtn" contentDisplay="TOP" layoutX="496.0" layoutY="21.0" mnemonicParsing="false" onAction="#logout" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Logout" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>
@@ -56,8 +65,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="loginBtn" contentDisplay="TOP" layoutX="590.0" layoutY="21.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Login" textFill="WHITE">
+      <Button fx:id="loginBtn" contentDisplay="TOP" layoutX="590.0" layoutY="21.0" mnemonicParsing="false" onAction="#login" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Login" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>
@@ -68,8 +80,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="homeBtn" contentDisplay="TOP" layoutX="685.0" layoutY="21.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Home" textFill="WHITE">
+      <Button fx:id="homeBtn" contentDisplay="TOP" layoutX="685.0" layoutY="21.0" mnemonicParsing="false" onAction="#goToHomepage" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Home" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>
@@ -81,12 +96,12 @@
             </ImageView>
          </graphic>
       </Button>
-      <ImageView fx:id="deleteBtn" accessibleRole="BUTTON" fitHeight="28.0" fitWidth="27.0" layoutX="736.0" layoutY="108.0">
+      <ImageView fx:id="deleteBtn" accessibleRole="BUTTON" fitHeight="28.0" fitWidth="27.0" layoutX="711.0" layoutY="137.0">
          <image>
             <Image url="@../../lib/icons/remove.png" />
          </image>
       </ImageView>
-      <Button fx:id="orderHistoryBtn" contentDisplay="TOP" layoutX="107.0" layoutY="21.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Order history" textFill="WHITE">
+      <Button fx:id="orderHistoryBtn" contentDisplay="TOP" layoutX="107.0" layoutY="21.0" mnemonicParsing="false" onAction="#openOrdersHistory" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Order history" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
@@ -97,8 +112,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="reportsBtn" contentDisplay="TOP" layoutX="14.0" layoutY="21.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Reports" textFill="WHITE">
+      <Button fx:id="reportsBtn" contentDisplay="TOP" layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#openReports" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Reports" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
@@ -109,8 +127,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="createComplaintBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="46.0" layoutY="105.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Create complaint" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Button fx:id="createComplaintBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="46.0" layoutY="105.0" mnemonicParsing="false" onAction="#createComplaint" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Create complaint" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
@@ -121,8 +142,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="updateComplaintBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="139.0" layoutY="105.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="update complaint" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Button fx:id="updateComplaintBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="139.0" layoutY="105.0" mnemonicParsing="false" onAction="#updateComplaint" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="update complaint" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
@@ -133,8 +157,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="viewSurveyBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="230.0" layoutY="105.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="View survey" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Button fx:id="viewSurveyBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="230.0" layoutY="105.0" mnemonicParsing="false" onAction="#viewSurvey" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="View survey" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
@@ -145,8 +172,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="createPromotionBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="237.0" layoutY="178.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Create promotion" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Button fx:id="createPromotionBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="237.0" layoutY="178.0" mnemonicParsing="false" onAction="#createPromotion" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Create promotion" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
@@ -157,8 +187,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="enterSurveyAnswersBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="146.0" layoutY="178.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Surrvey answers" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Button fx:id="enterSurveyAnswersBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="146.0" layoutY="178.0" mnemonicParsing="false" onAction="#surveyAnswers" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Surrvey answers" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
@@ -169,8 +202,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="enterSurveyresultBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="46.0" layoutY="178.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Survey result" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Button fx:id="enterSurveyresultBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="46.0" layoutY="178.0" mnemonicParsing="false" onAction="#surveyResult" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Survey result" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
@@ -181,8 +217,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="manageUsersBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="249.0" layoutY="259.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Users" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Button fx:id="manageUsersBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="249.0" layoutY="259.0" mnemonicParsing="false" onAction="#manageUsers" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Users" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
@@ -193,8 +232,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="viewOrdersBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="146.0" layoutY="259.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Orders" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Button fx:id="viewOrdersBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="146.0" layoutY="259.0" mnemonicParsing="false" onAction="#manageOrders" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Orders" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
@@ -205,8 +247,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="approveDeliveryBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="40.0" layoutY="259.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Approve delivery" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Button fx:id="approveDeliveryBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="40.0" layoutY="259.0" mnemonicParsing="false" onAction="#approvedelivery" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Approve delivery" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
@@ -217,6 +262,27 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="userHomeBtn" contentDisplay="TOP" layoutX="327.0" layoutY="105.0" mnemonicParsing="false" onAction="#goToUserHomepage" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Home" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="28.0" fitWidth="30.0">
+               <image>
+                  <Image url="@../../lib/icons/home-page.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
    </children>
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
 </AnchorPane>

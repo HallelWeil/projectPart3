@@ -1,5 +1,7 @@
 package shop;
 
+import java.util.ArrayList;
+
 import catalog.Item;
 import catalog.Product;
 import order.DeliveryDetails;
@@ -21,9 +23,10 @@ public class ShopBoundary {
 	 * choose a category to browse the catalog
 	 * 
 	 * @param category
+	 * @return 
 	 */
-	public void chooseCategory(String category) {
-		catalogCon.chooseCategory(category);
+	public ArrayList<Product> chooseCategory(String category) {
+		return catalogCon.chooseCategory(category);
 
 	}
 

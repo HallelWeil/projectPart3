@@ -65,6 +65,15 @@ public class LoginGuiController implements IGuiController {
 		errorLabel.setText(errorMsg);
 	}
 
+	public void openWindow() {
+		// move to the next window
+		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
+		// change the window name
+		guiObjectsFactory.mainWindowController.changeWindowName("Login");
+		//empty the error string
+		setError("");
+	}
+
 	@Override
 	public Pane getBasePane() {
 		return basePane;
@@ -81,12 +90,8 @@ public class LoginGuiController implements IGuiController {
 	 * go to the user's start window
 	 */
 	private void goToStartWindow() {
-		// move to the next window
-		guiObjectsFactory.mainWindowController.showNewWindow(guiObjectsFactory.userHomeWindowController.getBasePane());
 		// add the global buttons
-		guiObjectsFactory.mainWindowController.resetBtns();
 		guiObjectsFactory.btnMenuManager.setUserBtns();
-		// change to the new menu name
-		guiObjectsFactory.mainWindowController.changeWindowName("Home");
+		guiObjectsFactory.userHomeWindowController.openWindow();
 	}
 }

@@ -20,7 +20,11 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <VBox fx:id="birthdayFlowerBase" prefWidth="900.0" />
+                        <ScrollPane prefHeight="664.0" prefWidth="900.0">
+                           <content>
+                              <VBox fx:id="birthdayFlowerBase" prefWidth="900.0" />
+                           </content>
+                        </ScrollPane>
                      </children>
                   </AnchorPane>
                </content>
@@ -31,10 +35,9 @@
                      <children>
                         <ScrollPane prefHeight="664.0" prefWidth="900.0">
                            <content>
-                              <VBox fx:id="anniversaryFlowerBase14" prefWidth="900.0" />
+                              <VBox fx:id="weddingFlowersbase" prefWidth="900.0" />
                            </content>
                         </ScrollPane>
-                        <VBox fx:id="weddingFlowersbase" prefWidth="900.0" />
                      </children></AnchorPane>
                </content>
             </Tab>
@@ -50,42 +53,39 @@
                      </children></AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="congratulationFlowersTab" onSelectionChanged="#selectCongratulationFlowers" text="Congratulation Flowwers ">
+            <Tab fx:id="congratulationFlowersTab" onSelectionChanged="#selectCategoryTab" text="Congratulation Flowwers ">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <ScrollPane prefHeight="664.0" prefWidth="900.0">
                            <content>
-                              <VBox fx:id="anniversaryFlowerBase11" prefWidth="900.0" />
+                              <VBox fx:id="congratulationFlowersBase" prefWidth="900.0" />
                            </content>
                         </ScrollPane>
-                        <VBox fx:id="congratulationFlowersBase" prefWidth="900.0" />
                      </children></AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="babyFlowersTab" onSelectionChanged="#selectNewBAbyFlowers" text="New Baby Flowers          ">
+            <Tab fx:id="babyFlowersTab" onSelectionChanged="#selectCategoryTab" text="New Baby Flowers          ">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <ScrollPane prefHeight="664.0" prefWidth="900.0">
                            <content>
-                              <VBox fx:id="anniversaryFlowerBase12" prefWidth="900.0" />
+                              <VBox fx:id="newBabyFlowersBase" prefWidth="900.0" />
                            </content>
                         </ScrollPane>
-                        <VBox fx:id="newBabyFlowersBase" prefWidth="900.0" />
                      </children></AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="singleItemsTab" onSelectionChanged="#selectSingleItems" text="Single Items">
+            <Tab fx:id="singleItemsTab" onSelectionChanged="#selectCategoryTab" text="Single Items">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <ScrollPane prefHeight="664.0" prefWidth="900.0">
                            <content>
-                              <VBox fx:id="anniversaryFlowerBase13" prefWidth="900.0" />
+                              <VBox fx:id="singleItemsBase" prefWidth="900.0" />
                            </content>
                         </ScrollPane>
-                        <VBox fx:id="singleItemsBase" prefWidth="900.0" />
                      </children></AnchorPane>
                </content>
             </Tab>
@@ -112,7 +112,11 @@
                                     </AnchorPane>
                                     <AnchorPane prefHeight="483.0" prefWidth="300.0">
                                        <children>
-                                          <VBox fx:id="cartItemsBox" layoutX="10.0" layoutY="7.0" prefHeight="450.0" prefWidth="280.0" style="-fx-border-color: black;" />
+                                          <ScrollPane hbarPolicy="NEVER" layoutX="10.0" prefHeight="450.0" prefWidth="280.0">
+                                             <content>
+                                                <VBox fx:id="cartItemsList" prefHeight="450.0" prefWidth="280.0" />
+                                             </content>
+                                          </ScrollPane>
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
@@ -141,7 +145,7 @@
                                           <Font name="System Bold Italic" size="12.0" />
                                        </font>
                                     </Button>
-                                    <ChoiceBox fx:id="costumizedProductsList" layoutX="14.0" layoutY="32.0" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #2f41a7;" />
+                                    <ChoiceBox fx:id="costumizedProductsChooseList" layoutX="14.0" layoutY="32.0" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #2f41a7;" />
                                     <Label layoutX="14.0" layoutY="6.0" prefHeight="17.0" prefWidth="141.0" text="Choose Product to edit">
                                        <font>
                                           <Font name="System Bold Italic" size="12.0" />
@@ -165,17 +169,21 @@
                               </AnchorPane>
                               <AnchorPane prefHeight="524.0" prefWidth="300.0">
                                  <children>
-                                    <VBox fx:id="costumizedProductItemList" layoutX="10.0" layoutY="7.0" prefHeight="450.0" prefWidth="280.0" style="-fx-border-color: black;" />
-                                    <Button fx:id="addCPtoCart" contentDisplay="TOP" layoutX="169.0" layoutY="475.0" mnemonicParsing="false" onAction="#PalceOrder" prefHeight="35.0" prefWidth="110.0" style="-fx-background-color: #2f41a7;" text="Add to cart" textFill="WHITE">
+                                    <Button fx:id="addCPtoCart" contentDisplay="TOP" layoutX="169.0" layoutY="475.0" mnemonicParsing="false" onAction="#addCPToCart" prefHeight="35.0" prefWidth="110.0" style="-fx-background-color: #2f41a7;" text="Add to cart" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold Italic" size="12.0" />
                                        </font>
                                     </Button>
-                                    <Button fx:id="saveChangeBtn" contentDisplay="TOP" layoutX="32.0" layoutY="475.0" mnemonicParsing="false" onAction="#PalceOrder" prefHeight="35.0" prefWidth="110.0" style="-fx-background-color: #2f41a7;" text="Save changes" textFill="WHITE">
+                                    <Button fx:id="saveChangeBtn" contentDisplay="TOP" layoutX="32.0" layoutY="475.0" mnemonicParsing="false" onAction="#saveChnages" prefHeight="35.0" prefWidth="110.0" style="-fx-background-color: #2f41a7;" text="Save changes" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold Italic" size="12.0" />
                                        </font>
                                     </Button>
+                                    <ScrollPane hbarPolicy="NEVER" layoutX="10.0" prefHeight="450.0" prefWidth="280.0">
+                                       <content>
+                                          <VBox fx:id="costumizedProductItemList" prefHeight="450.0" prefWidth="280.0" />
+                                       </content>
+                                    </ScrollPane>
                                  </children>
                               </AnchorPane>
                            </children></VBox>

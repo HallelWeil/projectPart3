@@ -11,9 +11,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import main.GuiObjectsFactory;
 
-public class ProductInCartManager {
+public class ProductsManager {
 
 	private static final String productFxmlPath = "/customer/ProductInCatalog.fxml";
+	private static final String cartItemPath = "/customer/ItemInCart.fxml";
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 
 	/**
@@ -36,15 +37,26 @@ public class ProductInCartManager {
 
 	private Pane createNewProduct(Product product) {
 		try {
-		ProductGuiController newController;
-		newController = (ProductGuiController) guiObjectsFactory.loadFxmlFile(productFxmlPath);
-		System.out.println("file loaded");
-		newController.setProduct(product);
-		return newController.getBasePane();
-		}catch(IOException e) {
+			ProductGuiController newController;
+			newController = (ProductGuiController) guiObjectsFactory.loadFxmlFile(productFxmlPath);
+			newController.setProduct(product);
+			return newController.getBasePane();
+		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
-		
 	}
+
+	public Pane createNewCartItem(Product product, int amount) {
+		try {
+			ItemInCartController newController;
+			newController = (ItemInCartController) guiObjectsFactory.loadFxmlFile(cartItemPath);
+			newController.setProduct(product, amount);
+			return newController.getBasePane();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }

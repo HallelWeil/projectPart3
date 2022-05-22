@@ -6,7 +6,7 @@ import java.net.URL;
 import buttons.BtnController;
 import buttons.BtnMenuManager;
 import client.ClientBoundary;
-import customer.ProductInCartManager;
+import customer.ProductsManager;
 import customer.ShopWindowController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
@@ -27,7 +27,7 @@ public class GuiObjectsFactory {
 
 	// gui manager
 	public BtnMenuManager btnMenuManager;
-	public ProductInCartManager productInCartManager;
+	public ProductsManager productManager;
 
 	// Boundaries
 	public UserBoundary userBaundary;
@@ -62,7 +62,7 @@ public class GuiObjectsFactory {
 		shopWindowController = (ShopWindowController) loadFxmlFile("/customer/ShopWindow.fxml");
 		// init members
 		btnMenuManager = new BtnMenuManager();
-		productInCartManager = new ProductInCartManager();
+		productManager = new ProductsManager();
 	}
 
 	/**

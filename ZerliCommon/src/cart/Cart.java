@@ -50,14 +50,12 @@ public class Cart implements Serializable {
 		else
 			productsInCart.add(newProduct);
 	}
-	public void removeItem(String productName) throws Exception
+	public void removeItem(String productName)
 	{
 		tempProduct.getProduct().setName(productName);
 		if (productsInCart.contains(tempProduct)) {
 			productsInCart.remove(tempProduct);
 		}
-		throw new Exception("cant remove item from cart");
-		
 	}
 	public double getPrice() {
 		return price;

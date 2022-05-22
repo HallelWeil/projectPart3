@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
+import main.GuiObjectsFactory;
 import main.IGuiController;
 
 public class ProductGuiController implements IGuiController {
@@ -50,7 +51,23 @@ public class ProductGuiController implements IGuiController {
 	private Product product;
 
 	@FXML
+	void addToProduct(ActionEvent event) {
+
+	}
+
+	@FXML
 	void addToCart(ActionEvent event) {
+		try {
+			int num = Integer.valueOf(amount.getText());
+			if (num < 0)
+				num = 1;
+			Pane temp = GuiObjectsFactory.getInstance().productManager.createNewCartItem(product, num);// create the gui
+																										// object
+			GuiObjectsFactory.getInstance().shopWindowController.addProductGuiObjectToCart(temp);
+			GuiObjectsFactory.getInstance().shopBoundary.addToCart(product, num);// add to cart
+		} catch (Exception e) {
+			amount.setText("1");
+		}
 
 	}
 

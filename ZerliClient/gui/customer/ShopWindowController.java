@@ -25,6 +25,8 @@ public class ShopWindowController implements IGuiController {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 	private ShopBoundary shopBoundary = guiObjectsFactory.shopBoundary;
 
+	private boolean isOpen = false;
+
 	@FXML
 	private Button addCPtoCart;
 
@@ -129,11 +131,13 @@ public class ShopWindowController implements IGuiController {
 
 	@FXML
 	void selectCategoryTab(Event event) {
+		if (!isOpen)
+			return;
 		ArrayList<Product> products;
 		switch (((Tab) event.getSource()).getId()) {
 		case "congratulationFlowersTab":
 			products = shopBoundary.chooseCategory("congratulationFlowers");
-			guiObjectsFactory.productInCartManager.fillProductList(congratulationFlowersBase, products);
+			guiObjectsFactory.productManager.fillProductList(congratulationFlowersBase, products);
 			break;
 		case "singleItemsTab":
 			// products = shopBoundary.chooseCategory("congratulationFlowers");
@@ -142,19 +146,19 @@ public class ShopWindowController implements IGuiController {
 			break;
 		case "weddingFlowersTab":
 			products = shopBoundary.chooseCategory("weddingFlowers");
-			guiObjectsFactory.productInCartManager.fillProductList(weddingFlowersbase, products);
+			guiObjectsFactory.productManager.fillProductList(weddingFlowersbase, products);
 			break;
 		case "birthdayFlowersTab":
 			products = shopBoundary.chooseCategory("birthdayFlowers");
-			guiObjectsFactory.productInCartManager.fillProductList(birthdayFlowerBase, products);
+			guiObjectsFactory.productManager.fillProductList(birthdayFlowerBase, products);
 			break;
 		case "babyFlowersTab":
 			products = shopBoundary.chooseCategory("babyFlowers");
-			guiObjectsFactory.productInCartManager.fillProductList(newBabyFlowersBase, products);
+			guiObjectsFactory.productManager.fillProductList(newBabyFlowersBase, products);
 			break;
 		case "AnniversaryFlowersTab":
 			products = shopBoundary.chooseCategory("AnniversaryFlowers");
-			guiObjectsFactory.productInCartManager.fillProductList(anniversaryFlowersBase, products);
+			guiObjectsFactory.productManager.fillProductList(anniversaryFlowersBase, products);
 			break;
 
 		default:
@@ -192,10 +196,25 @@ public class ShopWindowController implements IGuiController {
 
 	@Override
 	public void openWindow() {
+		isOpen = true;
 		// move to the next window
 		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
 		// change to the name
 		guiObjectsFactory.mainWindowController.changeWindowName("Shop");
+	}
+
+	public VBox getCartPane() {
+		return cartPane;
+
+	}
+
+	public void addProductGuiObjectToCart(Pane p) {
+		cartItemsList.getChildren().add(p);
+	}
+
+	public void removeProductGuiObjectToCart(Pane p) {
+		if (cartItemsList.getChildren().contains(p))
+			cartItemsList.getChildren().remove(p);
 	}
 
 }

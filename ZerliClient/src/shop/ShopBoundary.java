@@ -2,6 +2,7 @@ package shop;
 
 import java.util.ArrayList;
 
+import cart.ProductInCart;
 import catalog.Item;
 import catalog.Product;
 import order.DeliveryDetails;
@@ -12,10 +13,12 @@ public class ShopBoundary {
 	private CartController cartCon;
 	private CatalogController catalogCon;
 	private boolean homeDeliveryflag = false;
+	private ArrayList<String> cartItemsNames;
 
 	public ShopBoundary() {
 		this.cartCon = new CartController();
 		this.catalogCon = new CatalogController();
+		cartItemsNames = new ArrayList<String>();
 	}
 
 	// category methods//
@@ -23,7 +26,7 @@ public class ShopBoundary {
 	 * choose a category to browse the catalog
 	 * 
 	 * @param category
-	 * @return 
+	 * @return
 	 */
 	public ArrayList<Product> chooseCategory(String category) {
 		return catalogCon.chooseCategory(category);
@@ -53,8 +56,13 @@ public class ShopBoundary {
 	 * 
 	 * @param product
 	 */
-	public void addToCart(Product product) {
-		cartCon.addToCart(product);
+	public boolean addToCart(Product product, int amount) {
+		cartCon.addToCart(product, amount);
+		if (cartItemsNames.contains(product.getName()))
+			return false;
+		else
+			cartItemsNames.add(product.getName());
+		return true;
 
 	}
 
@@ -79,15 +87,23 @@ public class ShopBoundary {
 
 	public void deleteItemFromCart(String productName, Item item) {
 		cartCon.deleteItemFromProduct(item, productName);
+		if (cartItemsNames.contains(productName))
+			cartItemsNames.remove(cartItemsNames.indexOf(productName));
 	}
 
 	/**
 	 * delete a product form the cart
 	 * 
 	 * @param product
+	 * @return
 	 */
-	public void deleteProductFromCart(Product product) {
+	public boolean deleteProductFromCart(Product product) {
 		cartCon.deleteFromCart(product);
+		if (cartItemsNames.contains(product.getName())) {
+			cartItemsNames.remove(cartItemsNames.indexOf(product.getName()));
+			return true;
+		}
+		return false;
 	}
 
 	/**

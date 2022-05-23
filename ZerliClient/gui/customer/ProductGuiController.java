@@ -61,10 +61,17 @@ public class ProductGuiController implements IGuiController {
 			int num = Integer.valueOf(amount.getText());
 			if (num < 0)
 				num = 1;
-			Pane temp = GuiObjectsFactory.getInstance().productManager.createNewCartItem(product, num);// create the gui
-																										// object
-			GuiObjectsFactory.getInstance().shopWindowController.addProductGuiObjectToCart(temp);
-			GuiObjectsFactory.getInstance().shopBoundary.addToCart(product, num);// add to cart
+			if (GuiObjectsFactory.getInstance().shopBoundary.addToCart(product, num))// add to cart
+			{
+				Pane temp = GuiObjectsFactory.getInstance().productManager.createNewCartItem(product, num);// create the
+																											// gui //
+																											// object
+				GuiObjectsFactory.getInstance().shopWindowController.addProductGuiObjectToCart(temp,null);
+			}
+			else {
+				GuiObjectsFactory.getInstance().shopWindowController.updateAmount(num);
+			}
+
 		} catch (Exception e) {
 			amount.setText("1");
 		}

@@ -281,6 +281,14 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
+      <ImageView fx:id="logo" fitHeight="64.0" fitWidth="142.0" layoutX="398.0" layoutY="200.0" onMouseClicked="#logoBtnPress">
+         <image>
+            <Image url="@../../lib/icons/logo.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
    </children>
    <cursor>
       <Cursor fx:constant="HAND" />

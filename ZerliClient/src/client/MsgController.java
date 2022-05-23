@@ -26,6 +26,7 @@ public class MsgController {
 	private User user;
 	private Report report;
 	private String errorMsg;
+	private ArrayList<String> branchNames;
 
 	public MsgController() {
 		resetParser();
@@ -39,6 +40,7 @@ public class MsgController {
 		this.orders = null;
 		this.order = null;
 		this.survey = null;
+		branchNames = null;
 		this.user = null;
 	}
 
@@ -82,6 +84,8 @@ public class MsgController {
 			break;
 		case RETURN_REPORT:
 			report = (Report) newMsg.data;
+		case RETURN_BRANCH_NAMES:
+			branchNames = (ArrayList<String>) newMsg.data;
 			break;
 		case ERROR:
 			errorMsg = (String) newMsg.data;
@@ -132,9 +136,13 @@ public class MsgController {
 	public Report getReport() {
 		return report;
 	}
-	
+
 	public User getUser() {
 		return user;
+	}
+
+	public ArrayList<String> getBranchNames() {
+		return branchNames;
 	}
 
 	// create msg static methods
@@ -174,7 +182,6 @@ public class MsgController {
 		return msg;
 	}
 
-	
 	/**
 	 * create new GET_ALL_COMPLAINT msg
 	 * 
@@ -399,13 +406,25 @@ public class MsgController {
 	 */
 	public static Msg createGET_REPORTMsg(ReportType type, int year, int month, String branch) {
 		Msg msg = new Msg();
-		msg.type=MsgType.GET_REPORT;
+		msg.type = MsgType.GET_REPORT;
 		ArrayList<Serializable> data = new ArrayList<Serializable>();
 		data.add(type);
 		data.add(year);
 		data.add(month);
 		data.add(branch);
 		msg.data = data;
+		return msg;
+	}
+
+	/**
+	 * create GET_BRANCH_LIST
+	 * 
+	 * @return
+	 */
+	public static Msg createGET_BRANCH_LISTMsg() {
+		Msg msg = new Msg();
+		msg.type = MsgType.GET_BRANCH_LIST;
+		msg.data = null;
 		return msg;
 	}
 

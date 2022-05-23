@@ -135,7 +135,7 @@ public class DBObjectsManager {
 			while (res.next()) {
 				Product product = new Product(res.getInt("productID"));
 				product.setName(res.getString("name"));
-				product.setPrice(0);
+				product.setPrice(res.getDouble("price"));
 				product.setDescription(res.getString("description"));
 				product.setColors(res.getString("colors"));
 				product.setImage(null);

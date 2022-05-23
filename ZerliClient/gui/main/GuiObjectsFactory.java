@@ -60,6 +60,7 @@ public class GuiObjectsFactory {
 		loginGuiController = (LoginGuiController) loadFxmlFile("/mainWindow/LoginWindow.fxml");
 		userHomeWindowController = (UserHomeWindowGuiController) loadFxmlFile("/usersHomeWindows/UserHomeWindow.fxml");
 		shopWindowController = (ShopWindowController) loadFxmlFile("/customer/ShopWindow.fxml");
+		
 		// init members
 		btnMenuManager = new BtnMenuManager();
 		productManager = new ProductsManager();

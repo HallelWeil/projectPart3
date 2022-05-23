@@ -2,6 +2,7 @@ package customer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import catalog.Product;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ public class ShopWindowController implements IGuiController {
 
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 	private ShopBoundary shopBoundary = guiObjectsFactory.shopBoundary;
+	private HashMap<Pane,ItemInCartController> itemInCartMap = new HashMap<Pane,ItemInCartController>();
 
 	private boolean isOpen = false;
 
@@ -140,9 +142,8 @@ public class ShopWindowController implements IGuiController {
 			guiObjectsFactory.productManager.fillProductList(congratulationFlowersBase, products);
 			break;
 		case "singleItemsTab":
-			// products = shopBoundary.chooseCategory("congratulationFlowers");
-			// guiObjectsFactory.productInCartManager.fillProductList(congratulationFlowersBase,
-			// products);
+			products = shopBoundary.chooseCategory("singleItems");
+			guiObjectsFactory.productManager.fillProductList(singleItemsBase, products);
 			break;
 		case "weddingFlowersTab":
 			products = shopBoundary.chooseCategory("weddingFlowers");
@@ -168,21 +169,6 @@ public class ShopWindowController implements IGuiController {
 		}
 	}
 
-	void selectCongratulationFlowers(Event event) throws IOException {
-		String name = ((Tab) event.getSource()).getId();
-		System.out.println("got here " + name);
-		// temp for testing
-		ArrayList<Product> products = new ArrayList<Product>();
-		for (int i = 0; i < 10; i++) {
-			Product p = new Product(i);
-			p.setColors("Blue");
-			p.setDescription("A very nice blue flower" + i);
-			p.setPrice(22.5 + i);
-			p.setName("Flower #" + i);
-			products.add(p);
-		}
-	}
-
 	@Override
 	public Pane getBasePane() {
 		return null;
@@ -201,6 +187,9 @@ public class ShopWindowController implements IGuiController {
 		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
 		// change to the name
 		guiObjectsFactory.mainWindowController.changeWindowName("Shop");
+		// get the first category
+		ArrayList<Product> products = shopBoundary.chooseCategory("birthdayFlowers");
+		guiObjectsFactory.productManager.fillProductList(birthdayFlowerBase, products);
 	}
 
 	public VBox getCartPane() {
@@ -208,13 +197,19 @@ public class ShopWindowController implements IGuiController {
 
 	}
 
-	public void addProductGuiObjectToCart(Pane p) {
+	public void addProductGuiObjectToCart(Pane p,ItemInCartController controller) {
 		cartItemsList.getChildren().add(p);
+		itemInCartMap.put(p, controller);
 	}
 
 	public void removeProductGuiObjectToCart(Pane p) {
 		if (cartItemsList.getChildren().contains(p))
 			cartItemsList.getChildren().remove(p);
+		itemInCartMap.remove(p);
+	}
+
+	public void updateAmount(int amount) {
+		//itemInCartMap.get
 	}
 
 }

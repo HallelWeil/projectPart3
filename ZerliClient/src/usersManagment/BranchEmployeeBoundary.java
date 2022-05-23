@@ -1,6 +1,7 @@
 package usersManagment;
 
 import client.ClientController;
+import survey.Survey;
 import surveyController.SurveyController;
 
 public class BranchEmployeeBoundary extends UserBoundary {
@@ -14,5 +15,10 @@ public class BranchEmployeeBoundary extends UserBoundary {
 
 	public void enterSurveyAnswers(int[] answers, int surveyNumber) throws Exception {
 		surveyController.enterSurveyAnswers(answers, surveyNumber);
+	}
+
+	public Survey getSurvey(int surveyNumber) throws Exception {
+		return surveyController.getSurvey(surveyNumber);
+
 	}
 }

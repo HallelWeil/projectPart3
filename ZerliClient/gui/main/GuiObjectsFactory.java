@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import mainWindow.*;
 import shop.ShopBoundary;
 import usersHomeWindows.UserHomeWindowGuiController;
+import usersManagment.BranchManagerBoundary;
 import usersManagment.UserBoundary;
 
 public class GuiObjectsFactory {
@@ -33,6 +34,7 @@ public class GuiObjectsFactory {
 	public UserBoundary userBaundary;
 	public ShopBoundary shopBoundary;
 	public ClientBoundary clientBoundary = new ClientBoundary();
+	public BranchManagerBoundary branchManagerBoundary;
 
 	private GuiObjectsFactory() {
 		//
@@ -52,6 +54,7 @@ public class GuiObjectsFactory {
 
 		userBaundary = new UserBoundary();
 		shopBoundary = new ShopBoundary();
+		branchManagerBoundary = new BranchManagerBoundary();
 	}
 
 	public void loadAllFxmlFiles() throws IOException {

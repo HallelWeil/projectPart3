@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.Icon?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="managerWatchReportPane" prefHeight="695.0" prefWidth="1200.0" style="-fx-background-color: white; -fx-border-color: black;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="branchManager.ManagerWatchReportController">
+   <children>
+      <AnchorPane prefHeight="681.0" prefWidth="275.0" style="-fx-border-color: black;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="choose report date">
+               <font>
+                  <Font name="System Bold Italic" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="130.0" text="choose report type">
+               <font>
+                  <Font name="System Bold Italic" size="18.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="managerReportYear" layoutX="26.0" layoutY="41.0" prefWidth="150.0" promptText="year" />
+            <ComboBox fx:id="managerReportMonth" layoutX="26.0" layoutY="84.0" prefWidth="150.0" promptText="month" />
+            <ComboBox fx:id="managerReportType" layoutX="26.0" layoutY="167.0" prefWidth="150.0" promptText="report type" />
+            <Button fx:id="managerGetReport" layoutX="27.0" layoutY="252.0" mnemonicParsing="false" onAction="#GetReport" prefWidth="160.0" text="Get report">
+               <graphic>
+                  <Icon content="CACHED" prefHeight="28.0" prefWidth="43.0" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="managerOpenReport" disable="true" layoutX="28.0" layoutY="367.0" mnemonicParsing="false" onAction="#OpenReport" prefWidth="160.0" text="Open report">
+               <graphic>
+                  <Icon content="LIBRARY_BOOKS" prefHeight="24.0" prefWidth="42.0" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="managerSaveReport" disable="true" layoutX="28.0" layoutY="425.0" mnemonicParsing="false" onAction="#saveReport" prefWidth="160.0" text="Save report">
+               <graphic>
+                  <Icon content="SAVE" prefHeight="28.0" prefWidth="43.0" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="managerPreviewReport" disable="true" layoutX="27.0" layoutY="310.0" mnemonicParsing="false" onAction="#PreviewReport" prefWidth="160.0" text="Preview report">
+               <graphic>
+                  <Icon content="VISIBILITY" prefHeight="28.0" prefWidth="43.0" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Label fx:id="reportMessage" layoutX="28.0" layoutY="480.0" prefHeight="17.0" prefWidth="91.0" textFill="RED" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="201.0" prefHeight="681.0" prefWidth="974.0">
+         <children>
+            <ScrollPane fx:id="ceoReportScreen" layoutX="73.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="683.0" prefWidth="913.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

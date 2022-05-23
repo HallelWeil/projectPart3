@@ -1,12 +1,13 @@
 package usersManagment;
 
 import java.sql.Date;
+import java.util.ArrayList;
+
 import client.ClientBoundary;
 import client.ClientController;
 import client.MsgController;
 import msg.Msg;
 import msg.MsgType;
-import order.Order;
 import order.*;
 import report.Report;
 import report.ReportType;
@@ -138,6 +139,21 @@ public class BranchManagerBoundary extends UserBoundary {
 			return msgController.getReport();
 		}
 		return null; // in case returned msg was ERROR for Example mean Report not found or exist
+	}
+
+	public User requestUser(String username) {
+		User user = null;
+		return user;
+	}
+
+	public ArrayList<Order> getAllOrdersToApprove() {
+		ArrayList<Order> orders = null;
+		return orders;
+	}
+
+	public ArrayList<ProductInOrder> getAllProductsInOrder(int orderNumber) {
+		ArrayList<ProductInOrder> products = null;
+		return products;
 	}
 	
 

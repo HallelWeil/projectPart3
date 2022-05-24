@@ -14,6 +14,7 @@ import mainWindow.*;
 import shop.ShopBoundary;
 import usersHomeWindows.UserHomeWindowGuiController;
 import usersManagment.BranchManagerBoundary;
+import usersManagment.CEOBoundary;
 import usersManagment.UserBoundary;
 
 public class GuiObjectsFactory {
@@ -35,6 +36,7 @@ public class GuiObjectsFactory {
 	public ShopBoundary shopBoundary;
 	public ClientBoundary clientBoundary = new ClientBoundary();
 	public BranchManagerBoundary branchManagerBoundary;
+	public CEOBoundary ceoBoundry;
 
 	private GuiObjectsFactory() {
 		//

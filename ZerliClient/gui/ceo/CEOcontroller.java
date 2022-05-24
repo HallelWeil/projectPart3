@@ -86,7 +86,7 @@ public class CEOcontroller implements IGuiController {
 
     @FXML
     void getReport(ActionEvent event) {
-    	ceoBoundry.requestViewReport(ceoReportType, ceoReportMonth, ceoReportType, ceoReportBranch.getSelectionModel().getSelectedItem());
+    	//ceoBoundry.requestViewReport(ceoReportType, ceoReportMonth, ceoReportType, ceoReportBranch.getSelectionModel().getSelectedItem());
     	
 
     }

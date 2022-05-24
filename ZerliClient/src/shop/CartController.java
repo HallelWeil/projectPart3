@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import cart.Cart;
 import cart.ProductInCart;
 import catalog.CustomizedProduct;
-import catalog.Item;
 import catalog.Product;
 import client.ClientController;
 import client.MsgController;
@@ -30,15 +29,9 @@ public class CartController {
 	 * @param name
 	 * @throws Exception
 	 */
-	public void createNewProduct(String name) throws Exception {
-		CustomizedProduct newProduct = new CustomizedProduct(-1, name);
-		if (CustomizedProductsInCart.contains(newProduct)) {
-			throw new Exception("item  name allready exist");
-
-		}
+	public void addNewProductToCart(CustomizedProduct newProduct) {
 		CustomizedProductsInCart.add(newProduct);
 		myCart.addItem(newProduct, 1);
-
 	}
 
 	/**
@@ -47,12 +40,12 @@ public class CartController {
 	 * @param item
 	 * @param Productname
 	 */
-	public void addItemToProduct(Item item, String productName) {
+	public void addItemToProduct(Product item, int productID) {
 
 		for (int i = 0; i < CustomizedProductsInCart.size(); i++) {
 			if (CustomizedProductsInCart.get(i) instanceof CustomizedProduct)
-				if (CustomizedProductsInCart.get(i).getName().equals(productName)) {
-					((CustomizedProduct) CustomizedProductsInCart.get(i)).getItemsList().add(item);
+				if (CustomizedProductsInCart.get(i).getProductID() == productID) {
+					((CustomizedProduct) CustomizedProductsInCart.get(i)).getItems().add(item);
 
 				}
 		}
@@ -64,11 +57,11 @@ public class CartController {
 	 * 
 	 * @param item
 	 */
-	public void deleteItemFromProduct(Item item, String productName) {
+	public void deleteItemFromProduct(Product item, int productID) {
 		for (int i = 0; i < CustomizedProductsInCart.size(); i++) {
 			if (CustomizedProductsInCart.get(i) instanceof CustomizedProduct)
-				if (CustomizedProductsInCart.get(i).getName().equals(productName)) {
-					((CustomizedProduct) CustomizedProductsInCart.get(i)).getItemsList().remove(item);
+				if (CustomizedProductsInCart.get(i).getProductID() == productID) {
+					((CustomizedProduct) CustomizedProductsInCart.get(i)).getItems().remove(item);
 
 				}
 		}

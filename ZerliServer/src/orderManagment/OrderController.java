@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import cart.Cart;
 import cart.ProductInCart;
 import catalog.CustomizedProduct;
-import catalog.Item;
 import order.Order;
 import order.OrderStatus;
 import order.ProductInOrder;
@@ -108,9 +107,7 @@ public class OrderController {
 			// if its a customized product calculate the price base on the items cost
 			if (product.getProduct() instanceof CustomizedProduct) {
 				CustomizedProduct tempProduct = (CustomizedProduct) (product.getProduct());
-				for (Item item : tempProduct.getItemsList()) {
-					tempPrice += item.getPrice();
-				}
+				tempPrice = tempProduct.getPriceRangeHighLimit();// the price is the high selected limit
 			}
 			// for regular product
 			else {

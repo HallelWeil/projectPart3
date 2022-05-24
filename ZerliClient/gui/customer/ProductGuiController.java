@@ -52,7 +52,7 @@ public class ProductGuiController implements IGuiController {
 
 	@FXML
 	void addToProduct(ActionEvent event) {
-
+		GuiObjectsFactory.getInstance().shopWindowController.addProductToCustomizedProduct(product);
 	}
 
 	@FXML
@@ -63,16 +63,15 @@ public class ProductGuiController implements IGuiController {
 				num = 1;
 			if (GuiObjectsFactory.getInstance().shopBoundary.addToCart(product, num))// add to cart
 			{
-				Pane temp = GuiObjectsFactory.getInstance().productManager.createNewCartItem(product, num);// create the
-																											// gui //
-																											// object
-				GuiObjectsFactory.getInstance().shopWindowController.addProductGuiObjectToCart(temp,null);
+				ItemInCartController controller = GuiObjectsFactory.getInstance().productManager
+						.createNewCartItem(product, num);
+				GuiObjectsFactory.getInstance().shopWindowController.addProductGuiObjectToCart(controller.getBasePane(),
+						controller);
+			} else {
+				GuiObjectsFactory.getInstance().shopWindowController.updateAmount(num, product.getProductID());
 			}
-			else {
-				GuiObjectsFactory.getInstance().shopWindowController.updateAmount(num);
-			}
-
 		} catch (Exception e) {
+			e.printStackTrace();
 			amount.setText("1");
 		}
 
@@ -103,7 +102,10 @@ public class ProductGuiController implements IGuiController {
 	@Override
 	public void openWindow() {
 		// TODO Auto-generated method stub
+	}
 
+	public Product getProduct() {
+		return product;
 	}
 
 }

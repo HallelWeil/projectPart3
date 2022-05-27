@@ -101,6 +101,14 @@ public enum MsgType {
 	 * get the branch list
 	 */
 	GET_BRANCH_LIST,
+	/**
+	 * request user data
+	 */
+	GET_USER,
+	/**
+	 * get a single order
+	 */
+	GET_ORDER,
 	// server -> client
 	/**
 	 * return a report
@@ -146,5 +154,9 @@ public enum MsgType {
 	 * Return arraylist of branch names
 	 */
 	RETURN_BRANCH_NAMES,
+	/**
+	 * return user data
+	 */
+	RETURN_USER,
 
 }

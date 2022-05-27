@@ -138,6 +138,8 @@ public class DBObjectsManager {
 				product.setPrice(res.getDouble("price"));
 				product.setDescription(res.getString("description"));
 				product.setColors(res.getString("colors"));
+				product.setCategory(res.getString("category"));
+				product.setProductID(res.getInt("productID"));
 				product.setImage(null);
 				products.add(product);
 			}

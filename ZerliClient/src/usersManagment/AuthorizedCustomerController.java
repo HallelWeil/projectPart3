@@ -7,6 +7,7 @@ import client.MsgController;
 import msg.MsgType;
 import order.Order;
 import order.OrderStatus;
+import order.ProductInOrder;
 
 public class AuthorizedCustomerController {
 /**
@@ -41,6 +42,11 @@ public class AuthorizedCustomerController {
 		if(msgController.getType()==MsgType.COMPLETED)
 			return true;
 		return false;
+	}
+
+	public ProductInOrder getAllProductsInOrder(int orderNumber) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

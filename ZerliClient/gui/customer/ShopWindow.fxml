@@ -96,7 +96,7 @@
       </TabPane>
       <VBox fx:id="cartPane" prefWidth="300.0">
          <children>
-            <TabPane prefHeight="695.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="cartTabPane" prefHeight="695.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab fx:id="cartTab" onSelectionChanged="#selectCartTab" text="     Cart     ">
                   <content>

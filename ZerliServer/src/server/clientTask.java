@@ -79,14 +79,12 @@ public class ClientTask {
 			// some tasks are identical for all the connected users
 			switch (msgController.getType()) {
 			case LOG_OUT_REQUEST:
+			case EXIT:
 				// to log out remove the user entity
 				dbController.disconnectUser(user.getUsername());
 				this.orderController = null;
 				this.user = null;
 				newMsgToSend = ServerMsgController.createAPPROVE_LOGOUTMsg();
-				break;
-			case EXIT:
-				// none
 				break;
 			case ERROR:
 				// none
@@ -188,6 +186,13 @@ public class ClientTask {
 		case GET_ALL_ORDERS:
 			ArrayList<Order> orders = dbController.getAllOrdersInBranch(user.getBranchName(), null);
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
+			break;
+		case GET_USER:
+			User user = dbController.getUser(msgController.getUserName());
+			newMsgToSend = ServerMsgController.createRETURN_USERMsg(user);
+			break;
+		case GET_ORDER:
+			//Order order = dbController.order
 			break;
 		default:
 			// handle cant do it

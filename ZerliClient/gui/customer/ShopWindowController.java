@@ -89,6 +89,9 @@ public class ShopWindowController implements IGuiController {
 	private Tab CustomizedProductTab;
 	// cart
 	@FXML
+	private TabPane cartTabPane;
+
+	@FXML
 	private VBox cartItemsList;
 
 	@FXML
@@ -133,11 +136,6 @@ public class ShopWindowController implements IGuiController {
 	@FXML
 	void selectCartTab(Event event) {
 
-	}
-
-	public ShopWindowController() {
-
-		//
 	}
 
 	@FXML
@@ -234,17 +232,20 @@ public class ShopWindowController implements IGuiController {
 
 	// handle customized product
 	public void addProductToCustomizedProduct(Product product) {
+		cartTabPane.getSelectionModel().select(CustomizedProductTab);
 		if (currentCustomizedProduct == null) {
 			updateCSError("Please select product first");
 			return;
 		}
 		if (currentCustomizedProduct.getItems().contains(product)) {
+			updateCSError("You alredy added " + product.getName());
 			return;
 		}
 		currentCustomizedProduct.addItemToProduct(product);
 		ItemInCustomizedProductController newController = GuiObjectsFactory.getInstance().productManager
 				.createNewCSItem(product);
 		costumizedProductItemList.getChildren().add(newController.getBasePane());
+
 	}
 
 	public void removeProductFromCustomizedProduct(Product product, Pane pane) {
@@ -278,6 +279,7 @@ public class ShopWindowController implements IGuiController {
 			GuiObjectsFactory.getInstance().shopWindowController.updateAmount(1,
 					currentCustomizedProduct.getProductID());
 		}
+		cartTabPane.getSelectionModel().select(cartTab);
 	}
 
 	@FXML

@@ -87,6 +87,9 @@ public class MsgController {
 		case RETURN_BRANCH_NAMES:
 			branchNames = (ArrayList<String>) newMsg.data;
 			break;
+		case RETURN_USER:
+			user = (User) newMsg.data;
+			break;
 		case ERROR:
 			errorMsg = (String) newMsg.data;
 		case RETURN_PAYMENT_APPROVAL:
@@ -425,6 +428,29 @@ public class MsgController {
 		Msg msg = new Msg();
 		msg.type = MsgType.GET_BRANCH_LIST;
 		msg.data = null;
+		return msg;
+	}
+
+	/**
+	 * create REQUEST_USER
+	 * 
+	 * @return
+	 */
+	public static Msg createGET_USERMsg(String username) {
+		Msg msg = new Msg();
+		msg.type = MsgType.GET_USER;
+		msg.data = username;
+		return msg;
+	}
+
+	/**
+	 * GET_ORDER
+	 * @return
+	 */
+	public static Msg createGET_ORDERMsg(int orderNumber) {
+		Msg msg = new Msg();
+		msg.type = MsgType.GET_ORDER;
+		msg.data = orderNumber;
 		return msg;
 	}
 

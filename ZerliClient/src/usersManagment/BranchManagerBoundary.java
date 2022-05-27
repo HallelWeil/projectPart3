@@ -25,14 +25,16 @@ import user.UserType;
 public class BranchManagerBoundary extends UserBoundary {
 
 	/**
-	 * clientController used to communicate with clientController and let the branchManger send to the server 
-	 * msg contains the data or mission we want to received from the server 
-	 * msgController used to create mission or ask message and received the returned data
+	 * clientController used to communicate with clientController and let the
+	 * branchManger send to the server msg contains the data or mission we want to
+	 * received from the server msgController used to create mission or ask message
+	 * and received the returned data
 	 */
-	private ClientController clientController= ClientController.getInstance();
+	private ClientController clientController = ClientController.getInstance();
 	private Msg msg;
 	/**
-	 * in msgController saved the received data (in case we receive ERROR type in the GUI we check the error string)
+	 * in msgController saved the received data (in case we receive ERROR type in
+	 * the GUI we check the error string)
 	 */
 	private MsgController msgController;
 
@@ -90,8 +92,9 @@ public class BranchManagerBoundary extends UserBoundary {
 			return true;
 		}
 		return false; // return false mean update not succeed
-		//(if GUI received false it should access to msgController of branchMangerBoundary 
-		//and check the Error string and display it)
+		// (if GUI received false it should access to msgController of
+		// branchMangerBoundary
+		// and check the Error string and display it)
 
 	}
 
@@ -106,7 +109,7 @@ public class BranchManagerBoundary extends UserBoundary {
 	 */
 	public boolean requestUpdateUserData(String userName, UserType type, UserStatus status) {
 
-		User user = new User();
+		User user = UserBoundary.CurrentUser;
 		if (type != null) // check if field null then we didn't need to update
 		{
 			user.setUserType(type);
@@ -131,8 +134,9 @@ public class BranchManagerBoundary extends UserBoundary {
 	 * @return
 	 */
 	public Report requestViewReport(ReportType type, int Month, int year) {
-		//String branchNameOfUser = CurrentUser.getBranchName(); // get branchName from branchManger user
-		String branchNameOfUser="Yarka israel hazafon";
+		// String branchNameOfUser = CurrentUser.getBranchName(); // get branchName from
+		// branchManger user
+		String branchNameOfUser = UserBoundary.CurrentUser.getBranchName();
 		msg = MsgController.createGET_REPORTMsg(type, year, Month, branchNameOfUser);
 		msgController = clientController.sendMsg(msg);
 		if (msgController.getType().equals(MsgType.RETURN_REPORT)) {
@@ -142,19 +146,30 @@ public class BranchManagerBoundary extends UserBoundary {
 	}
 
 	public User requestUser(String username) {
-		User user = null;
-		return user;
+		msg = MsgController.createGET_USERMsg(username);
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType().equals(MsgType.RETURN_USER)) {
+			return msgController.getUser();
+		}
+		return null; // in case returned msg was ERROR for Example mean user not found or exist
 	}
 
 	public ArrayList<Order> getAllOrdersToApprove() {
-		ArrayList<Order> orders = null;
-		return orders;
+		msg = MsgController.createGET_ALL_ORDERSMsg();
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType().equals(MsgType.RETURN_ALL_ORDERS)) {
+			return msgController.getOrders();
+		}
+		return null; // in case returned msg was ERROR for Example mean orders not found or exist
 	}
 
 	public ArrayList<ProductInOrder> getAllProductsInOrder(int orderNumber) {
-		ArrayList<ProductInOrder> products = null;
-		return products;
+		msg = MsgController.createGET_ORDERMsg(orderNumber);
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType().equals(MsgType.RETURN_ORDER)) {
+			return msgController.getOrder().getItems();
+		}
+		return null; // in case returned msg was ERROR for Example mean orders not found or exist
 	}
-	
 
 }

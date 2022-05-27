@@ -48,6 +48,9 @@ public class ProductGuiController implements IGuiController {
 	@FXML
 	private VBox textPane;
 
+	@FXML
+	private AnchorPane btnsPane;
+
 	private Product product;
 
 	@FXML
@@ -86,6 +89,9 @@ public class ProductGuiController implements IGuiController {
 		priceLabel.setText(product.getPrice() + "");
 		oldPriceLabel.setText("");
 		amount.setText("1");
+		if (product.getCategory().equals("singleItems")) {
+			btnsPane.getChildren().remove(addToCartBtn);
+		}
 	}
 
 	@Override

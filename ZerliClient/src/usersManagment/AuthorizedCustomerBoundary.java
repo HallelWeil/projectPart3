@@ -3,6 +3,7 @@ package usersManagment;
 import java.util.ArrayList;
 
 import order.Order;
+import order.ProductInOrder;
 
 public class AuthorizedCustomerBoundary extends UserBoundary {
 
@@ -32,5 +33,9 @@ public class AuthorizedCustomerBoundary extends UserBoundary {
 	public boolean requestOrderCancellation(Order order) {
 		return AuthorizedCustomerCon.requestOrderCancellation(order);
 
+	}
+
+	public ProductInOrder getAllProductsInOrder(int orderNumber) {
+		return AuthorizedCustomerCon.getAllProductsInOrder(orderNumber);
 	}
 }

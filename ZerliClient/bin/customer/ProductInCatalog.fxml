@@ -55,7 +55,7 @@
             </Label>
          </children>
       </VBox>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="btnsPane" prefHeight="200.0" prefWidth="200.0">
          <children>
             <TextField fx:id="amount" layoutX="14.0" layoutY="37.0" prefHeight="25.0" prefWidth="38.0" />
             <Button fx:id="addToCartBtn" contentDisplay="TOP" layoutX="75.0" layoutY="14.0" mnemonicParsing="false" onAction="#addToCart" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: #2f41a7;" text="Add to cart" textFill="WHITE">

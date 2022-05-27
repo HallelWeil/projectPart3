@@ -35,6 +35,7 @@ public class ServerMsgController {
 	private ReportType reportType;
 	private int year, month;
 	private String branch;
+	private int orderNumber;
 
 	private void resetParser() {
 		this.type = MsgType.NONE;
@@ -55,6 +56,7 @@ public class ServerMsgController {
 		year = 0;
 		month = 0;
 		branch = "";
+		orderNumber = 0;
 	}
 
 	/**
@@ -128,6 +130,12 @@ public class ServerMsgController {
 			year = ((int) reportData.get(1));
 			month = ((int) reportData.get(2));
 			branch = ((String) reportData.get(3));
+			break;
+		case GET_USER:
+			userName = (String) newMsg.data;
+			break;
+		case GET_ORDER:
+			orderNumber = (int) newMsg.data;
 			break;
 		case GET_ALL_COMPLAINTS:
 		case GET_ALL_ORDERS:
@@ -218,6 +226,11 @@ public class ServerMsgController {
 
 	public int[] getAnswers() {
 		return answers;
+	}
+
+	
+	public int getOrderNumber() {
+		return orderNumber;
 	}
 
 	// create msg static methods
@@ -369,6 +382,18 @@ public class ServerMsgController {
 		Msg msg = new Msg();
 		msg.type = MsgType.RETURN_REPORT;
 		msg.data = report;
+		return msg;
+	}
+
+	/**
+	 * RETURN_USER
+	 * 
+	 * @return
+	 */
+	public static Msg createRETURN_USERMsg(User user) {
+		Msg msg = new Msg();
+		msg.type = MsgType.RETURN_USER;
+		msg.data = user;
 		return msg;
 	}
 }

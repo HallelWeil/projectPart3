@@ -100,7 +100,7 @@ public class GuiObjectsFactory {
 		// managerApproveController = (ManagerApproveController)
 		// loadFxmlFile("/branchManager/approveOrders.fxml");
 		// managerWatchReportController =
-		// (ManagerWatchReportController)loadFxmlFile("/branchManager/managerWatchReport.fxml");
+		managerWatchReportController = (ManagerWatchReportController)loadFxmlFile("/branchManager/managerWatchReport.fxml");
 
 		// init members
 		btnMenuManager = new BtnMenuManager();

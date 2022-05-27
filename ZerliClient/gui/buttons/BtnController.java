@@ -145,7 +145,7 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void openReports(ActionEvent event) {
-
+		guiObjectsFactory.managerWatchReportController.openWindow();
 	}
 
 	@FXML

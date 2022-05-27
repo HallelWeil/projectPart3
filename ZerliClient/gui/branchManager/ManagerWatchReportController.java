@@ -1,12 +1,16 @@
 package branchManager;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
@@ -15,20 +19,14 @@ import report.Report;
 import report.ReportType;
 import reportGUI.IReportController;
 import reportGUI.OrderReportController;
-import reportGUI.QuarterlyOrdersReportController;
-import reportGUI.QuarterlyRevenueReportController;
 import reportGUI.RevenueReportController;
-import reportGUI.SatisfactionReportController;
 import usersManagment.BranchManagerBoundary;
-import usersManagment.CEOBoundary;
-import usersManagment.UserBoundary;
 
 public class ManagerWatchReportController implements IGuiController {
 	IReportController reportController = null;
 	BranchManagerBoundary managerBoundry = new BranchManagerBoundary();
-	Report report = null;
+	private Report report = null;
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private UserBoundary userBoundry = guiObjectsFactory.userBaundary;
 
 	@FXML
 	private AnchorPane ceoReportScreen;
@@ -55,7 +53,7 @@ public class ManagerWatchReportController implements IGuiController {
 	private Label reportMessage;
 
 	private Integer[] monthsList = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-	private Integer[] yearsList = { 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010 };
+	private Integer[] yearsList = {2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010};
 
 	private ObservableList<Integer> yearObs;
 	private ObservableList<Integer> monthObs;
@@ -68,6 +66,7 @@ public class ManagerWatchReportController implements IGuiController {
 
 	@Override
 	public void resetController() {
+
 		managerOpenReport.setDisable(true);
 		managerGetReport.setDisable(false);
 		managerReportMonth.getSelectionModel().clearSelection();
@@ -77,12 +76,16 @@ public class ManagerWatchReportController implements IGuiController {
 
 	@Override
 	public void openWindow() {
-		monthObs.setAll(monthsList);
+		ArrayList<Integer> years = (ArrayList<Integer>) IntStream.range(2015, 2020).boxed().collect(Collectors.toList());
+		Collections.reverse(years);
+		//monthObs.setAll(years);
 		yearObs.setAll(yearsList);
 		reportObs.setAll(ReportType.MONTHLY_ORDERS_REPORT, ReportType.MONTHLY_REVENU_EREPORT);
 		managerReportMonth.setItems(monthObs);
 		managerReportYear.setItems(yearObs);
 		managerReportType.setItems(reportObs);
+		guiObjectsFactory.mainWindowController.changeWindowName("View reports");
+		guiObjectsFactory.mainWindowController.showNewWindow(managerWatchReportPane);
 	}
 
 	@FXML
@@ -102,7 +105,6 @@ public class ManagerWatchReportController implements IGuiController {
 		reportController.setReport(report);
 		reportController.openWindow();
 		ceoReportScreen.getChildren().setAll(reportController.getBasePane());
-
 	}
 
 	private IReportController getController() {

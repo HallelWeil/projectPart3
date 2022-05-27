@@ -2,7 +2,6 @@ package client;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import cart.Cart;
 import catalog.Product;
 import complaint.Complaint;
@@ -26,6 +25,11 @@ public class MsgController {
 	private Order order;
 	private Survey survey;
 	private User user;
+<<<<<<< Updated upstream
+=======
+	private Report report;
+	private String errorMsg;
+>>>>>>> Stashed changes
 
 	public MsgController() {
 		resetParser();
@@ -80,10 +84,17 @@ public class MsgController {
 		case APPROVE_LOGIN:
 			user = (User) newMsg.data;
 			break;
+<<<<<<< Updated upstream
+=======
+		case RETURN_REPORT:
+			report = (Report)newMsg.data;
+			break;
+		case ERROR:
+			errorMsg = (String) newMsg.data;
+>>>>>>> Stashed changes
 		case RETURN_PAYMENT_APPROVAL:
 		case APPROVE_LOGOUT:
 		case EXIT:
-		case ERROR:
 		case COMPLETED:
 			break;
 		default:// no type was found, return false
@@ -95,6 +106,10 @@ public class MsgController {
 
 	public MsgType getType() {
 		return type;
+	}
+	
+	public String getErrorMsg() {
+		return errorMsg;
 	}
 
 	public ArrayList<Complaint> getComplaints() {
@@ -120,6 +135,7 @@ public class MsgController {
 	public Survey getSurvey() {
 		return survey;
 	}
+	
 	public User getUser() {
 		return user;
 	}
@@ -142,10 +158,10 @@ public class MsgController {
 	 * 
 	 * @return
 	 */
-	public static Msg createERRORMsg() {
+	public static Msg createERRORMsg(String errorMsg) {
 		Msg msg = new Msg();
 		msg.type = MsgType.ERROR;
-		msg.data = null;
+		msg.data = errorMsg;
 		return msg;
 	}
 

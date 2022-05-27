@@ -76,4 +76,20 @@ public class User implements Serializable {
 		this.status = status;
 	}
 
+<<<<<<< Updated upstream
+=======
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	
+>>>>>>> Stashed changes
 }

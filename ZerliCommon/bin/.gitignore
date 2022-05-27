@@ -1,5 +1,6 @@
 /cart/
 /catalog/
+<<<<<<< Updated upstream
 /common/
 /complaint/
 /module-info.class
@@ -7,4 +8,9 @@
 /order/
 /report/
 /survey/
+=======
+/order/
+/report/
+>>>>>>> Stashed changes
 /user/
+/promotion/

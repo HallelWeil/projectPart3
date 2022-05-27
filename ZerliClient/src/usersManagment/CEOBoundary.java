@@ -1,6 +1,7 @@
 package usersManagment;
 
 import client.ClientController;
+
 import client.MsgController;
 import msg.Msg;
 import msg.MsgType;
@@ -11,12 +12,15 @@ public class CEOBoundary extends UserBoundary {
 	private Msg msg;
 	private MsgController msgController;
 	
-	public Report requestViewReport(ReportType type, String Month,String year,String branch) {
-		String branchNameOfUser = loginResults.getUser().getBranchName(); //get branchName from branchManger user 
-		Report report = new Report(Month, year, type, branchNameOfUser);
-		msg = MsgController.createView_ReportMsg(report);
+	public CEOBoundary() {
+		clientController=new ClientController();
+	}
+	
+	public Report requestViewReport(ReportType type, int Month,int year,String branch) {
+		//String branchNameOfUser = CurrentUser.getBranchName(); //get branchName 
+		msg = MsgController.createGET_REPORTMsg(type,year,Month, branch);//branch be null in case we want for all branches
 		msgController=clientController.sendMsg(msg);
-		if(msgController.getType().equals(MsgType.RETURN_REPORT));
+		if(msgController.getType().equals(MsgType.RETURN_REPORT))
 		{
 			return msgController.getReport();
 		}

@@ -2,16 +2,30 @@ package shop;
 
 import cart.Cart;
 import catalog.Product;
+<<<<<<< Updated upstream
+=======
+import client.ClientController2;
+import client.MsgController;
+import msg.MsgType;
+>>>>>>> Stashed changes
 import order.DeliveryDetails;
 import order.Order;
 
 public class CartController {
 
 	private Cart myCart;
+<<<<<<< Updated upstream
 	
 	public CartController()
 	{
 		myCart = new Cart();	
+=======
+	private ArrayList<Product> CustomizedProductsInCart = new ArrayList<>();
+	private ClientController2 clientController;
+
+	public CartController() {
+		myCart = new Cart();
+>>>>>>> Stashed changes
 	}
 	
 	/**

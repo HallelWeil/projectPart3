@@ -2,7 +2,12 @@ package complaints;
 
 import java.util.ArrayList;
 
+<<<<<<< Updated upstream
 import common.Status;
+=======
+import client.ClientController2;
+import client.MsgController;
+>>>>>>> Stashed changes
 import complaint.Complaint;
 
 /**
@@ -11,10 +16,34 @@ import complaint.Complaint;
  * @author halel
  *
  */
+<<<<<<< Updated upstream
 public class ComplaintsController {
 
 	public void createComplaint() {
 
+=======
+public class ComplaintsController 
+{
+	private Complaint complaint;
+	private ClientController2 client;
+	
+	/**
+	 * create the Complaint with the fields
+	 * server
+	 * 
+	 * @param complaint
+	 * @param answer
+	 * @param compensation
+	 * @param status
+	 */
+	public void createComplaint(String answer, double compensation, Status status)
+	{
+		complaint = new Complaint(answer, compensation, status);
+		MsgController msgController = client.sendMsg(msgController.createCREATE_COMPLAINTMsg(complaint));
+		if(msgController.getType() != MsgType.CREATE_COMPLAINT)
+			msgController.createERRORMsg();
+		
+>>>>>>> Stashed changes
 	}
 
 	/**

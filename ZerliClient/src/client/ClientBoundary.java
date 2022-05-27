@@ -1,7 +1,6 @@
 package client;
 
 import java.io.IOException;
-
 import msg.Msg;
 import order.Order;
 
@@ -18,7 +17,8 @@ public class ClientBoundary {
 	// Instance variables **********************************************
 
 	private Msg msg;
-	private ClientController client;
+	//private ClientController client;
+	public static ClientConnector client;
 
 	// Constructors ****************************************************
 	/**
@@ -38,7 +38,8 @@ public class ClientBoundary {
 	 */
 	public boolean connect(String host, int port) {
 		try {
-			client = new ClientController(host, port,this);
+			//client = new ClientController(host, port,this);
+			client = new ClientConnector(host, port,this);
 			System.out.println("connected to server");
 			return true;
 		} catch (IOException e) {
@@ -109,5 +110,6 @@ public class ClientBoundary {
 		client.handleMessageFromClientUI(msg);
 		client.quit();
 	}
+	
 
 }

@@ -86,6 +86,10 @@ public class ClientTask {
 				this.user = null;
 				newMsgToSend = ServerMsgController.createAPPROVE_LOGOUTMsg();
 				break;
+			case GET_BRANCH_LIST:
+				ArrayList<String> branches = dbController.getAllBranches();
+				newMsgToSend = ServerMsgController.createRETURN_BRANCH_NAMESMsg(branches);
+				break;
 			case ERROR:
 				// none
 				break;
@@ -192,7 +196,9 @@ public class ClientTask {
 			newMsgToSend = ServerMsgController.createRETURN_USERMsg(user);
 			break;
 		case GET_ORDER:
-			//Order order = dbController.order
+			Order order = dbController.getOrdrFromDB(msgController.getOrderNumber());
+			order.setItems(dbController.getItemInOrderFromDB(msgController.getOrderNumber()));
+			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
 			break;
 		default:
 			// handle cant do it
@@ -368,7 +374,7 @@ public class ClientTask {
 			// use the order controller to pay
 			if (orderController.payForOrder(cardInfo)) {
 				// payment succeed, save the order!
-				if (dbController.saveOrderToDB(orderController.getActiveOrder())) {
+				if (orderController.saveOrderToDB()) {
 					// the order saved successfully
 					newMsgToSend = ServerMsgController.createRETURN_PAYMENT_APPROVALMsg();
 				} else {

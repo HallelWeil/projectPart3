@@ -76,7 +76,7 @@ public class DBObjectsManager {
 				order.setOrderNumber(res.getInt("orderNumber"));
 				order.setOrderDate(res.getTimestamp("orderDate"));
 				order.setArrivalDate(res.getTimestamp("arrivalDate"));
-				order.setHomeDelivery(res.getBoolean("deliveryType"));
+				order.setHomeDelivery(res.getBoolean("homeDelivery"));
 				order.setBranchName(res.getString("branchName"));
 				order.setPrice(res.getDouble("price"));
 				order.setUsername(res.getString("customerID"));

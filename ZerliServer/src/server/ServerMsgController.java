@@ -142,6 +142,7 @@ public class ServerMsgController {
 		case LOG_OUT_REQUEST:
 		case GET_ALL_SURVEY:
 		case PAY_FOR_ORDER:
+		case GET_BRANCH_LIST:
 		case EXIT:
 		case ERROR:
 			break;
@@ -228,7 +229,6 @@ public class ServerMsgController {
 		return answers;
 	}
 
-	
 	public int getOrderNumber() {
 		return orderNumber;
 	}
@@ -394,6 +394,18 @@ public class ServerMsgController {
 		Msg msg = new Msg();
 		msg.type = MsgType.RETURN_USER;
 		msg.data = user;
+		return msg;
+	}
+
+	/**
+	 * return branch names msg
+	 * 
+	 * @return
+	 */
+	public static Msg createRETURN_BRANCH_NAMESMsg(ArrayList<String> branches) {
+		Msg msg = new Msg();
+		msg.type = MsgType.RETURN_BRANCH_NAMES;
+		msg.data = branches;
 		return msg;
 	}
 }

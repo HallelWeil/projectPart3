@@ -130,17 +130,17 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void manageOrders(ActionEvent event) {
-
+		
 	}
 
 	@FXML
 	void manageUsers(ActionEvent event) {
-
+		//guiObjectsFactory.man
 	}
 
 	@FXML
 	void openOrdersHistory(ActionEvent event) {
-
+		guiObjectsFactory.ordersHistoryController.openWindow();
 	}
 
 	@FXML

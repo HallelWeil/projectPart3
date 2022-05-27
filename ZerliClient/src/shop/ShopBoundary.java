@@ -140,7 +140,7 @@ public class ShopBoundary {
 	 *                        store pickup is chosen
 	 */
 	public void selectDeliveryOption(boolean isHomedelivery) {
-
+		cartCon.chooseHomeDelivery();
 		homeDeliveryflag = isHomedelivery;
 
 	}

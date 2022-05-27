@@ -396,6 +396,11 @@ public class ClientTask {
 			// update order status in the db
 			dbController.updateOrder(msgController.getOrder());
 			break;
+		case GET_ORDER:
+			Order order2 = dbController.getOrdrFromDB(msgController.getOrderNumber());
+			order2.setItems(dbController.getItemInOrderFromDB(msgController.getOrderNumber()));
+			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order2);
+			break;
 		default:
 			// handle cant do it
 			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");

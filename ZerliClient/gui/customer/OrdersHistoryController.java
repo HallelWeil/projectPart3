@@ -37,12 +37,6 @@ public class OrdersHistoryController implements IGuiController {
 	private Button selectOrderBtn;
 
 	@FXML
-	void selectOrder(ActionEvent event) {
-		guiObjectsFactory.mainWindowController.changeWindowName("Products In Selected Order");
-		// guiObjectsFactory.mainWindowController.showNewWindow(productInOrderPane);
-	}
-
-	@FXML
 	private TableColumn<Order, Timestamp> orderArrivalCol;
 
 	@FXML
@@ -81,7 +75,7 @@ public class OrdersHistoryController implements IGuiController {
 	@Override
 	public void openWindow() {
 		initializeOrdersTable();
-		ordersObs.addAll(authorizedCustomerBoundary.getAllOrders());
+		ordersObs.setAll(authorizedCustomerBoundary.getAllOrders());
 		ordersTable.setItems(ordersObs);
 		guiObjectsFactory.mainWindowController.changeWindowName("Customer - order history");
 		guiObjectsFactory.mainWindowController.showNewWindow(orderHistoryBasePane);
@@ -99,4 +93,13 @@ public class OrdersHistoryController implements IGuiController {
 		selectedOrder = null;
 	}
 
+	@FXML
+	void selectOrder(ActionEvent event) {
+		selectedOrder = ordersTable.getSelectionModel().getSelectedItem();
+		if (selectedOrder != null) {
+			guiObjectsFactory.mainWindowController.changeWindowName("Order details");
+			guiObjectsFactory.orderDetailsController.setSelectedOrder(selectedOrder);
+			guiObjectsFactory.orderDetailsController.openWindow();
+		}
+	}
 }

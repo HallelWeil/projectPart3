@@ -104,7 +104,7 @@ public class DBController {
 
 	public boolean updateOrder(Order order) {
 		// create the query
-		String s = "UPDATE  " + DBname + ".order  SET status = '" + order.getOrderStatus().toString() + "' ;";
+		String s = "UPDATE  " + DBname + ".order  SET orderStatus = '" + order.getOrderStatus().toString() + "' ;";
 		// send query + get result
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
@@ -170,21 +170,19 @@ public class DBController {
 		// create the query
 		ArrayList<ProductInOrder> itemsList = new ArrayList<>();
 		ProductInOrder item;
-		String s = "SELECT * FROM " + DBname + ".productinorder WHERE (orderNumber = '" + orderNumber + "' );";
+		String s = "SELECT * FROM " + DBname + ".productinorder WHERE (orderNumber = " + orderNumber + " );";
 		// get the result
 		try {
 			ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
 			// get the returned values
-
-			if (res.next()) {
+			while (res.next()) {
 				item = new ProductInOrder();
 				item.setAmount(res.getInt("amount"));
 				item.setCategory(res.getString("category"));
-				item.setName(res.getString("itemName"));
+				item.setName(res.getString("name"));
 				item.setOrderNumber(orderNumber);
-				item.setPrice(res.getDouble("itemPrice"));
-			} else {
-				return null;
+				item.setPrice(res.getDouble("price"));
+				itemsList.add(item);
 			}
 		} catch (Exception e) {
 			return null;

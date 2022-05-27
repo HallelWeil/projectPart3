@@ -35,7 +35,9 @@ public class AuthorizedCustomerBoundary extends UserBoundary {
 
 	}
 
-	public ProductInOrder getAllProductsInOrder(int orderNumber) {
+	public ArrayList<ProductInOrder> getAllProductsInOrder(int orderNumber) {
 		return AuthorizedCustomerCon.getAllProductsInOrder(orderNumber);
 	}
+
+
 }

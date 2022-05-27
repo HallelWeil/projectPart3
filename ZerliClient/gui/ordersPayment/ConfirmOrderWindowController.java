@@ -170,7 +170,6 @@ public class ConfirmOrderWindowController implements IGuiController {
 		s.append("address:" + "\n" + delivery.getFirstName() + " " + delivery.getLastName() + "\n");
 		s.append(delivery.getAddress() + "\n\n");
 		s.append("arrival date and time:\n");
-		//s.append(guiobjectfactory.order.getArrivalDate()+"\n");
 		s.append(guiobjectfactory.order.getArrivalDate().toLocalDateTime().toString()+"\n");
 		s.append("\n\nadditional information:" + "\n");
 		s.append("phone number: " + delivery.getPhoneNumber() + "\n");

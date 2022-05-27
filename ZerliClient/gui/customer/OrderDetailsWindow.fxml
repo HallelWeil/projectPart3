@@ -5,11 +5,12 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="productInOrderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="branchManager.BranchManagerController">
+<AnchorPane fx:id="orderDetailsBasePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="customer.OrderDetailsController">
    <children>
       <Label layoutX="259.0" layoutY="62.0" text="Products In selected Order">
          <font>
@@ -26,26 +27,32 @@
             <TableColumn fx:id="productTotalCol" prefWidth="100.0" text="Total Price" />
          </columns>
       </TableView>
-      <Button fx:id="approveBot" layoutX="641.0" layoutY="604.0" mnemonicParsing="false" onAction="#ApproveOrder" prefHeight="57.0" prefWidth="232.0" style="-fx-background-color: #2f41a7;" text="Approve Order" textFill="WHITE">
+      <Button fx:id="cancelBtn" layoutX="484.0" layoutY="605.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="57.0" prefWidth="232.0" style="-fx-background-color: #2f41a7;" text="Cancel Order" textFill="WHITE">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Button>
-      <Button fx:id="backToOrderSelectBot" layoutX="25.0" layoutY="604.0" mnemonicParsing="false" onAction="#BackToOrderSelectWindow" prefHeight="57.0" prefWidth="232.0" style="-fx-background-color: #2f41a7;" text="Back" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Button>
-      <Label fx:id="refundText" disable="true" layoutX="306.0" layoutY="623.0" text="Refund Amount:" visible="false">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <TextField fx:id="refundField" disable="true" layoutX="427.0" layoutY="621.0" visible="false" />
       <TextArea fx:id="dipslaydeliverydetails" disable="true" editable="false" layoutX="809.0" layoutY="115.0" prefHeight="449.0" prefWidth="282.0" text="&#10;" />
-      <Label layoutX="874.0" layoutY="50.0" text="Delivery details:">
+      <Button fx:id="backToOrderSelectBot" layoutX="25.0" layoutY="604.0" mnemonicParsing="false" onAction="#BackToOrderSelectWindow" prefHeight="57.0" prefWidth="232.0" style="-fx-background-color: #2f41a7;" text="          Back         " textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="34.0" fitWidth="31.0">
+               <image>
+                  <Image url="@../../lib/icons/back.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label layoutX="874.0" layoutY="65.0" text="Delivery details:">
          <font>
             <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="msgLabel" layoutX="401.0" layoutY="576.0" prefHeight="17.0" prefWidth="399.0">
+         <font>
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
    </children>

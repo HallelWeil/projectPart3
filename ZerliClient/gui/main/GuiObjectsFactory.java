@@ -31,19 +31,19 @@ public class GuiObjectsFactory {
 	public UserHomeWindowGuiController userHomeWindowController;
 	public ShopWindowController shopWindowController;
 	public OrdersHistoryController ordersHistoryController;
-	
-    public personalcardWindowController personalCardcontroller;
-    public HomeDeliveryWindowController HomeDeliveryDetails;
-    public ConfirmOrderWindowController confirmOrder;
-    public SuccedPayWindowController succedfailedpay;
-    public failedtopayWindowController failedpay;
-    public CreatePromotionWindowController createPromotion;
-    public BranchDeliveryChooseWindowController branch_Delivery;
-    //omer controlers
-    public ManagerApproveController managerApproveController;
-    public ManagerWatchReportController managerWatchReportController;
-    
-    
+	public OrderDetailsController orderDetailsController;
+
+	public personalcardWindowController personalCardcontroller;
+	public HomeDeliveryWindowController HomeDeliveryDetails;
+	public ConfirmOrderWindowController confirmOrder;
+	public SuccedPayWindowController succedfailedpay;
+	public failedtopayWindowController failedpay;
+	public CreatePromotionWindowController createPromotion;
+	public BranchDeliveryChooseWindowController branch_Delivery;
+	// omer controlers
+	public ManagerApproveController managerApproveController;
+	public ManagerWatchReportController managerWatchReportController;
+
 	// gui manager
 	public BtnMenuManager btnMenuManager;
 	public ProductsManager productManager;
@@ -85,20 +85,23 @@ public class GuiObjectsFactory {
 		loginGuiController = (LoginGuiController) loadFxmlFile("/mainWindow/LoginWindow.fxml");
 		userHomeWindowController = (UserHomeWindowGuiController) loadFxmlFile("/usersHomeWindows/UserHomeWindow.fxml");
 		shopWindowController = (ShopWindowController) loadFxmlFile("/customer/ShopWindow.fxml");
-		ordersHistoryController = (OrdersHistoryController)loadFxmlFile("/customer/OrdersHistory.fxml");
-		
-		personalCardcontroller=(personalcardWindowController)loadFxmlFile("/ordersPayment/personalcard.fxml");
-		HomeDeliveryDetails=(HomeDeliveryWindowController)loadFxmlFile("/ordersPayment/shippingdetails.fxml");
-		confirmOrder=(ConfirmOrderWindowController)loadFxmlFile("/ordersPayment/confirmorders.fxml");
-		succedfailedpay=(SuccedPayWindowController)loadFxmlFile("/ordersPayment/succedfailedpay.fxml");
-		failedpay=(failedtopayWindowController)loadFxmlFile("/ordersPayment/failedtopay.fxml");
-		branch_Delivery=(BranchDeliveryChooseWindowController)loadFxmlFile("/ordersPayment/Branch&DeliveryChoose.fxml");
-		createPromotion=(CreatePromotionWindowController)loadFxmlFile("/PromotionWindow/createNewPromotion.fxml");
-		
-		//managerApproveController = (ManagerApproveController) loadFxmlFile("/branchManager/approveOrders.fxml");
-		//managerWatchReportController = (ManagerWatchReportController)loadFxmlFile("/branchManager/managerWatchReport.fxml");
-		
-		
+		ordersHistoryController = (OrdersHistoryController) loadFxmlFile("/customer/OrdersHistory.fxml");
+		orderDetailsController = (OrderDetailsController) loadFxmlFile("/customer/OrderDetailsWindow.fxml");
+
+		personalCardcontroller = (personalcardWindowController) loadFxmlFile("/ordersPayment/personalcard.fxml");
+		HomeDeliveryDetails = (HomeDeliveryWindowController) loadFxmlFile("/ordersPayment/shippingdetails.fxml");
+		confirmOrder = (ConfirmOrderWindowController) loadFxmlFile("/ordersPayment/confirmorders.fxml");
+		succedfailedpay = (SuccedPayWindowController) loadFxmlFile("/ordersPayment/succedfailedpay.fxml");
+		failedpay = (failedtopayWindowController) loadFxmlFile("/ordersPayment/failedtopay.fxml");
+		branch_Delivery = (BranchDeliveryChooseWindowController) loadFxmlFile(
+				"/ordersPayment/Branch&DeliveryChoose.fxml");
+		createPromotion = (CreatePromotionWindowController) loadFxmlFile("/PromotionWindow/createNewPromotion.fxml");
+
+		// managerApproveController = (ManagerApproveController)
+		// loadFxmlFile("/branchManager/approveOrders.fxml");
+		// managerWatchReportController =
+		// (ManagerWatchReportController)loadFxmlFile("/branchManager/managerWatchReport.fxml");
+
 		// init members
 		btnMenuManager = new BtnMenuManager();
 		productManager = new ProductsManager();

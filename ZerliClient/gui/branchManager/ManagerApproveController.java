@@ -140,6 +140,8 @@ public class ManagerApproveController implements IGuiController {
 		selectedOrder = null;
 		refundText.setVisible(false);
 		refundField.setVisible(false);
+		refundText.setDisable(true);
+		refundField.setDisable(true);
 	}
 
 
@@ -155,6 +157,8 @@ public class ManagerApproveController implements IGuiController {
     		approveBot.setText("Approve Cancellation");
     		refundText.setVisible(true);
     		refundField.setVisible(true);
+    		refundText.setDisable(false);
+    		refundField.setDisable(false);
     	}
     	guiObjectsFactory.mainWindowController.showNewWindow(productInOrderPane);
     }

@@ -1,5 +1,6 @@
 package branchManager;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,80 +9,110 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import main.GuiObjectsFactory;
 import main.IGuiController;
-
+import report.Report;
+import report.ReportType;
+import reportGUI.IReportController;
+import reportGUI.OrderReportController;
+import reportGUI.QuarterlyOrdersReportController;
+import reportGUI.QuarterlyRevenueReportController;
+import reportGUI.RevenueReportController;
+import reportGUI.SatisfactionReportController;
+import usersManagment.BranchManagerBoundary;
+import usersManagment.CEOBoundary;
+import usersManagment.UserBoundary;
 
 public class ManagerWatchReportController implements IGuiController {
+	IReportController reportController = null;
+	BranchManagerBoundary managerBoundry = new BranchManagerBoundary();
+	Report report = null;
+	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
+	private UserBoundary userBoundry = guiObjectsFactory.userBaundary;
 
-    @FXML
-    private ScrollPane ceoReportScreen;
+	@FXML
+	private AnchorPane ceoReportScreen;
 
-    @FXML
-    private Button managerGetReport;
+	@FXML
+	private Button managerGetReport;
 
-    @FXML
-    private Button managerOpenReport;
+	@FXML
+	private Button managerOpenReport;
 
-    @FXML
-    private Button managerPreviewReport;
+	@FXML
+	private ComboBox<Integer> managerReportMonth;
 
-    @FXML
-    private ComboBox<?> managerReportMonth;
+	@FXML
+	private ComboBox<ReportType> managerReportType;
 
-    @FXML
-    private ComboBox<?> managerReportType;
+	@FXML
+	private ComboBox<Integer> managerReportYear;
 
-    @FXML
-    private ComboBox<?> managerReportYear;
+	@FXML
+	private AnchorPane managerWatchReportPane;
 
-    @FXML
-    private Button managerSaveReport;
+	@FXML
+	private Label reportMessage;
 
-    @FXML
-    private AnchorPane managerWatchReportPane;
+	private Integer[] monthsList = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+	private Integer[] yearsList = { 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010 };
 
-    @FXML
-    private Label reportMessage;
+	private ObservableList<Integer> yearObs;
+	private ObservableList<Integer> monthObs;
+	private ObservableList<ReportType> reportObs;
 
 	@Override
 	public Pane getBasePane() {
-		// TODO Auto-generated method stub
 		return managerWatchReportPane;
 	}
 
 	@Override
 	public void resetController() {
-		// TODO Auto-generated method stub
-		
+		managerOpenReport.setDisable(true);
+		managerGetReport.setDisable(false);
+		managerReportMonth.getSelectionModel().clearSelection();
+		managerReportYear.getSelectionModel().clearSelection();
+		managerReportType.getSelectionModel().clearSelection();
 	}
 
 	@Override
 	public void openWindow() {
-		// TODO Auto-generated method stub
-		
+		monthObs.setAll(monthsList);
+		yearObs.setAll(yearsList);
+		reportObs.setAll(ReportType.MONTHLY_ORDERS_REPORT, ReportType.MONTHLY_REVENU_EREPORT);
+		managerReportMonth.setItems(monthObs);
+		managerReportYear.setItems(yearObs);
+		managerReportType.setItems(reportObs);
 	}
 
-    @FXML
-    void GetReport(ActionEvent event) {
-    	
+	@FXML
+	void getReport(ActionEvent event) {
+		report = managerBoundry.requestViewReport(managerReportType.getSelectionModel().getSelectedItem(),
+				managerReportMonth.getSelectionModel().getSelectedItem(),
+				managerReportYear.getSelectionModel().getSelectedItem());
+		managerOpenReport.setDisable(false);
+		managerGetReport.setDisable(true);
+	}
 
-    }
+	@FXML
+	void openReport(ActionEvent event) {
+		managerOpenReport.setDisable(true);
+		managerGetReport.setDisable(false);
+		reportController = getController();
+		reportController.setReport(report);
+		reportController.openWindow();
+		ceoReportScreen.getChildren().setAll(reportController.getBasePane());
 
-    @FXML
-    void OpenReport(ActionEvent event) {
+	}
 
-    }
-
-    @FXML
-    void PreviewReport(ActionEvent event) {
-
-    }
-
-    @FXML
-    void saveReport(ActionEvent event) {
-
-    }
-
+	private IReportController getController() {
+		switch (report.getType().ordinal()) {
+		case 0:
+			return new OrderReportController();
+		case 1:
+			return new RevenueReportController();
+		}
+		return null;
+	}
 
 }
-

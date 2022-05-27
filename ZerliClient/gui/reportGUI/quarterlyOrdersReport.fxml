@@ -9,10 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="orderReportPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reportGUI.OrderReportController">
+<AnchorPane fx:id="quarterlyOrderReportPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reportGUI.QuarterlyOrdersReportController">
    <children>
-      <ScrollPane>
+      <ScrollPane layoutX="10.0" layoutY="10.0">
          <content>
             <AnchorPane prefHeight="1188.0" prefWidth="840.0" style="-fx-border-color: black; -fx-border-width: 3;">
                <children>
@@ -21,12 +20,7 @@
                         <Font name="System Bold Italic" size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="branchLabel" layoutX="38.0" layoutY="64.0" text="Branchname branch">
-                     <font>
-                        <Font name="System Bold Italic" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="dateLabel" layoutX="38.0" layoutY="91.0" text="month/year-month/year">
+                  <Label fx:id="dateLabel" layoutX="38.0" layoutY="64.0" text="month/year-month/year">
                      <font>
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
@@ -41,7 +35,7 @@
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="35.0" layoutY="194.0" text="Most popular item:">
+                  <Label layoutX="35.0" layoutY="194.0" text="Most popular items:">
                      <font>
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
@@ -51,7 +45,7 @@
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="popularItemLabel" layoutX="201.0" layoutY="194.0" text="noData">
+                  <Label fx:id="popularItemLabel" layoutX="215.0" layoutY="194.0" text="noData">
                      <font>
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
@@ -62,12 +56,12 @@
                      </font>
                   </Label>
                   <LineChart fx:id="ordersPerDayChart" layoutX="170.0" layoutY="311.0" style="-fx-border-color: black;" title="Orders per day">
-                    <xAxis>
-                      <CategoryAxis fx:id="dayAxis" side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis fx:id="ordersNumAxis" side="LEFT" />
-                    </yAxis>
+                     <xAxis>
+                        <CategoryAxis fx:id="dayAxis" side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis fx:id="ordersNumAxis" side="LEFT" />
+                     </yAxis>
                   </LineChart>
                   <PieChart fx:id="ordersPerCategoryChart" layoutX="170.0" layoutY="732.0" style="-fx-border-color: black;" title="Orders per category" />
                </children>

@@ -178,7 +178,7 @@ public class ReportsController {
 			// add the report fields to the quarterly report
 			newReport.addProfitableItem(report.getMostProfitableItem());
 			newReport.addToTotalRevenue(report.getTotalRevenue());
-			newReport.setMonthlyAvarageRevenu(tempMonth, report.getAvarageMonthlyRevenue());
+			newReport.setMonthlyAvarageRevenu(tempMonth, report.getAverageMonthlyRevenue());
 		}
 		// if the total order is bigger than 0, get the average
 		if (totalOrders != 0)
@@ -261,12 +261,12 @@ public class ReportsController {
 			}
 		}
 		if (counter == 0)
-			newRevenueReport.setAvarageRevenuePerOrder(revenue);
+			newRevenueReport.setAverageRevenuePerOrder(revenue);
 		else
-			newRevenueReport.setAvarageRevenuePerOrder(revenue / counter);
+			newRevenueReport.setAverageRevenuePerOrder(revenue / counter);
 		// save the values
 		newRevenueReport.setTotalRevenue(revenue);
-		newRevenueReport.setAvarageMonthlyRevenue(avgRevenue);
+		newRevenueReport.setAverageMonthlyRevenue(avgRevenue);
 		newOrdersReport.setAvarageMonthlyOrders(avgOrders);
 		newOrdersReport.setTotalOrders(counter);
 		int maxAmount = 0;

@@ -2,7 +2,7 @@ package database;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import com.mysql.cj.jdbc.Blob;
+import java.sql.Blob;
 import catalog.Product;
 import common.Status;
 import complaint.Complaint;
@@ -111,14 +111,18 @@ public class DBController {
 	}
 
 	public boolean saveOrderToDB(Order order) {
-		// LocalDateTime now = LocalDateTime.now();
-		// Timestamp orderTime = Timestamp.valueOf(now);
-		String s = "INSERT INTO " + DBname + ".order VALUES ( 4 ,'" + order.getOrderDate()
-				+ "','" + order.getArrivalDate() + "'," + order.isHomeDelivery() + ",'" + order.getBranchName()
-				+ "','" + order.getPrice() + "','" + order.getUsername() + "','" + order.getPersonalLetter() + "','"
+		int lastID = -1;
+		String s = "INSERT INTO " + DBname + ".order VALUES (default, '" + order.getOrderDate()
+				+ "','" + order.getArrivalDate() + "'," + order.isHomeDelivery() + ",'" + order.getBranchName() + "','"
+				+ order.getPrice() + "','" + order.getUsername() + "','" + order.getPersonalLetter() + "','"
 				+ order.getOrderStatus().toString() + "','" + order.getOrderData() + "');";
-		System.out.println(s);
 		boolean res = (boolean) dbBoundry.sendQueary(s);
+		if (res) {
+		//	s = "select last_insert_id() as last_id from orders";
+		//	ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
+		//	lastID = objectManager.lastID(idRes);
+			lastID = 1;
+		}
 		return res;
 	}
 
@@ -165,8 +169,7 @@ public class DBController {
 	public ArrayList<String> getItemInOrderFromDB(int orderNumber, String itemName) {
 		// create the query
 		ArrayList<String> item = new ArrayList<>();
-		String s = "SELECT * FROM " + DBname + ".iteminorder WHERE (orderNumber = '" + orderNumber
-				+ "' AND itemName = '" + itemName + "' );";
+		String s = "SELECT * FROM " + DBname + ".iteminorder WHERE (orderNumber = '" + orderNumber + "' );";
 		// get the result
 		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
 		// get the returned values
@@ -309,24 +312,25 @@ public class DBController {
 				+ "', 0, 0, 0, 0, 0, 0, 0);";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		if (res) {
-			s = "select last_insert_id() as last_id from survey";
-			ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
-			lastID = objectManager.lastID(idRes);
+			//s = "select last_insert_id() as last_id from survey";
+			//ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
+			//lastID = objectManager.lastID(idRes);
 		}
 		return lastID;
 	}
 
 	public int createComplaint(Complaint complaint) {
 		int lastID = -1;
-		String s = "INSERT INTO " + DBname + ".survey  VALUES ('" + null + "','"
+		String s = "INSERT INTO " + DBname + ".survey  VALUES (default ,'"
 				+ complaint.getResponsibleEmployeeUserName() + "','" + complaint.getComplaint() + "','"
 				+ complaint.getAnswer() + "','" + complaint.getCompensation() + "','" + complaint.getStatus().toString()
 				+ "','" + complaint.getCustomerUserName() + "');";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		if (res) {
-			s = "select last_insert_id() as last_id from complaint";
-			ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
-			lastID = objectManager.lastID(idRes);
+			//s = "select last_insert_id() as last_id from complaint";
+			//ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
+			//lastID = objectManager.lastID(idRes);
+			lastID = 1;
 		}
 		return lastID;
 	}
@@ -375,13 +379,14 @@ public class DBController {
 
 	public int savePromotion(Promotion promotion) {
 		int lastID = -1;
-		String s = "INSERT INTO " + DBname + ".promotion  VALUES ('" + null + "','" + promotion.getProductID() + "','"
+		String s = "INSERT INTO " + DBname + ".promotion  VALUES (default , '" + promotion.getProductID() + "','"
 				+ promotion.getDiscount() + "','" + promotion.getPromotionText() + "');";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		if (res) {
-			s = "select last_insert_id() as last_id from promotion";
-			ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
-			lastID = objectManager.lastID(idRes);
+			//s = "select last_insert_id() as last_id from promotion";
+			//ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
+			//lastID = objectManager.lastID(idRes);
+			lastID = 1;
 		}
 		return lastID;
 	}

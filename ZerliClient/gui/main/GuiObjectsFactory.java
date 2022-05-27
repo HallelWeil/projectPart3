@@ -3,16 +3,17 @@ package main;
 import java.io.IOException;
 import java.net.URL;
 
-import buttons.BtnController;
-import buttons.BtnMenuManager;
+import PromotionWindow.*;
+import buttons.*;
 import client.ClientBoundary;
-import customer.ProductsManager;
-import customer.ShopWindowController;
+import customer.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import mainWindow.*;
+import order.Order;
+import ordersPayment.*;
 import shop.ShopBoundary;
-import usersHomeWindows.UserHomeWindowGuiController;
+import usersHomeWindows.*;
 import usersManagment.AuthorizedCustomerBoundary;
 import usersManagment.BranchManagerBoundary;
 import usersManagment.CEOBoundary;
@@ -27,7 +28,14 @@ public class GuiObjectsFactory {
 	public BtnController btnController;
 	public UserHomeWindowGuiController userHomeWindowController;
 	public ShopWindowController shopWindowController;
-
+    public personalcardWindowController personalCardcontroller;
+    public HomeDeliveryWindowController HomeDeliveryDetails;
+    public ConfirmOrderWindowController confirmOrder;
+    public SuccedPayWindowController succedfailedpay;
+    public failedtopayWindowController failedpay;
+    public CreatePromotionWindowController createPromotion;
+    public BranchDeliveryChooseWindowController branch_Delivery;
+    
 	// gui manager
 	public BtnMenuManager btnMenuManager;
 	public ProductsManager productManager;
@@ -39,6 +47,7 @@ public class GuiObjectsFactory {
 	public BranchManagerBoundary branchManagerBoundary;
 	public CEOBoundary ceoBoundry;
 	public AuthorizedCustomerBoundary authorizedCustomerBoundary;
+	public Order order;
 
 	private GuiObjectsFactory() {
 		//
@@ -69,6 +78,13 @@ public class GuiObjectsFactory {
 		userHomeWindowController = (UserHomeWindowGuiController) loadFxmlFile("/usersHomeWindows/UserHomeWindow.fxml");
 		shopWindowController = (ShopWindowController) loadFxmlFile("/customer/ShopWindow.fxml");
 		
+		personalCardcontroller=(personalcardWindowController)loadFxmlFile("/ordersPayment/personalcard.fxml");
+		HomeDeliveryDetails=(HomeDeliveryWindowController)loadFxmlFile("/ordersPayment/shippingdetails.fxml");
+		confirmOrder=(ConfirmOrderWindowController)loadFxmlFile("/ordersPayment/confirmorders.fxml");
+		succedfailedpay=(SuccedPayWindowController)loadFxmlFile("/ordersPayment/succedfailedpay.fxml");
+		failedpay=(failedtopayWindowController)loadFxmlFile("/ordersPayment/failedtopay.fxml");
+		branch_Delivery=(BranchDeliveryChooseWindowController)loadFxmlFile("/ordersPayment/Branch&DeliveryChoose.fxml");
+		createPromotion=(CreatePromotionWindowController)loadFxmlFile("/PromotionWindow/createNewPromotion.fxml");
 		// init members
 		btnMenuManager = new BtnMenuManager();
 		productManager = new ProductsManager();

@@ -1,5 +1,6 @@
 package shop;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import cart.ProductInCart;
@@ -13,6 +14,7 @@ public class ShopBoundary {
 	private CartController cartCon;
 	private CatalogController catalogCon;
 	private boolean homeDeliveryflag = false;
+	private boolean personalCard = false;
 	private ArrayList<Integer> cartItemsIDs;
 
 	public ShopBoundary() {
@@ -173,5 +175,22 @@ public class ShopBoundary {
 	public boolean payForOrder() {
 		return cartCon.payForOrder();
 	}
+
+	public boolean isHomeDeliveryflag() {
+		return homeDeliveryflag;
+	}
+
+	public boolean isPersonalCardflag() {
+		return personalCard;
+	}
+
+	public void selectPersonalCard(boolean b) {
+		personalCard = b;	
+	}
+
+	public void submitDetailsForArivalDate(Timestamp arrivalDate) {
+		cartCon.setArrivelOrPickupDateAndTime(arrivalDate);		
+	}
+	
 
 }

@@ -130,7 +130,7 @@ public class ShopWindowController implements IGuiController {
 
 	@FXML
 	void PalceOrder(ActionEvent event) {
-
+		guiObjectsFactory.branch_Delivery.openWindow();
 	}
 
 	@FXML

@@ -73,11 +73,13 @@ public class OrderController {
 	public boolean payForOrder(String cardInfo) {
 		PaymentController paymnetControlelr = new PaymentController();
 		try {
-			return paymnetControlelr.pay(cardInfo, activeOrder.getPrice());
+			if (paymnetControlelr.pay(cardInfo, activeOrder.getPrice())) {
+				activeOrder.setOrderStatus(OrderStatus.WAITING_FOR_APPROAVL);
+				return true;
+			}
 		} catch (Exception e) {
-			return false;
 		}
-
+		return false;
 	}
 
 	/**

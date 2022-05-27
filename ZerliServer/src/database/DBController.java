@@ -113,7 +113,7 @@ public class DBController {
 	public boolean saveOrderToDB(Order order) {
 		// LocalDateTime now = LocalDateTime.now();
 		// Timestamp orderTime = Timestamp.valueOf(now);
-		String s = "INSERT INTO " + DBname + ".order VALUES ('" + order.getOrderNumber() + "','" + order.getOrderDate()
+		String s = "INSERT INTO " + DBname + ".order VALUES ( 4 ,'" + order.getOrderDate()
 				+ "','" + order.getArrivalDate() + "'," + order.isHomeDelivery() + ",'" + order.getBranchName()
 				+ "','" + order.getPrice() + "','" + order.getUsername() + "','" + order.getPersonalLetter() + "','"
 				+ order.getOrderStatus().toString() + "','" + order.getOrderData() + "');";

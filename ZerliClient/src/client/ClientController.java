@@ -1,6 +1,7 @@
 package client;
 
 import msg.Msg;
+<<<<<<< HEAD
 import msg.MsgType;
 import ocsf.client.AbstractClient;
 import java.io.IOException;
@@ -60,6 +61,13 @@ public class ClientController extends AbstractClient {
 		return client; 
 	}
 
+=======
+
+public class ClientController {
+	
+	public static MsgController SaveParsedMSG;
+	
+>>>>>>> origin/Ronen
 	/**
 	 * send the given msg to the server, return the result in the msgCntroller
 	 * 
@@ -67,6 +75,7 @@ public class ClientController extends AbstractClient {
 	 * @return
 	 */
 	public MsgController sendMsg(Msg msg) {
+<<<<<<< HEAD
 		SaveParsedMSG = new MsgController(); // reset saveParsedMSG (msgType=NONE)
 		if (msg != null) {
 			handleMessageFromClientUI(msg);
@@ -149,4 +158,13 @@ public class ClientController extends AbstractClient {
 		System.out.println("> " + message);
 	}
 
+=======
+		SaveParsedMSG=new MsgController(); //reset saveParsedMSG (msgType=NONE)
+		if (msg != null) {
+			ClientBoundary.client.handleMessageFromClientUI(msg);
+		}
+		return SaveParsedMSG; //return the data (in case msg=null saveParsedMSG will return saveParsedMSG.getType=NONE)
+	}
+
+>>>>>>> origin/Ronen
 }

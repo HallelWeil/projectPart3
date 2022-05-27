@@ -17,7 +17,11 @@ public class UserController {
 	/**
 	 * loginResults saved the returned data from sendMsg method in clientController 
 	 */
+<<<<<<< HEAD
 	private ClientController clientController= ClientController.getInstance();
+=======
+	private ClientController clientcontroller;
+>>>>>>> origin/Ronen
 	private MsgController loginResults;
 	// public boolean login(String username, String password)
 
@@ -30,9 +34,14 @@ public class UserController {
 	 * @return
 	 */
 	public MsgController login(String username, String password) {
+<<<<<<< HEAD
 		//clientController=clientController.getInstance();
 		Msg msg = MsgController.createLOGIN_REQUESTMsg(username, password);
 		loginResults =clientController.sendMsg(msg);
+=======
+		Msg msg = MsgController.createLOGIN_REQUESTMsg(username, password);
+		loginResults = clientcontroller.sendMsg(msg);
+>>>>>>> origin/Ronen
 	//	if (loginResults.getType().equals(MsgType.APPROVE_LOGIN)) {
 			return loginResults; //returned what loginResults contains (ERROR with String of error type/User data)
 	//	}
@@ -45,7 +54,11 @@ public class UserController {
 	 */
 	public void logout() {
 		Msg msg = MsgController.createLOG_OUT_REQUESTMsg();
+<<<<<<< HEAD
 		MsgController loginResults =clientController.sendMsg(msg);
+=======
+		MsgController loginResults = clientcontroller.sendMsg(msg);
+>>>>>>> origin/Ronen
 		loginResults = new MsgController(); // to reset the User msgController
 		/*
 		 * if(!loginResults.getType().equals(MsgType.APPROVE_LOGOUT)) {

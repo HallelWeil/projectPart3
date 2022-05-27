@@ -93,6 +93,7 @@ public enum MsgType {
 	 * update order status(approve, not approved, canceled, refunded), expected answer=COMPLETED
 	 */
 	UPDATE_ORDER_STATUS,
+<<<<<<< HEAD
 	/**
 	 * get report with type month and year
 	 */
@@ -109,6 +110,10 @@ public enum MsgType {
 	 * get a single order
 	 */
 	GET_ORDER,
+=======
+	
+	REQUEST_VIEW_REPORT,
+>>>>>>> origin/Ronen
 	// server -> client
 	/**
 	 * return a report

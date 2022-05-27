@@ -10,9 +10,14 @@ import msg.MsgType;
 import order.Order;
 import promotion.Promotion;
 import report.Report;
+<<<<<<< HEAD
 import report.ReportType;
+=======
+>>>>>>> origin/Ronen
 import survey.Survey;
 import user.User;
+import usersManagment.BranchManagerBoundary;
+import usersManagment.UserBoundary;
 
 public class MsgController {
 
@@ -24,9 +29,17 @@ public class MsgController {
 	private Order order;
 	private Survey survey;
 	private User user;
+<<<<<<< HEAD
 	private Report report;
 	private String errorMsg;
 	private ArrayList<String> branchNames;
+=======
+<<<<<<< Updated upstream
+=======
+	private Report report;
+	private String errorMsg;
+>>>>>>> Stashed changes
+>>>>>>> origin/Ronen
 
 	public MsgController() {
 		resetParser();
@@ -52,7 +65,7 @@ public class MsgController {
 	 * @return true if the msg was ok
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean mgsParser(Object msg) {
+	public boolean msgParser(Object msg) {
 		resetParser();
 		if (msg == null)
 			return false;
@@ -82,6 +95,7 @@ public class MsgController {
 		case APPROVE_LOGIN:
 			user = (User) newMsg.data;
 			break;
+<<<<<<< HEAD
 		case RETURN_REPORT:
 			report = (Report) newMsg.data;
 		case RETURN_BRANCH_NAMES:
@@ -92,6 +106,16 @@ public class MsgController {
 			break;
 		case ERROR:
 			errorMsg = (String) newMsg.data;
+=======
+<<<<<<< Updated upstream
+=======
+		case RETURN_REPORT:
+			report = (Report)newMsg.data;
+			break;
+		case ERROR:
+			errorMsg = (String) newMsg.data;
+>>>>>>> Stashed changes
+>>>>>>> origin/Ronen
 		case RETURN_PAYMENT_APPROVAL:
 		case APPROVE_LOGOUT:
 		case EXIT:
@@ -106,6 +130,10 @@ public class MsgController {
 
 	public MsgType getType() {
 		return type;
+	}
+	
+	public String getErrorMsg() {
+		return errorMsg;
 	}
 
 	public String getErrorMsg() {
@@ -134,6 +162,10 @@ public class MsgController {
 
 	public Survey getSurvey() {
 		return survey;
+	}
+	
+	public User getUser() {
+		return user;
 	}
 
 	public Report getReport() {
@@ -396,6 +428,14 @@ public class MsgController {
 		Msg msg = new Msg();
 		msg.type = MsgType.UPDATE_ORDER_STATUS;
 		msg.data = order;
+		return msg;
+	}
+	
+	public static Msg createView_ReportMsg(Report report)
+	{
+		Msg msg = new Msg();
+		msg.type = MsgType.REQUEST_VIEW_REPORT;
+		msg.data = report;
 		return msg;
 	}
 

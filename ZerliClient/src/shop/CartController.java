@@ -7,20 +7,44 @@ import cart.Cart;
 import cart.ProductInCart;
 import catalog.CustomizedProduct;
 import catalog.Product;
+<<<<<<< HEAD
 import client.ClientController;
 import client.MsgController;
 import msg.MsgType;
+=======
+<<<<<<< Updated upstream
+=======
+import client.ClientController2;
+import client.MsgController;
+import msg.MsgType;
+>>>>>>> Stashed changes
+>>>>>>> origin/Ronen
 import order.DeliveryDetails;
 import order.Order;
 
 public class CartController {
 
 	private Cart myCart;
+<<<<<<< HEAD
 	private ArrayList<Product> CustomizedProductsInCart = new ArrayList<>();
 	private ClientController clientController = ClientController.getInstance();
 
 	public CartController() {
 		myCart = new Cart();
+=======
+<<<<<<< Updated upstream
+	
+	public CartController()
+	{
+		myCart = new Cart();	
+=======
+	private ArrayList<Product> CustomizedProductsInCart = new ArrayList<>();
+	private ClientController2 clientController;
+
+	public CartController() {
+		myCart = new Cart();
+>>>>>>> Stashed changes
+>>>>>>> origin/Ronen
 	}
 
 	/**

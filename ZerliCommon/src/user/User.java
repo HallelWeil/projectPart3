@@ -81,6 +81,11 @@ public class User implements Serializable {
 		this.status = status;
 	}
 
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> origin/Ronen
 	public String getBranchName() {
 		return branchName;
 	}
@@ -93,6 +98,7 @@ public class User implements Serializable {
 		this.username = username;
 	}
 
+<<<<<<< HEAD
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -118,4 +124,8 @@ public class User implements Serializable {
 	}
 
 	
+=======
+	
+>>>>>>> Stashed changes
+>>>>>>> origin/Ronen
 }

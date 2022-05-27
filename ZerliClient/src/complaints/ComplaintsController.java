@@ -1,8 +1,18 @@
 package complaints;
 
 import java.util.ArrayList;
+<<<<<<< HEAD
 import client.ClientController;
 import client.MsgController;
+=======
+
+<<<<<<< Updated upstream
+import common.Status;
+=======
+import client.ClientController2;
+import client.MsgController;
+>>>>>>> Stashed changes
+>>>>>>> origin/Ronen
 import complaint.Complaint;
 import common.Status;
 import msg.MsgType;
@@ -15,10 +25,23 @@ import msg.MsgType;
  * @author halel
  *
  */
+<<<<<<< HEAD
 public class ComplaintsController 
 {
 	private Complaint complaint;
 	private ClientController client;
+=======
+<<<<<<< Updated upstream
+public class ComplaintsController {
+
+	public void createComplaint() {
+
+=======
+public class ComplaintsController 
+{
+	private Complaint complaint;
+	private ClientController2 client;
+>>>>>>> origin/Ronen
 	
 	/**
 	 * create the Complaint with the fields
@@ -29,6 +52,7 @@ public class ComplaintsController
 	 * @param compensation
 	 * @param status
 	 */
+<<<<<<< HEAD
 	public void createComplaint(String responsibleEmployeeUserName, String complaintText, String customerUserName) throws Exception 
 	{
 		complaint = new Complaint(responsibleEmployeeUserName, complaintText, customerUserName);
@@ -36,6 +60,16 @@ public class ComplaintsController
 		if(msgController.getType() != MsgType.CREATE_COMPLAINT)
 			throw new Exception("cannot create new complaint");
 		
+=======
+	public void createComplaint(String answer, double compensation, Status status)
+	{
+		complaint = new Complaint(answer, compensation, status);
+		MsgController msgController = client.sendMsg(msgController.createCREATE_COMPLAINTMsg(complaint));
+		if(msgController.getType() != MsgType.CREATE_COMPLAINT)
+			msgController.createERRORMsg();
+		
+>>>>>>> Stashed changes
+>>>>>>> origin/Ronen
 	}
 	
 	/**

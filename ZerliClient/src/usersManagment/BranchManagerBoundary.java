@@ -1,14 +1,23 @@
 package usersManagment;
 
 import java.sql.Date;
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+
+>>>>>>> origin/Ronen
 
 import client.ClientBoundary;
 import client.ClientController;
 import client.MsgController;
 import msg.Msg;
 import msg.MsgType;
+<<<<<<< HEAD
 import order.*;
+=======
+import order.Order;
+import order.OrderStatus;
+>>>>>>> origin/Ronen
 import report.Report;
 import report.ReportType;
 import user.User;
@@ -25,6 +34,7 @@ import user.UserType;
 public class BranchManagerBoundary extends UserBoundary {
 
 	/**
+<<<<<<< HEAD
 	 * clientController used to communicate with clientController and let the
 	 * branchManger send to the server msg contains the data or mission we want to
 	 * received from the server msgController used to create mission or ask message
@@ -37,6 +47,22 @@ public class BranchManagerBoundary extends UserBoundary {
 	 * the GUI we check the error string)
 	 */
 	private MsgController msgController;
+=======
+	 * clientController used to communicate with clientController and let the branchManger send to the server 
+	 * msg contains the data or mission we want to received from the server 
+	 * msgController used to create mission or ask message and received the returned data
+	 */
+	private ClientController clientController;
+	private Msg msg;
+	/**
+	 * in msgController saved the received data (in case we receive ERROR type in the GUI we check the error string)
+	 */
+	private MsgController msgController;
+	
+	public BranchManagerBoundary() {
+		clientController=new ClientController(); 
+	}
+>>>>>>> origin/Ronen
 
 	/**
 	 * request the order approval, using order number and approve\not approve
@@ -46,7 +72,11 @@ public class BranchManagerBoundary extends UserBoundary {
 	 */
 	public boolean requestApproveOrder(int orderNumber, boolean isApproved) {
 		Order order = new Order();
+<<<<<<< HEAD
 		order.setOrderNumber(orderNumber);
+=======
+		order.setOrderID(orderNumber);
+>>>>>>> origin/Ronen
 		if (isApproved) // branchManger approved the request
 		{
 			order.setOrderStatus(OrderStatus.APPROVED);
@@ -74,7 +104,11 @@ public class BranchManagerBoundary extends UserBoundary {
 	public boolean requestApproveCancelation(int orderNumber, boolean isApproved, double refundAmount) {
 
 		Order order = new Order();
+<<<<<<< HEAD
 		order.setOrderNumber(orderNumber);
+=======
+		order.setOrderID(orderNumber);
+>>>>>>> origin/Ronen
 		order.setPrice(refundAmount); // in price field we set the refuned value(server get this value for set in
 										// refund field of the user)
 		if (isApproved) // branchManger not approve Cancellation
@@ -92,9 +126,14 @@ public class BranchManagerBoundary extends UserBoundary {
 			return true;
 		}
 		return false; // return false mean update not succeed
+<<<<<<< HEAD
 		// (if GUI received false it should access to msgController of
 		// branchMangerBoundary
 		// and check the Error string and display it)
+=======
+		//(if GUI received false it should access to msgController of branchMangerBoundary 
+		//and check the Error string and display it)
+>>>>>>> origin/Ronen
 
 	}
 
@@ -109,7 +148,11 @@ public class BranchManagerBoundary extends UserBoundary {
 	 */
 	public boolean requestUpdateUserData(String userName, UserType type, UserStatus status) {
 
+<<<<<<< HEAD
 		User user = UserBoundary.CurrentUser;
+=======
+		User user = new User();
+>>>>>>> origin/Ronen
 		if (type != null) // check if field null then we didn't need to update
 		{
 			user.setUserType(type);
@@ -134,15 +177,20 @@ public class BranchManagerBoundary extends UserBoundary {
 	 * @return
 	 */
 	public Report requestViewReport(ReportType type, int Month, int year) {
+<<<<<<< HEAD
 		// String branchNameOfUser = CurrentUser.getBranchName(); // get branchName from
 		// branchManger user
 		String branchNameOfUser = UserBoundary.CurrentUser.getBranchName();
+=======
+		String branchNameOfUser = CurrentUser.getBranchName(); // get branchName from branchManger user
+>>>>>>> origin/Ronen
 		msg = MsgController.createGET_REPORTMsg(type, year, Month, branchNameOfUser);
 		msgController = clientController.sendMsg(msg);
 		if (msgController.getType().equals(MsgType.RETURN_REPORT)) {
 			return msgController.getReport();
 		}
 		return null; // in case returned msg was ERROR for Example mean Report not found or exist
+<<<<<<< HEAD
 	}
 
 	public User requestUser(String username) {
@@ -170,6 +218,9 @@ public class BranchManagerBoundary extends UserBoundary {
 			return msgController.getOrder().getItems();
 		}
 		return null; // in case returned msg was ERROR for Example mean orders not found or exist
+=======
+>>>>>>> origin/Ronen
 	}
+	
 
 }

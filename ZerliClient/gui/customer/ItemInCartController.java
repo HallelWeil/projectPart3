@@ -16,6 +16,7 @@ import main.IGuiController;
 public class ItemInCartController implements IGuiController {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 	private Product product;
+
 	private int currentAmount;
 
 	@FXML
@@ -32,6 +33,9 @@ public class ItemInCartController implements IGuiController {
 
 	@FXML
 	private Button removeBtn;
+
+	@FXML
+	private Label priceLabel;
 
 	@FXML
 	void changeAmount(InputMethodEvent event) {
@@ -73,6 +77,18 @@ public class ItemInCartController implements IGuiController {
 		this.product = product;
 		productNameLabel.setText(product.getName());
 		amountTextField.setText(amount + "");
+		priceLabel.setText(product.getPrice() + "");
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void updateAmount(int amount) {
+		if (amount < 0)
+			amount = 0;
+		currentAmount = currentAmount + amount;
+		amountTextField.setText(currentAmount + "");
 	}
 
 }

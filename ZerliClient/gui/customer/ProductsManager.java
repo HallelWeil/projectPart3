@@ -15,6 +15,7 @@ public class ProductsManager {
 
 	private static final String productFxmlPath = "/customer/ProductInCatalog.fxml";
 	private static final String cartItemPath = "/customer/ItemInCart.fxml";
+	private static final String CSItemPath = "/customer/ItemInCustomozedProduct.fxml";
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 
 	/**
@@ -47,12 +48,24 @@ public class ProductsManager {
 		}
 	}
 
-	public Pane createNewCartItem(Product product, int amount) {
+	public ItemInCartController createNewCartItem(Product product, int amount) {
 		try {
 			ItemInCartController newController;
 			newController = (ItemInCartController) guiObjectsFactory.loadFxmlFile(cartItemPath);
 			newController.setProduct(product, amount);
-			return newController.getBasePane();
+			return newController;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public ItemInCustomizedProductController createNewCSItem(Product product) {
+		try {
+			ItemInCustomizedProductController newController;
+			newController = (ItemInCustomizedProductController) guiObjectsFactory.loadFxmlFile(CSItemPath);
+			newController.setProduct(product);
+			return newController;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

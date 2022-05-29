@@ -71,6 +71,9 @@ public class MainWindowController implements IGuiController {
 		cells[5] = topMenuCell5;
 		cells[6] = topMenuCell6;
 		cells[7] = topMenuCell7;
+		if (topMenuCell0.getChildren().isEmpty()) {
+			topMenuCell0.getChildren().add(guiObjectsFactory.btnController.getLogo());
+		}
 
 	}
 
@@ -120,7 +123,7 @@ public class MainWindowController implements IGuiController {
 	 * Remove all the buttons from the top menu
 	 */
 	public void resetBtns() {
-		for (int i = 0; i < 8; i++) {
+		for (int i = 1; i < 8; i++) {
 			cells[i].getChildren().removeAll(cells[i].getChildren());
 		}
 	}

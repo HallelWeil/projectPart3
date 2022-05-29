@@ -2,7 +2,7 @@ package database;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import com.mysql.cj.jdbc.Blob;
+import java.sql.Blob;
 import catalog.Product;
 import common.Status;
 import complaint.Complaint;
@@ -104,22 +104,25 @@ public class DBController {
 
 	public boolean updateOrder(Order order) {
 		// create the query
-		String s = "UPDATE  " + DBname + ".order  SET status = '" + order.getOrderStatus().toString() + "' ;";
+		String s = "UPDATE  " + DBname + ".order  SET orderStatus = '" + order.getOrderStatus().toString() + "' ;";
 		// send query + get result
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
 
-	public boolean saveOrderToDB(Order order) {
-		// LocalDateTime now = LocalDateTime.now();
-		// Timestamp orderTime = Timestamp.valueOf(now);
-		String s = "INSERT INTO " + DBname + ".order VALUES ('" + order.getOrderNumber() + "','" + order.getOrderDate()
-				+ "','" + order.getArrivalDate() + "'," + order.isHomeDelivery() + ",'" + order.getBranchName()
-				+ "','" + order.getPrice() + "','" + order.getUsername() + "','" + order.getPersonalLetter() + "','"
+	public int saveOrderToDB(Order order) {
+		int lastID = -1;
+		String s = "INSERT INTO " + DBname + ".order VALUES (default, '" + order.getOrderDate() + "','"
+				+ order.getArrivalDate() + "'," + order.isHomeDelivery() + ",'" + order.getBranchName() + "','"
+				+ order.getPrice() + "','" + order.getUsername() + "','" + order.getPersonalLetter() + "','"
 				+ order.getOrderStatus().toString() + "','" + order.getOrderData() + "');";
-		System.out.println(s);
 		boolean res = (boolean) dbBoundry.sendQueary(s);
-		return res;
+		if (res) {
+			s = "SELECT last_insert_id() as last_id from " + DBname + ".order";
+			ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
+			lastID = objectManager.lastID(idRes);
+		}
+		return lastID;
 	}
 
 	public boolean deleteOrder(int orderNum) {
@@ -156,33 +159,35 @@ public class DBController {
 
 	public boolean saveItemInOrderToDB(ProductInOrder product) {
 		// create the query
-		String s = "INSERT INTO " + DBname + ".itemInOrder VALUES ('" + product.getOrderNumber() + "','"
-				+ product.getName() + "','" + " " + "','" + product.getPrice() + "','" + product.getAmount() + " ');";
+		String s = "INSERT INTO " + DBname + ".productinorder VALUES ('" + product.getOrderNumber() + "','"
+				+ product.getName() + "'," + product.getPrice() + "," + product.getAmount() + ",'"
+				+ product.getCategory() + "');";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
 
-	public ArrayList<String> getItemInOrderFromDB(int orderNumber, String itemName) {
+	public ArrayList<ProductInOrder> getItemInOrderFromDB(int orderNumber) {
 		// create the query
-		ArrayList<String> item = new ArrayList<>();
-		String s = "SELECT * FROM " + DBname + ".iteminorder WHERE (orderNumber = '" + orderNumber
-				+ "' AND itemName = '" + itemName + "' );";
+		ArrayList<ProductInOrder> itemsList = new ArrayList<>();
+		ProductInOrder item;
+		String s = "SELECT * FROM " + DBname + ".productinorder WHERE (orderNumber = " + orderNumber + " );";
 		// get the result
-		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
-		// get the returned values
 		try {
-			if (res.next()) {
-				item.add(Integer.toString(res.getInt("orderNumber")));
-				item.add(res.getString("itemName"));
-				item.add(Double.toString(res.getDouble("itemPrice")));
-				item.add(Integer.toString(res.getInt("amount")));
-			} else {
-				return null;
+			ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+			// get the returned values
+			while (res.next()) {
+				item = new ProductInOrder();
+				item.setAmount(res.getInt("amount"));
+				item.setCategory(res.getString("category"));
+				item.setName(res.getString("name"));
+				item.setOrderNumber(orderNumber);
+				item.setPrice(res.getDouble("price"));
+				itemsList.add(item);
 			}
 		} catch (Exception e) {
 			return null;
 		}
-		return item;
+		return itemsList;
 	}
 
 	public boolean connectUser(String username, String password) throws Exception {
@@ -309,22 +314,21 @@ public class DBController {
 				+ "', 0, 0, 0, 0, 0, 0, 0);";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		if (res) {
-			s = "select last_insert_id() as last_id from survey";
-			ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
-			lastID = objectManager.lastID(idRes);
+			// s = "select last_insert_id() as last_id from survey";
+			// ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
+			// lastID = objectManager.lastID(idRes);
 		}
 		return lastID;
 	}
 
 	public int createComplaint(Complaint complaint) {
 		int lastID = -1;
-		String s = "INSERT INTO " + DBname + ".survey  VALUES ('" + null + "','"
-				+ complaint.getResponsibleEmployeeUserName() + "','" + complaint.getComplaint() + "','"
-				+ complaint.getAnswer() + "','" + complaint.getCompensation() + "','" + complaint.getStatus().toString()
-				+ "','" + complaint.getCustomerUserName() + "');";
+		String s = "INSERT INTO " + DBname + ".survey  VALUES (default ,'" + complaint.getResponsibleEmployeeUserName()
+				+ "','" + complaint.getComplaint() + "','" + complaint.getAnswer() + "','" + complaint.getCompensation()
+				+ "','" + complaint.getStatus().toString() + "','" + complaint.getCustomerUserName() + "');";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		if (res) {
-			s = "select last_insert_id() as last_id from complaint";
+			s = "SELECT last_insert_id() as last_id from complaint";
 			ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
 			lastID = objectManager.lastID(idRes);
 		}
@@ -375,11 +379,11 @@ public class DBController {
 
 	public int savePromotion(Promotion promotion) {
 		int lastID = -1;
-		String s = "INSERT INTO " + DBname + ".promotion  VALUES ('" + null + "','" + promotion.getProductID() + "','"
+		String s = "INSERT INTO " + DBname + ".promotion  VALUES (default , '" + promotion.getProductID() + "','"
 				+ promotion.getDiscount() + "','" + promotion.getPromotionText() + "');";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		if (res) {
-			s = "select last_insert_id() as last_id from promotion";
+			s = "SELECT last_insert_id() as last_id from promotion";
 			ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
 			lastID = objectManager.lastID(idRes);
 		}

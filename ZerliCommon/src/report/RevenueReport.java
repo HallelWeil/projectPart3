@@ -11,8 +11,8 @@ public class RevenueReport extends Report {
 	private static final long serialVersionUID = 1L;
 	private double[] revenuePerDay;
 	private double totalRevenue;
-	private double avarageMonthlyRevenue;
-	private double avarageRevenuePerOrder;
+	private double averageMonthlyRevenue;
+	private double averageRevenuePerOrder;
 	private String mostProfitableItem;
 
 	public RevenueReport(int month, int year, ReportType type, String branchName) {
@@ -21,8 +21,8 @@ public class RevenueReport extends Report {
 		for (int i = 0; i < 31; i++)
 			revenuePerDay[i] = 0;
 		totalRevenue = 0;
-		avarageMonthlyRevenue = 0;
-		avarageRevenuePerOrder = 0;
+		averageMonthlyRevenue = 0;
+		averageRevenuePerOrder = 0;
 		mostProfitableItem = null;
 	}
 
@@ -40,20 +40,20 @@ public class RevenueReport extends Report {
 		this.totalRevenue = totalRevenue;
 	}
 
-	public double getAvarageMonthlyRevenue() {
-		return avarageMonthlyRevenue;
+	public double getAverageMonthlyRevenue() {
+		return averageMonthlyRevenue;
 	}
 
-	public void setAvarageMonthlyRevenue(double avarageMonthlyRevenue) {
-		this.avarageMonthlyRevenue = avarageMonthlyRevenue;
+	public void setAverageMonthlyRevenue(double avarageMonthlyRevenue) {
+		this.averageMonthlyRevenue = avarageMonthlyRevenue;
 	}
 
-	public double getAvarageRevenuePerOrder() {
-		return avarageRevenuePerOrder;
+	public double getAverageRevenuePerOrder() {
+		return averageRevenuePerOrder;
 	}
 
-	public void setAvarageRevenuePerOrder(double avarageRevenuePerOrder) {
-		this.avarageRevenuePerOrder = avarageRevenuePerOrder;
+	public void setAverageRevenuePerOrder(double avarageRevenuePerOrder) {
+		this.averageRevenuePerOrder = avarageRevenuePerOrder;
 	}
 
 	public String getMostProfitableItem() {

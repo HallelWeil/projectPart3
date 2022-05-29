@@ -4,10 +4,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import usersManagment.UserBoundary;
 
 public class BtnController implements IGuiController {
 
@@ -73,6 +75,13 @@ public class BtnController implements IGuiController {
 	private Button userHomeBtn;
 
 	@FXML
+	private ImageView logo;
+	
+	public ImageView getLogo() {
+		return logo;
+	}
+
+	@FXML
 	void goToUserHomepage(ActionEvent event) {
 		guiObjectsFactory.userHomeWindowController.openWindow();
 	}
@@ -121,22 +130,22 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void manageOrders(ActionEvent event) {
-
+		
 	}
 
 	@FXML
 	void manageUsers(ActionEvent event) {
-
+		//guiObjectsFactory.man
 	}
 
 	@FXML
 	void openOrdersHistory(ActionEvent event) {
-
+		guiObjectsFactory.ordersHistoryController.openWindow();
 	}
 
 	@FXML
 	void openReports(ActionEvent event) {
-
+		guiObjectsFactory.managerWatchReportController.openWindow();
 	}
 
 	@FXML
@@ -250,10 +259,20 @@ public class BtnController implements IGuiController {
 		return userHomeBtn;
 	}
 
+	
 	@Override
 	public void openWindow() {
 		// move to the next window
 		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
+	}
+
+	@FXML
+	void logoBtnPress(MouseEvent event) {
+		if (UserBoundary.getCurrentUser() == null) {
+			guiObjectsFactory.mainWindowController.openWindow();
+		} else {
+			guiObjectsFactory.userHomeWindowController.openWindow();
+		}
 	}
 
 }

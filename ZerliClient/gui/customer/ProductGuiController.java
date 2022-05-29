@@ -48,11 +48,14 @@ public class ProductGuiController implements IGuiController {
 	@FXML
 	private VBox textPane;
 
+	@FXML
+	private AnchorPane btnsPane;
+
 	private Product product;
 
 	@FXML
 	void addToProduct(ActionEvent event) {
-
+		GuiObjectsFactory.getInstance().shopWindowController.addProductToCustomizedProduct(product);
 	}
 
 	@FXML
@@ -61,11 +64,17 @@ public class ProductGuiController implements IGuiController {
 			int num = Integer.valueOf(amount.getText());
 			if (num < 0)
 				num = 1;
-			Pane temp = GuiObjectsFactory.getInstance().productManager.createNewCartItem(product, num);// create the gui
-																										// object
-			GuiObjectsFactory.getInstance().shopWindowController.addProductGuiObjectToCart(temp);
-			GuiObjectsFactory.getInstance().shopBoundary.addToCart(product, num);// add to cart
+			if (GuiObjectsFactory.getInstance().shopBoundary.addToCart(product, num))// add to cart
+			{
+				ItemInCartController controller = GuiObjectsFactory.getInstance().productManager
+						.createNewCartItem(product, num);
+				GuiObjectsFactory.getInstance().shopWindowController.addProductGuiObjectToCart(controller.getBasePane(),
+						controller);
+			} else {
+				GuiObjectsFactory.getInstance().shopWindowController.updateAmount(num, product.getProductID());
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			amount.setText("1");
 		}
 
@@ -80,6 +89,9 @@ public class ProductGuiController implements IGuiController {
 		priceLabel.setText(product.getPrice() + "");
 		oldPriceLabel.setText("");
 		amount.setText("1");
+		if (product.getCategory().equals("singleItems")) {
+			btnsPane.getChildren().remove(addToCartBtn);
+		}
 	}
 
 	@Override
@@ -96,7 +108,10 @@ public class ProductGuiController implements IGuiController {
 	@Override
 	public void openWindow() {
 		// TODO Auto-generated method stub
+	}
 
+	public Product getProduct() {
+		return product;
 	}
 
 }

@@ -3,16 +3,20 @@ package main;
 import java.io.IOException;
 import java.net.URL;
 
-import buttons.BtnController;
-import buttons.BtnMenuManager;
+import PromotionWindow.*;
+import branchManager.ManagerApproveController;
+import branchManager.ManagerWatchReportController;
+import buttons.*;
 import client.ClientBoundary;
-import customer.ProductsManager;
-import customer.ShopWindowController;
+import customer.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import mainWindow.*;
+import order.Order;
+import ordersPayment.*;
 import shop.ShopBoundary;
-import usersHomeWindows.UserHomeWindowGuiController;
+import usersHomeWindows.*;
+import usersManagment.AuthorizedCustomerBoundary;
 import usersManagment.BranchManagerBoundary;
 import usersManagment.CEOBoundary;
 import usersManagment.UserBoundary;
@@ -26,6 +30,19 @@ public class GuiObjectsFactory {
 	public BtnController btnController;
 	public UserHomeWindowGuiController userHomeWindowController;
 	public ShopWindowController shopWindowController;
+	public OrdersHistoryController ordersHistoryController;
+	public OrderDetailsController orderDetailsController;
+
+	public personalcardWindowController personalCardcontroller;
+	public HomeDeliveryWindowController HomeDeliveryDetails;
+	public ConfirmOrderWindowController confirmOrder;
+	public SuccedPayWindowController succedfailedpay;
+	public failedtopayWindowController failedpay;
+	public CreatePromotionWindowController createPromotion;
+	public BranchDeliveryChooseWindowController branch_Delivery;
+	// omer controlers
+	public ManagerApproveController managerApproveController;
+	public ManagerWatchReportController managerWatchReportController;
 
 	// gui manager
 	public BtnMenuManager btnMenuManager;
@@ -36,7 +53,9 @@ public class GuiObjectsFactory {
 	public ShopBoundary shopBoundary;
 	public ClientBoundary clientBoundary = new ClientBoundary();
 	public BranchManagerBoundary branchManagerBoundary;
-	public CEOBoundary ceoBoundary;
+	public CEOBoundary ceoBoundry;
+	public AuthorizedCustomerBoundary authorizedCustomerBoundary;
+	public Order order;
 
 	private GuiObjectsFactory() {
 		//
@@ -57,7 +76,7 @@ public class GuiObjectsFactory {
 		userBaundary = new UserBoundary();
 		shopBoundary = new ShopBoundary();
 		branchManagerBoundary = new BranchManagerBoundary();
-		ceoBoundary = new CEOBoundary();
+		authorizedCustomerBoundary = new AuthorizedCustomerBoundary();
 	}
 
 	public void loadAllFxmlFiles() throws IOException {
@@ -66,6 +85,23 @@ public class GuiObjectsFactory {
 		loginGuiController = (LoginGuiController) loadFxmlFile("/mainWindow/LoginWindow.fxml");
 		userHomeWindowController = (UserHomeWindowGuiController) loadFxmlFile("/usersHomeWindows/UserHomeWindow.fxml");
 		shopWindowController = (ShopWindowController) loadFxmlFile("/customer/ShopWindow.fxml");
+		ordersHistoryController = (OrdersHistoryController) loadFxmlFile("/customer/OrdersHistory.fxml");
+		orderDetailsController = (OrderDetailsController) loadFxmlFile("/customer/OrderDetailsWindow.fxml");
+
+		personalCardcontroller = (personalcardWindowController) loadFxmlFile("/ordersPayment/personalcard.fxml");
+		HomeDeliveryDetails = (HomeDeliveryWindowController) loadFxmlFile("/ordersPayment/shippingdetails.fxml");
+		confirmOrder = (ConfirmOrderWindowController) loadFxmlFile("/ordersPayment/confirmorders.fxml");
+		succedfailedpay = (SuccedPayWindowController) loadFxmlFile("/ordersPayment/succedfailedpay.fxml");
+		failedpay = (failedtopayWindowController) loadFxmlFile("/ordersPayment/failedtopay.fxml");
+		branch_Delivery = (BranchDeliveryChooseWindowController) loadFxmlFile(
+				"/ordersPayment/Branch&DeliveryChoose.fxml");
+		createPromotion = (CreatePromotionWindowController) loadFxmlFile("/PromotionWindow/createNewPromotion.fxml");
+
+		// managerApproveController = (ManagerApproveController)
+		// loadFxmlFile("/branchManager/approveOrders.fxml");
+		// managerWatchReportController =
+		managerWatchReportController = (ManagerWatchReportController)loadFxmlFile("/branchManager/managerWatchReport.fxml");
+
 		// init members
 		btnMenuManager = new BtnMenuManager();
 		productManager = new ProductsManager();

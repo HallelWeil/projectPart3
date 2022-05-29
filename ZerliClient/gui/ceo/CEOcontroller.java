@@ -28,7 +28,7 @@ import usersManagment.CEOBoundary;
 
 public class CEOcontroller implements IGuiController {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private CEOBoundary ceoBoundary = guiObjectsFactory.ceoBoundary;
+	private CEOBoundary ceoBoundry = guiObjectsFactory.ceoBoundry;
 	private IReportController leftReportController;
 	private IReportController rightReportController;
 	private IReportController middleReportController;
@@ -118,7 +118,7 @@ public class CEOcontroller implements IGuiController {
 
 	@FXML
 	void getReport(ActionEvent event) {
-		report = ceoBoundary.requestViewReport(ceoReportType.getSelectionModel().getSelectedItem(),
+		report = ceoBoundry.requestViewReport(ceoReportType.getSelectionModel().getSelectedItem(),
 				ceoReportMonth.getSelectionModel().getSelectedItem(),
 				ceoReportYear.getSelectionModel().getSelectedItem(),
 				ceoReportBranch.getSelectionModel().getSelectedItem());
@@ -152,7 +152,7 @@ public class CEOcontroller implements IGuiController {
 	@Override
 	public void openWindow() {
 		guiObjectsFactory.mainWindowController.changeWindowName("CEO - view report");
-		branches = ceoBoundary.getBranches();
+		branches = ceoBoundry.getBranches();
 		branchObs.setAll(branches);
 		monthObs.setAll(monthsList);
 		yearObs.setAll(yearsList);

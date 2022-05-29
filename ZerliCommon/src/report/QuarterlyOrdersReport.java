@@ -40,7 +40,7 @@ public class QuarterlyOrdersReport extends Report {
 	public void addOrdersOnDay(int day, int month, int amount) {
 		if (day > 31 || day < 1)
 			return;
-		ordersPerDay[month % 3][day - 1] += amount;
+		ordersPerDay[(month-1) % 3][day - 1] += amount;
 	}
 
 	public void addToCategory(String category, int amount) {

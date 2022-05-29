@@ -19,6 +19,8 @@ public class PaymentController {
 	public boolean pay(String cardInfo, double amount) throws Exception {
 		if (amount < 0)
 			throw new Exception("Cant pay " + amount);
+		if(cardInfo == null)
+			return false;
 		// if the credit card info is bad return false
 		// pay the amount
 		return true;

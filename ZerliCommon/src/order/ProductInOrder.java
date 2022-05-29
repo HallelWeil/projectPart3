@@ -12,8 +12,14 @@ public class ProductInOrder implements Serializable{
 	private String name;
 	private double price;
 	private int amount;
+	private double total;
 	private String category;
 	
+
+		public double getTotal() {
+		return total;
+	} 
+		
 	public int getOrderNumber() {
 		return orderNumber;
 	}
@@ -31,12 +37,14 @@ public class ProductInOrder implements Serializable{
 	}
 	public void setPrice(double price) {
 		this.price = price;
+		this.total=amount*price;
 	}
 	public int getAmount() {
 		return amount;
 	}
 	public void setAmount(int amount) {
 		this.amount = amount;
+		this.total=amount*price;
 	}
 	public String getCategory() {
 		return category;

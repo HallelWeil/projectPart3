@@ -79,14 +79,16 @@ public class ClientTask {
 			// some tasks are identical for all the connected users
 			switch (msgController.getType()) {
 			case LOG_OUT_REQUEST:
+			case EXIT:
 				// to log out remove the user entity
 				dbController.disconnectUser(user.getUsername());
 				this.orderController = null;
 				this.user = null;
 				newMsgToSend = ServerMsgController.createAPPROVE_LOGOUTMsg();
 				break;
-			case EXIT:
-				// none
+			case GET_BRANCH_LIST:
+				ArrayList<String> branches = dbController.getAllBranches();
+				newMsgToSend = ServerMsgController.createRETURN_BRANCH_NAMESMsg(branches);
 				break;
 			case ERROR:
 				// none
@@ -188,6 +190,15 @@ public class ClientTask {
 		case GET_ALL_ORDERS:
 			ArrayList<Order> orders = dbController.getAllOrdersInBranch(user.getBranchName(), null);
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
+			break;
+		case GET_USER:
+			User user = dbController.getUser(msgController.getUserName());
+			newMsgToSend = ServerMsgController.createRETURN_USERMsg(user);
+			break;
+		case GET_ORDER:
+			Order order = dbController.getOrdrFromDB(msgController.getOrderNumber());
+			order.setItems(dbController.getItemInOrderFromDB(msgController.getOrderNumber()));
+			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
 			break;
 		default:
 			// handle cant do it
@@ -363,7 +374,7 @@ public class ClientTask {
 			// use the order controller to pay
 			if (orderController.payForOrder(cardInfo)) {
 				// payment succeed, save the order!
-				if (dbController.saveOrderToDB(orderController.getActiveOrder())) {
+				if (orderController.saveOrderToDB()) {
 					// the order saved successfully
 					newMsgToSend = ServerMsgController.createRETURN_PAYMENT_APPROVALMsg();
 				} else {
@@ -384,6 +395,11 @@ public class ClientTask {
 		case UPDATE_ORDER_STATUS:
 			// update order status in the db
 			dbController.updateOrder(msgController.getOrder());
+			break;
+		case GET_ORDER:
+			Order order2 = dbController.getOrdrFromDB(msgController.getOrderNumber());
+			order2.setItems(dbController.getItemInOrderFromDB(msgController.getOrderNumber()));
+			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order2);
 			break;
 		default:
 			// handle cant do it

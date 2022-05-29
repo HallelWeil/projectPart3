@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import cart.Cart;
 import cart.ProductInCart;
 import catalog.CustomizedProduct;
-import catalog.Item;
+import database.DBBoundry;
+import database.DBController;
 import order.Order;
 import order.OrderStatus;
 import order.ProductInOrder;
@@ -74,11 +75,13 @@ public class OrderController {
 	public boolean payForOrder(String cardInfo) {
 		PaymentController paymnetControlelr = new PaymentController();
 		try {
-			return paymnetControlelr.pay(cardInfo, activeOrder.getPrice());
+			if (paymnetControlelr.pay(cardInfo, activeOrder.getPrice())) {
+				activeOrder.setOrderStatus(OrderStatus.WAITING_FOR_APPROAVL);
+				return true;
+			}
 		} catch (Exception e) {
-			return false;
 		}
-
+		return false;
 	}
 
 	/**
@@ -108,9 +111,7 @@ public class OrderController {
 			// if its a customized product calculate the price base on the items cost
 			if (product.getProduct() instanceof CustomizedProduct) {
 				CustomizedProduct tempProduct = (CustomizedProduct) (product.getProduct());
-				for (Item item : tempProduct.getItemsList()) {
-					tempPrice += item.getPrice();
-				}
+				tempPrice = tempProduct.getPriceRangeHighLimit();// the price is the high selected limit
 			}
 			// for regular product
 			else {
@@ -127,5 +128,20 @@ public class OrderController {
 			price += tempPrice;
 		}
 		return price;
+	}
+
+	public boolean saveOrderToDB() {
+		DBController dbcontroller = DBController.getInstance();
+		int orderNumber = dbcontroller.saveOrderToDB(activeOrder);
+		if (orderNumber !=-1) {
+			for (ProductInOrder p : activeOrder.getItems()) {
+				p.setOrderNumber(orderNumber);
+				if (!dbcontroller.saveItemInOrderToDB(p)) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 }

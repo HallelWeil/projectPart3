@@ -19,9 +19,4 @@ public class CEOBoundary extends UserBoundary {
 		}
 		return null;  //in case returned msg was ERROR for Example mean Report not found or exist 
 	}
-
-	public String[] getBranches() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

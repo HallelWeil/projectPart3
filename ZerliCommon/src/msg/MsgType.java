@@ -97,6 +97,18 @@ public enum MsgType {
 	 * get report with type month and year
 	 */
 	GET_REPORT,
+	/**
+	 * get the branch list
+	 */
+	GET_BRANCH_LIST,
+	/**
+	 * request user data
+	 */
+	GET_USER,
+	/**
+	 * get a single order
+	 */
+	GET_ORDER,
 	// server -> client
 	/**
 	 * return a report
@@ -138,5 +150,13 @@ public enum MsgType {
 	 * return all the user's order
 	 */
 	RETURN_ALL_ORDERS,
+	/**
+	 * Return arraylist of branch names
+	 */
+	RETURN_BRANCH_NAMES,
+	/**
+	 * return user data
+	 */
+	RETURN_USER,
 
 }

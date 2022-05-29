@@ -76,7 +76,7 @@ public class DBObjectsManager {
 				order.setOrderNumber(res.getInt("orderNumber"));
 				order.setOrderDate(res.getTimestamp("orderDate"));
 				order.setArrivalDate(res.getTimestamp("arrivalDate"));
-				order.setHomeDelivery(res.getBoolean("deliveryType"));
+				order.setHomeDelivery(res.getBoolean("homeDelivery"));
 				order.setBranchName(res.getString("branchName"));
 				order.setPrice(res.getDouble("price"));
 				order.setUsername(res.getString("customerID"));
@@ -135,9 +135,11 @@ public class DBObjectsManager {
 			while (res.next()) {
 				Product product = new Product(res.getInt("productID"));
 				product.setName(res.getString("name"));
-				product.setPrice(0);
+				product.setPrice(res.getDouble("price"));
 				product.setDescription(res.getString("description"));
 				product.setColors(res.getString("colors"));
+				product.setCategory(res.getString("category"));
+				product.setProductID(res.getInt("productID"));
 				product.setImage(null);
 				products.add(product);
 			}

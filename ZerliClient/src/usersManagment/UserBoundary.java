@@ -51,7 +51,7 @@ public class UserBoundary {
 	public void requestLogOut() {
 		// call the user controller action to logout,
 		userController.logout();
-		CurrentUser = new User(); // reset the user
+		CurrentUser = null; // reset the user
 		loginResults = new MsgController();
 	}
 

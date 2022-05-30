@@ -1,11 +1,11 @@
 package branchManager;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -52,12 +52,12 @@ public class ManagerWatchReportController implements IGuiController {
 	@FXML
 	private Label reportMessage;
 
-	private Integer[] monthsList = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-	private Integer[] yearsList = {2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010};
+	private ArrayList<Integer> monthsList;
+	private ArrayList<Integer> yearsList;
 
-	private ObservableList<Integer> yearObs;
-	private ObservableList<Integer> monthObs;
-	private ObservableList<ReportType> reportObs;
+	// private ObservableList<Integer> yearObs;
+	// private ObservableList<Integer> monthObs;
+	// private ObservableList<ReportType> reportObs;
 
 	@Override
 	public Pane getBasePane() {
@@ -69,23 +69,22 @@ public class ManagerWatchReportController implements IGuiController {
 
 		managerOpenReport.setDisable(true);
 		managerGetReport.setDisable(false);
-		managerReportMonth.getSelectionModel().clearSelection();
+		managerReportMonth.getSelectionModel().clearAndSelect(0);
 		managerReportYear.getSelectionModel().clearSelection();
 		managerReportType.getSelectionModel().clearSelection();
 	}
 
 	@Override
 	public void openWindow() {
-		ArrayList<Integer> years = (ArrayList<Integer>) IntStream.range(2015, 2020).boxed().collect(Collectors.toList());
-		Collections.reverse(years);
-		//monthObs.setAll(years);
-		yearObs.setAll(yearsList);
-		reportObs.setAll(ReportType.MONTHLY_ORDERS_REPORT, ReportType.MONTHLY_REVENU_EREPORT);
-		managerReportMonth.setItems(monthObs);
-		managerReportYear.setItems(yearObs);
-		managerReportType.setItems(reportObs);
-		guiObjectsFactory.mainWindowController.changeWindowName("View reports");
 		guiObjectsFactory.mainWindowController.showNewWindow(managerWatchReportPane);
+		guiObjectsFactory.mainWindowController.changeWindowName("Manager - watch report");
+		ArrayList<Integer> yearsList = (ArrayList<Integer>) IntStream.range(2000, LocalDate.now().getYear() + 1).boxed()
+				.collect(Collectors.toList());
+		Collections.reverse(yearsList);
+		monthsList = (ArrayList<Integer>) IntStream.range(1, 13).boxed().collect(Collectors.toList());
+		managerReportMonth.getItems().setAll(monthsList);
+		managerReportYear.getItems().setAll(yearsList);
+		managerReportType.getItems().setAll(ReportType.MONTHLY_ORDERS_REPORT, ReportType.MONTHLY_REVENU_EREPORT);
 	}
 
 	@FXML
@@ -93,12 +92,13 @@ public class ManagerWatchReportController implements IGuiController {
 		report = managerBoundry.requestViewReport(managerReportType.getSelectionModel().getSelectedItem(),
 				managerReportMonth.getSelectionModel().getSelectedItem(),
 				managerReportYear.getSelectionModel().getSelectedItem());
+		System.out.println(report.getBranchName());
 		managerOpenReport.setDisable(false);
 		managerGetReport.setDisable(true);
 	}
 
 	@FXML
-	void openReport(ActionEvent event) {
+	void openReport(ActionEvent event) throws IOException {
 		managerOpenReport.setDisable(true);
 		managerGetReport.setDisable(false);
 		reportController = getController();
@@ -107,14 +107,17 @@ public class ManagerWatchReportController implements IGuiController {
 		ceoReportScreen.getChildren().setAll(reportController.getBasePane());
 	}
 
-	private IReportController getController() {
-		switch (report.getType().ordinal()) {
-		case 0:
-			return new OrderReportController();
-		case 1:
-			return new RevenueReportController();
+	private IReportController getController() throws IOException {
+		System.out.println(report.getType().ordinal());
+		switch (report.getType()) {
+		case MONTHLY_ORDERS_REPORT:
+			return (OrderReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/ordersReport.fxml");
+		case MONTHLY_REVENU_EREPORT:
+			return (RevenueReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/revenueReport.fxml");
+		default:
+			return null;
 		}
-		return null;
+
 	}
 
 }

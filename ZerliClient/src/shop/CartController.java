@@ -157,9 +157,8 @@ public class CartController {
 	 */
 	public ArrayList<String> getAllBrances() {
 		
-		MsgController msgController= clientController.sendMsg(MsgController.createGET_BRANCH_LISTMsg());
-		if(msgController.getType() == MsgType.RETURN_BRANCH_NAMES)
-		{
+		MsgController msgController = clientController.sendMsg(MsgController.createGET_BRANCH_LISTMsg());
+		if (msgController.getType() == MsgType.RETURN_BRANCH_NAMES) {
 			return msgController.getBranchNames();
 		}
 		return null;

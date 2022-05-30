@@ -6,6 +6,7 @@ import java.net.URL;
 import PromotionWindow.*;
 import accessibility.AccessibilityPageController;
 import branchManager.ManagerApproveController;
+import branchManager.ManagerUpdateUser;
 import branchManager.ManagerWatchReportController;
 import buttons.*;
 import client.ClientBoundary;
@@ -57,6 +58,7 @@ public class GuiObjectsFactory {
 	// omer controlers
 	public ManagerApproveController managerApproveController;
 	public ManagerWatchReportController managerWatchReportController;
+	public ManagerUpdateUser managerUsersManagmetController;
 
 	// gui manager
 	public BtnMenuManager btnMenuManager;
@@ -120,15 +122,15 @@ public class GuiObjectsFactory {
 		managePromotions = (managePromotionWindowController) loadFxmlFile(
 				"/PromotionWindow/managePromotionsWindow.fxml");
 
+		managerUsersManagmetController = (ManagerUpdateUser) loadFxmlFile("/branchManager/userInfoUpdate.fxml");
+
 		// newComplaintController = (NewComplaint)
 		// loadFxmlFile("/customerService/NewComplaint.fxml");
 		// updateController = (UpdateComplaint)
 		// loadFxmlFile("/customerService/UpdateComplaint.fxml");
 		surveyResultsController = (SurveyResults) loadFxmlFile("/surveyGui/surveyResults.fxml");
 		showChoosenSurvey = (ShowChoosenSurvey) loadFxmlFile("/surveyGui/ChoosenSurvey.fxml");
-		// managerApproveController = (ManagerApproveController)
-		// loadFxmlFile("/branchManager/approveOrders.fxml");
-		// managerWatchReportController =
+		managerApproveController = (ManagerApproveController) loadFxmlFile("/branchManager/approveOrder.fxml");
 		managerWatchReportController = (ManagerWatchReportController) loadFxmlFile(
 				"/branchManager/managerWatchReport.fxml");
 

@@ -87,6 +87,7 @@ public class MsgController {
 			break;
 		case RETURN_REPORT:
 			report = (Report) newMsg.data;
+			break;
 		case RETURN_BRANCH_NAMES:
 			branchNames = (ArrayList<String>) newMsg.data;
 			break;

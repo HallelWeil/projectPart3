@@ -8,7 +8,7 @@ public class Report implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	private int month;
 	private int year;
 	private ReportType type;

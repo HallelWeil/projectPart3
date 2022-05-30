@@ -1,4 +1,6 @@
 package usersManagment;
+import java.util.ArrayList;
+
 import client.ClientController;
 import client.MsgController;
 import msg.Msg;
@@ -18,5 +20,13 @@ public class CEOBoundary extends UserBoundary {
 			return msgController.getReport();
 		}
 		return null;  //in case returned msg was ERROR for Example mean Report not found or exist 
+	}
+
+	public ArrayList<String> getBranches() {
+		MsgController msgController = clientController.sendMsg(MsgController.createGET_BRANCH_LISTMsg());
+		if (msgController.getType() == MsgType.RETURN_BRANCH_NAMES) {
+			return msgController.getBranchNames();
+		}
+		return null;
 	}
 }

@@ -115,10 +115,11 @@ public class DBController {
 
 	public int saveOrderToDB(Order order) {
 		int lastID = -1;
-		String s = "INSERT INTO " + DBname + ".order VALUES (default, '" + order.getOrderDate() + "','"
-				+ order.getArrivalDate() + "'," + order.isHomeDelivery() + ",'" + order.getBranchName() + "','"
-				+ order.getPrice() + "','" + order.getUsername() + "','" + order.getPersonalLetter() + "','"
-				+ order.getOrderStatus().toString() + "','" + order.getOrderData() + "');";
+		String s = "INSERT INTO " + DBname + ".order VALUES (default, TIMESTAMP '" + order.getOrderDate()
+				+ "',TIMESTAMP '" + order.getArrivalDate() + "'," + order.isHomeDelivery() + ",'"
+				+ order.getBranchName() + "','" + order.getPrice() + "','" + order.getUsername() + "','"
+				+ order.getPersonalLetter() + "','" + order.getOrderStatus().toString() + "','" + order.getOrderData()
+				+ "');";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		if (res) {
 			s = "SELECT last_insert_id() as last_id from " + DBname + ".order";
@@ -402,7 +403,8 @@ public class DBController {
 
 	public ArrayList<Order> getAllOrdersForReport(int month, int year) {
 		// create the query
-		String s = "SELECT * FROM " + DBname + ".order WHERE (month = " + month + " AND year = " + year + " );";
+		String s = "SELECT * FROM " + DBname + ".order WHERE (MONTH(DATE(orderDate)) = " + month
+				+ " AND YEAR(DATE(orderDate)) = " + year + " );";
 		// get the result
 		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
 		// get the returned values
@@ -420,7 +422,7 @@ public class DBController {
 		return products;
 	}
 
-	public ArrayList<Report> getAllQuarterReports(int startMonths, int endMonth, int year) {
+	public ArrayList<Report> getAllReportsInTimePeriod(int startMonths, int endMonth, int year) {
 		// create the query
 		String s = "SELECT * FROM " + DBname + ".report WHERE (month >= " + startMonths + " AND month <= " + endMonth
 				+ " AND year = " + year + ");";

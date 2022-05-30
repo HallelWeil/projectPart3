@@ -102,6 +102,7 @@ public class ManagerUpdateUser implements IGuiController {
 	@Override
 	public void openWindow() {
     	guiObjectsFactory.mainWindowController.changeWindowName("Manager - update user");
+    	guiObjectsFactory.mainWindowController.showNewWindow(managerUpdateUserPane);
     	userStatusCombo.setItems(null);
     	statusObs.addAll(UserStatus.values());
         typeObs.addAll(UserType.values());

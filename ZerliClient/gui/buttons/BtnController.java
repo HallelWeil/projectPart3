@@ -134,12 +134,12 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void manageOrders(ActionEvent event) {
-
+		guiObjectsFactory.managerApproveController.openWindow();
 	}
 
 	@FXML
 	void manageUsers(ActionEvent event) {
-		// guiObjectsFactory.man
+		guiObjectsFactory.managerUsersManagmetController.openWindow();
 	}
 
 	@FXML

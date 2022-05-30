@@ -1,8 +1,14 @@
 package ceo;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import branch.Branch;
+import branchManager.ManagerViewProducts;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,9 +67,9 @@ public class CEOcontroller implements IGuiController {
 
 	@FXML
 	private AnchorPane ceoWatchReportPane;
-	
-    @FXML
-    private SplitPane ceoSplitScreen;
+
+	@FXML
+	private SplitPane ceoSplitScreen;
 
 	@FXML
 	private AnchorPane leftReport;
@@ -76,14 +82,11 @@ public class CEOcontroller implements IGuiController {
 
 	@FXML
 	private ComboBox<String> ceoReportBranch;
-	
-	private Integer[] monthsList = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-	private Integer[] periodsList = {1, 2, 3, 4};
-	private Integer[] yearsList = {2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010};
-	private String[] branches = {"Main Branch", "Second Breanch", "Third Branch"};
-	private ObservableList<Integer> monthObs;
-	private ObservableList<String> branchObs;
-	private ObservableList<Integer> yearObs;
+
+	private ArrayList<Integer> monthsList;
+	private ArrayList<Integer> periodsList;
+	private ArrayList<Integer> yearsList;
+	private ArrayList<String> branches;
 
 	@FXML
 	void OpenReport(ActionEvent event) {
@@ -102,8 +105,8 @@ public class CEOcontroller implements IGuiController {
 		previewReport(rightReport, rightReportController);
 		ceoReportScreen.getChildren().setAll(ceoSplitScreen);
 	}
-	
-	private void previewReport(AnchorPane anchor, IReportController reportController ) {
+
+	private void previewReport(AnchorPane anchor, IReportController reportController) {
 		openReportBot.setDisable(true);
 		previewReportLeftBot.setDisable(true);
 		previewReportRightBot.setDisable(true);
@@ -111,10 +114,8 @@ public class CEOcontroller implements IGuiController {
 		reportController = getController();
 		reportController.setReport(report);
 		reportController.openWindow();
-		anchor.getChildren().setAll(reportController.getBasePane());	
+		anchor.getChildren().setAll(reportController.getBasePane());
 	}
-	
-	
 
 	@FXML
 	void getReport(ActionEvent event) {
@@ -122,7 +123,7 @@ public class CEOcontroller implements IGuiController {
 				ceoReportMonth.getSelectionModel().getSelectedItem(),
 				ceoReportYear.getSelectionModel().getSelectedItem(),
 				ceoReportBranch.getSelectionModel().getSelectedItem());
-		if(report != null) {
+		if (report != null) {
 			openReportBot.setDisable(false);
 			previewReportLeftBot.setDisable(false);
 			previewReportRightBot.setDisable(false);
@@ -144,57 +145,64 @@ public class CEOcontroller implements IGuiController {
 		ceoReportMonth.getSelectionModel().clearSelection();
 		ceoReportYear.getSelectionModel().clearSelection();
 		ceoReportBranch.getSelectionModel().clearSelection();
-		branchObs.clear();
-		
-
 	}
 
 	@Override
 	public void openWindow() {
 		guiObjectsFactory.mainWindowController.changeWindowName("CEO - view report");
-		branchObs.setAll(branches);
-		monthObs.setAll(monthsList);
-		yearObs.setAll(yearsList);
-		ceoReportBranch.setItems(branchObs);
-		ceoReportMonth.setItems(monthObs);
-		ceoReportYear.setItems(yearObs);
+		ArrayList<Integer> yearsList = (ArrayList<Integer>) IntStream.range(2000, LocalDate.now().getYear() + 1).boxed()
+				.collect(Collectors.toList());
+		Collections.reverse(yearsList);
+		monthsList = (ArrayList<Integer>) IntStream.range(1, 13).boxed().collect(Collectors.toList());
+		periodsList = (ArrayList<Integer>) IntStream.range(1, 5).boxed().collect(Collectors.toList());
+		branches = ceoBoundry.getBranches();
+		ceoReportBranch.getItems().setAll(branches);
+		ceoReportMonth.getItems().setAll(monthsList);
+		ceoReportYear.getItems().setAll(yearsList);
 		ceoReportType.getItems().setAll(ReportType.values());
 	}
-	
-    @FXML
-    void changeMonthChoice(ActionEvent event) {
-    	ceoReportMonth.setDisable(false);
-    	switch(ceoReportType.getSelectionModel().getSelectedItem().ordinal()) {
-    	case 0:
-    	case 1:
-    		if(monthObs.contains(5))
-    			break;
-    		monthObs.setAll(monthsList);
-    		ceoReportMonth.setPromptText("month");
-    		break;
-    	case 2:
-    	case 3:
-    	case 4:
-    		if(monthObs.contains(12))
-        		monthObs.setAll(periodsList);
-        		ceoReportMonth.setPromptText("period");
-    			break;
-    	}
-    }
-    
-    private IReportController getController() {
-    	switch(report.getType().ordinal()) {
-    	case 0:
-    		return new OrderReportController();
-    	case 1:
-    		return new RevenueReportController();
-    	case 2:
-    		return new QuarterlyOrdersReportController();
-    	case 3:
-    		return new QuarterlyRevenueReportController();
-    	case 4:
-    		return new SatisfactionReportController();
-    	}
+
+	@FXML
+	void changeMonthChoice(ActionEvent event) {
+		ceoReportMonth.setDisable(false);
+		switch (ceoReportType.getSelectionModel().getSelectedItem().ordinal()) {
+		case 0:
+		case 1:
+			if (ceoReportMonth.getItems().contains(5))
+				break;
+			ceoReportMonth.getItems().setAll(monthsList);
+			ceoReportMonth.setPromptText("month");
+			break;
+		case 2:
+		case 3:
+		case 4:
+			if (ceoReportMonth.getItems().contains(12))
+				ceoReportMonth.getItems().setAll(periodsList);
+			ceoReportMonth.setPromptText("period");
+			break;
+		}
+	}
+
+	private IReportController getController() {
+		try {
+			switch (report.getType().ordinal()) {
+			case 0:
+				return (OrderReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/ordersReport.fxml");
+			case 1:
+				return (RevenueReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/revenueReport.fxml");
+			case 2:
+				return (QuarterlyOrdersReportController) guiObjectsFactory
+						.loadFxmlFile("/reportGUI/quarterlyOrdersReport.fxml");
+			case 3:
+				return (QuarterlyRevenueReportController) guiObjectsFactory
+						.loadFxmlFile("/reportGUI/quarterlyRevenueReport.fxml");
+			case 4:
+				return (SatisfactionReportController) guiObjectsFactory
+						.loadFxmlFile("/reportGUI/satisfactionReport.fxml");
+			}
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 		return null;
 	}
 

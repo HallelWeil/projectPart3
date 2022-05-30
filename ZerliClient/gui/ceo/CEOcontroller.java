@@ -1,6 +1,10 @@
 package ceo;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import branch.Branch;
@@ -79,14 +83,10 @@ public class CEOcontroller implements IGuiController {
 	@FXML
 	private ComboBox<String> ceoReportBranch;
 	
-	private Integer[] monthsList = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-	private Integer[] periodsList = {1, 2, 3, 4};
-	private Integer[] yearsList = {2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010};
+	private ArrayList<Integer> monthsList;
+	private ArrayList<Integer> periodsList;
+	private ArrayList<Integer> yearsList;
 	private String[] branches = {"Main Branch", "Second Breanch", "Third Branch"};
-	private ObservableList<Integer> monthObs;
-	private ObservableList<String> branchObs;
-	private ObservableList<Integer> yearObs;
-
 	@FXML
 	void OpenReport(ActionEvent event) {
 		previewReport(ceoReportScreen, middleReportController);
@@ -143,22 +143,21 @@ public class CEOcontroller implements IGuiController {
 		ceoReportType.getSelectionModel().clearSelection();
 		ceoReportMonth.getSelectionModel().clearSelection();
 		ceoReportYear.getSelectionModel().clearSelection();
-		ceoReportBranch.getSelectionModel().clearSelection();
-		branchObs.clear();
-		
-
+		ceoReportBranch.getSelectionModel().clearSelection();	
 	}
 
 	@Override
 	public void openWindow() {
 		guiObjectsFactory.mainWindowController.changeWindowName("CEO - view report");
+		ArrayList<Integer> yearsList = (ArrayList<Integer>) IntStream.range(2000, LocalDate.now().getYear() + 1).boxed()
+				.collect(Collectors.toList());
+		Collections.reverse(yearsList);
+		monthsList = (ArrayList<Integer>) IntStream.range(1, 13 ).boxed().collect(Collectors.toList());
+		periodsList = (ArrayList<Integer>) IntStream.range(1, 5).boxed().collect(Collectors.toList());
 		branches = ceoBoundry.getBranches();
-		branchObs.setAll(branches);
-		monthObs.setAll(monthsList);
-		yearObs.setAll(yearsList);
-		ceoReportBranch.setItems(branchObs);
-		ceoReportMonth.setItems(monthObs);
-		ceoReportYear.setItems(yearObs);
+		ceoReportBranch.getItems().setAll(branches);
+		ceoReportMonth.getItems().setAll(monthsList);
+		ceoReportYear.getItems().setAll(yearsList);
 		ceoReportType.getItems().setAll(ReportType.values());
 	}
 	
@@ -168,16 +167,16 @@ public class CEOcontroller implements IGuiController {
     	switch(ceoReportType.getSelectionModel().getSelectedItem().ordinal()) {
     	case 0:
     	case 1:
-    		if(monthObs.contains(5))
+    		if(ceoReportMonth.getItems().contains(5))
     			break;
-    		monthObs.setAll(monthsList);
+    		ceoReportMonth.getItems().setAll(monthsList);
     		ceoReportMonth.setPromptText("month");
     		break;
     	case 2:
     	case 3:
     	case 4:
-    		if(monthObs.contains(12))
-        		monthObs.setAll(periodsList);
+    		if(ceoReportMonth.getItems().contains(12))
+    			ceoReportMonth.getItems().setAll(periodsList);
         		ceoReportMonth.setPromptText("period");
     			break;
     	}

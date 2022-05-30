@@ -26,6 +26,7 @@ public class DBBoundry {
 	 * @return : RsultSet on select, else return boolean
 	 */
 	public Object sendQueary(String query) {
+		System.out.println(query);
 		Statement stmt;
 		ResultSet res = null;
 		try {
@@ -57,8 +58,10 @@ public class DBBoundry {
 	public boolean ConnectDriver() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+			System.out.println("got here");
 			return true;
 		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
 			return false;
 		}
 	}

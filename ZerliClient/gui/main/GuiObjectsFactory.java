@@ -96,7 +96,7 @@ public class GuiObjectsFactory {
 		branch_Delivery = (BranchDeliveryChooseWindowController) loadFxmlFile(
 				"/ordersPayment/Branch&DeliveryChoose.fxml");
 		createPromotion = (CreatePromotionWindowController) loadFxmlFile("/PromotionWindow/createNewPromotion.fxml");
-
+		managerApproveController = (ManagerApproveController) loadFxmlFile("/branchManager/approveOrder.fxml");
 		// managerApproveController = (ManagerApproveController)
 		// loadFxmlFile("/branchManager/approveOrders.fxml");
 		// managerWatchReportController =

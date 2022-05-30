@@ -64,7 +64,7 @@ public class ManagerApproveController implements IGuiController {
 	@FXML
 	private TableColumn<Order, String> orderUserCol;
 
-	ObservableList<Order> ordersObs = FXCollections.observableArrayList();
+	//ObservableList<Order> ordersObs = FXCollections.observableArrayList();
 	Order selectedOrder;
 
 	public void initializeOrdersTable() {
@@ -81,8 +81,7 @@ public class ManagerApproveController implements IGuiController {
 	public void openWindow() {
 		guiObjectsFactory.mainWindowController.showNewWindow(orderApprovePane);
 		initializeOrdersTable();
-		ordersObs.setAll(managerBoundry.getAllOrders());
-		managerOrderTable.setItems(ordersObs);
+		managerOrderTable.getItems().setAll(managerBoundry.getAllOrdersToApprove());
 		guiObjectsFactory.mainWindowController.changeWindowName("Manager - Approve Order");
 	}
 
@@ -93,7 +92,6 @@ public class ManagerApproveController implements IGuiController {
 
 	@Override
 	public void resetController() {
-		ordersObs.clear();
 		managerOrderTable.getItems().clear();
 		selectedOrder = null;
 		errorLabel.setVisible(false);

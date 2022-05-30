@@ -192,13 +192,19 @@ public class ClientTask {
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		case GET_USER:
-			User user = dbController.getUser(msgController.getUserName());
-			newMsgToSend = ServerMsgController.createRETURN_USERMsg(user);
+			User tempuser = dbController.getUser(msgController.getUserName());
+			newMsgToSend = ServerMsgController.createRETURN_USERMsg(tempuser);
 			break;
 		case GET_ORDER:
 			Order order = dbController.getOrdrFromDB(msgController.getOrderNumber());
 			order.setItems(dbController.getItemInOrderFromDB(msgController.getOrderNumber()));
 			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
+			break;
+		case GET_REPORT:
+			Report tempReport = new Report(msgController.getMonth(), msgController.getYear(),
+					msgController.getReportType(), user.getBranchName());
+			Report report = dbController.getReportFromDB(tempReport);
+			newMsgToSend = ServerMsgController.creatRETURN_REPORTMsg(report);
 			break;
 		default:
 			// handle cant do it

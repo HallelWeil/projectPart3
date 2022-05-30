@@ -209,17 +209,7 @@ public class MsgController {
 		return msg;
 	}
 
-	/**
-	 * create new ACTIVATE_PROMOTION msg
-	 * 
-	 * @return
-	 */
-	public static Msg createACTIVATE_PROMOTIONMsg(Promotion promotion) {
-		Msg msg = new Msg();
-		msg.type = MsgType.ACTIVATE_PROMOTION;
-		msg.data = promotion;
-		return msg;
-	}
+	
 
 	/**
 	 * create new GET_CATALOG_PAGE msg
@@ -453,5 +443,38 @@ public class MsgController {
 		msg.data = orderNumber;
 		return msg;
 	}
-
+	
+	
+	/**
+	 * CREATE_NEW_PROMOTION
+	 * @return
+	 */
+	public static Msg createCREATE_NEW_PROMOTIONMsg(Promotion promotion) {
+		Msg msg = new Msg();
+		msg.type = MsgType.CREATE_NEW_PROMOTION;
+		msg.data = promotion;
+		return msg;
+	}
+	
+	/**
+	 * END_PROMOTION
+	 * @return
+	 */
+	public static Msg createEND_PROMOTIONMsg(int promotionNumber) {
+		Msg msg = new Msg();
+		msg.type = MsgType.END_PROMOTION;
+		msg.data = promotionNumber;
+		return msg;
+	}
+	/**
+	 * activate existing promotion
+	 * 
+	 * @return
+	 */
+	public static Msg createACTIVATE_PROMOTIONMsg(int promotionNumber) {
+		Msg msg = new Msg();
+		msg.type = MsgType.ACTIVATE_PROMOTION;
+		msg.data = promotionNumber;
+		return msg;
+	}
 }

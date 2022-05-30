@@ -1,6 +1,7 @@
 package promotion;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import common.Status;
 
@@ -14,20 +15,10 @@ public class Promotion implements Serializable {
 	private String promotionText;
 	private Status status;
 	private double discount;
-	private String productName;
+	private int promotionNumber;
+	private Timestamp creationDate;
 
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
-	public Promotion(int productID, String promotionText) {
-		this.productID = productID;
-		this.promotionText = promotionText;
-		status = Status.Active;
+	public Promotion() {		
 	}
 
 	public Status getStatus() {
@@ -56,6 +47,25 @@ public class Promotion implements Serializable {
 
 	public double getDiscount() {
 		return discount;
+	}
+	public Timestamp getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Timestamp creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public void setDiscount(double discount) {
+		this.discount = discount;
+	}
+
+	public int getPromotionNumber() {
+		return promotionNumber;
+	}
+
+	public void setPromotionNumber(int promotionNumber) {
+		this.promotionNumber = promotionNumber;
 	}
 
 }

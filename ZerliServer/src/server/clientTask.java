@@ -9,6 +9,7 @@ import msg.Msg;
 import ocsf.server.ConnectionToClient;
 import order.Order;
 import orderManagment.OrderController;
+import promotionManagment.PromotionManager;
 import report.Report;
 import survey.Survey;
 import user.User;
@@ -50,6 +51,8 @@ public class ClientTask {
 	 */
 	private Msg newMsgToSend;
 
+	private PromotionManager promotionManager;
+
 	public ClientTask(ConnectionToClient client) {
 		super();
 		this.client = client;
@@ -59,6 +62,7 @@ public class ClientTask {
 		CompletedMsg = ServerMsgController.createCOMPLETEDMsg();
 		ErrorMsg = ServerMsgController.createERRORMsg("");
 		orderController = null;
+		promotionManager = new PromotionManager();
 	}
 
 	/**
@@ -312,12 +316,16 @@ public class ClientTask {
 	private void handleMArketingEmployeeRequest() {
 		switch (msgController.getType()) {
 		case ACTIVATE_PROMOTION:
-			if (dbController.savePromotion(msgController.getPromotion()) != -1) {
-				// the promotion was created
-				// to do -> update the item price
-				newMsgToSend = CompletedMsg;
-			} else
-				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to create the promotion");
+			newMsgToSend = promotionManager.activatePromotion(msgController.getPromotionNumber());
+			break;
+		case CREATE_NEW_PROMOTION:
+			newMsgToSend = promotionManager.createNewPromotion(msgController.getPromotion());
+			break;
+		case END_PROMOTION:
+			newMsgToSend = promotionManager.deactivatePromotion(msgController.getPromotionNumber());
+			break;
+		case GET_ALL_PROMOTIONS:
+			newMsgToSend = promotionManager.getAllPromotions();
 			break;
 		case UPDATE_CATALOG:
 			if (dbController.updateProduct(msgController.getProduct()))

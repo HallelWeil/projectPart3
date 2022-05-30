@@ -6,6 +6,7 @@ import java.sql.Blob;
 import catalog.Product;
 import common.Status;
 import complaint.Complaint;
+import order.DeliveryDetails;
 import order.Order;
 import order.ProductInOrder;
 import promotion.Promotion;
@@ -131,32 +132,6 @@ public class DBController {
 		return res;
 	}
 
-	public Report getReportFromDB(Report report) {
-		// create the query
-		String s = "SELECT * FROM " + DBname + ".report WHERE branchName = '" + report.getBranchName()
-				+ "' AND type = '" + report.getType().toString() + "' AND year = " + report.getYear() + " AND month = "
-				+ report.getMonth() + ";";
-		// get the result
-		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
-		// get the returned values
-		ArrayList<Report> reports = objectManager.reportDB(res);
-		return reports.size() > 0 ? reports.get(0) : null;
-	}
-
-	// will be implemented in the future, not supposed to work
-	public boolean saveReportToDB(Report report) {
-		// create the query
-		byte[] data;
-		String sdata = objectManager.objectToBlobString(report);
-		String s = "INSERT INTO " + DBname + ".report VALUES ('" + report.getBranchName() + "','"
-				+ report.getType().toString() + "','" + report.getYear() + "','" + report.getMonth() + "','" + sdata
-				+ "');";
-		// get the result
-		boolean res = (boolean) dbBoundry.sendQueary(s);
-		// get the returned values
-		return res;
-	}
-
 	public boolean saveItemInOrderToDB(ProductInOrder product) {
 		// create the query
 		String s = "INSERT INTO " + DBname + ".productinorder VALUES ('" + product.getOrderNumber() + "','"
@@ -188,6 +163,72 @@ public class DBController {
 			return null;
 		}
 		return itemsList;
+	}
+
+	public ArrayList<Order> getAllOrdersInBranch(String branchName, String customerID) {
+		// create the query
+		String s = "SELECT * FROM " + DBname + ".order WHERE (branchName = '" + branchName + "' );";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		ArrayList<Order> orders = objectManager.orderDB(res);
+		return orders;
+	}
+
+	public ArrayList<Order> getAllOrdersOfCustomer(String branchName, String customerID) {
+		// create the query
+		String s = "SELECT * FROM " + DBname + ".order WHERE (customerID = '" + customerID + "' );";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		ArrayList<Order> orders = objectManager.orderDB(res);
+		return orders;
+	}
+
+	public DeliveryDetails getDeliveryDetails(int orderNumber) {
+		// create the query
+		String s = "SELECT * FROM " + DBname + ".deliverydetails WHERE orderNumber = " + orderNumber + ";";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		DeliveryDetails deliveryDetails = objectManager.deliveryDetailsDB(res);
+		return deliveryDetails;
+	}
+
+	public boolean saveDeliveryDetails(DeliveryDetails deliveryDetails) {
+		// create the query
+		String s = "INSERT INTO " + DBname + ".deliverydetails VALUES (" + deliveryDetails.getOrderID() + ",'"
+				+ deliveryDetails.getFirstName() + "','" + deliveryDetails.getLastName() + "','"
+				+ deliveryDetails.getAddress() + "','" + deliveryDetails.getPhoneNumber() + "','"
+				+ deliveryDetails.getComments() + "');";
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	public Report getReportFromDB(Report report) {
+		// create the query
+		String s = "SELECT * FROM " + DBname + ".report WHERE branchName = '" + report.getBranchName()
+				+ "' AND type = '" + report.getType().toString() + "' AND year = " + report.getYear() + " AND month = "
+				+ report.getMonth() + ";";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		ArrayList<Report> reports = objectManager.reportDB(res);
+		return reports.size() > 0 ? reports.get(0) : null;
+	}
+
+	// will be implemented in the future, not supposed to work
+	public boolean saveReportToDB(Report report) {
+		// create the query
+		byte[] data;
+		String sdata = objectManager.objectToBlobString(report);
+		String s = "INSERT INTO " + DBname + ".report VALUES ('" + report.getBranchName() + "','"
+				+ report.getType().toString() + "','" + report.getYear() + "','" + report.getMonth() + "','" + sdata
+				+ "');";
+		// get the result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		// get the returned values
+		return res;
 	}
 
 	public boolean connectUser(String username, String password) throws Exception {
@@ -232,26 +273,6 @@ public class DBController {
 		// send query + get result
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
-	}
-
-	public ArrayList<Order> getAllOrdersInBranch(String branchName, String customerID) {
-		// create the query
-		String s = "SELECT * FROM " + DBname + ".order WHERE (branchName = '" + branchName + "' );";
-		// get the result
-		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
-		// get the returned values
-		ArrayList<Order> orders = objectManager.orderDB(res);
-		return orders;
-	}
-
-	public ArrayList<Order> getAllOrdersOfCustomer(String branchName, String customerID) {
-		// create the query
-		String s = "SELECT * FROM " + DBname + ".order WHERE (customerID = '" + customerID + "' );";
-		// get the result
-		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
-		// get the returned values
-		ArrayList<Order> orders = objectManager.orderDB(res);
-		return orders;
 	}
 
 	public Survey getSurvey(int surveyNumber) {
@@ -377,19 +398,6 @@ public class DBController {
 		return products;
 	}
 
-	public int savePromotion(Promotion promotion) {
-		int lastID = -1;
-		String s = "INSERT INTO " + DBname + ".promotion  VALUES (default , '" + promotion.getProductID() + "','"
-				+ promotion.getDiscount() + "','" + promotion.getPromotionText() + "');";
-		boolean res = (boolean) dbBoundry.sendQueary(s);
-		if (res) {
-			s = "SELECT last_insert_id() as last_id from promotion";
-			ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
-			lastID = objectManager.lastID(idRes);
-		}
-		return lastID;
-	}
-
 	public ArrayList<Order> getAllOrdersForReport(int month, int year) {
 		// create the query
 		String s = "SELECT * FROM " + DBname + ".order WHERE (month = " + month + " AND year = " + year + " );";
@@ -449,8 +457,68 @@ public class DBController {
 		return branches;
 	}
 
+	// promotions management
+	public int savePromotion(Promotion promotion) {
+		int lastID = -1;
+		String s = "INSERT INTO " + DBname + ".promotion  VALUES (default , '" + promotion.getProductID() + "','"
+				+ promotion.getDiscount() + "','" + promotion.getPromotionText() + "');";
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		if (res) {
+			s = "SELECT last_insert_id() as last_id from promotion";
+			ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
+			lastID = objectManager.lastID(idRes);
+		}
+		return lastID;
+	}
+
+	public Product getProduct(int productID) {
+		String s = "SELECT * FROM " + DBname + ".product WHERE (productID = '" + productID + "');";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		ArrayList<Product> prod = objectManager.productDB(res);
+		if (prod.size() == 0)
+			return null;
+		else
+			return prod.get(0);
+	}
+
 	public boolean updateProduct(Product product) {
-		// TODO Auto-generated method stub
-		return false;
+		// create the query
+		String s = "UPDATE  " + DBname + ".product  SET oldPrice  = " + product.getOldPrice() + ",  price = "
+				+ product.getPrice() + " WHERE productID = " + product.getProductID() + ";";
+		// send query + get result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	public boolean updatePromotion(int promotionID, Status status) {
+		// create the query
+		String s = "UPDATE  " + DBname + ".promotion  SET status  = '" + status.toString() + "' WHERE promotionID = "
+				+ promotionID + ";";
+		// send query + get result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	public Promotion getPromotion(int promotionNumber) {
+		String s = "SELECT * FROM " + DBname + ".promotion WHERE promotionID = " + promotionNumber + ";";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		ArrayList<Promotion> promotions = objectManager.promotionsDB(res);
+		if (promotions.size() == 0)
+			return null;
+		else
+			return promotions.get(0);
+	}
+
+	public ArrayList<Promotion> getAllPromotions() {
+		String s = "SELECT * FROM " + DBname + ".promotion ;";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		ArrayList<Promotion> promotions = objectManager.promotionsDB(res);
+		return promotions;
 	}
 }

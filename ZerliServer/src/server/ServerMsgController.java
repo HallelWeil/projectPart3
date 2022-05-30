@@ -36,6 +36,7 @@ public class ServerMsgController {
 	private int year, month;
 	private String branch;
 	private int orderNumber;
+	private int promotionNumber;
 
 	private void resetParser() {
 		this.type = MsgType.NONE;
@@ -57,6 +58,7 @@ public class ServerMsgController {
 		month = 0;
 		branch = "";
 		orderNumber = 0;
+		promotionNumber = 0;
 	}
 
 	/**
@@ -79,9 +81,6 @@ public class ServerMsgController {
 		case CREATE_COMPLAINT:
 		case UPDATE_COMPLAINT:
 			complaint = (Complaint) newMsg.data;
-			break;
-		case ACTIVATE_PROMOTION:
-			promotion = (Promotion) newMsg.data;
 			break;
 		case GET_CATALOG_PAGE:
 			ArrayList<Serializable> data = (ArrayList<Serializable>) newMsg.data;
@@ -137,12 +136,22 @@ public class ServerMsgController {
 		case GET_ORDER:
 			orderNumber = (int) newMsg.data;
 			break;
+		case CREATE_NEW_PROMOTION:
+			promotion = (Promotion) newMsg.data;
+			break;
+		case END_PROMOTION:
+			promotionNumber = (int) newMsg.data;
+			break;
+		case ACTIVATE_PROMOTION:
+			promotionNumber = (int) newMsg.data;
+			break;
 		case GET_ALL_COMPLAINTS:
 		case GET_ALL_ORDERS:
 		case LOG_OUT_REQUEST:
 		case GET_ALL_SURVEY:
 		case PAY_FOR_ORDER:
 		case GET_BRANCH_LIST:
+		case GET_ALL_PROMOTIONS:
 		case EXIT:
 		case ERROR:
 			break;
@@ -151,7 +160,15 @@ public class ServerMsgController {
 		}
 		return true;
 	}
+
 	// getters
+	public int getPromotionNumber() {
+		return promotionNumber;
+	}
+
+	public void setPromotionNumber(int promotionNumber) {
+		this.promotionNumber = promotionNumber;
+	}
 
 	public ReportType getReportType() {
 		return reportType;
@@ -406,6 +423,18 @@ public class ServerMsgController {
 		Msg msg = new Msg();
 		msg.type = MsgType.RETURN_BRANCH_NAMES;
 		msg.data = branches;
+		return msg;
+	}
+
+	/**
+	 * RETURN_ALL_PROMOTIONS msg
+	 * 
+	 * @return
+	 */
+	public static Msg createRETURN_ALL_PROMOTIONSMsg(ArrayList<Promotion> promotions) {
+		Msg msg = new Msg();
+		msg.type = MsgType.RETURN_ALL_PROMOTIONS;
+		msg.data = promotions;
 		return msg;
 	}
 }

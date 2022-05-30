@@ -13,9 +13,11 @@ import java.util.Base64;
 import catalog.Product;
 import common.Status;
 import complaint.Complaint;
+import order.DeliveryDetails;
 import order.Order;
 import order.OrderStatus;
 import order.ProductInOrder;
+import promotion.Promotion;
 import report.Report;
 import survey.Survey;
 import user.User;
@@ -238,6 +240,43 @@ public class DBObjectsManager {
 			System.out.println(e.getMessage());
 		}
 		return branches;
+	}
+
+	public ArrayList<Promotion> promotionsDB(ResultSet res) {
+		ArrayList<Promotion> promotions = new ArrayList<>();
+		try {
+			while (res.next()) {
+				Promotion promotion = new Promotion();
+				promotion.setCreationDate(res.getTimestamp("creationDate"));
+				promotion.setDiscount(res.getDouble("discount"));
+				promotion.setProductID(res.getInt("productID"));
+				promotion.setPromotionNumber(res.getInt("promotionID"));
+				promotion.setPromotionText(res.getString("promotionText"));
+				promotion.setStatus(Status.valueOf(res.getString("status")));
+				promotions.add(promotion);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return promotions;
+	}
+
+	public DeliveryDetails deliveryDetailsDB(ResultSet res) {
+		DeliveryDetails deliveryDetails = null;
+		try {
+			if (res.next()) {
+				deliveryDetails = new DeliveryDetails();
+				deliveryDetails.setOrderID(res.getInt("orderNumber"));
+				deliveryDetails.setAddress(res.getString("address"));
+				deliveryDetails.setComments(res.getString("comments"));
+				deliveryDetails.setFirstName(res.getString("firstName"));
+				deliveryDetails.setLastName(res.getString("lastName"));
+				deliveryDetails.setPhoneNumber(res.getString("phoneNumber"));
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return deliveryDetails;
 	}
 
 }

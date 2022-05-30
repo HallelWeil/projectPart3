@@ -460,8 +460,9 @@ public class DBController {
 	// promotions management
 	public int savePromotion(Promotion promotion) {
 		int lastID = -1;
-		String s = "INSERT INTO " + DBname + ".promotion  VALUES (default , '" + promotion.getProductID() + "','"
-				+ promotion.getDiscount() + "','" + promotion.getPromotionText() + "');";
+		String s = "INSERT INTO " + DBname + ".promotion  VALUES (default , " + promotion.getProductID() + ","
+				+ promotion.getDiscount() + ",'" + promotion.getPromotionText() + "','" + promotion.getCreationDate()
+				+ "','" + promotion.getStatus().toString() + "');";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		if (res) {
 			s = "SELECT last_insert_id() as last_id from promotion";

@@ -1,10 +1,10 @@
 package PromotionWindow;
 
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -15,15 +15,12 @@ public class CreatePromotionWindowController implements IGuiController {
 
 	@FXML
 	private AnchorPane basePane;
-	
+
 	@FXML
 	private TextField ItemID;
 
 	@FXML
 	private TextField Discount;
-
-	@FXML
-	private TextField PromotionTxt;
 
 	@FXML
 	private Button createbutton;
@@ -33,9 +30,11 @@ public class CreatePromotionWindowController implements IGuiController {
 
 	@FXML
 	private Label errorLabel;
-	
-	private GuiObjectsFactory guiobjectfactory = GuiObjectsFactory.getInstance();
 
+	@FXML
+	private TextArea PromotionTxt;
+
+	private GuiObjectsFactory guiobjectfactory = GuiObjectsFactory.getInstance();
 
 	@FXML
 	void cancelButtonPressed(ActionEvent event) {
@@ -43,17 +42,37 @@ public class CreatePromotionWindowController implements IGuiController {
 
 	@FXML
 	void createButtonPressed(ActionEvent event) {
-       if(ItemID.getText().isEmpty()||Discount.getText().isEmpty()||PromotionTxt.getText().isEmpty())
-       {
-    	   errorLabel.setText("**please fill all the Fields");
-       }
-       try {
-      // guiobjectfactory.promotion.activatePromotion(Integer.parseInt(ItemID.getText()), Double.parseDouble(Discount.getText()),PromotionTxt.getText());
-       }
-       catch(Exception e) {
-    	   errorLabel.setText("ERROR: Invalid Data");
-    	   return;
-       }
+		double convertedDiscount;
+		int productNumber;
+		if (ItemID.getText().isEmpty() || Discount.getText().isEmpty() || PromotionTxt.getText().isEmpty()) {
+			errorLabel.setText("**please fill all the Fields");
+			return;
+		}
+		try {
+			convertedDiscount = Double.parseDouble(Discount.getText()) / 100;
+		} catch (NumberFormatException e) {
+			errorLabel.setText("Discount number must be a bumber");
+			return;
+		}
+		if (convertedDiscount < 0 || convertedDiscount > 1) {
+			errorLabel.setText("**please Enter a correct Discount 0 - 100 %");
+			return;
+		}
+		try {
+			productNumber = Integer.parseInt(ItemID.getText());
+		} catch (NumberFormatException e) {
+			errorLabel.setText("Product number must be a bumber");
+			return;
+		}
+		try
+
+		{
+			guiobjectfactory.marketingEmployeeBoundary.requestcreateNewPromotion(productNumber, convertedDiscount,
+					PromotionTxt.getText());
+		} catch (Exception e) {
+			errorLabel.setText(e.getMessage());
+			return;
+		}
 	}
 
 	@Override
@@ -63,7 +82,10 @@ public class CreatePromotionWindowController implements IGuiController {
 
 	@Override
 	public void resetController() {
-		// TODO Auto-generated method stub
+		ItemID.setText("");
+		errorLabel.setText("");
+		PromotionTxt.setText("");
+		Discount.setText("");
 
 	}
 

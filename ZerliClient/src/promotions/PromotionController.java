@@ -1,6 +1,7 @@
 package promotions;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import client.ClientController;
 import client.MsgController;
@@ -70,5 +71,16 @@ public class PromotionController {
 			return;
 		if (msgController.getType() == MsgType.ERROR)
 			throw new Exception(msgController.getErrorMsg());
+	}
+	
+public ArrayList<Promotion> getAllPromotions() {
+	MsgController msgController= ClientController.getInstance().sendMsg(MsgController.createGET_ALL_PROMOTIONSMsg());
+	if(msgController.getType() == MsgType.RETURN_ALL_PROMOTIONS)
+	{
+		return msgController.getAllpromotions();
+	}
+	return null;
+	
+		
 	}
 }

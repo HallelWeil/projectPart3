@@ -53,7 +53,13 @@
       </Label>
       <CheckBox fx:id="checkboxSendGift" layoutX="63.0" layoutY="549.0" mnemonicParsing="false" onAction="#sendAsGift" text="Send as a gift" />
       <CheckBox fx:id="checkboxsendMail" layoutX="62.0" layoutY="580.0" mnemonicParsing="false" onAction="#SendReceiptToEmail" text="Send receipt to my Email address" />
-      <Button fx:id="confirmandpaybutton" contentDisplay="RIGHT" layoutX="1054.0" layoutY="640.0" mnemonicParsing="false" onAction="#confirmPayButtpress" style="-fx-background-color: #2f41a7;" text="Confirm and pay" />
-      <Button fx:id="backbutton" layoutX="17.0" layoutY="640.0" mnemonicParsing="false" onAction="#backbuttpress" prefHeight="25.0" prefWidth="63.0" style="-fx-background-color: #2f41a7;" text="back" />
+      <Button fx:id="confirmandpaybutton" contentDisplay="RIGHT" layoutX="1048.0" layoutY="640.0" mnemonicParsing="false" onAction="#confirmPayButtpress" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: #2f41a7;" text="Confirm and pay" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font></Button>
+      <Button fx:id="backbutton" layoutX="17.0" layoutY="640.0" mnemonicParsing="false" onAction="#backbuttpress" prefHeight="40.0" prefWidth="69.0" style="-fx-background-color: #2f41a7;" text="Back" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font></Button>
    </children>
 </AnchorPane>

@@ -86,7 +86,7 @@ public class PromotionManager {
 	private double calculateNewPrice(double price, double discount) {
 		Double newPrice = price - price * discount;
 		// create the price
-		newPrice = newPrice.intValue() + 0.99;
+		newPrice = newPrice.intValue() - 1 + 0.99;
 		return newPrice;
 	}
 

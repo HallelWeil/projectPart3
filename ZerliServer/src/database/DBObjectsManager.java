@@ -142,6 +142,7 @@ public class DBObjectsManager {
 				product.setColors(res.getString("colors"));
 				product.setCategory(res.getString("category"));
 				product.setProductID(res.getInt("productID"));
+				product.setOldPrice(res.getDouble("oldPrice"));
 				product.setImage(null);
 				products.add(product);
 			}

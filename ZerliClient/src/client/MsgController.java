@@ -27,6 +27,7 @@ public class MsgController {
 	private Report report;
 	private String errorMsg;
 	private ArrayList<String> branchNames;
+	private ArrayList<Promotion> Allpromotions;
 
 	public MsgController() {
 		resetParser();
@@ -42,6 +43,7 @@ public class MsgController {
 		this.survey = null;
 		branchNames = null;
 		this.user = null;
+		this.Allpromotions=null;
 	}
 
 	/**
@@ -90,6 +92,9 @@ public class MsgController {
 		case RETURN_USER:
 			user = (User) newMsg.data;
 			break;
+		case RETURN_ALL_PROMOTIONS:
+			Allpromotions=(ArrayList<Promotion>) newMsg.data;
+			break;
 		case ERROR:
 			errorMsg = (String) newMsg.data;
 		case RETURN_PAYMENT_APPROVAL:
@@ -103,6 +108,10 @@ public class MsgController {
 		return true;
 	}
 	// getters
+
+	public ArrayList<Promotion> getAllpromotions() {
+		return Allpromotions;
+	}
 
 	public MsgType getType() {
 		return type;
@@ -417,6 +426,13 @@ public class MsgController {
 	public static Msg createGET_BRANCH_LISTMsg() {
 		Msg msg = new Msg();
 		msg.type = MsgType.GET_BRANCH_LIST;
+		msg.data = null;
+		return msg;
+	}
+	
+	public static Msg createGET_ALL_PROMOTIONSMsg() {
+		Msg msg = new Msg();
+		msg.type = MsgType.GET_ALL_PROMOTIONS;
 		msg.data = null;
 		return msg;
 	}

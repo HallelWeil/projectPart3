@@ -19,6 +19,7 @@ import usersHomeWindows.*;
 import usersManagment.AuthorizedCustomerBoundary;
 import usersManagment.BranchManagerBoundary;
 import usersManagment.CEOBoundary;
+import usersManagment.MarketingEmployeeBoundary;
 import usersManagment.UserBoundary;
 
 public class GuiObjectsFactory {
@@ -39,7 +40,10 @@ public class GuiObjectsFactory {
 	public SuccedPayWindowController succedfailedpay;
 	public failedtopayWindowController failedpay;
 	public CreatePromotionWindowController createPromotion;
+	public managePromotionWindowController managePromotions;
 	public BranchDeliveryChooseWindowController branch_Delivery;
+	
+	
 	// omer controlers
 	public ManagerApproveController managerApproveController;
 	public ManagerWatchReportController managerWatchReportController;
@@ -55,6 +59,7 @@ public class GuiObjectsFactory {
 	public BranchManagerBoundary branchManagerBoundary;
 	public CEOBoundary ceoBoundry;
 	public AuthorizedCustomerBoundary authorizedCustomerBoundary;
+	public MarketingEmployeeBoundary marketingEmployeeBoundary;
 	public Order order;
 
 	private GuiObjectsFactory() {
@@ -77,6 +82,7 @@ public class GuiObjectsFactory {
 		shopBoundary = new ShopBoundary();
 		branchManagerBoundary = new BranchManagerBoundary();
 		authorizedCustomerBoundary = new AuthorizedCustomerBoundary();
+		marketingEmployeeBoundary=new MarketingEmployeeBoundary();
 	}
 
 	public void loadAllFxmlFiles() throws IOException {
@@ -88,14 +94,15 @@ public class GuiObjectsFactory {
 		ordersHistoryController = (OrdersHistoryController) loadFxmlFile("/customer/OrdersHistory.fxml");
 		orderDetailsController = (OrderDetailsController) loadFxmlFile("/customer/OrderDetailsWindow.fxml");
 
-		personalCardcontroller = (personalcardWindowController) loadFxmlFile("/ordersPayment/personalcard.fxml");
-		HomeDeliveryDetails = (HomeDeliveryWindowController) loadFxmlFile("/ordersPayment/shippingdetails.fxml");
-		confirmOrder = (ConfirmOrderWindowController) loadFxmlFile("/ordersPayment/confirmorders.fxml");
-		succedfailedpay = (SuccedPayWindowController) loadFxmlFile("/ordersPayment/succedfailedpay.fxml");
-		failedpay = (failedtopayWindowController) loadFxmlFile("/ordersPayment/failedtopay.fxml");
-		branch_Delivery = (BranchDeliveryChooseWindowController) loadFxmlFile(
-				"/ordersPayment/Branch&DeliveryChoose.fxml");
+	personalCardcontroller=(personalcardWindowController)loadFxmlFile("/ordersPayment/PersonalCardWindow.fxml");
+		HomeDeliveryDetails=(HomeDeliveryWindowController)loadFxmlFile("/ordersPayment/HomeDeliveryWindow.fxml");
+		confirmOrder=(ConfirmOrderWindowController)loadFxmlFile("/ordersPayment/ConfirmOrderWindow.fxml");
+		succedfailedpay=(SuccedPayWindowController)loadFxmlFile("/ordersPayment/SuccedPayWindow.fxml");
+		failedpay=(failedtopayWindowController)loadFxmlFile("/ordersPayment/FailedToPayWindow.fxml");
+		branch_Delivery=(BranchDeliveryChooseWindowController)loadFxmlFile("/ordersPayment/Branch&DeliveryChoose.fxml");
+
 		createPromotion = (CreatePromotionWindowController) loadFxmlFile("/PromotionWindow/createNewPromotion.fxml");
+		managePromotions = (managePromotionWindowController) loadFxmlFile("/PromotionWindow/managePromotionsWindow.fxml");
 
 		// managerApproveController = (ManagerApproveController)
 		// loadFxmlFile("/branchManager/approveOrders.fxml");

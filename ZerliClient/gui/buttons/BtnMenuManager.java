@@ -72,6 +72,7 @@ public class BtnMenuManager {
 
 	public void setMarketingEmployeeBtns() {
 		guiObjectsFactory.mainWindowController.setBtn(btns.getCreatePromotionBtn(), 2);
+		guiObjectsFactory.mainWindowController.setBtn(btns.getManagePromotionsBtn(), 3);
 	}
 
 	public void setCSEmployeeBtns() {

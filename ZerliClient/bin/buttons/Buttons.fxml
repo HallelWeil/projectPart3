@@ -289,6 +289,21 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
+      <Button fx:id="managePromotionsBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="40.0" layoutY="336.0" mnemonicParsing="false" onAction="#managePromotions" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Manage promotions" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold Italic" size="10.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="44.0">
+               <image>
+                  <Image url="@../../lib/icons/discount_history.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
    <cursor>
       <Cursor fx:constant="HAND" />

@@ -140,9 +140,18 @@ public class ShopBoundary {
 	 *                        store pickup is chosen
 	 */
 	public void selectDeliveryOption(boolean isHomedelivery) {
-		cartCon.chooseHomeDelivery();
-		homeDeliveryflag = isHomedelivery;
 
+		homeDeliveryflag = isHomedelivery;
+		if(isHomedelivery)
+		cartCon.chooseHomeDelivery();
+
+	}
+	/**
+	 * request to get list of all branches 
+	 * @return arraylist of all branches 
+	 */
+	public ArrayList<String> getAllBranches(){
+		return cartCon.getAllBrances();
 	}
 
 	/**

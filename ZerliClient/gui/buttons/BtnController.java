@@ -76,9 +76,13 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	private ImageView logo;
-	
-	public ImageView getLogo() {
-		return logo;
+
+	@FXML
+	private Button managePromotionsBtn;
+
+	@FXML
+	void managePromotions(ActionEvent event) {
+		guiObjectsFactory.managePromotions.openWindow();
 	}
 
 	@FXML
@@ -103,7 +107,7 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void createPromotion(ActionEvent event) {
-
+		guiObjectsFactory.createPromotion.openWindow();
 	}
 
 	@FXML
@@ -130,12 +134,12 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void manageOrders(ActionEvent event) {
-		
+
 	}
 
 	@FXML
 	void manageUsers(ActionEvent event) {
-		//guiObjectsFactory.man
+		// guiObjectsFactory.man
 	}
 
 	@FXML
@@ -259,7 +263,14 @@ public class BtnController implements IGuiController {
 		return userHomeBtn;
 	}
 
-	
+	public Button getManagePromotionsBtn() {
+		return managePromotionsBtn;
+	}
+
+	public ImageView getLogo() {
+		return logo;
+	}
+
 	@Override
 	public void openWindow() {
 		// move to the next window

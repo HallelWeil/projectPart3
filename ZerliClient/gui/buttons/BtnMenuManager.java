@@ -78,8 +78,7 @@ public class BtnMenuManager {
 	public void setCSEmployeeBtns() {
 		guiObjectsFactory.mainWindowController.setBtn(btns.getCreateComplaintBtn(), 2);
 		guiObjectsFactory.mainWindowController.setBtn(btns.getUpdateComplaintBtn(), 3);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getViewSurveyBtn(), 4);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getEnterSurveyresultBtn(), 5);
+		guiObjectsFactory.mainWindowController.setBtn(btns.getEnterSurveyresultBtn(), 4);
 	}
 
 	public void setLoginWindowBtns() {

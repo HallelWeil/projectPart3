@@ -2,10 +2,12 @@ package database;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.io.Serializable;
 import java.sql.Blob;
 import catalog.Product;
 import common.Status;
 import complaint.Complaint;
+import files.SimpleFile;
 import order.DeliveryDetails;
 import order.Order;
 import order.ProductInOrder;
@@ -296,9 +298,9 @@ public class DBController {
 		return pdf;
 	}
 
-	public boolean saveSurveyResult(int surveyNumber, java.sql.Blob blob) {
+	public boolean saveSurveyResult(int surveyNumber, SimpleFile resultFile) {
 		// create the query
-		String pdf = objectManager.objectToBlobString(blob);
+		String pdf = objectManager.objectToBlobString(resultFile);
 		String s = "UPDATE  " + DBname + ".survey  SET surveyResult = '" + pdf + "'  WHERE (surveyNumber = "
 				+ surveyNumber + ");";
 		// get the result

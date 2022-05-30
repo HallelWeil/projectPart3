@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import cart.Cart;
 import catalog.Product;
 import complaint.Complaint;
+import files.SimpleFile;
 import msg.Msg;
 import msg.MsgType;
 import order.Order;
@@ -288,7 +289,7 @@ public class MsgController {
 	 * 
 	 * @return
 	 */
-	public static Msg createADD_SURVEY_RESULTMsg(Serializable resultFile, int surveyNumber) {
+	public static Msg createADD_SURVEY_RESULTMsg(SimpleFile resultFile, int surveyNumber) {
 		Msg msg = new Msg();
 		msg.type = MsgType.ADD_SURVEY_RESULT;
 		ArrayList<Serializable> data = new ArrayList<Serializable>();

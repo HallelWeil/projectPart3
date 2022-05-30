@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import cart.Cart;
 import catalog.Product;
 import complaint.Complaint;
+import files.SimpleFile;
 import msg.Msg;
 import msg.MsgType;
 import order.Order;
@@ -25,7 +26,7 @@ public class ServerMsgController {
 	private Cart cart;
 	private Product product;
 	private Survey survey;
-	private Serializable resultFile;
+	private SimpleFile resultFile;
 	private int surveyNumber;
 	private int[] answers;
 	private String userName;
@@ -99,7 +100,7 @@ public class ServerMsgController {
 		case ADD_SURVEY_RESULT:
 			ArrayList<Serializable> surveyData = (ArrayList<Serializable>) newMsg.data;
 			surveyNumber = (int) surveyData.get(0);
-			resultFile = surveyData.get(1);
+			resultFile = (SimpleFile) surveyData.get(1);
 			break;
 		case ADD_SURVEY_ANSWERS:
 			answers = new int[6];
@@ -162,6 +163,7 @@ public class ServerMsgController {
 	}
 
 	// getters
+	
 	public int getPromotionNumber() {
 		return promotionNumber;
 	}
@@ -218,7 +220,7 @@ public class ServerMsgController {
 		return survey;
 	}
 
-	public Serializable getResultFile() {
+	public SimpleFile getResultFile() {
 		return resultFile;
 	}
 

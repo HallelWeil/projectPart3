@@ -92,7 +92,7 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void accessibility(ActionEvent event) {
-
+		guiObjectsFactory.accessibilityPageController.openWindow();
 	}
 
 	@FXML
@@ -164,7 +164,7 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void surveyResult(ActionEvent event) {
-
+		guiObjectsFactory.surveyResultsController.openWindow();
 	}
 
 	@FXML

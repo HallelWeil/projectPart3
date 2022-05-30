@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import client.ClientController;
 import client.MsgController;
 import files.FilesController;
+import files.SimpleFile;
 import survey.Survey;
 import msg.MsgType;
 
@@ -24,7 +25,11 @@ public class SurveyController {
 	 */
 	public void enterSurveyResults(int sNumber, String path) throws Exception {
 		FilesController fileController = new FilesController();
-		fileController.savePdfFileToObject(path, "Survey_" + sNumber + "_Result");
+		SimpleFile pdfFile = fileController.savePdfFileToObject(path, "Survey_" + sNumber + "_Result");
+		msgController = client.sendMsg(MsgController.createADD_SURVEY_RESULTMsg(pdfFile, sNumber));
+		if (msgController.getType() == MsgType.ERROR) {
+			throw new Exception(msgController.getErrorMsg());
+		}
 	}
 
 	/**
@@ -78,5 +83,10 @@ public class SurveyController {
 			return msgController.getSurveys();
 		else
 			throw new Exception("cannot get all survey");
+	}
+
+	public void saveSurveyResultToLocalFile(SimpleFile sm, String path) {
+		FilesController fileController = new FilesController();
+		fileController.savePdfFileFromObjectToPath(path, sm);
 	}
 }

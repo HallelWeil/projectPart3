@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <HBox fx:id="basePane" prefHeight="100.0" prefWidth="900.0" style="-fx-border-color: black;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="customer.ProductGuiController">
    <children>
@@ -49,11 +50,11 @@
                   <Font name="System Bold Italic" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="oldPriceLabel" prefHeight="17.0" prefWidth="100.0" text="old Price">
+            <Text fx:id="oldPriceText" strikethrough="true" strokeType="OUTSIDE" strokeWidth="0.0" text="old Price" wrappingWidth="65.13671875">
                <font>
-                  <Font name="Segoe UI Bold Italic" size="14.0" />
+                  <Font size="16.0" />
                </font>
-            </Label>
+            </Text>
          </children>
       </VBox>
       <AnchorPane fx:id="btnsPane" prefHeight="200.0" prefWidth="200.0">

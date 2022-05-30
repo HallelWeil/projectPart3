@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
@@ -37,9 +38,6 @@ public class ProductGuiController implements IGuiController {
 	private AnchorPane imagePane;
 
 	@FXML
-	private Label oldPriceLabel;
-
-	@FXML
 	private Label priceLabel;
 
 	@FXML
@@ -50,6 +48,9 @@ public class ProductGuiController implements IGuiController {
 
 	@FXML
 	private AnchorPane btnsPane;
+
+	@FXML
+	private Text oldPriceText;
 
 	private Product product;
 
@@ -87,7 +88,11 @@ public class ProductGuiController implements IGuiController {
 		flowerNAme.setText(product.getName() + "(" + product.getColors() + ")");
 		FlowerDescription.setText(product.getDescription());
 		priceLabel.setText(product.getPrice() + "");
-		oldPriceLabel.setText("");
+		if (product.getOldPrice() == 0) {
+			oldPriceText.setText("");
+		} else {
+			oldPriceText.setText("" + product.getOldPrice());
+		}
 		amount.setText("1");
 		if (product.getCategory().equals("singleItems")) {
 			btnsPane.getChildren().remove(addToCartBtn);

@@ -107,7 +107,8 @@ public class DBController {
 
 	public boolean updateOrder(Order order) {
 		// create the query
-		String s = "UPDATE  " + DBname + ".order  SET orderStatus = '" + order.getOrderStatus().toString() + "' ;";
+		String s = "UPDATE  " + DBname + ".order  SET orderStatus = '" + order.getOrderStatus().toString()
+				+ "'  WHERE (orderNumber = " + order.getOrderNumber() + ") ;";
 		// send query + get result
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;

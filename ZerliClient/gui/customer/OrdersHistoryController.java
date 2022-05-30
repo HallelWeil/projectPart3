@@ -56,6 +56,9 @@ public class OrdersHistoryController implements IGuiController {
 
 	@FXML
 	private TableColumn<Order, String> orderUserCol;
+	
+	@FXML
+	private TableColumn<Order, OrderStatus> statusCol;
 
 	ObservableList<Order> ordersObs = FXCollections.observableArrayList();
 	Order selectedOrder;;
@@ -70,6 +73,7 @@ public class OrdersHistoryController implements IGuiController {
 		orderNumCol.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
 		orderPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 		orderUserCol.setCellValueFactory(new PropertyValueFactory<>("username"));
+		statusCol.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
 	}
 
 	@Override

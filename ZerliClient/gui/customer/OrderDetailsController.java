@@ -69,6 +69,7 @@ public class OrderDetailsController implements IGuiController {
 
 	@FXML
 	private TableColumn<ProductInOrder, Double> productTotalCol;
+	
 
 	ObservableList<ProductInOrder> productsObs = FXCollections.observableArrayList();
 	Order selectedOrder;
@@ -81,6 +82,7 @@ public class OrderDetailsController implements IGuiController {
 		prodOrderNumCol.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
 		productPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 		productAmountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
+		productTotalCol.setCellValueFactory(new PropertyValueFactory<>("total"));
 	}
 
 	@Override
@@ -91,7 +93,7 @@ public class OrderDetailsController implements IGuiController {
 		displayDeliveryDetails();
 		productsObs.addAll(selectedOrder.getItems());
 		productsInOrderTable.setItems(productsObs);
-		guiObjectsFactory.mainWindowController.changeWindowName("Order details");
+		guiObjectsFactory.mainWindowController.changeWindowName("Order details - " + selectedOrder.getOrderNumber());
 		guiObjectsFactory.mainWindowController.showNewWindow(orderDetailsBasePane);
 	}
 

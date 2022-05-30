@@ -361,20 +361,20 @@ public class ShopWindowController implements IGuiController {
 	private void changePrice(String range) {
 		double topVal = 10, botVal = 20;
 		if (range.equals("10-20")) {
-			topVal = 10;
-			botVal = 20;
+			topVal = 20;
+			botVal = 10;
 		}
 		if (range.equals("20-30")) {
-			topVal = 20;
-			botVal = 30;
+			topVal = 30;
+			botVal = 20;
 		}
 		if (range.equals("30-40")) {
-			topVal = 30;
-			botVal = 40;
+			topVal = 40;
+			botVal = 30;
 		}
 		if (range.equals("40-50")) {
-			topVal = 40;
-			botVal = 50;
+			topVal = 50;
+			botVal = 40;
 		}
 		currentCustomizedProduct.choosePrice(topVal, botVal);
 	}

@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import catalog.Product;
 import msg.Msg;
 import order.Order;
-import orderManagment.OrderController;
+import orderManagment.OrderProcessManager;
 import server.ServerMsgController;
 
 public class AuthorizedCustomerTask extends ClientTasks {
 	/**
 	 * order controller to manage the order process
 	 */
-	private OrderController orderController;
+	private OrderProcessManager orderController;
 
 	public AuthorizedCustomerTask(HandleClientTask clientTaskHandler) {
 		super(clientTaskHandler);
@@ -67,7 +67,7 @@ public class AuthorizedCustomerTask extends ClientTasks {
 			break;
 		case PLACE_ORDER_REQUEST:
 			// use the order controller
-			orderController = new OrderController();
+			orderController = new OrderProcessManager();
 			Order order = orderController.placeOrder(msgController.getCart(), 0,
 					clientTaskHandler.getActiveUser().getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);

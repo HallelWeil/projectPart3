@@ -43,8 +43,9 @@ public class CourierControllerGUI implements IGuiController {
 			guiObjectsFactory.courierBoundary.requestConfirmDelivery(orderNumber);
 		} catch (Exception e) {
 			setError(e.getMessage());
+			return;
 		}
-		setError("Delivery is completed successfully");
+		setError("Delivery confirmed successfully");
 		orderNumber = -1;
 	}
 

@@ -99,9 +99,9 @@ public class DBController {
 	}
 
 	/**
-	 * Update existing order color and date
+	 * Update existing order status
 	 * 
-	 * @param order with updated color and date
+	 * @param order with updated status
 	 * @return true if the order was updated
 	 */
 

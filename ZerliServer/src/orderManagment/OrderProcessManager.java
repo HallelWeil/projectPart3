@@ -19,7 +19,7 @@ import paymentManagment.PaymentController;
  * @author halel
  *
  */
-public class OrderController {
+public class OrderProcessManager {
 
 	private Order activeOrder;
 

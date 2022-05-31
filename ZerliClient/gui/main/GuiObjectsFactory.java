@@ -11,6 +11,7 @@ import branchManager.ManagerApproveController;
 import branchManager.ManagerUpdateUser;
 import branchManager.ManagerWatchReportController;
 import buttons.*;
+import ceo.CEOcontroller;
 import client.ClientBoundary;
 import courier.CourierControllerGUI;
 import customer.*;
@@ -68,7 +69,8 @@ public class GuiObjectsFactory {
 	public ManagerApproveController managerApproveController;
 	public ManagerWatchReportController managerWatchReportController;
 	public ManagerUpdateUser managerUsersManagmetController;
-
+	public CEOcontroller ceoController;
+	
 	// or controllers
 	public SearchSurverControllerGUI searchSurvey;
 	public SurveyControllerGUI showSurvey;
@@ -115,6 +117,7 @@ public class GuiObjectsFactory {
 		employeeServiceBoundary = new CustomerServiceEmployeeBoundary();
 		branchEmployeeBoundary = new BranchEmployeeBoundary();
 		courierBoundary = new CourierBoundary();
+		ceoBoundry = new CEOBoundary();
 	}
 
 	public void loadAllFxmlFiles() throws IOException {
@@ -159,6 +162,7 @@ public class GuiObjectsFactory {
 		managerApproveController = (ManagerApproveController) loadFxmlFile("/branchManager/approveOrder.fxml");
 		managerWatchReportController = (ManagerWatchReportController) loadFxmlFile(
 				"/branchManager/managerWatchReport.fxml");
+		ceoController = (CEOcontroller) loadFxmlFile("/ceo/ceoWatchReport.fxml");
 
 		// init members
 		btnMenuManager = new BtnMenuManager();

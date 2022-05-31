@@ -23,35 +23,36 @@ public class OrderReportController implements IGuiController, IReportController 
 	private HashMap<String, Integer> ordersPerCategory;
 	private Series<Integer, Integer> daySeries;
 
-	@FXML
-	private Label averageOrdersMonthLabel;
+    @FXML
+    private Label averageOrdersMonthLabel;
 
-	@FXML
-	private Label branchLabel;
+    @FXML
+    private Label branchLabel;
 
-	@FXML
-	private Label dateLabel;
+    @FXML
+    private Label dateLabel;
 
-	@FXML
-	private Label orderNumLabel;
+    @FXML
+    private CategoryAxis dayAxis;
 
-	@FXML
-	private AnchorPane orderReportPane;
+    @FXML
+    private Label orderNumLabel;
 
-	@FXML
-	private PieChart ordersPerCategoryChart;
+    @FXML
+    private AnchorPane orderReportPane;
 
-	@FXML
-	private LineChart<Integer, Integer> ordersPerDayChart;
+    @FXML
+    private NumberAxis ordersNumAxis;
 
-	@FXML
-	private Label popularItemLabel;
+    @FXML
+    private PieChart ordersPerCategoryChart;
 
-	@FXML
-	private NumberAxis ordersNumAxis;
+    @FXML
+    private LineChart<Integer, Integer> ordersPerDayChart;
 
-	@FXML
-	private CategoryAxis dayAxis;
+    @FXML
+    private Label popularItemLabel;
+	
 
 	@Override
 	public Pane getBasePane() {
@@ -80,9 +81,9 @@ public class OrderReportController implements IGuiController, IReportController 
 			branchLabel.setText(ordersReport.getBranchName() + " branch");
 			orderNumLabel.setText(ordersReport.getTotalOrders() + "");
 			popularItemLabel.setText(ordersReport.getMostPopularItem());
-			averageOrdersMonthLabel.setText(String.format("%02d", ordersReport.getAvarageMonthlyOrders()));
+			averageOrdersMonthLabel.setText(Double.toString(ordersReport.getAvarageMonthlyOrders()));
 			setPerDayChart();
-			setPerCategoryChart();
+			//setPerCategoryChart();
 		}
 	}
 
@@ -97,7 +98,7 @@ public class OrderReportController implements IGuiController, IReportController 
 		for (int i = 0; i < 31; i++) {
 			daySeries.getData().add(new XYChart.Data<Integer, Integer>(i, ordersPerDay[i]));
 		}
-		ordersPerDayChart.getData().add(daySeries);
+		ordersPerDayChart.getData().setAll(daySeries);
 	}
 
 	private void setPerCategoryChart() {

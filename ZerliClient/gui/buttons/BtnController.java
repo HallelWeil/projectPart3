@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import user.UserType;
 import usersManagment.UserBoundary;
 
 public class BtnController implements IGuiController {
@@ -149,7 +150,12 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void openReports(ActionEvent event) {
-		guiObjectsFactory.managerWatchReportController.openWindow();
+		if (UserBoundary.CurrentUser != null) {
+			if (UserBoundary.CurrentUser.getUserType() == UserType.BranchManager)
+				guiObjectsFactory.managerWatchReportController.openWindow();
+			else if (UserBoundary.CurrentUser.getUserType() == UserType.CEO)
+				guiObjectsFactory.ceoController.openWindow();
+		}
 	}
 
 	@FXML

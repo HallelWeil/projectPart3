@@ -266,6 +266,7 @@ public class ReportsController {
 		double revenue = 0;
 		if (orders != null)
 			for (Order order : orders) {
+				order.setItems(dbController.getAllProductsInOrder(order.getOrderNumber()));
 				if (order.getItems() != null)
 					for (ProductInOrder item : order.getItems()) {
 						addToCounter(itemsCounter, item.getName(), item.getAmount());

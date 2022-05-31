@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -37,6 +38,18 @@ public class CEOcontroller implements IGuiController {
 	private IReportController rightReportController;
 	private IReportController middleReportController;
 	private Report report = null;
+	private OrderReportController orderReportController;
+	private RevenueReportController revenueReportController;
+	private QuarterlyOrdersReportController quarterlyOrdersReportController;
+	private QuarterlyRevenueReportController quarterlyRevenueReportController;
+	private SatisfactionReportController SatisfactionReportController;
+	
+
+    @FXML
+    private AnchorPane MiddleReport;
+    
+    @FXML
+    private ScrollPane middleScroll;
 
 	@FXML
 	private Button getReportBot;
@@ -63,13 +76,7 @@ public class CEOcontroller implements IGuiController {
 	private ComboBox<Integer> ceoReportYear;
 
 	@FXML
-	private Button ceoSaveReport;
-
-	@FXML
 	private AnchorPane ceoWatchReportPane;
-
-	@FXML
-	private SplitPane ceoSplitScreen;
 
 	@FXML
 	private AnchorPane leftReport;
@@ -85,26 +92,28 @@ public class CEOcontroller implements IGuiController {
 
 	private ArrayList<Integer> monthsList;
 	private ArrayList<Integer> periodsList;
-	private ArrayList<Integer> yearsList;
 	private ArrayList<String> branches;
 
 	@FXML
-	void OpenReport(ActionEvent event) {
-		previewReport(ceoReportScreen, middleReportController);
+	void openReport(ActionEvent event) {
+		previewReport(MiddleReport, middleReportController);
+		middleScroll.setVisible(true);
+		
 	}
 
 	@FXML
-	void PreviewReportLeft(ActionEvent event) {
+	void previewReportLeft(ActionEvent event) {
 		previewReport(leftReport, leftReportController);
-		ceoReportScreen.getChildren().setAll(ceoSplitScreen);
+		middleScroll.setVisible(false);
 
 	}
 
 	@FXML
-	void PreviewReportRight(ActionEvent event) {
+	void previewReportRight(ActionEvent event) {
 		previewReport(rightReport, rightReportController);
-		ceoReportScreen.getChildren().setAll(ceoSplitScreen);
+		middleScroll.setVisible(false);
 	}
+		
 
 	private void previewReport(AnchorPane anchor, IReportController reportController) {
 		openReportBot.setDisable(true);
@@ -139,27 +148,39 @@ public class CEOcontroller implements IGuiController {
 	@Override
 	public void resetController() {
 		report = null;
+		middleScroll.setVisible(false);
 		ceoReportMonth.setDisable(true);
 		ceoReportMonth.setPromptText("month");
 		ceoReportType.getSelectionModel().clearSelection();
+		ceoReportType.setPromptText("report type");
 		ceoReportMonth.getSelectionModel().clearSelection();
+		ceoReportMonth.setPromptText("month");
 		ceoReportYear.getSelectionModel().clearSelection();
+		ceoReportYear.setPromptText("year");
 		ceoReportBranch.getSelectionModel().clearSelection();
+		ceoReportBranch.setPromptText("branch");
 	}
 
 	@Override
-	public void openWindow() {
+	public void openWindow(){
 		guiObjectsFactory.mainWindowController.changeWindowName("CEO - view report");
+		guiObjectsFactory.mainWindowController.showNewWindow(ceoWatchReportPane);
 		ArrayList<Integer> yearsList = (ArrayList<Integer>) IntStream.range(2000, LocalDate.now().getYear() + 1).boxed()
 				.collect(Collectors.toList());
 		Collections.reverse(yearsList);
 		monthsList = (ArrayList<Integer>) IntStream.range(1, 13).boxed().collect(Collectors.toList());
 		periodsList = (ArrayList<Integer>) IntStream.range(1, 5).boxed().collect(Collectors.toList());
 		branches = ceoBoundry.getBranches();
+		System.out.println(branches);
 		ceoReportBranch.getItems().setAll(branches);
 		ceoReportMonth.getItems().setAll(monthsList);
 		ceoReportYear.getItems().setAll(yearsList);
-		ceoReportType.getItems().setAll(ReportType.values());
+		ceoReportType.getItems().setAll(ReportType.values());	
+		try {
+			loadFXMLs();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -182,24 +203,33 @@ public class CEOcontroller implements IGuiController {
 			break;
 		}
 	}
+	
+	private void loadFXMLs() throws IOException{
+		orderReportController = (OrderReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/ordersReport.fxml");
+		revenueReportController = (RevenueReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/revenueReport.fxml");
+		quarterlyOrdersReportController = (QuarterlyOrdersReportController) guiObjectsFactory
+				.loadFxmlFile("/reportGUI/quarterlyOrdersReport.fxml");
+		quarterlyRevenueReportController = (QuarterlyRevenueReportController) guiObjectsFactory
+				.loadFxmlFile("/reportGUI/quarterlyRevenueReport.fxml");
+		SatisfactionReportController = (SatisfactionReportController) guiObjectsFactory
+				.loadFxmlFile("/reportGUI/satisfactionReport.fxml");	
+	}
 
 	private IReportController getController() {
-		switch (report.getType().ordinal()) {
-		case 0:
-			return (OrderReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/ordersReport.fxml");
-		case 1:
-			return (RevenueReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/revenueReport.fxml");
-		case 2:
-			return (QuarterlyOrdersReportController) guiObjectsFactory
-					.loadFxmlFile("/reportGUI/quarterlyOrdersReport.fxml");
-		case 3:
-			return (QuarterlyRevenueReportController) guiObjectsFactory
-					.loadFxmlFile("/reportGUI/quarterlyRevenueReport.fxml");
-		case 4:
-			return (SatisfactionReportController) guiObjectsFactory
-					.loadFxmlFile("/reportGUI/satisfactionReport.fxml");
-		}
-		return null;
+			switch (report.getType()) {
+				case MONTHLY_ORDERS_REPORT:
+					return orderReportController;
+				case MONTHLY_REVENU_EREPORT:
+					return revenueReportController;
+				case QUARTERLY_ORDERS_REPORT:
+					return quarterlyOrdersReportController;
+				case QUARTERLY_REVENUE_REPORT:
+					return quarterlyRevenueReportController;
+				case QUARTERLY_SATISFACTION_REPORT:
+					return SatisfactionReportController;
+				default:
+					return null;
+			}
 	}
 
 }

@@ -97,7 +97,7 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void approvedelivery(ActionEvent event) {
-
+		guiObjectsFactory.courierConfirmDelivery.openWindow();
 	}
 
 	@FXML
@@ -159,7 +159,7 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void surveyAnswers(ActionEvent event) {
-
+		guiObjectsFactory.searchSurvey.openWindow();
 	}
 
 	@FXML

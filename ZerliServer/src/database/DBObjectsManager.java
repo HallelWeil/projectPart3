@@ -102,11 +102,13 @@ public class DBObjectsManager {
 				Survey survey = new Survey(res.getString("q1"), res.getString("q2"), res.getString("q3"),
 						res.getString("q4"), res.getString("q5"), res.getString("q6"));
 				int[] answers = new int[6];
-				for (int i = 1; i < 6; i++) {
-					answers[i] = res.getInt("a" + i);
+				for (int i = 1; i <= 6; i++) {
+					answers[i - 1] = res.getInt("a" + i);
 				}
 				SimpleFile resultFile = (SimpleFile) blobToObject(res.getBlob("surveyResult"));
 				survey.setResultFile(resultFile);
+				survey.setAnswers(answers);
+				survey.setNumberOfParticipants(res.getInt("participants"));
 				surveys.add(survey);
 				survey.setSurveyNumber(res.getInt("surveyNumber"));
 			}
@@ -120,12 +122,13 @@ public class DBObjectsManager {
 		ArrayList<Complaint> complaints = new ArrayList<>();
 		try {
 			while (res.next()) {
-				Complaint complaint = new Complaint(res.getString("responsibleEmployeeID"), res.getString("complaint"),
-						res.getString("customerID"));
+				Complaint complaint = new Complaint(res.getString("responsibleEmployeeUsername"),
+						res.getString("complaint"), res.getString("customerUsername"));
 				complaint.setAnswer(res.getString("answer"));
 				complaint.setCompensation(res.getDouble("compensation"));
 				complaint.setComplaintsNumber(res.getInt("complaintNumber"));
 				complaint.setStatus(Status.valueOf(res.getString("status")));
+				complaint.setCreationTime(res.getTimestamp("creationTime"));
 				complaints.add(complaint);
 				// need set for participants and answers
 			}

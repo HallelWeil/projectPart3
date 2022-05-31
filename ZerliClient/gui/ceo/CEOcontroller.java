@@ -184,24 +184,20 @@ public class CEOcontroller implements IGuiController {
 	}
 
 	private IReportController getController() {
-		try {
-			switch (report.getType().ordinal()) {
-			case 0:
-				return (OrderReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/ordersReport.fxml");
-			case 1:
-				return (RevenueReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/revenueReport.fxml");
-			case 2:
-				return (QuarterlyOrdersReportController) guiObjectsFactory
-						.loadFxmlFile("/reportGUI/quarterlyOrdersReport.fxml");
-			case 3:
-				return (QuarterlyRevenueReportController) guiObjectsFactory
-						.loadFxmlFile("/reportGUI/quarterlyRevenueReport.fxml");
-			case 4:
-				return (SatisfactionReportController) guiObjectsFactory
-						.loadFxmlFile("/reportGUI/satisfactionReport.fxml");
-			}
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
+		switch (report.getType().ordinal()) {
+		case 0:
+			return (OrderReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/ordersReport.fxml");
+		case 1:
+			return (RevenueReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/revenueReport.fxml");
+		case 2:
+			return (QuarterlyOrdersReportController) guiObjectsFactory
+					.loadFxmlFile("/reportGUI/quarterlyOrdersReport.fxml");
+		case 3:
+			return (QuarterlyRevenueReportController) guiObjectsFactory
+					.loadFxmlFile("/reportGUI/quarterlyRevenueReport.fxml");
+		case 4:
+			return (SatisfactionReportController) guiObjectsFactory
+					.loadFxmlFile("/reportGUI/satisfactionReport.fxml");
 		}
 		return null;
 	}

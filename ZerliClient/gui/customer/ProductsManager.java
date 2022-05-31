@@ -37,39 +37,24 @@ public class ProductsManager {
 	}
 
 	private Pane createNewProduct(Product product) {
-		try {
-			ProductGuiController newController;
-			newController = (ProductGuiController) guiObjectsFactory.loadFxmlFile(productFxmlPath);
-			newController.setProduct(product);
-			return newController.getBasePane();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+		ProductGuiController newController;
+		newController = (ProductGuiController) guiObjectsFactory.loadFxmlFile(productFxmlPath);
+		newController.setProduct(product);
+		return newController.getBasePane();
 	}
 
 	public ItemInCartController createNewCartItem(Product product, int amount) {
-		try {
-			ItemInCartController newController;
-			newController = (ItemInCartController) guiObjectsFactory.loadFxmlFile(cartItemPath);
-			newController.setProduct(product, amount);
-			return newController;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+		ItemInCartController newController;
+		newController = (ItemInCartController) guiObjectsFactory.loadFxmlFile(cartItemPath);
+		newController.setProduct(product, amount);
+		return newController;
 	}
 
 	public ItemInCustomizedProductController createNewCSItem(Product product) {
-		try {
-			ItemInCustomizedProductController newController;
-			newController = (ItemInCustomizedProductController) guiObjectsFactory.loadFxmlFile(CSItemPath);
-			newController.setProduct(product);
-			return newController;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+		ItemInCustomizedProductController newController;
+		newController = (ItemInCustomizedProductController) guiObjectsFactory.loadFxmlFile(CSItemPath);
+		newController.setProduct(product);
+		return newController;
 	}
 
 }

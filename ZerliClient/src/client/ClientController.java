@@ -10,7 +10,7 @@ public class ClientController extends AbstractClient {
 	/**
 	 * how much time we wait before we timeout(in 100 millis)
 	 */
-	private static final int TIME_TO_WAIT_BEFORE_TIMEOUT = 300;
+	private static final int TIME_TO_WAIT_BEFORE_TIMEOUT =1000000000;// 300;
 	/**
 	 * awaitResponse used to make thread sleep until thread of
 	 * handleMessageFromServer finish his work
@@ -125,7 +125,6 @@ public class ClientController extends AbstractClient {
 		Msg receivedMsg;
 		MsgController parseMSG;
 		if (msg instanceof Msg) {
-			receivedMsg = new Msg();
 			receivedMsg = (Msg) msg;
 			parseMSG = new MsgController();
 			if (!(parseMSG.mgsParser(receivedMsg))) // in case returned failed mean no type founded we returned msg

@@ -434,7 +434,11 @@ public class ClientTask {
 		switch (msgController.getType()) {
 		case UPDATE_ORDER_STATUS:
 			// update order status in the db
-			dbController.updateOrder(msgController.getOrder());
+			if (dbController.updateOrder(msgController.getOrder()))
+				newMsgToSend = CompletedMsg;
+			else {
+				newMsgToSend = ServerMsgController.createERRORMsg("Error updating delivery status");
+			}
 			break;
 		default:
 			// handle cant do it

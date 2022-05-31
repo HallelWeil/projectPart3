@@ -60,8 +60,7 @@ public class BtnMenuManager {
 	}
 
 	public void setBranchEmployeeBtns() {
-		guiObjectsFactory.mainWindowController.setBtn(btns.getViewSurveyBtn(), 2);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getEnterSurveyAnswersBtn(), 3);
+		guiObjectsFactory.mainWindowController.setBtn(btns.getEnterSurveyAnswersBtn(), 2);
 	}
 
 	public void setBranchManagerBtns() {

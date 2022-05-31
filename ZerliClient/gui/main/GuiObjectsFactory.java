@@ -5,11 +5,14 @@ import java.net.URL;
 
 import PromotionWindow.*;
 import accessibility.AccessibilityPageController;
+import branchEmployee.SearchSurverControllerGUI;
+import branchEmployee.SurveyControllerGUI;
 import branchManager.ManagerApproveController;
 import branchManager.ManagerUpdateUser;
 import branchManager.ManagerWatchReportController;
 import buttons.*;
 import client.ClientBoundary;
+import courier.CourierControllerGUI;
 import customer.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
@@ -21,8 +24,10 @@ import surveyGui.ShowChoosenSurvey;
 import surveyGui.SurveyResults;
 import usersHomeWindows.*;
 import usersManagment.AuthorizedCustomerBoundary;
+import usersManagment.BranchEmployeeBoundary;
 import usersManagment.BranchManagerBoundary;
 import usersManagment.CEOBoundary;
+import usersManagment.CourierBoundary;
 import usersManagment.CustomerServiceEmployeeBoundary;
 import usersManagment.MarketingEmployeeBoundary;
 import usersManagment.UserBoundary;
@@ -35,6 +40,8 @@ public class GuiObjectsFactory {
 	public LoginGuiController loginGuiController;
 	public BtnController btnController;
 	public UserHomeWindowGuiController userHomeWindowController;
+	public StartingWindowGuiController startingWindowController;
+
 	public ShopWindowController shopWindowController;
 	public OrdersHistoryController ordersHistoryController;
 	public OrderDetailsController orderDetailsController;
@@ -44,8 +51,10 @@ public class GuiObjectsFactory {
 	public ConfirmOrderWindowController confirmOrder;
 	public SuccedPayWindowController succedfailedpay;
 	public failedtopayWindowController failedpay;
+
 	public CreatePromotionWindowController createPromotion;
 	public managePromotionWindowController managePromotions;
+
 	public BranchDeliveryChooseWindowController branch_Delivery;
 	public AccessibilityPageController accessibilityPageController;
 
@@ -60,11 +69,18 @@ public class GuiObjectsFactory {
 	public ManagerWatchReportController managerWatchReportController;
 	public ManagerUpdateUser managerUsersManagmetController;
 
+	// or controllers
+	public SearchSurverControllerGUI searchSurvey;
+	public SurveyControllerGUI showSurvey;
+	public CourierControllerGUI courierConfirmDelivery;
+
 	// gui manager
 	public BtnMenuManager btnMenuManager;
 	public ProductsManager productManager;
 
 	// Boundaries
+	public CourierBoundary courierBoundary;
+	public BranchEmployeeBoundary branchEmployeeBoundary;
 	public UserBoundary userBaundary;
 	public ShopBoundary shopBoundary;
 	public CustomerServiceEmployeeBoundary employeeServiceBoundary;
@@ -97,11 +113,16 @@ public class GuiObjectsFactory {
 		authorizedCustomerBoundary = new AuthorizedCustomerBoundary();
 		marketingEmployeeBoundary = new MarketingEmployeeBoundary();
 		employeeServiceBoundary = new CustomerServiceEmployeeBoundary();
+		branchEmployeeBoundary = new BranchEmployeeBoundary();
+		courierBoundary = new CourierBoundary();
 	}
 
 	public void loadAllFxmlFiles() throws IOException {
 		btnController = (BtnController) loadFxmlFile("/buttons/Buttons.fxml");
 		mainWindowController = (MainWindowController) loadFxmlFile("/mainWindow/MainWindow.fxml");
+
+		startingWindowController = (StartingWindowGuiController) loadFxmlFile("/mainWindow/StartingWindow.fxml");
+
 		loginGuiController = (LoginGuiController) loadFxmlFile("/mainWindow/LoginWindow.fxml");
 		userHomeWindowController = (UserHomeWindowGuiController) loadFxmlFile("/usersHomeWindows/UserHomeWindow.fxml");
 		shopWindowController = (ShopWindowController) loadFxmlFile("/customer/ShopWindow.fxml");
@@ -124,6 +145,11 @@ public class GuiObjectsFactory {
 
 		managerUsersManagmetController = (ManagerUpdateUser) loadFxmlFile("/branchManager/userInfoUpdate.fxml");
 
+		searchSurvey = (SearchSurverControllerGUI) loadFxmlFile("/branchEmployee/BranchEmpolyeeSearchSurvey.fxml");
+		showSurvey = (SurveyControllerGUI) loadFxmlFile("/branchEmployee/BranchEmployeeSurveyWindow.fxml");
+		
+		
+		courierConfirmDelivery = (CourierControllerGUI) loadFxmlFile("/courier/CourierGUI.fxml");
 		// newComplaintController = (NewComplaint)
 		// loadFxmlFile("/customerService/NewComplaint.fxml");
 		// updateController = (UpdateComplaint)
@@ -146,13 +172,17 @@ public class GuiObjectsFactory {
 	 * @return the controller
 	 * @throws IOException if failed to load the fxml file
 	 */
-	public IGuiController loadFxmlFile(String filePath) throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		final URL resource = getClass().getResource(filePath);
-		loader.setLocation(resource);
-		System.out.println(resource);
-		loader.load();
-		return (IGuiController) loader.getController();
+	public IGuiController loadFxmlFile(String filePath) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			final URL resource = getClass().getResource(filePath);
+			loader.setLocation(resource);
+			System.out.println(resource);
+			loader.load();
+			return (IGuiController) loader.getController();
+		} catch (IOException e) {
+			return null;
+		}
 	}
 
 	public void resetAll() {

@@ -323,9 +323,10 @@ public class DBController {
 
 	public boolean addSurveyAnswers(int[] answers, int surveyNumber) {
 		// create the query
-		String s = "UPDATE  " + DBname + ".survey  SET a1 = '" + answers[0] + "', a2 = '" + answers[1] + "', a3 = '"
-				+ answers[2] + "', a4 = '" + answers[3] + "', a5 = '" + answers[4] + "', a6 = '" + answers[5]
-				+ "' participants = participants + 1 WHERE (surveyNumber = " + surveyNumber + ");";
+		String s = "UPDATE  " + DBname + ".survey  SET a1 = a1 + " + answers[0] + " , a2 = a2 + " + answers[1]
+				+ ", a3 = a3 + " + answers[2] + " , a4 = a4 + " + answers[3] + " , a5 = a5 + " + answers[4]
+				+ " , a6 = a6 + " + answers[5] + " , participants = participants + 1 WHERE (surveyNumber = "
+				+ surveyNumber + ");";
 		// send query + get result
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
@@ -348,9 +349,10 @@ public class DBController {
 
 	public int createComplaint(Complaint complaint) {
 		int lastID = -1;
-		String s = "INSERT INTO " + DBname + ".survey  VALUES (default ,'" + complaint.getResponsibleEmployeeUserName()
-				+ "','" + complaint.getComplaint() + "','" + complaint.getAnswer() + "','" + complaint.getCompensation()
-				+ "','" + complaint.getStatus().toString() + "','" + complaint.getCustomerUserName() + "');";
+		String s = "INSERT INTO " + DBname + ".complaint  VALUES (default ,'"
+				+ complaint.getResponsibleEmployeeUserName() + "','" + complaint.getComplaint() + "','"
+				+ complaint.getAnswer() + "'," + complaint.getCompensation() + ",'" + complaint.getStatus().toString()
+				+ "','" + complaint.getCustomerUserName() + "', TIMESTAMP '" + complaint.getCreationTime() + "');";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		if (res) {
 			s = "SELECT last_insert_id() as last_id from complaint";

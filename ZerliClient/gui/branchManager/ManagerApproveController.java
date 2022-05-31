@@ -24,6 +24,7 @@ import usersManagment.BranchManagerBoundary;
 public class ManagerApproveController implements IGuiController {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 	private BranchManagerBoundary managerBoundry = guiObjectsFactory.branchManagerBoundary;
+	ManagerViewProducts viewProductsController;
 
 	@FXML
 	private Label errorLabel;
@@ -103,10 +104,11 @@ public class ManagerApproveController implements IGuiController {
 		selectedOrder = managerOrderTable.getSelectionModel().getSelectedItem();
 		String statusOfSelected = selectedOrder.getOrderStatus().toString();
 		if (statusOfSelected == "WAITING_FOR_APPROAVL" || statusOfSelected == "WAITING_FOR_CANCELATION_APPROVAL") {
-			ManagerViewProducts viewProductsController = (ManagerViewProducts) guiObjectsFactory
+			viewProductsController = (ManagerViewProducts) guiObjectsFactory
 					.loadFxmlFile("/branchManager/productsInOrderView.fxml");
 			viewProductsController.setLastController(this);
 			viewProductsController.setSelectedOrder(selectedOrder);
+			viewProductsController.openWindow();
 			guiObjectsFactory.mainWindowController.showNewWindow(viewProductsController.getBasePane());
 			errorLabel.setVisible(false);
 			guidanceLabel.setVisible(false);

@@ -13,9 +13,12 @@ import java.util.Base64;
 import catalog.Product;
 import common.Status;
 import complaint.Complaint;
+import files.SimpleFile;
+import order.DeliveryDetails;
 import order.Order;
 import order.OrderStatus;
 import order.ProductInOrder;
+import promotion.Promotion;
 import report.Report;
 import survey.Survey;
 import user.User;
@@ -51,6 +54,7 @@ public class DBObjectsManager {
 			object = ois.readObject();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			return null;
 		}
 		return object;
 	}
@@ -98,9 +102,11 @@ public class DBObjectsManager {
 				Survey survey = new Survey(res.getString("q1"), res.getString("q2"), res.getString("q3"),
 						res.getString("q4"), res.getString("q5"), res.getString("q6"));
 				int[] answers = new int[6];
-				for (int i = 1; i <= 6; i++) {
+				for (int i = 1; i < 6; i++) {
 					answers[i] = res.getInt("a" + i);
 				}
+				SimpleFile resultFile = (SimpleFile) blobToObject(res.getBlob("surveyResult"));
+				survey.setResultFile(resultFile);
 				surveys.add(survey);
 				survey.setSurveyNumber(res.getInt("surveyNumber"));
 			}
@@ -140,6 +146,7 @@ public class DBObjectsManager {
 				product.setColors(res.getString("colors"));
 				product.setCategory(res.getString("category"));
 				product.setProductID(res.getInt("productID"));
+				product.setOldPrice(res.getDouble("oldPrice"));
 				product.setImage(null);
 				products.add(product);
 			}
@@ -238,6 +245,43 @@ public class DBObjectsManager {
 			System.out.println(e.getMessage());
 		}
 		return branches;
+	}
+
+	public ArrayList<Promotion> promotionsDB(ResultSet res) {
+		ArrayList<Promotion> promotions = new ArrayList<>();
+		try {
+			while (res.next()) {
+				Promotion promotion = new Promotion();
+				promotion.setCreationDate(res.getTimestamp("creationDate"));
+				promotion.setDiscount(res.getDouble("discount"));
+				promotion.setProductID(res.getInt("productID"));
+				promotion.setPromotionNumber(res.getInt("promotionID"));
+				promotion.setPromotionText(res.getString("promotionText"));
+				promotion.setStatus(Status.valueOf(res.getString("status")));
+				promotions.add(promotion);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return promotions;
+	}
+
+	public DeliveryDetails deliveryDetailsDB(ResultSet res) {
+		DeliveryDetails deliveryDetails = null;
+		try {
+			if (res.next()) {
+				deliveryDetails = new DeliveryDetails();
+				deliveryDetails.setOrderID(res.getInt("orderNumber"));
+				deliveryDetails.setAddress(res.getString("address"));
+				deliveryDetails.setComments(res.getString("comments"));
+				deliveryDetails.setFirstName(res.getString("firstName"));
+				deliveryDetails.setLastName(res.getString("lastName"));
+				deliveryDetails.setPhoneNumber(res.getString("phoneNumber"));
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return deliveryDetails;
 	}
 
 }

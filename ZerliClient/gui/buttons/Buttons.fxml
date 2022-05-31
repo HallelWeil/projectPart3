@@ -95,6 +95,9 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
       <ImageView fx:id="deleteBtn" accessibleRole="BUTTON" fitHeight="28.0" fitWidth="27.0" layoutX="711.0" layoutY="137.0">
          <image>
@@ -146,7 +149,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="updateComplaintBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="139.0" layoutY="105.0" mnemonicParsing="false" onAction="#updateComplaint" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="update complaint" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Button fx:id="updateComplaintBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="139.0" layoutY="105.0" mnemonicParsing="false" onAction="#updateComplaint" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Manage complaints" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
@@ -206,12 +209,12 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="enterSurveyresultBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="46.0" layoutY="178.0" mnemonicParsing="false" onAction="#surveyResult" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Survey result" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Button fx:id="enterSurveyresultBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="46.0" layoutY="178.0" mnemonicParsing="false" onAction="#surveyResult" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Manage surveys" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold Italic" size="10.0" />
          </font>
          <graphic>
-            <ImageView fitHeight="43.0" fitWidth="41.0">
+            <ImageView fitHeight="26.0" fitWidth="41.0">
                <image>
                   <Image url="@../../lib/icons/overview.png" />
                </image>
@@ -289,6 +292,21 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
+      <Button fx:id="managePromotionsBtn" contentDisplay="TOP" graphicTextGap="0.0" layoutX="40.0" layoutY="336.0" mnemonicParsing="false" onAction="#managePromotions" prefHeight="63.0" prefWidth="78.0" style="-fx-background-color: #2f41a7;" text="Manage promotions" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold Italic" size="10.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="44.0">
+               <image>
+                  <Image url="@../../lib/icons/discount_history.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
    <cursor>
       <Cursor fx:constant="HAND" />

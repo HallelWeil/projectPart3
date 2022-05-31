@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.net.URL;
 
 import PromotionWindow.*;
+import accessibility.AccessibilityPageController;
 import branchManager.ManagerApproveController;
+import branchManager.ManagerUpdateUser;
 import branchManager.ManagerWatchReportController;
 import buttons.*;
+import ceo.CEOcontroller;
 import client.ClientBoundary;
 import customer.*;
 import javafx.fxml.FXMLLoader;
@@ -15,10 +18,14 @@ import mainWindow.*;
 import order.Order;
 import ordersPayment.*;
 import shop.ShopBoundary;
+import surveyGui.ShowChoosenSurvey;
+import surveyGui.SurveyResults;
 import usersHomeWindows.*;
 import usersManagment.AuthorizedCustomerBoundary;
 import usersManagment.BranchManagerBoundary;
 import usersManagment.CEOBoundary;
+import usersManagment.CustomerServiceEmployeeBoundary;
+import usersManagment.MarketingEmployeeBoundary;
 import usersManagment.UserBoundary;
 
 public class GuiObjectsFactory {
@@ -39,10 +46,21 @@ public class GuiObjectsFactory {
 	public SuccedPayWindowController succedfailedpay;
 	public failedtopayWindowController failedpay;
 	public CreatePromotionWindowController createPromotion;
+	public managePromotionWindowController managePromotions;
 	public BranchDeliveryChooseWindowController branch_Delivery;
+	public AccessibilityPageController accessibilityPageController;
+
+	// ofir controllers
+	public customerService.NewComplaint newComplaintController;
+	public customerService.UpdateComplaint updateController;
+	public SurveyResults surveyResultsController;
+	public ShowChoosenSurvey showChoosenSurvey;
+
 	// omer controlers
 	public ManagerApproveController managerApproveController;
 	public ManagerWatchReportController managerWatchReportController;
+	public ManagerUpdateUser managerUsersManagmetController;
+	public CEOcontroller ceoController;
 
 	// gui manager
 	public BtnMenuManager btnMenuManager;
@@ -51,10 +69,12 @@ public class GuiObjectsFactory {
 	// Boundaries
 	public UserBoundary userBaundary;
 	public ShopBoundary shopBoundary;
+	public CustomerServiceEmployeeBoundary employeeServiceBoundary;
 	public ClientBoundary clientBoundary = new ClientBoundary();
 	public BranchManagerBoundary branchManagerBoundary;
 	public CEOBoundary ceoBoundry;
 	public AuthorizedCustomerBoundary authorizedCustomerBoundary;
+	public MarketingEmployeeBoundary marketingEmployeeBoundary;
 	public Order order;
 
 	private GuiObjectsFactory() {
@@ -77,6 +97,9 @@ public class GuiObjectsFactory {
 		shopBoundary = new ShopBoundary();
 		branchManagerBoundary = new BranchManagerBoundary();
 		authorizedCustomerBoundary = new AuthorizedCustomerBoundary();
+		marketingEmployeeBoundary = new MarketingEmployeeBoundary();
+		employeeServiceBoundary = new CustomerServiceEmployeeBoundary();
+		ceoBoundry = new CEOBoundary();
 	}
 
 	public void loadAllFxmlFiles() throws IOException {
@@ -87,20 +110,33 @@ public class GuiObjectsFactory {
 		shopWindowController = (ShopWindowController) loadFxmlFile("/customer/ShopWindow.fxml");
 		ordersHistoryController = (OrdersHistoryController) loadFxmlFile("/customer/OrdersHistory.fxml");
 		orderDetailsController = (OrderDetailsController) loadFxmlFile("/customer/OrderDetailsWindow.fxml");
+		accessibilityPageController = (AccessibilityPageController) loadFxmlFile(
+				"/accessibility/AccessibilityWindow.fxml");
 
-		personalCardcontroller = (personalcardWindowController) loadFxmlFile("/ordersPayment/personalcard.fxml");
-		HomeDeliveryDetails = (HomeDeliveryWindowController) loadFxmlFile("/ordersPayment/shippingdetails.fxml");
-		confirmOrder = (ConfirmOrderWindowController) loadFxmlFile("/ordersPayment/confirmorders.fxml");
-		succedfailedpay = (SuccedPayWindowController) loadFxmlFile("/ordersPayment/succedfailedpay.fxml");
-		failedpay = (failedtopayWindowController) loadFxmlFile("/ordersPayment/failedtopay.fxml");
+		personalCardcontroller = (personalcardWindowController) loadFxmlFile("/ordersPayment/PersonalCardWindow.fxml");
+		HomeDeliveryDetails = (HomeDeliveryWindowController) loadFxmlFile("/ordersPayment/HomeDeliveryWindow.fxml");
+		confirmOrder = (ConfirmOrderWindowController) loadFxmlFile("/ordersPayment/ConfirmOrderWindow.fxml");
+		succedfailedpay = (SuccedPayWindowController) loadFxmlFile("/ordersPayment/SuccedPayWindow.fxml");
+		failedpay = (failedtopayWindowController) loadFxmlFile("/ordersPayment/FailedToPayWindow.fxml");
 		branch_Delivery = (BranchDeliveryChooseWindowController) loadFxmlFile(
 				"/ordersPayment/Branch&DeliveryChoose.fxml");
+
 		createPromotion = (CreatePromotionWindowController) loadFxmlFile("/PromotionWindow/createNewPromotion.fxml");
+		managePromotions = (managePromotionWindowController) loadFxmlFile(
+				"/PromotionWindow/managePromotionsWindow.fxml");
+
+		managerUsersManagmetController = (ManagerUpdateUser) loadFxmlFile("/branchManager/userInfoUpdate.fxml");
+
+		// newComplaintController = (NewComplaint)
+		// loadFxmlFile("/customerService/NewComplaint.fxml");
+		// updateController = (UpdateComplaint)
+		// loadFxmlFile("/customerService/UpdateComplaint.fxml");
+		surveyResultsController = (SurveyResults) loadFxmlFile("/surveyGui/surveyResults.fxml");
+		showChoosenSurvey = (ShowChoosenSurvey) loadFxmlFile("/surveyGui/ChoosenSurvey.fxml");
 		managerApproveController = (ManagerApproveController) loadFxmlFile("/branchManager/approveOrder.fxml");
-		// managerApproveController = (ManagerApproveController)
-		// loadFxmlFile("/branchManager/approveOrders.fxml");
-		// managerWatchReportController =
-		managerWatchReportController = (ManagerWatchReportController)loadFxmlFile("/branchManager/managerWatchReport.fxml");
+		managerWatchReportController = (ManagerWatchReportController) loadFxmlFile(
+				"/branchManager/managerWatchReport.fxml");
+		ceoController = (CEOcontroller) loadFxmlFile("/ceo/ceoWatchReport.fxml");
 
 		// init members
 		btnMenuManager = new BtnMenuManager();

@@ -14,6 +14,7 @@ public class Product implements Serializable {
 	private int productID;
 	private String name;
 	private double price;
+	private double oldPrice;
 	private String description;
 	private String colors;
 	private String Category;
@@ -78,6 +79,16 @@ public class Product implements Serializable {
 
 	public void setProductID(int productID) {
 		this.productID = productID;
+	}
+	
+	
+
+	public double getOldPrice() {
+		return oldPrice;
+	}
+
+	public void setOldPrice(double oldPrice) {
+		this.oldPrice = oldPrice;
 	}
 
 	@Override

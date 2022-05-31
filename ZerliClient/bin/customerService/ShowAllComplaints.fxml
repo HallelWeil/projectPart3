@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="447.0" layoutY="37.0" prefHeight="130.0" prefWidth="294.0" text="complaints">
+         <font>
+            <Font name="System Bold Italic" size="48.0" />
+         </font>
+      </Label>
+      <TableView layoutX="85.0" layoutY="155.0" prefHeight="430.0" prefWidth="969.0">
+        <columns>
+          <TableColumn prefWidth="131.73336029052734" text="complaints number" />
+          <TableColumn prefWidth="131.46673583984375" text="responsible employee" />
+            <TableColumn minWidth="0.0" prefWidth="147.73333740234375" text="complaint" />
+            <TableColumn minWidth="0.0" prefWidth="73.06671142578125" text="status" />
+            <TableColumn minWidth="0.0" prefWidth="134.66656494140625" text="customer userName" />
+            <TableColumn prefWidth="103.7333984375" text="creation time" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

@@ -22,8 +22,10 @@ public class SuccedPayWindowController implements IGuiController {
 
     @FXML
     private Label labelSendEmail;
+
     @FXML
     private ImageView image;
+
 	
 	@Override
 	public Pane getBasePane() {
@@ -32,7 +34,7 @@ public class SuccedPayWindowController implements IGuiController {
 
 	@Override
 	public void resetController() {
-		// TODO Auto-generated method stub
+		labelSendEmail.setText(labelSendEmail.getText());
 		
 	}
 
@@ -47,7 +49,7 @@ public class SuccedPayWindowController implements IGuiController {
 	public void initmywindow() {
 		if(guiobjectfactory.confirmOrder.isEmailSend)
 		{
-			labelSendEmail.setText("A receipt send to email : aaa@gmail.com"); //change email to what in user object in userBoudary
+			labelSendEmail.setText(labelSendEmail.getText()+"\nA receipt send to email :"+guiobjectfactory.userBaundary.CurrentUser.getEmail()); //change email to what in user object in userBoudary
 		}
 	}
 

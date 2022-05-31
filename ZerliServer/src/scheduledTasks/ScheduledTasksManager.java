@@ -157,10 +157,9 @@ public class ScheduledTasksManager implements Runnable {
 			month = month - 1;
 		}
 		// check if the last month reports where not created
-		if (dbController.getAllQuarterReports(month, month, year).isEmpty()) {
+		if (dbController.getAllReportsInTimePeriod(month, month, year).isEmpty()) {
 			// add report creation tasks, set to 2am
-			ScheduledReportCreationTask newScheduledReportCreationTask = new ScheduledReportCreationTask(
-					Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.of(2, 0))));
+			ScheduledReportCreationTask newScheduledReportCreationTask = new ScheduledReportCreationTask(new Timestamp(System.currentTimeMillis()));
 			newScheduledTask.add(newScheduledReportCreationTask);
 		}
 		// add end of day task -> check again tomorrow

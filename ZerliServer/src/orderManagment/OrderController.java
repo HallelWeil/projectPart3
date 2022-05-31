@@ -130,10 +130,23 @@ public class OrderController {
 		return price;
 	}
 
+	/**
+	 * save the active order to the database, including items in order and delivery
+	 * details(if exists)
+	 * 
+	 * @return true on success
+	 */
 	public boolean saveOrderToDB() {
 		DBController dbcontroller = DBController.getInstance();
 		int orderNumber = dbcontroller.saveOrderToDB(activeOrder);
-		if (orderNumber !=-1) {
+		if (orderNumber != -1) {
+
+			if (activeOrder.isHomeDelivery()) {
+				activeOrder.getDeliveryDetails().setOrderID(orderNumber);
+				if (!dbcontroller.saveDeliveryDetails(activeOrder.getDeliveryDetails())) {
+					return false;
+				}
+			}
 			for (ProductInOrder p : activeOrder.getItems()) {
 				p.setOrderNumber(orderNumber);
 				if (!dbcontroller.saveItemInOrderToDB(p)) {

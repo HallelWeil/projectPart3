@@ -43,7 +43,7 @@ public class FilesController {
 	 */
 	public boolean savePdfFileFromObjectToPath(String path, SimpleFile simpleFile) {
 		int fileSize = simpleFile.getData().length;
-		String newFilePath = path + "/" + simpleFile.getFullFileName();
+		String newFilePath = path;// + "/" + simpleFile.getFullFileName();
 
 		byte[] mybytearray = simpleFile.getData();
 		File newFile = new File(newFilePath);
@@ -65,6 +65,6 @@ public class FilesController {
 		}
 		return true;
 	}
-	
-	//to do, get image to file and image from file
+
+	// to do, get image to file and image from file
 }

@@ -96,7 +96,7 @@ public class ManagerViewProducts implements IGuiController {
 		guiObjectsFactory.mainWindowController.showNewWindow(productInOrderPane);
     	guiObjectsFactory.mainWindowController.changeWindowName("Manager - Products In Selected Order");
     	initializeProductsTable();
-    	productsObs.addAll(managerBoundry.getAllProductsInOrder(selectedOrder.getOrderNumber()));
+    	productsObs.setAll(managerBoundry.getAllProductsInOrder(selectedOrder.getOrderNumber()));
     	if(selectedOrder.getOrderStatus().toString() == "WAITING_FOR_APPROAVL")
     		approveBot.setText("Approve Order");
     	if(selectedOrder.getOrderStatus().toString() == "WAITING_FOR_CANCELATION_APPROVAL") {
@@ -117,7 +117,6 @@ public class ManagerViewProducts implements IGuiController {
 	}
 	
     public void initializeProductsTable() {
-    	productsObs.clear();
     	productCategoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
     	productNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
     	prodOrderNumCol.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));

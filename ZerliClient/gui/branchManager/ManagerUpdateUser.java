@@ -74,9 +74,6 @@ public class ManagerUpdateUser implements IGuiController {
     @FXML
     private Label notFoundText;
     
-    ObservableList<UserStatus> statusObs;
-    ObservableList<UserType> typeObs;
-    
 	@Override
 	public Pane getBasePane() {
 		return managerUpdateUserPane;
@@ -96,15 +93,14 @@ public class ManagerUpdateUser implements IGuiController {
     	userTypeCombo.getSelectionModel().clearSelection();
     	userStatusCombo.getSelectionModel().clearSelection();
     	notFoundText.setVisible(false);
-	
 	}
 	
 	@Override
 	public void openWindow() {
     	guiObjectsFactory.mainWindowController.changeWindowName("Manager - update user");
-    	userStatusCombo.setItems(null);
-    	statusObs.addAll(UserStatus.values());
-        typeObs.addAll(UserType.values());
+    	guiObjectsFactory.mainWindowController.showNewWindow(managerUpdateUserPane);
+    	userStatusCombo.getItems().setAll(UserStatus.values());
+    	userTypeCombo.getItems().setAll(UserType.values());
 	}
 
     @FXML

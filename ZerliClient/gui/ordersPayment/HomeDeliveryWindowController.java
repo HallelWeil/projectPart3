@@ -1,5 +1,6 @@
 package ordersPayment;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import java.time.LocalDate;
@@ -13,11 +14,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Callback;
 import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.DeliveryDetails;
@@ -67,6 +71,10 @@ public class HomeDeliveryWindowController implements IGuiController {
 
 	@FXML
 	private TextField phonenum;
+	
+
+    @FXML
+    private Label errorLabel;
 
 	public DeliveryDetails deliveryDetails = new DeliveryDetails();
 	private Timestamp arrivalDate=new Timestamp(0, 0, 0, 0, 0, 0, 0);
@@ -115,22 +123,29 @@ public class HomeDeliveryWindowController implements IGuiController {
  * @return false:if save not success, true if success
  */
 	private boolean saveDetails() {
+		
 		if(!checkifEmpty())
 			return false;
 		deliveryDetails.setFirstName(firstname.getText());
 		deliveryDetails.setLastName(lastname.getText());
 		deliveryDetails.setComments(comments.getText());
 		deliveryDetails.setPhoneNumber(phonenum.getText());
-		deliveryDetails.setAddress(
-				street.getText() + " " + streetnum.getText() + " " + city.getText() + " " + zipcode.getText());
 		try {
+		deliveryDetails.setAddress(
+				 street.getText() + " " + Integer.parseInt(streetnum.getText()) + " " + city.getText() + " " + Integer.parseInt(zipcode.getText()));
+		
 		LocalDate date=deliveryDate.getValue();// delivery details should have LocalDate Variable and hour and min
+		
 		LocalTime time= LocalTime.of(Integer.parseInt(hour.getValue()),Integer.parseInt(min.getValue()));
+		
+       if(!checkIfCorrectDateAndTime(date, time))
+        return false;
+		
 		arrivalDate = Timestamp.valueOf(LocalDateTime.of(date, time));
 		}
 		catch(Exception e)
 		{
-			System.out.println("something wrong");
+			errorLabel.setText(e.getMessage());
 			return false;
 		}
 		return true;
@@ -152,15 +167,6 @@ public class HomeDeliveryWindowController implements IGuiController {
 			{
 				txt.setStyle("-fx-background-color: -fx-control-inner-background;");
 			}
-		}
-		LocalDate localdate=deliveryDate.getValue();
-		if(localdate==null)
-		{
-		 deliveryDate.setStyle("-fx-border-color: #B22222");
-		}
-		else
-		{
-		deliveryDate.setStyle("-fx-background-color: -fx-control-inner-background");
 		}
 		String comboEmpty=hour.getValue();
 		if(comboEmpty==null)
@@ -186,13 +192,44 @@ public class HomeDeliveryWindowController implements IGuiController {
 		return stat;
 	}
 
+	private boolean checkIfCorrectDateAndTime(LocalDate date,LocalTime time)
+	{
+		if(date.isEqual(LocalDate.now()) && LocalTime.now().compareTo(time)>0)
+		{
+			errorLabel.setText("please choose Correct time!!!");
+			return false;	
+		}
+		return true;
+	}
+	
+	
 	
 	/**
 	 * in this method we init the combobox of Hour and min in Delivery time 
+	 * in addition in datePicker can choose just from today date 
 	 */
-	private void initcomboboxes()
+	private void initcomboboxesAndDate()
 	{
-
+		deliveryDate.setValue(LocalDate.now());  //the today date is the default of date picker
+    
+		//this code make the dates before today disable witch mean user cant choose dates before today 
+		final Callback<DatePicker,DateCell> day = (DatePicker) -> new DateCell() {
+			
+			@Override
+			public void updateItem(LocalDate item, boolean empty)
+			{
+				super.updateItem(item, empty);
+				if(item.isBefore(LocalDate.now()))
+				{
+					setDisable(true); //disable dates before today 
+           
+				}
+			}
+		};
+		
+		deliveryDate.setDayCellFactory(day);
+		
+		
 		int i;
 		for(i=1;i<24;i++) //this init the combobox of hours 
 		{
@@ -215,6 +252,7 @@ public class HomeDeliveryWindowController implements IGuiController {
 			min.getItems().add(""+i);
 			
 		}
+		
 	}
 
 	@Override
@@ -224,15 +262,23 @@ public class HomeDeliveryWindowController implements IGuiController {
 
 	@Override
 	public void resetController() {
-		// TODO Auto-generated method stub
-
+		firstname.setText("");
+		lastname.setText("");
+		city.setText("");
+		street.setText("");
+		streetnum.setText("");
+		zipcode.setText("");
+		phonenum.setText("");
+		comments.setText("");
+		errorLabel.setText("");
+		
 	}
 
 	@Override
 	public void openWindow() {
 		guiobjectfactory.mainWindowController.showNewWindow(basePane);
 		guiobjectfactory.mainWindowController.changeWindowName("homeDelivery");
-		initcomboboxes();
+		initcomboboxesAndDate();
 
 	}
 	

@@ -2,6 +2,8 @@ package survey;
 
 import java.io.Serializable;
 
+import files.SimpleFile;
+
 /**
  * each survey is 6 questions, with the answers 1-10 to create a new survey:
  * place 6 questions in the constructor to add result: add 6 numbers from 1-10,
@@ -19,7 +21,7 @@ public class Survey implements Serializable {
 	/**
 	 * the survey id
 	 */
-	int surveyNumber;
+	private int surveyNumber;
 	/**
 	 * the survey questions(6 questions)
 	 */
@@ -32,6 +34,8 @@ public class Survey implements Serializable {
 	 * the number of the survey's participants
 	 */
 	private int numberOfParticipants;
+
+	private SimpleFile resultFile;
 
 	public Survey(String question1, String question2, String question3, String question4, String question5,
 			String question6) {
@@ -46,6 +50,7 @@ public class Survey implements Serializable {
 		questions[3] = question4;
 		questions[4] = question5;
 		questions[5] = question6;
+		resultFile = null;
 	}
 
 	public void setSurveyNumber(int surveyNumber) {
@@ -79,19 +84,50 @@ public class Survey implements Serializable {
 	 * 
 	 * @return string array with length 7
 	 */
-	public String[] getResult() {
-
-		String[] reultString = new String[7];
-		reultString[0] = "survey #" + surveyNumber + " :";
-		for (int i = 1; i < 7; i++) {
-			reultString[i] = "Q" + i + " : " + questions[i] + " result are: "
-					+ (double) result[i] / numberOfParticipants;
+	public String getResult() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("\t\t\tSurvey #" + surveyNumber + " :\n");
+		for (int i = 0; i < 6; i++) {
+			double tempRes = 0;
+			if (numberOfParticipants != 0) {
+				tempRes = (double) result[i] / numberOfParticipants;
+			}
+			sb.append("Question " + (i + 1) + " : " + questions[i] + "\n");
+			sb.append("Average result : " + tempRes + "\n");
 		}
-		return reultString;
+		return sb.toString();
 	}
 
 	public String[] getQuestions() {
 		return questions;
+	}
+
+	public int getNumberOfParticipants() {
+		return numberOfParticipants;
+	}
+
+	public void setNumberOfParticipants(int numberOfParticipants) {
+		this.numberOfParticipants = numberOfParticipants;
+	}
+
+	public int getSurveyNumber() {
+		return surveyNumber;
+	}
+
+	public void setQuestions(String[] questions) {
+		this.questions = questions;
+	}
+
+	public void setResult(int[] result) {
+		this.result = result;
+	}
+
+	public SimpleFile getResultFile() {
+		return resultFile;
+	}
+
+	public void setResultFile(SimpleFile resultFile) {
+		this.resultFile = resultFile;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import cart.Cart;
 import catalog.Product;
 import complaint.Complaint;
+import files.SimpleFile;
 import msg.Msg;
 import msg.MsgType;
 import order.Order;
@@ -27,6 +28,7 @@ public class MsgController {
 	private Report report;
 	private String errorMsg;
 	private ArrayList<String> branchNames;
+	private ArrayList<Promotion> Allpromotions;
 
 	public MsgController() {
 		resetParser();
@@ -42,6 +44,7 @@ public class MsgController {
 		this.survey = null;
 		branchNames = null;
 		this.user = null;
+		this.Allpromotions=null;
 	}
 
 	/**
@@ -84,11 +87,15 @@ public class MsgController {
 			break;
 		case RETURN_REPORT:
 			report = (Report) newMsg.data;
+			break;
 		case RETURN_BRANCH_NAMES:
 			branchNames = (ArrayList<String>) newMsg.data;
 			break;
 		case RETURN_USER:
 			user = (User) newMsg.data;
+			break;
+		case RETURN_ALL_PROMOTIONS:
+			Allpromotions=(ArrayList<Promotion>) newMsg.data;
 			break;
 		case ERROR:
 			errorMsg = (String) newMsg.data;
@@ -103,6 +110,10 @@ public class MsgController {
 		return true;
 	}
 	// getters
+
+	public ArrayList<Promotion> getAllpromotions() {
+		return Allpromotions;
+	}
 
 	public MsgType getType() {
 		return type;
@@ -209,17 +220,7 @@ public class MsgController {
 		return msg;
 	}
 
-	/**
-	 * create new ACTIVATE_PROMOTION msg
-	 * 
-	 * @return
-	 */
-	public static Msg createACTIVATE_PROMOTIONMsg(Promotion promotion) {
-		Msg msg = new Msg();
-		msg.type = MsgType.ACTIVATE_PROMOTION;
-		msg.data = promotion;
-		return msg;
-	}
+	
 
 	/**
 	 * create new GET_CATALOG_PAGE msg
@@ -289,7 +290,7 @@ public class MsgController {
 	 * 
 	 * @return
 	 */
-	public static Msg createADD_SURVEY_RESULTMsg(Serializable resultFile, int surveyNumber) {
+	public static Msg createADD_SURVEY_RESULTMsg(SimpleFile resultFile, int surveyNumber) {
 		Msg msg = new Msg();
 		msg.type = MsgType.ADD_SURVEY_RESULT;
 		ArrayList<Serializable> data = new ArrayList<Serializable>();
@@ -430,6 +431,13 @@ public class MsgController {
 		msg.data = null;
 		return msg;
 	}
+	
+	public static Msg createGET_ALL_PROMOTIONSMsg() {
+		Msg msg = new Msg();
+		msg.type = MsgType.GET_ALL_PROMOTIONS;
+		msg.data = null;
+		return msg;
+	}
 
 	/**
 	 * create REQUEST_USER
@@ -453,5 +461,38 @@ public class MsgController {
 		msg.data = orderNumber;
 		return msg;
 	}
-
+	
+	
+	/**
+	 * CREATE_NEW_PROMOTION
+	 * @return
+	 */
+	public static Msg createCREATE_NEW_PROMOTIONMsg(Promotion promotion) {
+		Msg msg = new Msg();
+		msg.type = MsgType.CREATE_NEW_PROMOTION;
+		msg.data = promotion;
+		return msg;
+	}
+	
+	/**
+	 * END_PROMOTION
+	 * @return
+	 */
+	public static Msg createEND_PROMOTIONMsg(int promotionNumber) {
+		Msg msg = new Msg();
+		msg.type = MsgType.END_PROMOTION;
+		msg.data = promotionNumber;
+		return msg;
+	}
+	/**
+	 * activate existing promotion
+	 * 
+	 * @return
+	 */
+	public static Msg createACTIVATE_PROMOTIONMsg(int promotionNumber) {
+		Msg msg = new Msg();
+		msg.type = MsgType.ACTIVATE_PROMOTION;
+		msg.data = promotionNumber;
+		return msg;
+	}
 }

@@ -57,6 +57,7 @@ public class personalcardWindowController implements IGuiController {
             }
             else //if customer didn't put V in Checkbox for home Delivery
             {
+            	guiobjectfactory.shopBoundary.sumbmitDetailsForHomeDelivery(new DeliveryDetails());
         	    guiobjectfactory.order=guiobjectfactory.shopBoundary.placeOrder();
             	guiobjectfactory.confirmOrder.openWindow();
             }
@@ -68,8 +69,8 @@ public class personalcardWindowController implements IGuiController {
 
 	@Override
 	public void resetController() {
-		// TODO Auto-generated method stub
-		
+		textareagreeting.setText("");
+		errorlabel.setText("");
 	}
 	
 	/**

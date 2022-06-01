@@ -81,7 +81,7 @@ public class OrderProcessManager {
 		CreditController creditController = new CreditController();
 		double price = activeOrder.getPrice();
 		// 1. check if its the customer's first order
-		if (dbcontroller.getAllOrdersOfCustomer(null, username).size() == 0) {
+		if (dbcontroller.getAllOrdersOfCustomer(username).size() == 0) {
 			// you get 20% off for the first order
 			price = 0.8 * price;
 			discount = true;

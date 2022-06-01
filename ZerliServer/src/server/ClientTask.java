@@ -86,6 +86,12 @@ public class ClientTask {
 			// some tasks are identical for all the connected users
 			switch (msgController.getType()) {
 			case LOG_OUT_REQUEST:
+				// to log out remove the user entity
+				dbController.disconnectUser(user.getUsername());
+				this.orderProcessManager = null;
+				this.user = null;	
+				newMsgToSend = ServerMsgController.createAPPROVE_LOGOUTMsg();
+				break;
 			case EXIT:
 				// to log out remove the user entity
 				dbController.disconnectUser(user.getUsername());
@@ -201,7 +207,7 @@ public class ClientTask {
 			}
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = dbController.getAllOrdersInBranch(user.getBranchName(), null);
+			ArrayList<Order> orders = dbController.getAllOrdersInBranch(user.getBranchName());
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		case GET_USER:
@@ -367,7 +373,7 @@ public class ClientTask {
 			newMsgToSend = ServerMsgController.createRETURN_CATALOG_PAGEMsg(catalog);
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(null, user.getUsername());
+			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(user.getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		case UPDATE_ORDER_STATUS:
@@ -394,7 +400,7 @@ public class ClientTask {
 			newMsgToSend = ServerMsgController.createRETURN_CATALOG_PAGEMsg(catalog);
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(null, user.getUsername());
+			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(user.getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		case PAY_FOR_ORDER:

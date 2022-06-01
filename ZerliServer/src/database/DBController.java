@@ -113,6 +113,13 @@ public class DBController {
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
+	
+	/**
+	 * Save new order in orders table in database
+	 * 
+	 * @param new order
+	 * @return order's ID generated in the database
+	 */
 
 	public int saveOrderToDB(Order order) {
 		int lastID = -1;
@@ -129,12 +136,26 @@ public class DBController {
 		}
 		return lastID;
 	}
+	
+	/**
+	 * delete order from orders table in database
+	 * 
+	 * @param order's ID
+	 * @return true if order was deleted successfully
+	 */
 
 	public boolean deleteOrder(int orderNum) {
 		String s = "DELETE FROM " + DBname + ".orders WHERE (orderNumber = '" + orderNum + "' );";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
+	
+	/**
+	 * save product in productsInOrder table in database
+	 * 
+	 * @param product object
+	 * @return true if the product is saved successfully 
+	 */
 
 	public boolean saveItemInOrderToDB(ProductInOrder product) {
 		// create the query
@@ -144,6 +165,13 @@ public class DBController {
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
+	
+	/**
+	 * get all product from productsInOrder table in database
+	 * 
+	 * @param Order's id
+	 * @return ArrayList<ProductInOrder> of products in the order specified
+	 */
 
 	public ArrayList<ProductInOrder> getItemInOrderFromDB(int orderNumber) {
 		// create the query
@@ -168,8 +196,15 @@ public class DBController {
 		}
 		return itemsList;
 	}
+	
+	/**
+	 * return all orders in the specified branch
+	 * 
+	 * @param branchName name of the branch
+	 * @return ArrayList<Order> with all the orders with the same branch name and customer's id
+	 */
 
-	public ArrayList<Order> getAllOrdersInBranch(String branchName, String customerID) {
+	public ArrayList<Order> getAllOrdersInBranch(String branchName) {
 		// create the query
 		String s = "SELECT * FROM " + DBname + ".order WHERE (branchName = '" + branchName + "' );";
 		// get the result
@@ -178,8 +213,15 @@ public class DBController {
 		ArrayList<Order> orders = objectManager.orderDB(res);
 		return orders;
 	}
+	
+	/**
+	 * return all orders of the specified customer according to the customer's id 
+	 *   
+	 * @param customerID
+	 * @return  ArrayList<Order> with all orders of the customer
+	 */
 
-	public ArrayList<Order> getAllOrdersOfCustomer(String branchName, String customerID) {
+	public ArrayList<Order> getAllOrdersOfCustomer(String customerID) {
 		// create the query
 		String s = "SELECT * FROM " + DBname + ".order WHERE (customerID = '" + customerID + "' );";
 		// get the result
@@ -188,6 +230,12 @@ public class DBController {
 		ArrayList<Order> orders = objectManager.orderDB(res);
 		return orders;
 	}
+	
+	/**
+	 * 
+	 * @param orderNumber order's id
+	 * @return DeliveryDetails of the specified order
+	 */
 
 	public DeliveryDetails getDeliveryDetails(int orderNumber) {
 		// create the query
@@ -198,6 +246,12 @@ public class DBController {
 		DeliveryDetails deliveryDetails = objectManager.deliveryDetailsDB(res);
 		return deliveryDetails;
 	}
+	
+	/**
+	 * 
+	 * @param deliveryDetails
+	 * @return true if delivery's details saved in 'deliverydetails' table in the database
+	 */
 
 	public boolean saveDeliveryDetails(DeliveryDetails deliveryDetails) {
 		// create the query
@@ -208,6 +262,12 @@ public class DBController {
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
+	
+	/**
+	 * 
+	 * @param report
+	 * @return
+	 */
 
 	public Report getReportFromDB(Report report) {
 		// create the query

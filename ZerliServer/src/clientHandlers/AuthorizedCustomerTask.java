@@ -43,7 +43,7 @@ public class AuthorizedCustomerTask extends ClientTasks {
 			newMsgToSend = ServerMsgController.createRETURN_CATALOG_PAGEMsg(catalog);
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(null,
+			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(
 					clientTaskHandler.getActiveUser().getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;

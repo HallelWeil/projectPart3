@@ -35,6 +35,17 @@ public class Order implements Serializable {
 	private ArrayList<ProductInOrder> items;
 	private DeliveryDetails deliveryDetails;
 	private String username;
+	private double priceToPay;
+
+	
+
+	public double getPriceToPay() {
+		return priceToPay;
+	}
+
+	public void setPriceToPay(double priceToPay) {
+		this.priceToPay = priceToPay;
+	}
 
 	public String getUsername() {
 		return username;
@@ -195,7 +206,7 @@ public class Order implements Serializable {
 		StringBuilder s = new StringBuilder();
 		s.append("[ ");
 		s.append(orderNumber + ", " + price + ", " + branchName + ", ");
-		s.append(data + ", " + orderDate + "," + personalLetter + "]");
+		s.append(data + ", " + orderDate + ", " + personalLetter + "]");
 		return s.toString();
 	}
 }

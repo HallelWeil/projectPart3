@@ -58,6 +58,7 @@ public class MainWindowController implements IGuiController {
 	public void openWindow() {
 		emptyWindow();
 		guiObjectsFactory.btnMenuManager.setMainWindowBtns();
+		guiObjectsFactory.startingWindowController.openWindow();
 		changeWindowName("MainWindow");
 	}
 

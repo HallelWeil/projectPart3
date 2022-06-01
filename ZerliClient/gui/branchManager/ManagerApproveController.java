@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.Order;
+import order.OrderStatus;
 import order.ProductInOrder;
 import usersManagment.BranchManagerBoundary;
 
@@ -65,7 +66,10 @@ public class ManagerApproveController implements IGuiController {
 	@FXML
 	private TableColumn<Order, String> orderUserCol;
 
-	//ObservableList<Order> ordersObs = FXCollections.observableArrayList();
+	@FXML
+	private TableColumn<Order, OrderStatus> statusCol;
+
+	// ObservableList<Order> ordersObs = FXCollections.observableArrayList();
 	Order selectedOrder;
 
 	public void initializeOrdersTable() {
@@ -76,6 +80,7 @@ public class ManagerApproveController implements IGuiController {
 		orderNumCol.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
 		orderPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 		orderUserCol.setCellValueFactory(new PropertyValueFactory<>("username"));
+		statusCol.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
 	}
 
 	@Override
@@ -109,7 +114,6 @@ public class ManagerApproveController implements IGuiController {
 			viewProductsController.setLastController(this);
 			viewProductsController.setSelectedOrder(selectedOrder);
 			viewProductsController.openWindow();
-			guiObjectsFactory.mainWindowController.showNewWindow(viewProductsController.getBasePane());
 			errorLabel.setVisible(false);
 			guidanceLabel.setVisible(false);
 		} else {

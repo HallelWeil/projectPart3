@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import catalog.Product;
 import complaint.Complaint;
+import complaintsManagment.ComplaintsController;
 import database.DBController;
 import msg.Msg;
 import ocsf.server.ConnectionToClient;
 import order.Order;
-import orderManagment.OrderController;
+import orderManagment.OrderProcessManager;
+import orderManagment.OrdersController;
 import promotionManagment.PromotionManager;
 import report.OrdersReport;
 import report.Report;
@@ -46,7 +48,7 @@ public class ClientTask {
 	/**
 	 * order controller to manage the order process
 	 */
-	private OrderController orderController;
+	private OrderProcessManager orderProcessManager;
 	/**
 	 * the new msg we want to sand,
 	 */
@@ -62,7 +64,7 @@ public class ClientTask {
 		msgController = new ServerMsgController();
 		CompletedMsg = ServerMsgController.createCOMPLETEDMsg();
 		ErrorMsg = ServerMsgController.createERRORMsg("");
-		orderController = null;
+		orderProcessManager = null;
 		promotionManager = new PromotionManager();
 	}
 
@@ -87,7 +89,7 @@ public class ClientTask {
 			case EXIT:
 				// to log out remove the user entity
 				dbController.disconnectUser(user.getUsername());
-				this.orderController = null;
+				this.orderProcessManager = null;
 				this.user = null;
 				newMsgToSend = ServerMsgController.createAPPROVE_LOGOUTMsg();
 				break;
@@ -187,10 +189,16 @@ public class ClientTask {
 				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to update the user information");
 			break;
 		case UPDATE_ORDER_STATUS:
-			if (dbController.updateOrder(msgController.getOrder()))
-				newMsgToSend = CompletedMsg;
-			else
-				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to update the order status");
+			OrdersController orderController = new OrdersController();
+			try {
+				if (msgController.getOrder() != null) {
+					orderController.approveOrder(msgController.getOrder());
+					newMsgToSend = CompletedMsg;
+				} else
+					newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to update the order status");
+			} catch (Exception e) {
+				newMsgToSend = ServerMsgController.createERRORMsg(e.getMessage());
+			}
 			break;
 		case GET_ALL_ORDERS:
 			ArrayList<Order> orders = dbController.getAllOrdersInBranch(user.getBranchName(), null);
@@ -271,20 +279,22 @@ public class ClientTask {
 	 * responsible for
 	 */
 	private void handleCustomerServiceEmloyeeRequest() {
+		ComplaintsController complaintController = new ComplaintsController();
 		switch (msgController.getType()) {
 		case CREATE_COMPLAINT:
-			if (dbController.createComplaint(msgController.getComplaint()) != -1)
+			if (complaintController.createComplaint(msgController.getComplaint()))
 				newMsgToSend = CompletedMsg;
 			else
 				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to create the complaint");
 			break;
 		case UPDATE_COMPLAINT:
 			Complaint tempComplaint = msgController.getComplaint();
-			if (dbController.updateComplaint(tempComplaint.getAnswer(), tempComplaint.getComplaintsNumber(),
-					tempComplaint.getStatus()))
+			try {
+				complaintController.handleComplaintAnswer(tempComplaint);
 				newMsgToSend = CompletedMsg;
-			else
-				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to update the complaint");
+			} catch (Exception e) {
+				newMsgToSend = ServerMsgController.createERRORMsg(e.getMessage());
+			}
 			break;
 		case CREATE_SURVEY:
 			if (dbController.createSurvey(msgController.getSurvey()) != -1)
@@ -391,9 +401,9 @@ public class ClientTask {
 			// get the card info
 			String cardInfo = dbController.getCardInfo(user.getUsername());
 			// use the order controller to pay
-			if (orderController.payForOrder(cardInfo)) {
+			if (orderProcessManager.payForOrder(cardInfo)) {
 				// payment succeed, save the order!
-				if (orderController.saveOrderToDB()) {
+				if (orderProcessManager.saveOrderToDB()) {
 					// the order saved successfully
 					newMsgToSend = ServerMsgController.createRETURN_PAYMENT_APPROVALMsg();
 				} else {
@@ -403,17 +413,21 @@ public class ClientTask {
 				newMsgToSend = ServerMsgController.createERRORMsg("Payment declined!");
 			}
 			// reset the order controller
-			orderController.reset();
+			orderProcessManager.reset();
 			break;
 		case PLACE_ORDER_REQUEST:
 			// use the order controller
-			orderController = new OrderController();
-			Order order = orderController.placeOrder(msgController.getCart(), 0, user.getUsername());
+			orderProcessManager = new OrderProcessManager();
+			Order order = orderProcessManager.placeOrder(msgController.getCart(), 0, user.getUsername(),user.getPersonID());
 			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
 			break;
 		case UPDATE_ORDER_STATUS:
 			// update order status in the db
-			dbController.updateOrder(msgController.getOrder());
+			if (dbController.updateOrder(msgController.getOrder())) {
+				newMsgToSend = CompletedMsg;
+			} else {
+				newMsgToSend = ServerMsgController.createERRORMsg("Failed to cancel the order");
+			}
 			break;
 		case GET_ORDER:
 			Order order2 = dbController.getOrdrFromDB(msgController.getOrderNumber());
@@ -433,8 +447,13 @@ public class ClientTask {
 	private void handleCourierRequest() {
 		switch (msgController.getType()) {
 		case UPDATE_ORDER_STATUS:
-			// update order status in the db
-			dbController.updateOrder(msgController.getOrder());
+			OrdersController orderController = new OrdersController();
+			try {
+				orderController.approveOrderDelivery(msgController.getOrder().getOrderNumber());
+				newMsgToSend = CompletedMsg;
+			} catch (Exception e) {
+				newMsgToSend = ServerMsgController.createERRORMsg(e.getMessage());
+			}
 			break;
 		default:
 			// handle cant do it
@@ -447,7 +466,7 @@ public class ClientTask {
 		if (user != null) {
 			// to log out remove the user entity
 			dbController.disconnectUser(user.getUsername());
-			this.orderController = null;
+			this.orderProcessManager = null;
 			this.user = null;
 		}
 

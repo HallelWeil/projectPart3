@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import user.UserType;
 import usersManagment.UserBoundary;
 
 public class BtnController implements IGuiController {
@@ -97,12 +98,12 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void approvedelivery(ActionEvent event) {
-
+		guiObjectsFactory.courierConfirmDelivery.openWindow();
 	}
 
 	@FXML
 	void createComplaint(ActionEvent event) {
-
+		guiObjectsFactory.newComplaintController.openWindow();
 	}
 
 	@FXML
@@ -149,7 +150,12 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void openReports(ActionEvent event) {
-		guiObjectsFactory.ceoController.openWindow();
+		if (UserBoundary.CurrentUser != null) {
+			if (UserBoundary.CurrentUser.getUserType() == UserType.BranchManager)
+				guiObjectsFactory.managerWatchReportController.openWindow();
+			else if (UserBoundary.CurrentUser.getUserType() == UserType.CEO)
+				guiObjectsFactory.ceoController.openWindow();
+		}
 	}
 
 	@FXML
@@ -159,7 +165,7 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void surveyAnswers(ActionEvent event) {
-
+		guiObjectsFactory.searchSurvey.openWindow();
 	}
 
 	@FXML
@@ -169,7 +175,7 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void updateComplaint(ActionEvent event) {
-
+		guiObjectsFactory.showAllComplaints.openWindow();
 	}
 
 	@FXML

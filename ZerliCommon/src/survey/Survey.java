@@ -64,19 +64,8 @@ public class Survey implements Serializable {
 	 *                between 1 to 10
 	 * @throws Exception when the answers array is not ok
 	 */
-	public void addAnswers(int[] answers) throws Exception {
-		if (!(answers.length == 6)) {
-			throw new Exception("Must be 6 answers!");
-		}
-		for (int i = 0; i < 6; i++) {
-			if (answers[i] > 10 || answers[i] < 0)
-				throw new Exception("Answer " + (i + 1) + "out of range, must be value between 1 to 10");
-		}
-		// the answers are in range, save the answers in the survey result
-		for (int i = 0; i < 6; i++) {
-			result[i] += answers[i];
-		}
-		numberOfParticipants++;
+	public void setAnswers(int[] answers) throws Exception {
+		result = answers;
 	}
 
 	/**

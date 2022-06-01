@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="managerWatchReportPane" prefHeight="695.0" prefWidth="1200.0" style="-fx-background-color: white; -fx-border-color: black;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="branchManager.ManagerWatchReportController">
+<AnchorPane fx:id="managerWatchReportPane" prefHeight="695.0" prefWidth="1200.0" style="-fx-border-color: black;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="branchManager.ManagerWatchReportController">
    <children>
       <AnchorPane prefHeight="695.0" prefWidth="275.0" style="-fx-border-color: black;">
          <children>

@@ -71,12 +71,10 @@ public class BranchManagerBoundary extends UserBoundary {
 	 * @param orderNumber
 	 * @return true if the request succeed
 	 */
-	public boolean requestApproveCancelation(int orderNumber, boolean isApproved, double refundAmount) {
+	public boolean requestApproveCancelation(int orderNumber, boolean isApproved) {
 
 		Order order = new Order();
 		order.setOrderNumber(orderNumber);
-		order.setPrice(refundAmount); // in price field we set the refuned value(server get this value for set in
-										// refund field of the user)
 		if (isApproved) // branchManger not approve Cancellation
 		{
 			order.setOrderStatus(OrderStatus.CANECELED);

@@ -21,7 +21,7 @@ public class QuarterlyOrdersReportController implements IGuiController, IReportC
 	QuarterlyOrdersReport ordersReport = null;
 	private int[][] ordersPerDay;
 	private HashMap<String, Integer> ordersPerCategory;
-	private Series<Integer, Integer> daySeries;
+	private Series<String, Integer> daySeries;
 
     @FXML
     private Label averageOrdersMonthLabel;
@@ -42,7 +42,7 @@ public class QuarterlyOrdersReportController implements IGuiController, IReportC
     private PieChart ordersPerCategoryChart;
 
     @FXML
-    private LineChart<Integer, Integer> ordersPerDayChart;
+    private LineChart<String, Integer> ordersPerDayChart;
 
     @FXML
     private Label popularItemLabel;
@@ -95,7 +95,7 @@ public class QuarterlyOrdersReportController implements IGuiController, IReportC
 		ordersPerDay = ordersReport.getOrdersPerDay();
 		for (int i = 0; i < 3; i++) {
 			for(int j=0; j<31; j++) {
-				daySeries.getData().add(new XYChart.Data<Integer, Integer>(i*31 + j, ordersPerDay[i][j]));
+				daySeries.getData().add(new XYChart.Data<String, Integer>(i*31 + j + "", ordersPerDay[i][j]));
 			}
 		}
 		ordersPerDayChart.getData().add(daySeries);

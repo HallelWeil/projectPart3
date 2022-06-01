@@ -21,7 +21,7 @@ public class OrderReportController implements IGuiController, IReportController 
 	private OrdersReport ordersReport = null;
 	private int[] ordersPerDay;
 	private HashMap<String, Integer> ordersPerCategory;
-	private Series<Integer, Integer> daySeries;
+	private Series<String, Integer> daySeries;
 
     @FXML
     private Label averageOrdersMonthLabel;
@@ -48,7 +48,7 @@ public class OrderReportController implements IGuiController, IReportController 
     private PieChart ordersPerCategoryChart;
 
     @FXML
-    private LineChart<Integer, Integer> ordersPerDayChart;
+    private LineChart<String, Integer> ordersPerDayChart;
 
     @FXML
     private Label popularItemLabel;
@@ -68,6 +68,7 @@ public class OrderReportController implements IGuiController, IReportController 
 		popularItemLabel.setText("NoData");
 		averageOrdersMonthLabel.setText("NoData");
 		daySeries.getData().clear();
+		ordersPerDayChart.getData().clear();
 		ordersPerCategory.clear();
 		ordersPerDay = null;
 		ordersReport = null;
@@ -96,7 +97,7 @@ public class OrderReportController implements IGuiController, IReportController 
 		daySeries = new XYChart.Series<>();
 		ordersPerDay = ordersReport.getOrdersPerDay();
 		for (int i = 0; i < 31; i++) {
-			daySeries.getData().add(new XYChart.Data<Integer, Integer>(i, ordersPerDay[i]));
+			daySeries.getData().add(new XYChart.Data<String, Integer>(i + "", ordersPerDay[i]));
 		}
 		ordersPerDayChart.getData().add(daySeries);
 	}

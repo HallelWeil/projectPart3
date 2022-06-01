@@ -77,7 +77,7 @@ public class ScheduledTasksManager implements Runnable {
 	public void run() {
 		run = true;
 		// on start, get all the tasks from the database and add the default task
-		getTasks();
+		addTasks(getTasks());
 		// the time antil the next task
 		long timeToWait = 0;
 		// run forever,sleep when not needed
@@ -135,11 +135,13 @@ public class ScheduledTasksManager implements Runnable {
 							new Timestamp(complaint.getCreationTime().getTime() + DAY_IN_MILLISECONDS));
 					// get the responsible employee details from the database
 					User responsibleEmployee = dbController.getUser(complaint.getResponsibleEmployeeUserName());
-					String complaintReminderText = "please handle complaint " + complaint.getComplaintsNumber() + "\n"
-							+ "thanks";
-					newReminder.setEmail(responsibleEmployee.getEmail(), complaintReminderText);
-					newReminder.setSMS(responsibleEmployee.getPhoneNumber(), complaintReminderText);
-					newScheduledTask.add(newReminder);
+					if (responsibleEmployee != null) {
+						String complaintReminderText = "please handle complaint " + complaint.getComplaintsNumber()
+								+ "\n" + "thanks";
+						newReminder.setEmail(responsibleEmployee.getEmail(), complaintReminderText);
+						newReminder.setSMS(responsibleEmployee.getPhoneNumber(), complaintReminderText);
+						newScheduledTask.add(newReminder);
+					}
 				}
 			}
 		}
@@ -159,7 +161,8 @@ public class ScheduledTasksManager implements Runnable {
 		// check if the last month reports where not created
 		if (dbController.getAllReportsInTimePeriod(month, month, year).isEmpty()) {
 			// add report creation tasks, set to 2am
-			ScheduledReportCreationTask newScheduledReportCreationTask = new ScheduledReportCreationTask(new Timestamp(System.currentTimeMillis()));
+			ScheduledReportCreationTask newScheduledReportCreationTask = new ScheduledReportCreationTask(
+					new Timestamp(System.currentTimeMillis()));
 			newScheduledTask.add(newScheduledReportCreationTask);
 		}
 		// add end of day task -> check again tomorrow

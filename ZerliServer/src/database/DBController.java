@@ -99,9 +99,9 @@ public class DBController {
 	}
 
 	/**
-	 * Update existing order color and date
+	 * Update existing order status
 	 * 
-	 * @param order with updated color and date
+	 * @param order with updated status
 	 * @return true if the order was updated
 	 */
 
@@ -323,9 +323,10 @@ public class DBController {
 
 	public boolean addSurveyAnswers(int[] answers, int surveyNumber) {
 		// create the query
-		String s = "UPDATE  " + DBname + ".survey  SET a1 = '" + answers[0] + "', a2 = '" + answers[1] + "', a3 = '"
-				+ answers[2] + "', a4 = '" + answers[3] + "', a5 = '" + answers[4] + "', a6 = '" + answers[5]
-				+ "' participants = participants + 1 WHERE (surveyNumber = " + surveyNumber + ");";
+		String s = "UPDATE  " + DBname + ".survey  SET a1 = a1 + " + answers[0] + " , a2 = a2 + " + answers[1]
+				+ ", a3 = a3 + " + answers[2] + " , a4 = a4 + " + answers[3] + " , a5 = a5 + " + answers[4]
+				+ " , a6 = a6 + " + answers[5] + " , participants = participants + 1 WHERE (surveyNumber = "
+				+ surveyNumber + ");";
 		// send query + get result
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
@@ -348,9 +349,10 @@ public class DBController {
 
 	public int createComplaint(Complaint complaint) {
 		int lastID = -1;
-		String s = "INSERT INTO " + DBname + ".survey  VALUES (default ,'" + complaint.getResponsibleEmployeeUserName()
-				+ "','" + complaint.getComplaint() + "','" + complaint.getAnswer() + "','" + complaint.getCompensation()
-				+ "','" + complaint.getStatus().toString() + "','" + complaint.getCustomerUserName() + "');";
+		String s = "INSERT INTO " + DBname + ".complaint  VALUES (default ,'"
+				+ complaint.getResponsibleEmployeeUserName() + "','" + complaint.getComplaint() + "','"
+				+ complaint.getAnswer() + "'," + complaint.getCompensation() + ",'" + complaint.getStatus().toString()
+				+ "','" + complaint.getCustomerID() + "', TIMESTAMP '" + complaint.getCreationTime() + "');";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		if (res) {
 			s = "SELECT last_insert_id() as last_id from complaint";
@@ -367,14 +369,15 @@ public class DBController {
 		return res;
 	}
 
-	public boolean addSurveyResult(int surveyNumber, Blob surveyResult) {
-		// create the query
-		String data = objectManager.objectToBlobString(surveyResult);
-		String s = "UPDATE  " + DBname + ".survey  SET surveyResult = '" + surveyResult + "' WHERE (surveyNumber = "
-				+ data + ");";
-		// send query + get result
-		boolean res = (boolean) dbBoundry.sendQueary(s);
-		return res;
+	public Complaint getComplaint(int complaintNumber) {
+		String s = "SELECT * FROM " + DBname + ".complaint WHERE (complaintNumber = " + complaintNumber + ");";
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		ArrayList<Complaint> complaints = objectManager.complaintDB(res);
+		if (complaints.size() > 0)
+			return complaints.get(0);
+		else
+			return null;
 	}
 
 	public ArrayList<Complaint> getAllComplaints(String employeeUsername) {
@@ -392,6 +395,16 @@ public class DBController {
 		// get the returned values
 		ArrayList<Complaint> complaints = objectManager.complaintDB(res);
 		return complaints;
+	}
+
+	public boolean addSurveyResult(int surveyNumber, Blob surveyResult) {
+		// create the query
+		String data = objectManager.objectToBlobString(surveyResult);
+		String s = "UPDATE  " + DBname + ".survey  SET surveyResult = '" + surveyResult + "' WHERE (surveyNumber = "
+				+ data + ");";
+		// send query + get result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
 	}
 
 	public ArrayList<Product> getCatalogCategory(String category) {
@@ -526,5 +539,29 @@ public class DBController {
 		// get the returned values
 		ArrayList<Promotion> promotions = objectManager.promotionsDB(res);
 		return promotions;
+	}
+
+	public double getShopCredit(String id) {
+		String s = "SELECT credit FROM " + DBname + ".shopcredit WHERE customerID = '" + id + "' ;";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		double credit = objectManager.shopCreditDB(res);
+		return credit;
+	}
+
+	public boolean updateShopCredit(String id, double amount) {
+		// create the query
+		String s = "UPDATE  " + DBname + ".shopcredit  SET credit = credit + " + amount + " WHERE customerID = '" + id
+				+ "' ;";
+		// send query + get result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	public boolean saveShopCreditToDB(String id, double credit) {
+		String s = "INSERT INTO " + DBname + ".shopcredit VALUES( '" + id + "' , " + credit + " );";
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
 	}
 }

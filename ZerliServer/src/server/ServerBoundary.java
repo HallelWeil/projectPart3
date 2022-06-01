@@ -63,7 +63,6 @@ public class ServerBoundary {
 		setStatus("Server active");
 		// init new server scheduled tasks manager
 		ScheduledTasksManager scheduledTasksManager = ScheduledTasksManager.getInstance();
-		scheduledTasksManager.addTasks(scheduledTasksManager.getTasks());
 		Thread scheduledTasksThread = new Thread(scheduledTasksManager);
 		scheduledTasksThread.start();
 		return true;

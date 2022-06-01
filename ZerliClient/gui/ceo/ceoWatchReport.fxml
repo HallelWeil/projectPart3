@@ -27,7 +27,7 @@
             <ComboBox fx:id="ceoReportYear" layoutX="29.0" layoutY="132.0" prefWidth="150.0" promptText="year" visibleRowCount="5" />
             <ComboBox fx:id="ceoReportMonth" disable="true" layoutX="29.0" layoutY="175.0" prefWidth="150.0" promptText="month" visibleRowCount="12" />
             <ComboBox fx:id="ceoReportType" layoutX="29.0" layoutY="60.0" onAction="#changeMonthChoice" prefWidth="150.0" promptText="report type" visibleRowCount="5" />
-            <Label fx:id="reportMessage" layoutX="30.0" layoutY="640.0" prefHeight="17.0" prefWidth="91.0" textFill="RED" />
+            <Label fx:id="reportMessage" layoutX="30.0" layoutY="640.0" prefHeight="17.0" prefWidth="121.0" text="Repost doesn't exist" textFill="RED" visible="false" />
             <Label layoutX="15.0" layoutY="218.0" text="choose branch">
                <font>
                   <Font name="System Bold Italic" size="18.0" />

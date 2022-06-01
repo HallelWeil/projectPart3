@@ -127,6 +127,9 @@ public class CEOcontroller implements IGuiController {
 			previewReportLeftBot.setDisable(false);
 			previewReportRightBot.setDisable(false);
 			getReportBot.setDisable(true);
+			reportMessage.setVisible(false);
+		}else {
+			reportMessage.setVisible(true);
 		}
 	}
 

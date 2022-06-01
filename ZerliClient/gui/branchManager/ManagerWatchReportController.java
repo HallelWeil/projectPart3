@@ -112,10 +112,15 @@ public class ManagerWatchReportController implements IGuiController {
 	void openReport(ActionEvent event) throws IOException {
 		managerOpenReport.setDisable(true);
 		managerGetReport.setDisable(false);
-		reportController = getController();
-		reportController.setReport(report);
-		reportController.openWindow();
-		reportPane.getChildren().setAll(reportController.getBasePane());
+		if(report != null) {
+			reportController = getController();
+			reportController.setReport(report);
+			reportController.openWindow();
+			reportPane.getChildren().setAll(reportController.getBasePane());
+			reportMessage.setVisible(false);
+		}else {
+			reportMessage.setVisible(true);
+		}
 	}
 	
 	private void loadFXMLs() throws IOException{

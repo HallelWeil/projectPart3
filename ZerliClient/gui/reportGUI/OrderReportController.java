@@ -83,7 +83,7 @@ public class OrderReportController implements IGuiController, IReportController 
 			popularItemLabel.setText(ordersReport.getMostPopularItem());
 			averageOrdersMonthLabel.setText(Double.toString(ordersReport.getAvarageMonthlyOrders()));
 			setPerDayChart();
-			//setPerCategoryChart();
+			setPerCategoryChart();
 		}
 	}
 

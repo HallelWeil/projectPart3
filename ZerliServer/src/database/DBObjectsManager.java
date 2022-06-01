@@ -123,7 +123,7 @@ public class DBObjectsManager {
 		try {
 			while (res.next()) {
 				Complaint complaint = new Complaint(res.getString("responsibleEmployeeUsername"),
-						res.getString("complaint"), res.getString("customerUsername"));
+						res.getString("complaint"), res.getString("customerID"));
 				complaint.setAnswer(res.getString("answer"));
 				complaint.setCompensation(res.getDouble("compensation"));
 				complaint.setComplaintsNumber(res.getInt("complaintNumber"));
@@ -285,6 +285,18 @@ public class DBObjectsManager {
 			System.out.println(e.getMessage());
 		}
 		return deliveryDetails;
+	}
+
+	public double shopCreditDB(ResultSet res) {
+		double credit = -1;
+		try {
+			if (res.next()) {
+				credit = res.getDouble("credit");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return credit;
 	}
 
 }

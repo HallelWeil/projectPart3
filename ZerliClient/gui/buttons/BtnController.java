@@ -103,7 +103,7 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void createComplaint(ActionEvent event) {
-
+		guiObjectsFactory.newComplaintController.openWindow();
 	}
 
 	@FXML
@@ -175,7 +175,7 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void updateComplaint(ActionEvent event) {
-
+		guiObjectsFactory.showAllComplaints.openWindow();
 	}
 
 	@FXML

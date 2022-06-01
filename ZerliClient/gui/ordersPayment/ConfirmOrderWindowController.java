@@ -17,6 +17,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.DeliveryDetails;
@@ -27,20 +28,20 @@ public class ConfirmOrderWindowController implements IGuiController {
 	@FXML
 	private AnchorPane basepane;
 
-    @FXML
-    private TableView<ProductInOrder> table;
+	@FXML
+	private TableView<ProductInOrder> table;
 
-    @FXML
-    private TableColumn<ProductInOrder, String> tableviewItemname;
+	@FXML
+	private TableColumn<ProductInOrder, String> tableviewItemname;
 
-    @FXML
-    private TableColumn<ProductInOrder, Integer> tableviewamount;
+	@FXML
+	private TableColumn<ProductInOrder, Integer> tableviewamount;
 
-    @FXML
-    private TableColumn<ProductInOrder, Double> tableviewprice;
+	@FXML
+	private TableColumn<ProductInOrder, Double> tableviewprice;
 
-    @FXML
-    private TableColumn<ProductInOrder, Double> tableviewtotal;
+	@FXML
+	private TableColumn<ProductInOrder, Double> tableviewtotal;
 
 	@FXML
 	private TextArea dipslaydeliverydetails;
@@ -63,12 +64,18 @@ public class ConfirmOrderWindowController implements IGuiController {
 	@FXML
 	private Button backbutton;
 
+	@FXML
+	private Text oldPriceTxt;
+
+	@FXML
+	private Label orderDataLabel;
+
 	public Boolean isGift = false, isEmailSend = false;
 
 	private GuiObjectsFactory guiobjectfactory = GuiObjectsFactory.getInstance();
 
 	private ObservableList<ProductInOrder> data = FXCollections.observableArrayList();
-	
+
 	@FXML
 	void backbuttpress(ActionEvent event) {
 		if (guiobjectfactory.shopBoundary.isHomeDeliveryflag()) {
@@ -84,7 +91,7 @@ public class ConfirmOrderWindowController implements IGuiController {
 	void confirmPayButtpress(ActionEvent event) {
 		if (guiobjectfactory.shopBoundary.payForOrder()) {
 			guiobjectfactory.succedfailedpay.openWindow();
-		} else   //in case we get false in pay 
+		} else // in case we get false in pay
 			guiobjectfactory.failedpay.openWindow();
 
 	}
@@ -112,12 +119,11 @@ public class ConfirmOrderWindowController implements IGuiController {
 	public void resetController() {
 		checkboxSendGift.setSelected(false);
 		checkboxsendMail.setSelected(false);
-        displayGreetingcard.setText("");
-        dipslaydeliverydetails.setText("");
-        TotalPrice.setText("0");
-        table.getItems().clear();
-        
-        
+		displayGreetingcard.setText("");
+		dipslaydeliverydetails.setText("");
+		TotalPrice.setText("0");
+		table.getItems().clear();
+
 	}
 
 	@Override
@@ -130,42 +136,46 @@ public class ConfirmOrderWindowController implements IGuiController {
 
 	public void initmywindow() {
 		table.getItems().clear();
-		if(!guiobjectfactory.shopBoundary.isPersonalCardflag())
-		{
-    		guiobjectfactory.shopBoundary.addPersonalLetter(""); //in case user first add a personal than change his mind to not to add then we remove the string
+		if (!guiobjectfactory.shopBoundary.isPersonalCardflag()) {
+			guiobjectfactory.shopBoundary.addPersonalLetter(""); // in case user first add a personal than change his
+																	// mind to not to add then we remove the string
 			displayGreetingcard.clear();
+		} else {
+			displayGreetingcard.setText(guiobjectfactory.order.getPersonalLetter());
 		}
-		else
-		{
-			displayGreetingcard.setText(guiobjectfactory.order.getPersonalLetter());	
-		}
-		if(!guiobjectfactory.shopBoundary.isHomeDeliveryflag())
-		{
-    		guiobjectfactory.shopBoundary.sumbmitDetailsForHomeDelivery(new DeliveryDetails());
-			dipslaydeliverydetails.clear(); 
-		}
-		else
-		{
+		if (!guiobjectfactory.shopBoundary.isHomeDeliveryflag()) {
+			guiobjectfactory.shopBoundary.sumbmitDetailsForHomeDelivery(new DeliveryDetails());
+			dipslaydeliverydetails.clear();
+		} else {
 			String str = buildDeliveryDetailsString(guiobjectfactory.order.getDeliveryDetails());
 			dipslaydeliverydetails.setText(str);
 		}
-		ArrayList<ProductInOrder> items=guiobjectfactory.order.getItems();
-		//double cntprice=0;
-		for(int i=0;i<items.size();i++)//calculate the total price of all Items in tableview 
+		ArrayList<ProductInOrder> items = guiobjectfactory.order.getItems();
+		// double cntprice=0;
+		for (int i = 0; i < items.size(); i++)// calculate the total price of all Items in tableview
 		{
-	//	cntprice=cntprice+((items.get(i).getPrice())*(items.get(i).getAmount()));
-		data.add(items.get(i));
+			// cntprice=cntprice+((items.get(i).getPrice())*(items.get(i).getAmount()));
+			data.add(items.get(i));
 		}
 
-		tableviewItemname.setCellValueFactory(new PropertyValueFactory<> ("name"));
-		tableviewamount.setCellValueFactory(new PropertyValueFactory<> ("amount"));
-		tableviewprice.setCellValueFactory(new PropertyValueFactory<> ("price"));
-		tableviewtotal.setCellValueFactory(new PropertyValueFactory<> ("total"));
+		tableviewItemname.setCellValueFactory(new PropertyValueFactory<>("name"));
+		tableviewamount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+		tableviewprice.setCellValueFactory(new PropertyValueFactory<>("price"));
+		tableviewtotal.setCellValueFactory(new PropertyValueFactory<>("total"));
 		table.setItems(data);
-		TotalPrice.setText(Double.toString(guiobjectfactory.order.getPrice()));
+		TotalPrice.setText(Double.toString(guiobjectfactory.order.getPriceToPay()));
+
+		// if the price to pay not equals to the total price
+		if (guiobjectfactory.order.getPriceToPay() != guiobjectfactory.order.getPrice()) {
+			oldPriceTxt.setText(guiobjectfactory.order.getPrice() + "");
+			orderDataLabel.setText(guiobjectfactory.order.getOrderData());
+		} else {
+			oldPriceTxt.setText("");
+			orderDataLabel.setText("");
+		}
 	}
 
-	/** 
+	/**
 	 * in this window i build the delivery details String to show in middle window
 	 * 
 	 * @param delivery the delivery details that user entered in HomeDeliveryWindow
@@ -176,8 +186,8 @@ public class ConfirmOrderWindowController implements IGuiController {
 		s.append("address:" + "\n" + delivery.getFirstName() + " " + delivery.getLastName() + "\n");
 		s.append(delivery.getAddress() + "\n\n");
 		s.append("arrival date and time:\n");
-		//s.append(guiobjectfactory.order.getArrivalDate()+"\n");
-		s.append(guiobjectfactory.order.getArrivalDate().toLocalDateTime().toString()+"\n");
+		// s.append(guiobjectfactory.order.getArrivalDate()+"\n");
+		s.append(guiobjectfactory.order.getArrivalDate().toLocalDateTime().toString() + "\n");
 		s.append("\n\nadditional information:" + "\n");
 		s.append("phone number: " + delivery.getPhoneNumber() + "\n");
 		s.append("comments: " + delivery.getComments() + "\n");

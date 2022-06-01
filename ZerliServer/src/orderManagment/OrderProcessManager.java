@@ -11,6 +11,7 @@ import database.DBController;
 import order.Order;
 import order.OrderStatus;
 import order.ProductInOrder;
+import paymentManagment.CreditController;
 import paymentManagment.PaymentController;
 
 /**
@@ -22,12 +23,18 @@ import paymentManagment.PaymentController;
 public class OrderProcessManager {
 
 	private Order activeOrder;
+	private double creditUse = 0;
+	private String userID;
+	private String username;
 
 	/**
 	 * Reset the orderController
 	 */
 	public void reset() {
 		activeOrder = new Order();
+		creditUse = 0;
+		userID = "";
+		username = "";
 	}
 
 	/**
@@ -41,7 +48,9 @@ public class OrderProcessManager {
 	 * @param username    the user who place the order
 	 * @return
 	 */
-	public Order placeOrder(Cart cart, int orderNumber, String username) {
+	public Order placeOrder(Cart cart, int orderNumber, String username, String id) {
+		userID = id;
+		this.username = username;
 		if (cart == null)
 			return null;
 		// create new order
@@ -62,7 +71,36 @@ public class OrderProcessManager {
 		newOrder.setItems(items);
 		newOrder.setPersonalLetter(cart.getGreetingCard());
 		activeOrder = newOrder;
+		getDiscountAndCredit();
 		return newOrder;
+	}
+
+	private void getDiscountAndCredit() {
+		DBController dbcontroller = DBController.getInstance();
+		CreditController creditController = new CreditController();
+		double price = activeOrder.getPrice();
+		// 1. check if its the customer's first order
+		if (dbcontroller.getAllOrdersOfCustomer(null, username).size() == 0) {
+			// you get 20% off for the first order
+			price = 0.8 * price;
+			activeOrder.setOrderData(activeOrder.getOrderData() + "\n20% off for your first order!");
+		}
+		// 2. check if there is credit, if there is -> use the credit
+		double credit = creditController.getShopCredit(userID);
+		if (credit > 0) {
+			// if there is enough credit for the full price
+			if (credit >= price) {
+				activeOrder.setOrderData(activeOrder.getOrderData() + "\nUsed Shop credit for " + price);
+				price = 0;
+				creditUse = price;
+			} else {
+				price = price - credit;
+				creditUse = credit;
+				activeOrder.setOrderData(activeOrder.getOrderData() + "\nUsed Shop credit for " + credit);
+			}
+		}
+		// 3. save the updated price
+		activeOrder.setPriceToPay(price);
 	}
 
 	/**
@@ -74,14 +112,29 @@ public class OrderProcessManager {
 	 */
 	public boolean payForOrder(String cardInfo) {
 		PaymentController paymnetControlelr = new PaymentController();
-		try {
-			if (paymnetControlelr.pay(cardInfo, activeOrder.getPrice())) {
-				activeOrder.setOrderStatus(OrderStatus.WAITING_FOR_APPROAVL);
-				return true;
+		CreditController creditController = new CreditController();
+		// 1. try to use the credit
+		if (creditUse > 0) {
+			if (!creditController.useShopCredit(userID, creditUse)) {
+				return false;
 			}
-		} catch (Exception e) {
 		}
-		return false;
+		// 2. try to pay
+		if (activeOrder.getPriceToPay() > 0) {
+			try {
+				if (paymnetControlelr.pay(cardInfo, activeOrder.getPriceToPay())) {
+					activeOrder.setOrderStatus(OrderStatus.WAITING_FOR_APPROAVL);
+					return true;
+				}
+			} catch (Exception e) {
+			}
+			// 3. if the payment failed, return the credit
+			if (creditUse > 0) {
+				creditController.refund(userID, creditUse);
+			}
+			return false;
+		}
+		return true;
 	}
 
 	/**

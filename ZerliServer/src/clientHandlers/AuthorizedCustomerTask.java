@@ -69,7 +69,7 @@ public class AuthorizedCustomerTask extends ClientTasks {
 			// use the order controller
 			orderController = new OrderProcessManager();
 			Order order = orderController.placeOrder(msgController.getCart(), 0,
-					clientTaskHandler.getActiveUser().getUsername());
+					clientTaskHandler.getActiveUser().getUsername(), clientTaskHandler.getActiveUser().getPersonID());
 			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
 			break;
 		case UPDATE_ORDER_STATUS:

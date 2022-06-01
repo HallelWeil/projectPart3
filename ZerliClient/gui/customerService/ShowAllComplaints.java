@@ -2,6 +2,7 @@ package customerService;
 
 import java.sql.Timestamp;
 
+
 import common.Status;
 import complaint.Complaint;
 import javafx.collections.FXCollections;
@@ -12,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -30,8 +30,11 @@ public class ShowAllComplaints implements IGuiController {
     @FXML
     private TableView<Complaint> ComplaintTable;
     
-    //@FXML
-   // private Button updateBot;
+    @FXML
+   private Button updateBot;
+    
+    @FXML
+	private Label complaintLabel;
 
     @FXML
     private TableColumn<Complaint, Integer> complaintsNumberCol;
@@ -53,19 +56,18 @@ public class ShowAllComplaints implements IGuiController {
     
 
     ObservableList<Complaint> complaintObs = FXCollections.observableArrayList();
-    UpdateComplaint updateComplaint = new UpdateComplaint();
     Complaint selectedComplaint;
 ;
     
     public void initializeComplaintsTable() {
     	complaintObs.clear();
     	ComplaintTable.getItems().clear();
-    	complaintsNumberCol.setCellValueFactory(new PropertyValueFactory<>("number"));
-    	responsibleEmployeeUserNameCol.setCellValueFactory(new PropertyValueFactory<>("responsible Employee"));
+    	complaintsNumberCol.setCellValueFactory(new PropertyValueFactory<>("complaintsNumber"));
+    	responsibleEmployeeUserNameCol.setCellValueFactory(new PropertyValueFactory<>("responsibleEmployeeUserName"));
     	complaintCol.setCellValueFactory(new PropertyValueFactory<>("complaint"));
     	statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-    	customerUserNameCol.setCellValueFactory(new PropertyValueFactory<>("customer name"));
-    	creationTimeCol.setCellValueFactory(new PropertyValueFactory<>("complaint create date"));
+    	customerUserNameCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+    	creationTimeCol.setCellValueFactory(new PropertyValueFactory<>("creationTime"));
     }
     
     @Override
@@ -87,10 +89,14 @@ public class ShowAllComplaints implements IGuiController {
 		ComplaintTable.getItems().clear();
 	}
 
-
     @FXML
     void GoToUpdateComplaintWindow(ActionEvent event) {
-    	guiObjectsFactory.mainWindowController.changeWindowName("update complaint");
-    	updateComplaint.openWindow();
+    	selectedComplaint = ComplaintTable.getSelectionModel().getSelectedItem();
+    	if (selectedComplaint != null) {
+    		guiObjectsFactory.mainWindowController.changeWindowName("update complaint");
+    		guiObjectsFactory.updateComplaint.setSelectedComplaint(selectedComplaint);
+        	guiObjectsFactory.updateComplaint.openWindow();
+    	}
+    	
     }
 }

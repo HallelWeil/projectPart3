@@ -15,6 +15,7 @@ import ceo.CEOcontroller;
 import client.ClientBoundary;
 import courier.CourierControllerGUI;
 import customer.*;
+import customerService.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import mainWindow.*;
@@ -60,8 +61,9 @@ public class GuiObjectsFactory {
 	public AccessibilityPageController accessibilityPageController;
 
 	// ofir controllers
-	public customerService.NewComplaint newComplaintController;
-	public customerService.UpdateComplaint updateController;
+	public NewComplaint newComplaintController;
+	public UpdateComplaint updateComplaint;
+	public ShowAllComplaints showAllComplaints;
 	public SurveyResults surveyResultsController;
 	public ShowChoosenSurvey showChoosenSurvey;
 
@@ -70,7 +72,7 @@ public class GuiObjectsFactory {
 	public ManagerWatchReportController managerWatchReportController;
 	public ManagerUpdateUser managerUsersManagmetController;
 	public CEOcontroller ceoController;
-	
+
 	// or controllers
 	public SearchSurverControllerGUI searchSurvey;
 	public SurveyControllerGUI showSurvey;
@@ -150,13 +152,13 @@ public class GuiObjectsFactory {
 
 		searchSurvey = (SearchSurverControllerGUI) loadFxmlFile("/branchEmployee/BranchEmpolyeeSearchSurvey.fxml");
 		showSurvey = (SurveyControllerGUI) loadFxmlFile("/branchEmployee/BranchEmployeeSurveyWindow.fxml");
-		
-		
+
 		courierConfirmDelivery = (CourierControllerGUI) loadFxmlFile("/courier/CourierGUI.fxml");
-		// newComplaintController = (NewComplaint)
-		// loadFxmlFile("/customerService/NewComplaint.fxml");
-		// updateController = (UpdateComplaint)
-		// loadFxmlFile("/customerService/UpdateComplaint.fxml");
+		
+		newComplaintController = (NewComplaint) loadFxmlFile("/customerService/NewComplaint.fxml");
+		updateComplaint = (UpdateComplaint) loadFxmlFile("/customerService/UpdateComplaint.fxml");
+		showAllComplaints = (ShowAllComplaints) loadFxmlFile("/customerService/ShowAllComplaints.fxml");
+		
 		surveyResultsController = (SurveyResults) loadFxmlFile("/surveyGui/surveyResults.fxml");
 		showChoosenSurvey = (ShowChoosenSurvey) loadFxmlFile("/surveyGui/ChoosenSurvey.fxml");
 		managerApproveController = (ManagerApproveController) loadFxmlFile("/branchManager/approveOrder.fxml");

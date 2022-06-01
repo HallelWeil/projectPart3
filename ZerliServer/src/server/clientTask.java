@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import catalog.Product;
 import complaint.Complaint;
+import complaintsManagment.ComplaintsController;
 import database.DBController;
 import msg.Msg;
 import ocsf.server.ConnectionToClient;
@@ -278,20 +279,22 @@ public class ClientTask {
 	 * responsible for
 	 */
 	private void handleCustomerServiceEmloyeeRequest() {
+		ComplaintsController complaintController = new ComplaintsController();
 		switch (msgController.getType()) {
 		case CREATE_COMPLAINT:
-			if (dbController.createComplaint(msgController.getComplaint()) != -1)
+			if (complaintController.createComplaint(msgController.getComplaint()))
 				newMsgToSend = CompletedMsg;
 			else
 				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to create the complaint");
 			break;
 		case UPDATE_COMPLAINT:
 			Complaint tempComplaint = msgController.getComplaint();
-			if (dbController.updateComplaint(tempComplaint.getAnswer(), tempComplaint.getComplaintsNumber(),
-					tempComplaint.getStatus()))
+			try {
+				complaintController.handleComplaintAnswer(tempComplaint);
 				newMsgToSend = CompletedMsg;
-			else
-				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to update the complaint");
+			} catch (Exception e) {
+				newMsgToSend = ServerMsgController.createERRORMsg(e.getMessage());
+			}
 			break;
 		case CREATE_SURVEY:
 			if (dbController.createSurvey(msgController.getSurvey()) != -1)
@@ -415,7 +418,7 @@ public class ClientTask {
 		case PLACE_ORDER_REQUEST:
 			// use the order controller
 			orderProcessManager = new OrderProcessManager();
-			Order order = orderProcessManager.placeOrder(msgController.getCart(), 0, user.getUsername());
+			Order order = orderProcessManager.placeOrder(msgController.getCart(), 0, user.getUsername(),user.getPersonID());
 			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
 			break;
 		case UPDATE_ORDER_STATUS:

@@ -2,6 +2,7 @@ package orderManagment;
 
 import database.DBController;
 import order.*;
+import paymentManagment.CreditController;
 import paymentManagment.PaymentController;
 import remindersManagment.ReminderController;
 import user.User;
@@ -176,10 +177,8 @@ public class OrdersController {
 		}
 		if (refund > 0) {
 			// give refund!
-			PaymentController paymentController = new PaymentController();
-			if (!paymentController.refund(userCard, refund)) {
-				throw new Exception("Order canceled, failed to refund");
-			}
+			CreditController creditController = new CreditController();
+			creditController.refund(userCard, refund);
 		}
 		// 6. we got here - the order approved successfully
 		// 7. send reminder and we done!

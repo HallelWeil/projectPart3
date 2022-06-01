@@ -4,6 +4,7 @@ import client.ClientBoundary;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import userGuiManagment.MainWindowGuiManager;
 
 public class ClientUI extends Application {
 
@@ -16,19 +17,18 @@ public class ClientUI extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-		guiObjectsFactory.clientBoundary.connect(host, port);
-		guiObjectsFactory.initBoundaries();
+
+		clientBoundary = new ClientBoundary();
+		clientBoundary.connect(host, port);
+		MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 		globalstage = stage;
 		try {
 
-			guiObjectsFactory.loadAllFxmlFiles();
-			Scene scene = new Scene(guiObjectsFactory.mainWindowController.getMainWindowRoot());
+			Scene scene = new Scene(mainWindowManager.mainWindowController.getMainWindowRoot());
 			stage.setScene(scene);
 			stage.show();
-			guiObjectsFactory.mainWindowController.init();
-			guiObjectsFactory.mainWindowController.openWindow();
-			 
+			mainWindowManager.mainWindowController.init();
+			mainWindowManager.mainWindowController.openWindow();
 
 		} catch (Exception e) {
 			System.out.println("gui problem " + e.getMessage());
@@ -43,14 +43,13 @@ public class ClientUI extends Application {
 	@Override
 	public void stop() {
 		try {
-			GuiObjectsFactory.getInstance().clientBoundary.quit();
+			clientBoundary.quit();
 		} catch (Exception e) {
 			// do nothing
 		}
 		System.out.println("End");
 		System.exit(1);
 	}
-
 
 	// should have arguments "host" "port"
 	public static void main(String[] args) {

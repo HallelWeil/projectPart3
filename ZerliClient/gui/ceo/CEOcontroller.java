@@ -29,11 +29,14 @@ import reportGUI.QuarterlyOrdersReportController;
 import reportGUI.QuarterlyRevenueReportController;
 import reportGUI.RevenueReportController;
 import reportGUI.SatisfactionReportController;
+import userGuiManagment.CEOGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.CEOBoundary;
 
 public class CEOcontroller implements IGuiController {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private CEOBoundary ceoBoundry = guiObjectsFactory.ceoBoundry;
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private CEOBoundary ceoBoundry = CEOGuiManager.getInstance().getCeoBoundry();
 	private IReportController leftReportController;
 	private IReportController rightReportController;
 	private IReportController middleReportController;
@@ -43,13 +46,12 @@ public class CEOcontroller implements IGuiController {
 	private QuarterlyOrdersReportController quarterlyOrdersReportController;
 	private QuarterlyRevenueReportController quarterlyRevenueReportController;
 	private SatisfactionReportController SatisfactionReportController;
-	
 
-    @FXML
-    private AnchorPane MiddleReport;
-    
-    @FXML
-    private ScrollPane middleScroll;
+	@FXML
+	private AnchorPane MiddleReport;
+
+	@FXML
+	private ScrollPane middleScroll;
 
 	@FXML
 	private Button getReportBot;
@@ -98,7 +100,7 @@ public class CEOcontroller implements IGuiController {
 	void openReport(ActionEvent event) {
 		previewReport(MiddleReport, middleReportController);
 		middleScroll.setVisible(true);
-		
+
 	}
 
 	@FXML
@@ -113,7 +115,6 @@ public class CEOcontroller implements IGuiController {
 		previewReport(rightReport, rightReportController);
 		middleScroll.setVisible(false);
 	}
-		
 
 	private void previewReport(AnchorPane anchor, IReportController reportController) {
 		openReportBot.setDisable(true);
@@ -162,9 +163,9 @@ public class CEOcontroller implements IGuiController {
 	}
 
 	@Override
-	public void openWindow(){
-		guiObjectsFactory.mainWindowController.changeWindowName("CEO - view report");
-		guiObjectsFactory.mainWindowController.showNewWindow(ceoWatchReportPane);
+	public void openWindow() {
+		mainWindowManager.mainWindowController.changeWindowName("CEO - view report");
+		mainWindowManager.mainWindowController.showNewWindow(ceoWatchReportPane);
 		ArrayList<Integer> yearsList = (ArrayList<Integer>) IntStream.range(2000, LocalDate.now().getYear() + 1).boxed()
 				.collect(Collectors.toList());
 		Collections.reverse(yearsList);
@@ -175,7 +176,7 @@ public class CEOcontroller implements IGuiController {
 		ceoReportBranch.getItems().setAll(branches);
 		ceoReportMonth.getItems().setAll(monthsList);
 		ceoReportYear.getItems().setAll(yearsList);
-		ceoReportType.getItems().setAll(ReportType.values());	
+		ceoReportType.getItems().setAll(ReportType.values());
 		try {
 			loadFXMLs();
 		} catch (IOException e) {
@@ -203,33 +204,34 @@ public class CEOcontroller implements IGuiController {
 			break;
 		}
 	}
-	
-	private void loadFXMLs() throws IOException{
+
+	private void loadFXMLs() throws IOException {
 		orderReportController = (OrderReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/ordersReport.fxml");
-		revenueReportController = (RevenueReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/revenueReport.fxml");
+		revenueReportController = (RevenueReportController) guiObjectsFactory
+				.loadFxmlFile("/reportGUI/revenueReport.fxml");
 		quarterlyOrdersReportController = (QuarterlyOrdersReportController) guiObjectsFactory
 				.loadFxmlFile("/reportGUI/quarterlyOrdersReport.fxml");
 		quarterlyRevenueReportController = (QuarterlyRevenueReportController) guiObjectsFactory
 				.loadFxmlFile("/reportGUI/quarterlyRevenueReport.fxml");
 		SatisfactionReportController = (SatisfactionReportController) guiObjectsFactory
-				.loadFxmlFile("/reportGUI/satisfactionReport.fxml");	
+				.loadFxmlFile("/reportGUI/satisfactionReport.fxml");
 	}
 
 	private IReportController getController() {
-			switch (report.getType()) {
-				case MONTHLY_ORDERS_REPORT:
-					return orderReportController;
-				case MONTHLY_REVENU_EREPORT:
-					return revenueReportController;
-				case QUARTERLY_ORDERS_REPORT:
-					return quarterlyOrdersReportController;
-				case QUARTERLY_REVENUE_REPORT:
-					return quarterlyRevenueReportController;
-				case QUARTERLY_SATISFACTION_REPORT:
-					return SatisfactionReportController;
-				default:
-					return null;
-			}
+		switch (report.getType()) {
+		case MONTHLY_ORDERS_REPORT:
+			return orderReportController;
+		case MONTHLY_REVENU_EREPORT:
+			return revenueReportController;
+		case QUARTERLY_ORDERS_REPORT:
+			return quarterlyOrdersReportController;
+		case QUARTERLY_REVENUE_REPORT:
+			return quarterlyRevenueReportController;
+		case QUARTERLY_SATISFACTION_REPORT:
+			return SatisfactionReportController;
+		default:
+			return null;
+		}
 	}
 
 }

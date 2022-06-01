@@ -142,15 +142,17 @@ public class ShopBoundary {
 	public void selectDeliveryOption(boolean isHomedelivery) {
 
 		homeDeliveryflag = isHomedelivery;
-		if(isHomedelivery)
-		cartCon.chooseHomeDelivery();
+		if (isHomedelivery)
+			cartCon.chooseHomeDelivery();
 
 	}
+
 	/**
-	 * request to get list of all branches 
-	 * @return arraylist of all branches 
+	 * request to get list of all branches
+	 * 
+	 * @return arraylist of all branches
 	 */
-	public ArrayList<String> getAllBranches(){
+	public ArrayList<String> getAllBranches() {
 		return cartCon.getAllBrances();
 	}
 
@@ -194,12 +196,15 @@ public class ShopBoundary {
 	}
 
 	public void selectPersonalCard(boolean b) {
-		personalCard = b;	
+		personalCard = b;
 	}
 
 	public void submitDetailsForArivalDate(Timestamp arrivalDate) {
-		cartCon.setArrivelOrPickupDateAndTime(arrivalDate);		
+		cartCon.setArrivelOrPickupDateAndTime(arrivalDate);
 	}
-	
+
+	public void emptyCart() {
+		cartCon = new CartController();
+	}
 
 }

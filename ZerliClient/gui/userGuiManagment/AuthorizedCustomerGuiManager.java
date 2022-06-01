@@ -46,16 +46,17 @@ public class AuthorizedCustomerGuiManager implements IUserGuiManager {
 	private ProductsManager productManager;
 
 	// the boundaries
-	public ShopBoundary shopBoundary;
-	public AuthorizedCustomerBoundary authorizedCustomerBoundary;
+	private ShopBoundary shopBoundary;
+	private AuthorizedCustomerBoundary authorizedCustomerBoundary;
+	// object
 	public Order order;
 
 	private AuthorizedCustomerGuiManager() {
 
 	}
 
-	public AuthorizedCustomerGuiManager getInstance() {
-		if (authorizedCustomerGuiManager != null) {
+	public static AuthorizedCustomerGuiManager getInstance() {
+		if (authorizedCustomerGuiManager == null) {
 			authorizedCustomerGuiManager = new AuthorizedCustomerGuiManager();
 		}
 		return authorizedCustomerGuiManager;
@@ -166,6 +167,7 @@ public class AuthorizedCustomerGuiManager implements IUserGuiManager {
 
 	@Override
 	public void logout() {
+		authorizedCustomerGuiManager = null;
 		ordersHistoryController = null;
 		shopWindowController = null;
 		orderDetailsController = null;

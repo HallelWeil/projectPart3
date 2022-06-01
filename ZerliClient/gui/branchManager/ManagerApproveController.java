@@ -20,11 +20,17 @@ import main.IGuiController;
 import order.Order;
 import order.OrderStatus;
 import order.ProductInOrder;
+import userGuiManagment.BranchEmployeeGuiManager;
+import userGuiManagment.BranchManagerGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.BranchManagerBoundary;
 
 public class ManagerApproveController implements IGuiController {
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private BranchManagerGuiManager branchManagerGuiManager = BranchManagerGuiManager.getInstance();
+	private BranchManagerBoundary managerBoundry = branchManagerGuiManager.getBranchManagerBoundary();
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private BranchManagerBoundary managerBoundry = guiObjectsFactory.branchManagerBoundary;
+
 	ManagerViewProducts viewProductsController;
 
 	@FXML
@@ -85,10 +91,10 @@ public class ManagerApproveController implements IGuiController {
 
 	@Override
 	public void openWindow() {
-		guiObjectsFactory.mainWindowController.showNewWindow(orderApprovePane);
+		mainWindowManager.mainWindowController.showNewWindow(orderApprovePane);
 		initializeOrdersTable();
 		managerOrderTable.getItems().setAll(managerBoundry.getAllOrdersToApprove());
-		guiObjectsFactory.mainWindowController.changeWindowName("Manager - Approve Order");
+		mainWindowManager.mainWindowController.changeWindowName("Manager - Approve Order");
 	}
 
 	@Override
@@ -114,7 +120,7 @@ public class ManagerApproveController implements IGuiController {
 			viewProductsController.setLastController(this);
 			viewProductsController.setSelectedOrder(selectedOrder);
 			viewProductsController.openWindow();
-			guiObjectsFactory.mainWindowController.showNewWindow(viewProductsController.getBasePane());
+			mainWindowManager.mainWindowController.showNewWindow(viewProductsController.getBasePane());
 			errorLabel.setVisible(false);
 			guidanceLabel.setVisible(false);
 		} else {

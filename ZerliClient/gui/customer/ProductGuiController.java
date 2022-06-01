@@ -13,9 +13,14 @@ import javafx.scene.text.Text;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import shop.ShopBoundary;
+import userGuiManagment.AuthorizedCustomerGuiManager;
 
 public class ProductGuiController implements IGuiController {
 
+	private ShopBoundary shopBoundary = AuthorizedCustomerGuiManager.getInstance().getShopBoundary();
+	private ShopWindowController shopWindowController = AuthorizedCustomerGuiManager.getInstance()
+			.getShopWindowController();
 	@FXML
 	private Label FlowerDescription;
 
@@ -56,7 +61,7 @@ public class ProductGuiController implements IGuiController {
 
 	@FXML
 	void addToProduct(ActionEvent event) {
-		GuiObjectsFactory.getInstance().shopWindowController.addProductToCustomizedProduct(product);
+		shopWindowController.addProductToCustomizedProduct(product);
 	}
 
 	@FXML
@@ -65,14 +70,13 @@ public class ProductGuiController implements IGuiController {
 			int num = Integer.valueOf(amount.getText());
 			if (num < 0)
 				num = 1;
-			if (GuiObjectsFactory.getInstance().shopBoundary.addToCart(product, num))// add to cart
+			if (shopBoundary.addToCart(product, num))// add to cart
 			{
-				ItemInCartController controller = GuiObjectsFactory.getInstance().productManager
+				ItemInCartController controller = AuthorizedCustomerGuiManager.getInstance().getProductManager()
 						.createNewCartItem(product, num);
-				GuiObjectsFactory.getInstance().shopWindowController.addProductGuiObjectToCart(controller.getBasePane(),
-						controller);
+				shopWindowController.addProductGuiObjectToCart(controller.getBasePane(), controller);
 			} else {
-				GuiObjectsFactory.getInstance().shopWindowController.updateAmount(num, product.getProductID());
+				shopWindowController.updateAmount(num, product.getProductID());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

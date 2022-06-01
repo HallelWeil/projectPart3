@@ -1,6 +1,7 @@
 package userGuiManagment;
 
 import customerService.NewComplaint;
+import customerService.ShowAllComplaints;
 import customerService.UpdateComplaint;
 import main.GuiObjectsFactory;
 import surveyGui.ShowChoosenSurvey;
@@ -14,7 +15,8 @@ public class CustomerServiceGuiManager implements IUserGuiManager {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 	// the controllers
 	private NewComplaint newComplaintController;
-	private UpdateComplaint updateController;
+	private UpdateComplaint updateComplaint;
+	private ShowAllComplaints showAllComplaints;
 	private SurveyResults surveyResultsController;
 	private ShowChoosenSurvey showChoosenSurvey;
 	// the boundaries
@@ -30,20 +32,29 @@ public class CustomerServiceGuiManager implements IUserGuiManager {
 		return customerServiceGuiManager;
 	}
 
+	public ShowAllComplaints getShowAllComplaints() {
+		if (showAllComplaints == null) {
+			showAllComplaints = (ShowAllComplaints) guiObjectsFactory
+					.loadFxmlFile("/customerService/ShowAllComplaints.fxml");
+		}
+		return showAllComplaints;
+	}
+
 	public NewComplaint getNewComplaintController() {
 		if (newComplaintController == null) {
 			newComplaintController = (NewComplaint) guiObjectsFactory
 					.loadFxmlFile("/customerService/NewComplaint.fxml");
+
 		}
 		return newComplaintController;
 	}
 
-	public UpdateComplaint getUpdateController() {
-		if (updateController == null) {
-			updateController = (UpdateComplaint) guiObjectsFactory
-					.loadFxmlFile("/customerService/UpdateComplaint.fxml");
+	public UpdateComplaint getUpdateComplaint() {
+		if (updateComplaint == null) {
+			updateComplaint = (UpdateComplaint) guiObjectsFactory.loadFxmlFile("/customerService/UpdateComplaint.fxml");
+
 		}
-		return updateController;
+		return updateComplaint;
 	}
 
 	public SurveyResults getSurveyResultsController() {
@@ -70,10 +81,11 @@ public class CustomerServiceGuiManager implements IUserGuiManager {
 	@Override
 	public void logout() {
 		newComplaintController = null;
-		updateController = null;
+		updateComplaint = null;
 		surveyResultsController = null;
 		showChoosenSurvey = null;
 		employeeServiceBoundary = null;
+		showAllComplaints = null;
 	}
 
 }

@@ -7,11 +7,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import userGuiManagment.MainWindowGuiManager;
 
 public class StartingWindowGuiController implements IGuiController {
 
-	GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	@FXML
 	private AnchorPane basePane;
 
@@ -20,7 +20,7 @@ public class StartingWindowGuiController implements IGuiController {
 
 	@FXML
 	void login(ActionEvent event) {
-		guiObjectsFactory.loginGuiController.openWindow();
+		mainWindowManager.loginGuiController.openWindow();
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class StartingWindowGuiController implements IGuiController {
 
 	@Override
 	public void openWindow() {
-		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
+		mainWindowManager.mainWindowController.showNewWindow(basePane);
 	}
 
 }

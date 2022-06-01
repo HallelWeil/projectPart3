@@ -12,13 +12,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import userGuiManagment.CustomerServiceGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.CustomerServiceEmployeeBoundary;
 
 public class UpdateComplaint implements IGuiController {
 
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private CustomerServiceEmployeeBoundary complaintBoundary = guiObjectsFactory.employeeServiceBoundary;
-
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private CustomerServiceEmployeeBoundary complaintBoundary = CustomerServiceGuiManager.getInstance()
+			.getEmployeeServiceBoundary();
 	@FXML
 	private Label answerLabel;
 
@@ -80,16 +82,16 @@ public class UpdateComplaint implements IGuiController {
 	@Override
 	public void openWindow() {
 		// move to the next window
-		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
+		mainWindowManager.mainWindowController.showNewWindow(basePane);
 		// change to the name
-		guiObjectsFactory.mainWindowController
+		mainWindowManager.mainWindowController
 				.changeWindowName("update Complaint - number #" + selectedcomplaint.getComplaintsNumber());
 	}
 
 	@FXML
 	void BackToShowAllComplaintsWindow(ActionEvent event) {
 		resetController();
-		guiObjectsFactory.showAllComplaints.openWindow();
+		CustomerServiceGuiManager.getInstance().getShowAllComplaints().openWindow();
 	}
 
 }

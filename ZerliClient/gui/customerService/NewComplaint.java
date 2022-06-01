@@ -14,13 +14,16 @@ import javafx.scene.layout.Pane;
 
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import userGuiManagment.CustomerServiceGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.CustomerServiceEmployeeBoundary;
 import usersManagment.UserBoundary;
 
 public class NewComplaint implements IGuiController {
 
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private CustomerServiceEmployeeBoundary complaintBoundary = guiObjectsFactory.employeeServiceBoundary;
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private CustomerServiceEmployeeBoundary complaintBoundary = CustomerServiceGuiManager.getInstance()
+			.getEmployeeServiceBoundary();
 
 	@FXML
 	private AnchorPane basePane;
@@ -72,9 +75,9 @@ public class NewComplaint implements IGuiController {
 	public void openWindow() {
 
 		// move to the next window
-		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
+		mainWindowManager.mainWindowController.showNewWindow(basePane);
 		// change to the name
-		guiObjectsFactory.mainWindowController.changeWindowName("created New Complaint");
+		mainWindowManager.mainWindowController.changeWindowName("created New Complaint");
 	}
 
 }

@@ -10,9 +10,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import userGuiManagment.CourierGuiManager;
+import userGuiManagment.MainWindowGuiManager;
+import usersManagment.CourierBoundary;
 
 public class CourierControllerGUI implements IGuiController {
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private CourierBoundary courierBoundary = CourierGuiManager.getInstance().getCourierBoundary();
 	private int orderNumber;
 
 	@FXML
@@ -40,7 +44,7 @@ public class CourierControllerGUI implements IGuiController {
 			orderNumber = Integer.valueOf(putInOrderNumber);
 		}
 		try {
-			guiObjectsFactory.courierBoundary.requestConfirmDelivery(orderNumber);
+			courierBoundary.requestConfirmDelivery(orderNumber);
 		} catch (Exception e) {
 			setError(e.getMessage());
 			return;
@@ -51,7 +55,7 @@ public class CourierControllerGUI implements IGuiController {
 
 	@FXML
 	void backToMainPage(ActionEvent event) {
-		guiObjectsFactory.userHomeWindowController.openWindow();
+		mainWindowManager.userHomeWindowController.openWindow();
 	}
 
 	@FXML
@@ -78,8 +82,8 @@ public class CourierControllerGUI implements IGuiController {
 
 	@Override
 	public void openWindow() {
-		guiObjectsFactory.mainWindowController.showNewWindow(DeliveryPane);
-		guiObjectsFactory.mainWindowController.changeWindowName("Confirm Deilvery");
+		mainWindowManager.mainWindowController.showNewWindow(DeliveryPane);
+		mainWindowManager.mainWindowController.changeWindowName("Confirm Deilvery");
 		orderNum_txt.setText("");
 		setError("");
 	}

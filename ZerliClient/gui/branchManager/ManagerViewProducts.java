@@ -16,11 +16,15 @@ import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.Order;
 import order.ProductInOrder;
+import userGuiManagment.BranchManagerGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.BranchManagerBoundary;
 
 public class ManagerViewProducts implements IGuiController {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private BranchManagerBoundary managerBoundry = guiObjectsFactory.branchManagerBoundary;
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private BranchManagerGuiManager branchManagerGuiManager = BranchManagerGuiManager.getInstance();
+	private BranchManagerBoundary managerBoundry = branchManagerGuiManager.getBranchManagerBoundary();
 	private Order selectedOrder = null;
 	private ObservableList<ProductInOrder> productsObs = FXCollections.observableArrayList();
 	private IGuiController lastController = null;
@@ -65,7 +69,8 @@ public class ManagerViewProducts implements IGuiController {
 
 	@FXML
 	void BackToOrderSelectWindow(ActionEvent event) {
-		guiObjectsFactory.mainWindowController.showNewWindow(lastController.getBasePane());
+		MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+		mainWindowManager.mainWindowController.showNewWindow(lastController.getBasePane());
 		resetController();
 		lastController.openWindow();
 	}
@@ -83,8 +88,8 @@ public class ManagerViewProducts implements IGuiController {
 
 	@Override
 	public void openWindow() {
-		guiObjectsFactory.mainWindowController.showNewWindow(productInOrderPane);
-		guiObjectsFactory.mainWindowController.changeWindowName("Manager - Products In Selected Order");
+		mainWindowManager.mainWindowController.showNewWindow(productInOrderPane);
+		mainWindowManager.mainWindowController.changeWindowName("Manager - Products In Selected Order");
 		initializeProductsTable();
 		productsObs.setAll(managerBoundry.getAllProductsInOrder(selectedOrder.getOrderNumber()));
 		productsInOrderTable.setItems(productsObs);

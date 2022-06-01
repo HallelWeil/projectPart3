@@ -12,9 +12,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import shop.ShopBoundary;
+import userGuiManagment.AuthorizedCustomerGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 
 public class ItemInCartController implements IGuiController {
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private ShopBoundary shopBoundary = AuthorizedCustomerGuiManager.getInstance().getShopBoundary();
+	private ShopWindowController shopWindowController = AuthorizedCustomerGuiManager.getInstance()
+			.getShopWindowController();
+
 	private Product product;
 
 	private int currentAmount;
@@ -44,7 +51,7 @@ public class ItemInCartController implements IGuiController {
 			if (amount < 0)
 				amount = 0;
 			currentAmount = amount;
-			guiObjectsFactory.shopBoundary.chooseAmount(product, currentAmount);
+			shopBoundary.chooseAmount(product, currentAmount);
 		} catch (Exception e) {
 			amountTextField.setText(currentAmount + "");
 		}
@@ -52,8 +59,8 @@ public class ItemInCartController implements IGuiController {
 
 	@FXML
 	void removeItem(ActionEvent event) {
-		if (guiObjectsFactory.shopBoundary.deleteProductFromCart(product)) {
-			guiObjectsFactory.shopWindowController.removeProductGuiObjectToCart(this.baseLayer);
+		if (shopBoundary.deleteProductFromCart(product)) {
+			shopWindowController.removeProductGuiObjectToCart(this.baseLayer);
 		}
 	}
 

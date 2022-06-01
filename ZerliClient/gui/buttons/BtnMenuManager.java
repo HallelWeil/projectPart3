@@ -1,23 +1,23 @@
 package buttons;
 
-import main.GuiObjectsFactory;
-import mainWindow.MainWindowController;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.UserBoundary;
 
 public class BtnMenuManager {
 
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+
 	private BtnController btns;
 
 	public BtnMenuManager() {
-		btns = guiObjectsFactory.btnController;
+		btns = mainWindowManager.btnController;
 	}
 
 	public void setUserBtns() {
-		guiObjectsFactory.mainWindowController.resetBtns();
-		guiObjectsFactory.mainWindowController.setBtn(btns.getAccessibilityBtn(), 6);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getLogoutBtn(), 7);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getUserHomeBtn(), 1);
+		mainWindowManager.mainWindowController.resetBtns();
+		mainWindowManager.mainWindowController.setBtn(btns.getAccessibilityBtn(), 6);
+		mainWindowManager.mainWindowController.setBtn(btns.getLogoutBtn(), 7);
+		mainWindowManager.mainWindowController.setBtn(btns.getUserHomeBtn(), 1);
 		// for each user type init different btns
 		switch (UserBoundary.getCurrentUser().getUserType()) {
 		case AuthorizedCustomer:
@@ -47,51 +47,51 @@ public class BtnMenuManager {
 	}
 
 	public void setCEObtns() {
-		guiObjectsFactory.mainWindowController.setBtn(btns.getReportsBtn(), 2);
+		mainWindowManager.mainWindowController.setBtn(btns.getReportsBtn(), 2);
 	}
 
 	public void setCustomerBtns() {
-		guiObjectsFactory.mainWindowController.setBtn(btns.getOrderHistoryBtn(), 2);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getShopBtn(), 3);
+		mainWindowManager.mainWindowController.setBtn(btns.getOrderHistoryBtn(), 2);
+		mainWindowManager.mainWindowController.setBtn(btns.getShopBtn(), 3);
 	}
 
 	public void setCurierBtns() {
-		guiObjectsFactory.mainWindowController.setBtn(btns.getApproveDeliveryBtn(), 2);
+		mainWindowManager.mainWindowController.setBtn(btns.getApproveDeliveryBtn(), 2);
 	}
 
 	public void setBranchEmployeeBtns() {
-		guiObjectsFactory.mainWindowController.setBtn(btns.getEnterSurveyAnswersBtn(), 2);
+		mainWindowManager.mainWindowController.setBtn(btns.getEnterSurveyAnswersBtn(), 2);
 	}
 
 	public void setBranchManagerBtns() {
-		guiObjectsFactory.mainWindowController.setBtn(btns.getReportsBtn(), 2);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getViewOrdersBtn(), 3);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getManageUsersBtn(), 4);
+		mainWindowManager.mainWindowController.setBtn(btns.getReportsBtn(), 2);
+		mainWindowManager.mainWindowController.setBtn(btns.getViewOrdersBtn(), 3);
+		mainWindowManager.mainWindowController.setBtn(btns.getManageUsersBtn(), 4);
 	}
 
 	public void setMarketingEmployeeBtns() {
-		guiObjectsFactory.mainWindowController.setBtn(btns.getCreatePromotionBtn(), 2);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getManagePromotionsBtn(), 3);
+		mainWindowManager.mainWindowController.setBtn(btns.getCreatePromotionBtn(), 2);
+		mainWindowManager.mainWindowController.setBtn(btns.getManagePromotionsBtn(), 3);
 	}
 
 	public void setCSEmployeeBtns() {
-		guiObjectsFactory.mainWindowController.setBtn(btns.getCreateComplaintBtn(), 2);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getUpdateComplaintBtn(), 3);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getEnterSurveyresultBtn(), 4);
+		mainWindowManager.mainWindowController.setBtn(btns.getCreateComplaintBtn(), 2);
+		mainWindowManager.mainWindowController.setBtn(btns.getUpdateComplaintBtn(), 3);
+		mainWindowManager.mainWindowController.setBtn(btns.getEnterSurveyresultBtn(), 4);
 	}
 
 	public void setLoginWindowBtns() {
-		guiObjectsFactory.mainWindowController.resetBtns();
-		guiObjectsFactory.mainWindowController.setBtn(btns.getHomeBtn(), 1);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getAccessibilityBtn(), 6);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getInfoBtn(), 7);
+		mainWindowManager.mainWindowController.resetBtns();
+		mainWindowManager.mainWindowController.setBtn(btns.getHomeBtn(), 1);
+		mainWindowManager.mainWindowController.setBtn(btns.getAccessibilityBtn(), 6);
+		mainWindowManager.mainWindowController.setBtn(btns.getInfoBtn(), 7);
 	}
 
 	public void setMainWindowBtns() {
-		guiObjectsFactory.mainWindowController.resetBtns();
-		guiObjectsFactory.mainWindowController.setBtn(btns.getHomeBtn(), 1);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getAccessibilityBtn(), 6);
-		guiObjectsFactory.mainWindowController.setBtn(btns.getLoginBtn(), 7);
+		mainWindowManager.mainWindowController.resetBtns();
+		mainWindowManager.mainWindowController.setBtn(btns.getHomeBtn(), 1);
+		mainWindowManager.mainWindowController.setBtn(btns.getAccessibilityBtn(), 6);
+		mainWindowManager.mainWindowController.setBtn(btns.getLoginBtn(), 7);
 	}
 
 }

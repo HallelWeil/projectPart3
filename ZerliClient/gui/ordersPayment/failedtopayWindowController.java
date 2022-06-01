@@ -1,6 +1,5 @@
 package ordersPayment;
 
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -8,23 +7,24 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import userGuiManagment.MainWindowGuiManager;
 
 public class failedtopayWindowController implements IGuiController {
 
-    @FXML
-    private AnchorPane basepane;
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 
-    @FXML
-    private ImageView image;
+	@FXML
+	private AnchorPane basepane;
 
-    @FXML
-    private Label paymentfailed;
+	@FXML
+	private ImageView image;
 
-    @FXML
-    private Label sentenceFailed;
+	@FXML
+	private Label paymentfailed;
 
-    private GuiObjectsFactory guiobjectfactory=GuiObjectsFactory.getInstance();
-    
+	@FXML
+	private Label sentenceFailed;
+
 	@Override
 	public Pane getBasePane() {
 		return basepane;
@@ -33,14 +33,14 @@ public class failedtopayWindowController implements IGuiController {
 	@Override
 	public void resetController() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void openWindow() {
-		guiobjectfactory.mainWindowController.showNewWindow(basepane);	
-		guiobjectfactory.mainWindowController.changeWindowName("payment not approval");	
-		
+		mainWindowManager.mainWindowController.showNewWindow(basepane);
+		mainWindowManager.mainWindowController.changeWindowName("payment not approved");
+
 	}
 
 }

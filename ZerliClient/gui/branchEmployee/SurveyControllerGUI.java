@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import main.GuiObjectsFactory;
 import main.IGuiController;
 import survey.Survey;
+import userGuiManagment.BranchEmployeeGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -22,6 +24,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class SurveyControllerGUI implements IGuiController {
+	private BranchEmployeeGuiManager branchEmployeeGuiManager = BranchEmployeeGuiManager.getInstance();
+
 	private int[] tempSurveyResult = new int[6];
 
 	@FXML
@@ -88,11 +92,6 @@ public class SurveyControllerGUI implements IGuiController {
 		comboBoxQ6.getItems().addAll(10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
 	}
 
-	public void getSurveyQuestions() throws Exception {
-
-		q1_txt.setText(guiObjectsFactory.branchEmployeeBoundary.toString());
-	}
-
 	@Override
 	public Pane getBasePane() {
 		return surveyPane;
@@ -106,8 +105,9 @@ public class SurveyControllerGUI implements IGuiController {
 	@Override
 	public void openWindow() {
 		setComboBoxValues();
-		guiObjectsFactory.mainWindowController.showNewWindow(surveyPane);
-		guiObjectsFactory.mainWindowController.changeWindowName("Filling out a survey");
+		MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+		mainWindowManager.mainWindowController.showNewWindow(surveyPane);
+		mainWindowManager.mainWindowController.changeWindowName("Filling out a survey");
 
 	}
 
@@ -138,7 +138,7 @@ public class SurveyControllerGUI implements IGuiController {
 			return;
 		}
 		try {
-			guiObjectsFactory.branchEmployeeBoundary.enterSurveyAnswers(tempSurveyResult, surveyNumber);
+			branchEmployeeGuiManager.getBranchEmployeeBoundary().enterSurveyAnswers(tempSurveyResult, surveyNumber);
 			setError("Servey answers saved");
 		} catch (Exception e) {
 			setError(e.getMessage());
@@ -152,8 +152,8 @@ public class SurveyControllerGUI implements IGuiController {
 
 	@FXML
 	void goBack(ActionEvent event) {
-		guiObjectsFactory.searchSurvey.resetController();
-		guiObjectsFactory.searchSurvey.openWindow();
+		branchEmployeeGuiManager.getSearchSurvey().resetController();
+		branchEmployeeGuiManager.getSearchSurvey().openWindow();
 	}
 
 }

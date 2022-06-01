@@ -15,10 +15,11 @@ import javafx.scene.layout.VBox;
 import main.ClientUI;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import userGuiManagment.MainWindowGuiManager;
 
 public class MainWindowController implements IGuiController {
 
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 
 	@FXML
 	private GridPane TopMenu;
@@ -57,8 +58,8 @@ public class MainWindowController implements IGuiController {
 
 	public void openWindow() {
 		emptyWindow();
-		guiObjectsFactory.btnMenuManager.setMainWindowBtns();
-		guiObjectsFactory.startingWindowController.openWindow();
+		mainWindowManager.btnMenuManager.setMainWindowBtns();
+		mainWindowManager.startingWindowController.openWindow();
 		changeWindowName("MainWindow");
 	}
 
@@ -73,7 +74,7 @@ public class MainWindowController implements IGuiController {
 		cells[6] = topMenuCell6;
 		cells[7] = topMenuCell7;
 		if (topMenuCell0.getChildren().isEmpty()) {
-			topMenuCell0.getChildren().add(guiObjectsFactory.btnController.getLogo());
+			topMenuCell0.getChildren().add(mainWindowManager.btnController.getLogo());
 		}
 
 	}

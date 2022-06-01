@@ -1,8 +1,6 @@
 package PromotionWindow;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-
 import common.Status;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,12 +13,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import main.GuiObjectsFactory;
 import main.IGuiController;
-import order.ProductInOrder;
 import promotion.Promotion;
+import userGuiManagment.MainWindowGuiManager;
+import userGuiManagment.MarketingGuiManager;
 
 public class managePromotionWindowController implements IGuiController {
+
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private MarketingGuiManager marketingGuiManager = MarketingGuiManager.getInstance();
 
 	@FXML
 	private AnchorPane basePane;
@@ -55,8 +56,6 @@ public class managePromotionWindowController implements IGuiController {
 	@FXML
 	private Label errorLabel;
 
-	private GuiObjectsFactory guiobjectfactory = GuiObjectsFactory.getInstance();
-
 	private ObservableList<Promotion> data = FXCollections.observableArrayList();
 
 	private Promotion selectedCol;
@@ -77,15 +76,15 @@ public class managePromotionWindowController implements IGuiController {
 	@Override
 	public void openWindow() {
 		initmywindow();
-		guiobjectfactory.mainWindowController.showNewWindow(basePane);
-		guiobjectfactory.mainWindowController.changeWindowName("ActivatePromotion");
+		mainWindowManager.mainWindowController.showNewWindow(basePane);
+		mainWindowManager.mainWindowController.changeWindowName("ActivatePromotion");
 
 	}
 
 	public void initmywindow() {
 		data.clear();
 		ActivatePromotionTable.getItems().clear();
-		data.setAll(guiobjectfactory.marketingEmployeeBoundary.getAllPromotions());
+		data.setAll(marketingGuiManager.getMarketingEmployeeBoundary().getAllPromotions());
 		PromotionIDcol.setCellValueFactory(new PropertyValueFactory<>("promotionNumber"));
 		DiscountCol.setCellValueFactory(new PropertyValueFactory<>("discount"));
 		PromotionTextCol.setCellValueFactory(new PropertyValueFactory<>("promotionText"));
@@ -101,7 +100,7 @@ public class managePromotionWindowController implements IGuiController {
 		selectedCol = ActivatePromotionTable.getSelectionModel().getSelectedItem();
 		if (selectedCol.getStatus() == Status.Canceled) {
 			try {
-				guiobjectfactory.marketingEmployeeBoundary.activatePromotion(selectedCol.getPromotionNumber());
+				marketingGuiManager.getMarketingEmployeeBoundary().activatePromotion(selectedCol.getPromotionNumber());
 			} catch (Exception e) {
 				errorLabel.setText(e.getMessage());
 				return;
@@ -117,7 +116,8 @@ public class managePromotionWindowController implements IGuiController {
 		selectedCol = ActivatePromotionTable.getSelectionModel().getSelectedItem();
 		if (selectedCol.getStatus() == Status.Active) {
 			try {
-				guiobjectfactory.marketingEmployeeBoundary.deActivatePromotion(selectedCol.getPromotionNumber());
+				marketingGuiManager.getMarketingEmployeeBoundary()
+						.deActivatePromotion(selectedCol.getPromotionNumber());
 			} catch (Exception e) {
 				errorLabel.setText(e.getMessage());
 				return;

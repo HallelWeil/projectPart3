@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import cart.Cart;
 import cart.ProductInCart;
 import catalog.CustomizedProduct;
-import database.DBBoundry;
 import database.DBController;
 import order.Order;
 import order.OrderStatus;

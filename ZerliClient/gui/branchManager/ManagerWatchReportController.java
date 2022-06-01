@@ -24,6 +24,7 @@ import reportGUI.QuarterlyOrdersReportController;
 import reportGUI.QuarterlyRevenueReportController;
 import reportGUI.RevenueReportController;
 import reportGUI.SatisfactionReportController;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.BranchManagerBoundary;
 
 public class ManagerWatchReportController implements IGuiController {
@@ -33,10 +34,9 @@ public class ManagerWatchReportController implements IGuiController {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 	OrderReportController orderReportController;
 	RevenueReportController revenueReportController;
-	
 
-    @FXML
-    private AnchorPane reportPane;
+	@FXML
+	private AnchorPane reportPane;
 
 	@FXML
 	private Button managerGetReport;
@@ -82,12 +82,14 @@ public class ManagerWatchReportController implements IGuiController {
 
 	@Override
 	public void openWindow() {
-		guiObjectsFactory.mainWindowController.showNewWindow(managerWatchReportPane);
-		guiObjectsFactory.mainWindowController.changeWindowName("Manager - watch report");
+		MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+		mainWindowManager.mainWindowController.showNewWindow(managerWatchReportPane);
+		mainWindowManager.mainWindowController.changeWindowName("Manager - watch report");
 		ArrayList<Integer> yearsList = (ArrayList<Integer>) IntStream.range(2000, LocalDate.now().getYear() + 1).boxed()
 				.collect(Collectors.toList());
 		Collections.reverse(yearsList);
-		ArrayList<Integer> monthsList = (ArrayList<Integer>) IntStream.range(1, 13).boxed().collect(Collectors.toList());
+		ArrayList<Integer> monthsList = (ArrayList<Integer>) IntStream.range(1, 13).boxed()
+				.collect(Collectors.toList());
 		managerReportMonth.getItems().setAll(monthsList);
 		managerReportYear.getItems().setAll(yearsList);
 		managerReportType.getItems().setAll(ReportType.MONTHLY_ORDERS_REPORT, ReportType.MONTHLY_REVENU_EREPORT);
@@ -117,10 +119,11 @@ public class ManagerWatchReportController implements IGuiController {
 		reportController.openWindow();
 		reportPane.getChildren().setAll(reportController.getBasePane());
 	}
-	
-	private void loadFXMLs() throws IOException{
+
+	private void loadFXMLs() throws IOException {
 		orderReportController = (OrderReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/ordersReport.fxml");
-		revenueReportController = (RevenueReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/revenueReport.fxml");	
+		revenueReportController = (RevenueReportController) guiObjectsFactory
+				.loadFxmlFile("/reportGUI/revenueReport.fxml");
 	}
 
 	private IReportController getController() throws IOException {

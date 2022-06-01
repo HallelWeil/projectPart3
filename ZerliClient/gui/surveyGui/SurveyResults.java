@@ -13,12 +13,15 @@ import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
 import survey.Survey;
+import userGuiManagment.CustomerServiceGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.CustomerServiceEmployeeBoundary;
 
 public class SurveyResults implements IGuiController {
 
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private CustomerServiceEmployeeBoundary surveyBoundary = guiObjectsFactory.employeeServiceBoundary;
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private CustomerServiceGuiManager customerServiceGuiManager = CustomerServiceGuiManager.getInstance();
+	private CustomerServiceEmployeeBoundary surveyBoundary = customerServiceGuiManager.getEmployeeServiceBoundary();
 
 	@FXML
 	private AnchorPane showSurveyBasePane;
@@ -54,8 +57,8 @@ public class SurveyResults implements IGuiController {
 			//
 		}
 		surveysTable.setItems(surveysObs);
-		guiObjectsFactory.mainWindowController.changeWindowName("Surveys");
-		guiObjectsFactory.mainWindowController.showNewWindow(showSurveyBasePane);
+		mainWindowManager.mainWindowController.changeWindowName("Surveys");
+		mainWindowManager.mainWindowController.showNewWindow(showSurveyBasePane);
 	}
 
 	@Override
@@ -74,9 +77,10 @@ public class SurveyResults implements IGuiController {
 	void selectSurvey(ActionEvent event) {
 		selectedsurvey = surveysTable.getSelectionModel().getSelectedItem();
 		if (selectedsurvey != null) {
-			guiObjectsFactory.mainWindowController.changeWindowName("Survey details - survey #" + selectedsurvey.getSurveyNumber());
-			guiObjectsFactory.showChoosenSurvey.setSelectedSurvey(selectedsurvey);
-			guiObjectsFactory.showChoosenSurvey.openWindow();
+			mainWindowManager.mainWindowController
+					.changeWindowName("Survey details - survey #" + selectedsurvey.getSurveyNumber());
+			customerServiceGuiManager.getShowChoosenSurvey().setSelectedSurvey(selectedsurvey);
+			customerServiceGuiManager.getShowChoosenSurvey().openWindow();
 		}
 	}
 }

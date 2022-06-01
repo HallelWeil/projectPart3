@@ -10,9 +10,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import userGuiManagment.MainWindowGuiManager;
+import userGuiManagment.MarketingGuiManager;
 
 public class CreatePromotionWindowController implements IGuiController {
 
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private MarketingGuiManager marketingGuiManager = MarketingGuiManager.getInstance();
+	
 	@FXML
 	private AnchorPane basePane;
 
@@ -34,7 +39,6 @@ public class CreatePromotionWindowController implements IGuiController {
 	@FXML
 	private TextArea PromotionTxt;
 
-	private GuiObjectsFactory guiobjectfactory = GuiObjectsFactory.getInstance();
 
 	@FXML
 	void cancelButtonPressed(ActionEvent event) {
@@ -67,7 +71,7 @@ public class CreatePromotionWindowController implements IGuiController {
 		try
 
 		{
-			guiobjectfactory.marketingEmployeeBoundary.requestcreateNewPromotion(productNumber, convertedDiscount,
+			marketingGuiManager.getMarketingEmployeeBoundary().requestcreateNewPromotion(productNumber, convertedDiscount,
 					PromotionTxt.getText());
 		} catch (Exception e) {
 			errorLabel.setText(e.getMessage());
@@ -91,8 +95,8 @@ public class CreatePromotionWindowController implements IGuiController {
 
 	@Override
 	public void openWindow() {
-		guiobjectfactory.mainWindowController.showNewWindow(basePane);
-		guiobjectfactory.mainWindowController.changeWindowName("RequestCreatePromotion");
+		mainWindowManager.mainWindowController.showNewWindow(basePane);
+		mainWindowManager.mainWindowController.changeWindowName("RequestCreatePromotion");
 
 	}
 

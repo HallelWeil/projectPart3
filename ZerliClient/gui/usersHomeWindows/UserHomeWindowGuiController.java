@@ -5,12 +5,14 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.*;
+import userGuiManagment.MainWindowGuiManager;
 
 public class UserHomeWindowGuiController implements IGuiController {
 
 	private static final String userWelcomeString = "Welcome ";
 
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+
 	@FXML
 	private AnchorPane basePane;
 
@@ -26,9 +28,9 @@ public class UserHomeWindowGuiController implements IGuiController {
 	public void openWindow() {
 		onEntering();
 		// move to the next window
-		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
+		mainWindowManager.mainWindowController.showNewWindow(basePane);
 		// change to the new menu name
-		guiObjectsFactory.mainWindowController.changeWindowName("Home");
+		mainWindowManager.mainWindowController.changeWindowName("Home");
 	}
 
 	/**
@@ -36,8 +38,8 @@ public class UserHomeWindowGuiController implements IGuiController {
 	 */
 	public void onEntering() {
 		// get the users full name
-		String fullName = guiObjectsFactory.userBaundary.CurrentUser.getFirstName() + " "
-				+ guiObjectsFactory.userBaundary.CurrentUser.getLastName();
+		String fullName = mainWindowManager.userBaundary.CurrentUser.getFirstName() + " "
+				+ mainWindowManager.userBaundary.CurrentUser.getLastName();
 		welcomeLabel.setText(userWelcomeString + fullName);
 	}
 

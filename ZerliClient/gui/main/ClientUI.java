@@ -1,17 +1,9 @@
 package main;
 
-import java.net.URL;
-
-import buttons.BtnController;
 import client.ClientBoundary;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import mainWindow.MainWindowController;
-import com.gluonhq.charm.glisten.control.Icon;
 
 public class ClientUI extends Application {
 

@@ -9,6 +9,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/ocsf.jar"/>
-	<classpathentry kind="lib" path="lib/charm-glisten-6.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

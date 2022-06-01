@@ -90,8 +90,8 @@ public class ClientTask {
 				// to log out remove the user entity
 				dbController.disconnectUser(user.getUsername());
 				this.orderProcessManager = null;
-				this.user = null;
-				newMsgToSend = ServerMsgController.createAPPROVE_LOGOUTMsg();
+				this.user = null;	
+				newMsgToSend = null;
 				break;
 			case GET_BRANCH_LIST:
 				ArrayList<String> branches = dbController.getAllBranches();

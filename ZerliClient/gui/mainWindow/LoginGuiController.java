@@ -1,7 +1,5 @@
 package mainWindow;
 
-import java.io.File;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,14 +8,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
-import main.ClientUI;
-import main.GuiObjectsFactory;
 import main.IGuiController;
+import userGuiManagment.MainWindowGuiManager;
 
 public class LoginGuiController implements IGuiController {
 
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 
 	@FXML
 	private AnchorPane basePane;
@@ -53,10 +49,10 @@ public class LoginGuiController implements IGuiController {
 			return;
 		}
 		// try to log in!
-		if (guiObjectsFactory.userBaundary.requestLogin(username, password)) {
+		if (mainWindowManager.userBaundary.requestLogin(username, password)) {
 			goToStartWindow();
 		} else {
-			setError(guiObjectsFactory.userBaundary.errorMsg);
+			setError(mainWindowManager.userBaundary.errorMsg);
 		}
 	}
 
@@ -71,10 +67,10 @@ public class LoginGuiController implements IGuiController {
 
 	public void openWindow() {
 		// move to the next window
-		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
+		mainWindowManager.mainWindowController.showNewWindow(basePane);
 		// change the window name
-		guiObjectsFactory.mainWindowController.changeWindowName("Login");
-		//empty the error string
+		mainWindowManager.mainWindowController.changeWindowName("Login");
+		// empty the error string
 		setError("");
 	}
 
@@ -95,7 +91,7 @@ public class LoginGuiController implements IGuiController {
 	 */
 	private void goToStartWindow() {
 		// add the global buttons
-		guiObjectsFactory.btnMenuManager.setUserBtns();
-		guiObjectsFactory.userHomeWindowController.openWindow();
+		mainWindowManager.btnMenuManager.setUserBtns();
+		mainWindowManager.userHomeWindowController.openWindow();
 	}
 }

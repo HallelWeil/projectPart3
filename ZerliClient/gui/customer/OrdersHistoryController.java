@@ -19,14 +19,16 @@ import main.IGuiController;
 import order.Order;
 import order.OrderStatus;
 import order.ProductInOrder;
+import userGuiManagment.AuthorizedCustomerGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.AuthorizedCustomerBoundary;
 import usersManagment.BranchManagerBoundary;
 
 public class OrdersHistoryController implements IGuiController {
 
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private AuthorizedCustomerBoundary authorizedCustomerBoundary = guiObjectsFactory.authorizedCustomerBoundary;
-
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private AuthorizedCustomerBoundary authorizedCustomerBoundary = AuthorizedCustomerGuiManager.getInstance()
+			.getAuthorizedCustomerBoundary();
 	@FXML
 	private AnchorPane orderHistoryBasePane;
 
@@ -56,7 +58,7 @@ public class OrdersHistoryController implements IGuiController {
 
 	@FXML
 	private TableColumn<Order, String> orderUserCol;
-	
+
 	@FXML
 	private TableColumn<Order, OrderStatus> statusCol;
 
@@ -81,8 +83,8 @@ public class OrdersHistoryController implements IGuiController {
 		initializeOrdersTable();
 		ordersObs.setAll(authorizedCustomerBoundary.getAllOrders());
 		ordersTable.setItems(ordersObs);
-		guiObjectsFactory.mainWindowController.changeWindowName("Customer - order history");
-		guiObjectsFactory.mainWindowController.showNewWindow(orderHistoryBasePane);
+		mainWindowManager.mainWindowController.changeWindowName("Customer - order history");
+		mainWindowManager.mainWindowController.showNewWindow(orderHistoryBasePane);
 	}
 
 	@Override
@@ -101,9 +103,9 @@ public class OrdersHistoryController implements IGuiController {
 	void selectOrder(ActionEvent event) {
 		selectedOrder = ordersTable.getSelectionModel().getSelectedItem();
 		if (selectedOrder != null) {
-			guiObjectsFactory.mainWindowController.changeWindowName("Order details");
-			guiObjectsFactory.orderDetailsController.setSelectedOrder(selectedOrder);
-			guiObjectsFactory.orderDetailsController.openWindow();
+			mainWindowManager.mainWindowController.changeWindowName("Order details");
+			AuthorizedCustomerGuiManager.getInstance().getOrderDetailsController().setSelectedOrder(selectedOrder);
+			AuthorizedCustomerGuiManager.getInstance().getOrderDetailsController().openWindow();
 		}
 	}
 }

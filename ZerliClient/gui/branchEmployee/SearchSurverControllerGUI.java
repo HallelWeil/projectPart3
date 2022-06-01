@@ -12,9 +12,12 @@ import javafx.scene.layout.VBox;
 import main.GuiObjectsFactory;
 import main.IGuiController;
 import survey.Survey;
+import userGuiManagment.BranchEmployeeGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 
 public class SearchSurverControllerGUI implements IGuiController {
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
+	private BranchEmployeeGuiManager branchEmployeeGuiManager = BranchEmployeeGuiManager.getInstance();
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	private int surveyNumber;
 	private Survey selectedSurvey;
 
@@ -51,7 +54,7 @@ public class SearchSurverControllerGUI implements IGuiController {
 
 	@FXML
 	void goBack(ActionEvent event) {
-		guiObjectsFactory.userHomeWindowController.openWindow();
+		mainWindowManager.userHomeWindowController.openWindow();
 	}
 
 	@FXML
@@ -63,7 +66,7 @@ public class SearchSurverControllerGUI implements IGuiController {
 			return;
 		}
 		try {
-			selectedSurvey = guiObjectsFactory.branchEmployeeBoundary.getSurvey(surveyNumber);
+			selectedSurvey = branchEmployeeGuiManager.getBranchEmployeeBoundary().getSurvey(surveyNumber);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			setError(e.getMessage());
@@ -72,8 +75,8 @@ public class SearchSurverControllerGUI implements IGuiController {
 		if (selectedSurvey == null) {
 			setError("Survey does not exist! please try again");
 		} else {
-			guiObjectsFactory.showSurvey.setSelectedSurvey(selectedSurvey);
-			guiObjectsFactory.showSurvey.openWindow();
+			branchEmployeeGuiManager.getShowSurvey().setSelectedSurvey(selectedSurvey);
+			branchEmployeeGuiManager.getShowSurvey().openWindow();
 		}
 	}
 
@@ -90,8 +93,8 @@ public class SearchSurverControllerGUI implements IGuiController {
 
 	@Override
 	public void openWindow() {
-		guiObjectsFactory.mainWindowController.showNewWindow(searchSurveyPane);
-		guiObjectsFactory.mainWindowController.changeWindowName("Choose a Survey");
+		mainWindowManager.mainWindowController.showNewWindow(searchSurveyPane);
+		mainWindowManager.mainWindowController.changeWindowName("Choose a Survey");
 
 	}
 

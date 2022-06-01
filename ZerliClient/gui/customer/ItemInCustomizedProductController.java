@@ -11,9 +11,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import shop.ShopBoundary;
+import userGuiManagment.AuthorizedCustomerGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 
 public class ItemInCustomizedProductController implements IGuiController {
 
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private ShopBoundary shopBoundary = AuthorizedCustomerGuiManager.getInstance().getShopBoundary();
+	private ShopWindowController shopWindowController = AuthorizedCustomerGuiManager.getInstance().getShopWindowController();
+	
 	@FXML
 	private HBox baseLayer;
 
@@ -30,7 +37,7 @@ public class ItemInCustomizedProductController implements IGuiController {
 
 	@FXML
 	void removeItem(ActionEvent event) {
-		GuiObjectsFactory.getInstance().shopWindowController.removeProductFromCustomizedProduct(product, baseLayer);
+		shopWindowController.removeProductFromCustomizedProduct(product, baseLayer);
 	}
 
 	public void setProduct(Product product) {

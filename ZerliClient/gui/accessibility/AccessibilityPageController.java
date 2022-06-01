@@ -5,6 +5,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
+import userGuiManagment.MainWindowGuiManager;
 
 public class AccessibilityPageController implements IGuiController {
 
@@ -22,9 +23,9 @@ public class AccessibilityPageController implements IGuiController {
 
 	@Override
 	public void openWindow() {
-		GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-		guiObjectsFactory.mainWindowController.changeWindowName("Accessibility");
-		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
+		MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+		mainWindowManager.mainWindowController.changeWindowName("Accessibility");
+		mainWindowManager.mainWindowController.showNewWindow(basePane);
 	}
 
 }

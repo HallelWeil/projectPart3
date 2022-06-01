@@ -40,7 +40,6 @@ public class OrdersReport extends Report {
 			number += amount;
 		}
 		ordersPerCategory.put(category, number);
-		//ordersPerCategory.put(category, ordersPerCategory.getOrDefault(category, 0) + amount);
 	}
 
 	public int getTotalOrders() {

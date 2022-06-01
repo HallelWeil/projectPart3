@@ -7,6 +7,7 @@ import customer.ProductsManager;
 import main.GuiObjectsFactory;
 import mainWindow.LoginGuiController;
 import mainWindow.MainWindowController;
+import mainWindow.StartingWindowGuiController;
 import usersHomeWindows.UserHomeWindowGuiController;
 import usersManagment.UserBoundary;
 
@@ -16,17 +17,18 @@ public class MainWindowGuiManager implements IUserGuiManager {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 
 	// the gui controllers
-	private MainWindowController mainWindowController;
-	private LoginGuiController loginGuiController;
-	private BtnController btnController;
-	private UserHomeWindowGuiController userHomeWindowController;
-	private AccessibilityPageController accessibilityPageController;
+	public MainWindowController mainWindowController;
+	public LoginGuiController loginGuiController;
+	public BtnController btnController;
+	public UserHomeWindowGuiController userHomeWindowController;
+	public StartingWindowGuiController startingWindowController;
+	public AccessibilityPageController accessibilityPageController;
 
 	// gui managers
-	private BtnMenuManager btnMenuManager;
+	public BtnMenuManager btnMenuManager;
 
 	// Boundaries
-	private UserBoundary userBaundary;
+	public UserBoundary userBaundary;
 
 	public static MainWindowGuiManager getInstance() {
 		if (mainWindowGuiManager == null) {
@@ -44,6 +46,13 @@ public class MainWindowGuiManager implements IUserGuiManager {
 				.loadFxmlFile("/usersHomeWindows/UserHomeWindow.fxml");
 		accessibilityPageController = (AccessibilityPageController) guiObjectsFactory
 				.loadFxmlFile("/accessibility/AccessibilityWindow.fxml");
+		startingWindowController = (StartingWindowGuiController) guiObjectsFactory
+				.loadFxmlFile("/mainWindow/StartingWindow.fxml");
+
+		// init managers
+		btnMenuManager = new BtnMenuManager();
+		userBaundary = new UserBoundary();
+
 	}
 
 	@Override

@@ -21,12 +21,14 @@ import order.DeliveryDetails;
 import order.Order;
 import order.OrderStatus;
 import order.ProductInOrder;
+import userGuiManagment.AuthorizedCustomerGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.AuthorizedCustomerBoundary;
 
 public class OrderDetailsController implements IGuiController {
-
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private AuthorizedCustomerBoundary authorizedCustomerBoundary = guiObjectsFactory.authorizedCustomerBoundary;
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private AuthorizedCustomerBoundary authorizedCustomerBoundary = AuthorizedCustomerGuiManager.getInstance()
+			.getAuthorizedCustomerBoundary();
 
 	@FXML
 	private Label msgLabel;
@@ -69,7 +71,6 @@ public class OrderDetailsController implements IGuiController {
 
 	@FXML
 	private TableColumn<ProductInOrder, Double> productTotalCol;
-	
 
 	ObservableList<ProductInOrder> productsObs = FXCollections.observableArrayList();
 	Order selectedOrder;
@@ -93,8 +94,8 @@ public class OrderDetailsController implements IGuiController {
 		displayDeliveryDetails();
 		productsObs.addAll(selectedOrder.getItems());
 		productsInOrderTable.setItems(productsObs);
-		guiObjectsFactory.mainWindowController.changeWindowName("Order details - " + selectedOrder.getOrderNumber());
-		guiObjectsFactory.mainWindowController.showNewWindow(orderDetailsBasePane);
+		mainWindowManager.mainWindowController.changeWindowName("Order details - " + selectedOrder.getOrderNumber());
+		mainWindowManager.mainWindowController.showNewWindow(orderDetailsBasePane);
 	}
 
 	private void displayDeliveryDetails() {
@@ -133,7 +134,7 @@ public class OrderDetailsController implements IGuiController {
 	@FXML
 	void BackToOrderSelectWindow(ActionEvent event) {
 		resetController();
-		guiObjectsFactory.ordersHistoryController.openWindow();
+		AuthorizedCustomerGuiManager.getInstance().getOrdersHistoryController().openWindow();
 	}
 
 	@FXML

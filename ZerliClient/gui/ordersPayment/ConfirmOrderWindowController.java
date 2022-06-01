@@ -22,8 +22,15 @@ import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.DeliveryDetails;
 import order.ProductInOrder;
+import shop.ShopBoundary;
+import userGuiManagment.AuthorizedCustomerGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 
 public class ConfirmOrderWindowController implements IGuiController {
+
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private ShopBoundary shopBoundary = AuthorizedCustomerGuiManager.getInstance().getShopBoundary();
+	private AuthorizedCustomerGuiManager authorizedCustomerGuiManager = AuthorizedCustomerGuiManager.getInstance();
 
 	@FXML
 	private AnchorPane basepane;
@@ -78,21 +85,21 @@ public class ConfirmOrderWindowController implements IGuiController {
 
 	@FXML
 	void backbuttpress(ActionEvent event) {
-		if (guiobjectfactory.shopBoundary.isHomeDeliveryflag()) {
-			guiobjectfactory.HomeDeliveryDetails.openWindow();
-		} else if (guiobjectfactory.shopBoundary.isPersonalCardflag()) {
-			guiobjectfactory.personalCardcontroller.openWindow();
+		if (shopBoundary.isHomeDeliveryflag()) {
+			authorizedCustomerGuiManager.getHomeDeliveryDetails().openWindow();
+		} else if (shopBoundary.isPersonalCardflag()) {
+			authorizedCustomerGuiManager.getPersonalCardcontroller().openWindow();
 		} else
-			guiobjectfactory.branch_Delivery.openWindow();
+			authorizedCustomerGuiManager.getBranch_Delivery().openWindow();
 
 	}
 
 	@FXML
 	void confirmPayButtpress(ActionEvent event) {
-		if (guiobjectfactory.shopBoundary.payForOrder()) {
-			guiobjectfactory.succedfailedpay.openWindow();
+		if (shopBoundary.payForOrder()) {
+			authorizedCustomerGuiManager.getSuccedfailedpay().openWindow();
 		} else // in case we get false in pay
-			guiobjectfactory.failedpay.openWindow();
+			authorizedCustomerGuiManager.getFailedpay().openWindow();
 
 	}
 
@@ -129,28 +136,28 @@ public class ConfirmOrderWindowController implements IGuiController {
 	@Override
 	public void openWindow() {
 		initmywindow();
-		guiobjectfactory.mainWindowController.showNewWindow(basepane);
-		guiobjectfactory.mainWindowController.changeWindowName("confirmOrder");
+		mainWindowManager.mainWindowController.showNewWindow(basepane);
+		mainWindowManager.mainWindowController.changeWindowName("confirmOrder");
 
 	}
 
 	public void initmywindow() {
 		table.getItems().clear();
-		if (!guiobjectfactory.shopBoundary.isPersonalCardflag()) {
-			guiobjectfactory.shopBoundary.addPersonalLetter(""); // in case user first add a personal than change his
-																	// mind to not to add then we remove the string
+		if (!shopBoundary.isPersonalCardflag()) {
+			shopBoundary.addPersonalLetter(""); // in case user first add a personal than change his
+												// mind to not to add then we remove the string
 			displayGreetingcard.clear();
 		} else {
-			displayGreetingcard.setText(guiobjectfactory.order.getPersonalLetter());
+			displayGreetingcard.setText(authorizedCustomerGuiManager.order.getPersonalLetter());
 		}
-		if (!guiobjectfactory.shopBoundary.isHomeDeliveryflag()) {
-			guiobjectfactory.shopBoundary.sumbmitDetailsForHomeDelivery(new DeliveryDetails());
+		if (!shopBoundary.isHomeDeliveryflag()) {
+			shopBoundary.sumbmitDetailsForHomeDelivery(new DeliveryDetails());
 			dipslaydeliverydetails.clear();
 		} else {
-			String str = buildDeliveryDetailsString(guiobjectfactory.order.getDeliveryDetails());
+			String str = buildDeliveryDetailsString(authorizedCustomerGuiManager.order.getDeliveryDetails());
 			dipslaydeliverydetails.setText(str);
 		}
-		ArrayList<ProductInOrder> items = guiobjectfactory.order.getItems();
+		ArrayList<ProductInOrder> items = authorizedCustomerGuiManager.order.getItems();
 		// double cntprice=0;
 		for (int i = 0; i < items.size(); i++)// calculate the total price of all Items in tableview
 		{
@@ -163,12 +170,12 @@ public class ConfirmOrderWindowController implements IGuiController {
 		tableviewprice.setCellValueFactory(new PropertyValueFactory<>("price"));
 		tableviewtotal.setCellValueFactory(new PropertyValueFactory<>("total"));
 		table.setItems(data);
-		TotalPrice.setText(Double.toString(guiobjectfactory.order.getPriceToPay()));
+		TotalPrice.setText(Double.toString(authorizedCustomerGuiManager.order.getPriceToPay()));
 
 		// if the price to pay not equals to the total price
-		if (guiobjectfactory.order.getPriceToPay() != guiobjectfactory.order.getPrice()) {
-			oldPriceTxt.setText(guiobjectfactory.order.getPrice() + "");
-			orderDataLabel.setText(guiobjectfactory.order.getOrderData());
+		if (authorizedCustomerGuiManager.order.getPriceToPay() != authorizedCustomerGuiManager.order.getPrice()) {
+			oldPriceTxt.setText(authorizedCustomerGuiManager.order.getPrice() + "");
+			orderDataLabel.setText(authorizedCustomerGuiManager.order.getOrderData());
 		} else {
 			oldPriceTxt.setText("");
 			orderDataLabel.setText("");
@@ -187,7 +194,7 @@ public class ConfirmOrderWindowController implements IGuiController {
 		s.append(delivery.getAddress() + "\n\n");
 		s.append("arrival date and time:\n");
 		// s.append(guiobjectfactory.order.getArrivalDate()+"\n");
-		s.append(guiobjectfactory.order.getArrivalDate().toLocalDateTime().toString() + "\n");
+		s.append(authorizedCustomerGuiManager.order.getArrivalDate().toLocalDateTime().toString() + "\n");
 		s.append("\n\nadditional information:" + "\n");
 		s.append("phone number: " + delivery.getPhoneNumber() + "\n");
 		s.append("comments: " + delivery.getComments() + "\n");

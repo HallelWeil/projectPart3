@@ -12,56 +12,57 @@ import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.DeliveryDetails;
 import shop.ShopBoundary;
-
+import userGuiManagment.AuthorizedCustomerGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 
 public class personalcardWindowController implements IGuiController {
 
-	
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private ShopBoundary shopBoundary = AuthorizedCustomerGuiManager.getInstance().getShopBoundary();
+	private AuthorizedCustomerGuiManager authorizedCustomerGuiManager = AuthorizedCustomerGuiManager.getInstance();
 
-	private GuiObjectsFactory guiobjectfactory=GuiObjectsFactory.getInstance();
-	
-	  @FXML
-	    private AnchorPane basepane;
+	@FXML
+	private AnchorPane basepane;
 
-	    @FXML
-	    private Button backButton;
+	@FXML
+	private Button backButton;
 
-	    @FXML
-	    private TextArea textareagreeting;
+	@FXML
+	private TextArea textareagreeting;
 
-	    @FXML
-	    private Button nextbutton;
-	    
-	    @FXML
-	    private Label errorlabel;
-        
-	    public String cardtxt;
-	    
-	    @FXML
-	    void backbuttonpreesed(ActionEvent event) {
-           guiobjectfactory.branch_Delivery.openWindow();       
-	    }
+	@FXML
+	private Button nextbutton;
 
-	    @FXML
-	    void nextbuttonpressed(ActionEvent event) {
-	    	 cardtxt=textareagreeting.getText();
-	    	if(cardtxt.isEmpty()) //check if user didn't fill the text area 
-	    	{
-	    	seterror("your personal card is empty please fill in the blank area!!!"); 
-	    	return;
-	    	}
-	    	 guiobjectfactory.shopBoundary.addPersonalLetter(cardtxt); //save letter in cart of shop
-            if(guiobjectfactory.shopBoundary.isHomeDeliveryflag()) //if true mean customer want home delivery
-            {
-            	guiobjectfactory.HomeDeliveryDetails.openWindow();
-            }
-            else //if customer didn't put V in Checkbox for home Delivery
-            {
-            	guiobjectfactory.shopBoundary.sumbmitDetailsForHomeDelivery(new DeliveryDetails());
-        	    guiobjectfactory.order=guiobjectfactory.shopBoundary.placeOrder();
-            	guiobjectfactory.confirmOrder.openWindow();
-            }
-	    }
+	@FXML
+	private Label errorlabel;
+
+	public String cardtxt;
+
+	@FXML
+	void backbuttonpreesed(ActionEvent event) {
+		authorizedCustomerGuiManager.getBranch_Delivery().openWindow();
+	}
+
+	@FXML
+	void nextbuttonpressed(ActionEvent event) {
+		cardtxt = textareagreeting.getText();
+		if (cardtxt.isEmpty()) // check if user didn't fill the text area
+		{
+			seterror("your personal card is empty please fill in the blank area!!!");
+			return;
+		}
+		shopBoundary.addPersonalLetter(cardtxt); // save letter in cart of shop
+		if (shopBoundary.isHomeDeliveryflag()) // if true mean customer want home delivery
+		{
+			authorizedCustomerGuiManager.getHomeDeliveryDetails().openWindow();
+		} else // if customer didn't put V in Checkbox for home Delivery
+		{
+			shopBoundary.sumbmitDetailsForHomeDelivery(new DeliveryDetails());
+			authorizedCustomerGuiManager.order = shopBoundary.placeOrder();
+			authorizedCustomerGuiManager.getConfirmOrder().openWindow();
+		}
+	}
+
 	@Override
 	public Pane getBasePane() {
 		return basepane;
@@ -72,23 +73,20 @@ public class personalcardWindowController implements IGuiController {
 		textareagreeting.setText("");
 		errorlabel.setText("");
 	}
-	
+
 	/**
 	 * 
 	 */
-	private void seterror(String ErrorMsg)
-	{
+	private void seterror(String ErrorMsg) {
 		errorlabel.setText(ErrorMsg);
 	}
-	
-	
-	
+
 	@Override
 	public void openWindow() {
-		
-		guiobjectfactory.mainWindowController.showNewWindow(basepane);
-		guiobjectfactory.mainWindowController.changeWindowName("personalCard");
-		
+
+		mainWindowManager.mainWindowController.showNewWindow(basepane);
+		mainWindowManager.mainWindowController.changeWindowName("personalCard");
+
 	}
 
 }

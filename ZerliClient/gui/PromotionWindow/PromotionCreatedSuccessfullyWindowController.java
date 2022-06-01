@@ -1,26 +1,37 @@
-package mainWindow;
+package PromotionWindow;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
 import userGuiManagment.MainWindowGuiManager;
 
-public class StartingWindowGuiController implements IGuiController {
+public class PromotionCreatedSuccessfullyWindowController implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	@FXML
 	private AnchorPane basePane;
 
 	@FXML
-	private Button loginButton;
+	private ImageView Image;
 
 	@FXML
-	void login(ActionEvent event) {
-		mainWindowManager.loginGuiController.openWindow();
+	private Label TextUnderImage;
+
+	@FXML
+	private Button FinishButton;
+
+	private GuiObjectsFactory guiobjectfactory = GuiObjectsFactory.getInstance();
+
+	@FXML
+	void FinishPressed(ActionEvent event) {
+		mainWindowManager.userHomeWindowController.openWindow();
+
 	}
 
 	@Override
@@ -30,12 +41,14 @@ public class StartingWindowGuiController implements IGuiController {
 
 	@Override
 	public void resetController() {
-		// TODO Auto-generated method stub
+		// nothing to reset
 	}
 
 	@Override
 	public void openWindow() {
 		mainWindowManager.mainWindowController.showNewWindow(basePane);
+		mainWindowManager.mainWindowController.changeWindowName("PromotionSuccess");
+
 	}
 
 }

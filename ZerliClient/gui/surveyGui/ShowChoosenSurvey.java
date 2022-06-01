@@ -1,8 +1,6 @@
 package surveyGui;
 
 import java.io.File;
-import java.util.ArrayList;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,15 +11,17 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import main.ClientUI;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import survey.Survey;
+import userGuiManagment.CustomerServiceGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.CustomerServiceEmployeeBoundary;
 
 public class ShowChoosenSurvey implements IGuiController {
 
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private CustomerServiceEmployeeBoundary surveyBoundary = guiObjectsFactory.employeeServiceBoundary;
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private CustomerServiceGuiManager customerServiceGuiManager = CustomerServiceGuiManager.getInstance();
+	private CustomerServiceEmployeeBoundary surveyBoundary = customerServiceGuiManager.getEmployeeServiceBoundary();
 
 	@FXML
 	private AnchorPane SurveyBasePane;
@@ -58,7 +58,7 @@ public class ShowChoosenSurvey implements IGuiController {
 		resultString = selectedSurvey.getResult();
 		resultLabel.setText(resultString);
 		// guiObjectsFactory.mainWindowController.changeWindowName("Survey details");
-		guiObjectsFactory.mainWindowController.showNewWindow(SurveyBasePane);
+		mainWindowManager.mainWindowController.showNewWindow(SurveyBasePane);
 	}
 
 	@FXML
@@ -95,7 +95,7 @@ public class ShowChoosenSurvey implements IGuiController {
 
 	@FXML
 	void goBack(ActionEvent event) {
-		guiObjectsFactory.surveyResultsController.openWindow();
+		customerServiceGuiManager.getSurveyResultsController().openWindow();
 	}
 
 	@Override

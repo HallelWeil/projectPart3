@@ -22,8 +22,15 @@ import javafx.util.Callback;
 import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.DeliveryDetails;
+import shop.ShopBoundary;
+import userGuiManagment.AuthorizedCustomerGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 
 public class BranchDeliveryChooseWindowController implements IGuiController {
+
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private ShopBoundary shopBoundary = AuthorizedCustomerGuiManager.getInstance().getShopBoundary();
+	private AuthorizedCustomerGuiManager authorizedCustomerGuiManager = AuthorizedCustomerGuiManager.getInstance();
 
 	@FXML
 	private DatePicker StorePickupDate;
@@ -80,15 +87,15 @@ public class BranchDeliveryChooseWindowController implements IGuiController {
 	@Override
 	public void openWindow() {
 		initMywindow();
-		guiobjectfactory.mainWindowController.showNewWindow(basePane);
-		guiobjectfactory.mainWindowController.changeWindowName("Branch&DeliveryChoose");
+		mainWindowManager.mainWindowController.showNewWindow(basePane);
+		mainWindowManager.mainWindowController.changeWindowName("Branch&DeliveryChoose");
 
 	}
 
 	public void initMywindow() {
 		StorePickupDate.setDisable(false);
 		if (BranchChosen.getItems().isEmpty()) {
-			ArrayList<String> branchList = guiobjectfactory.shopBoundary.getAllBranches();
+			ArrayList<String> branchList = shopBoundary.getAllBranches();
 			BranchChosen.getItems().addAll(branchList);
 		}
 		initComboBoxofMin_HourAndDatePicker();
@@ -150,7 +157,7 @@ public class BranchDeliveryChooseWindowController implements IGuiController {
 
 	@FXML
 	void backButtonPressed(ActionEvent event) {
-		guiobjectfactory.shopWindowController.openWindow();
+		authorizedCustomerGuiManager.getShopWindowController().openWindow();
 	}
 
 	@FXML
@@ -159,21 +166,21 @@ public class BranchDeliveryChooseWindowController implements IGuiController {
 		String chosenBranch = BranchChosen.getValue();
 		try {
 			if (!chosenBranch.isEmpty())
-				guiobjectfactory.shopBoundary.chooseBranch(chosenBranch);
+				shopBoundary.chooseBranch(chosenBranch);
 		} catch (Exception e) {
 			ErrorText.setText("Please Choose Branch!!!");
 			return;
 		}
 		if (GreetingCardChoosen.isSelected()) {
-			guiobjectfactory.shopBoundary.selectPersonalCard(true);
+			shopBoundary.selectPersonalCard(true);
 		} else // default is false but in case user choose to add then make back and choose not
 				// to add
 		{
-			guiobjectfactory.shopBoundary.selectPersonalCard(false);
+			shopBoundary.selectPersonalCard(false);
 		}
 
 		if (homeDeliverytoggle.isSelected()) {
-			guiobjectfactory.shopBoundary.selectDeliveryOption(true);
+			shopBoundary.selectDeliveryOption(true);
 		}
 		if (storePickupToggle.isSelected()) { // if customer choose storePickup then check if time is correct
 			try {
@@ -184,8 +191,8 @@ public class BranchDeliveryChooseWindowController implements IGuiController {
 					return;
 				}
 				arrivalDate = Timestamp.valueOf(LocalDateTime.of(date, time));
-				guiobjectfactory.shopBoundary.submitDetailsForArivalDate(arrivalDate);
-				guiobjectfactory.shopBoundary.selectDeliveryOption(false);
+				shopBoundary.submitDetailsForArivalDate(arrivalDate);
+				shopBoundary.selectDeliveryOption(false);
 			} catch (Exception e) {
 				ErrorText.setText("please choose time!!!");
 				return;
@@ -193,16 +200,16 @@ public class BranchDeliveryChooseWindowController implements IGuiController {
 		}
 		// -----------------------------------------------------------------------
 
-		if (guiobjectfactory.shopBoundary.isPersonalCardflag()) {
-			guiobjectfactory.personalCardcontroller.openWindow();
-		} else if (guiobjectfactory.shopBoundary.isHomeDeliveryflag()) {
-			guiobjectfactory.shopBoundary.addPersonalLetter("");
-			guiobjectfactory.HomeDeliveryDetails.openWindow();
+		if (shopBoundary.isPersonalCardflag()) {
+			authorizedCustomerGuiManager.getPersonalCardcontroller().openWindow();
+		} else if (shopBoundary.isHomeDeliveryflag()) {
+			shopBoundary.addPersonalLetter("");
+			authorizedCustomerGuiManager.getHomeDeliveryDetails().openWindow();
 		} else {
-			guiobjectfactory.order = guiobjectfactory.shopBoundary.placeOrder(); // in case the user didn't put v in
-																					// homeDelivery and Personal card
-																					// then we do there placeOrder
-			guiobjectfactory.confirmOrder.openWindow();
+			authorizedCustomerGuiManager.order = shopBoundary.placeOrder(); // in case the user didn't put v in
+																			// homeDelivery and Personal card
+																			// then we do there placeOrder
+			authorizedCustomerGuiManager.getConfirmOrder().openWindow();
 		}
 
 	}

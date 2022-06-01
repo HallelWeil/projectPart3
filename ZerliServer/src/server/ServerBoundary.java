@@ -101,12 +101,14 @@ public class ServerBoundary {
 		ClientsData tempClientData = new ClientsData(tempNumber, ipAdress, status, host, name);
 		if (clientsTable.contains(tempClientData)) {
 			tempNumber = clientsTable.get(clientsTable.indexOf(tempClientData)).getNumber();
+			ipAdress = clientsTable.get(clientsTable.indexOf(tempClientData)).getIpAddress();
 			clientsTable.remove(tempClientData);
 		} else {
 			tempNumber += clientsCount;
 			clientsCount++;
 		}
 		tempClientData.setNumber(tempNumber);
+		tempClientData.setIpAdress(ipAdress);
 		clientsTable.add(tempClientData);
 	}
 

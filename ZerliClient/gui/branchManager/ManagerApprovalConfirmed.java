@@ -12,32 +12,33 @@ import main.IGuiController;
 import order.Order;
 import order.OrderStatus;
 import order.ProductInOrder;
+import userGuiManagment.MainWindowGuiManager;
 
 public class ManagerApprovalConfirmed implements IGuiController {
 	private Order order;
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	private ArrayList<ProductInOrder> products;
-	
-    @FXML
-    private AnchorPane approvalConfirmedPane;
 
-    @FXML
-    private Label approveLabel;
+	@FXML
+	private AnchorPane approvalConfirmedPane;
 
-    @FXML
-    private Label errorLabel;
+	@FXML
+	private Label approveLabel;
 
-    @FXML
-    private Label guidanceLabel;
+	@FXML
+	private Label errorLabel;
 
-    @FXML
-    private AnchorPane orderApprovePane;
+	@FXML
+	private Label guidanceLabel;
 
-    @FXML
-    private TextArea orderTextArea;
+	@FXML
+	private AnchorPane orderApprovePane;
 
-    @FXML
-    private TextArea productsTextArea;
+	@FXML
+	private TextArea orderTextArea;
+
+	@FXML
+	private TextArea productsTextArea;
 
 	@Override
 	public Pane getBasePane() {
@@ -53,8 +54,8 @@ public class ManagerApprovalConfirmed implements IGuiController {
 
 	@Override
 	public void openWindow() {
-		guiObjectsFactory.mainWindowController.showNewWindow(approvalConfirmedPane);
-		if(order.getOrderStatus() == OrderStatus.CANECELED)
+		mainWindowManager.mainWindowController.showNewWindow(approvalConfirmedPane);
+		if (order.getOrderStatus() == OrderStatus.CANCELED)
 			approveLabel.setText("Cancellation Approved");
 		orderTextArea.setText(order.toString());
 		productsTextArea.setText(productsToString(products));
@@ -65,18 +66,16 @@ public class ManagerApprovalConfirmed implements IGuiController {
 	}
 
 	public void setProducts(ArrayList<ProductInOrder> products) {
-		this.products = products;	
+		this.products = products;
 	}
-	
-	private String productsToString(ArrayList<ProductInOrder> products){
+
+	private String productsToString(ArrayList<ProductInOrder> products) {
 		StringBuilder s = new StringBuilder();
-		for(ProductInOrder prod: products) {
+		for (ProductInOrder prod : products) {
 			s.append(prod.toString() + "\n");
 		}
 		return s.toString();
-		
-		
-		
+
 	}
 
 }

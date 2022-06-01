@@ -14,11 +14,15 @@ import main.IGuiController;
 import user.User;
 import user.UserStatus;
 import user.UserType;
+import userGuiManagment.BranchManagerGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.BranchManagerBoundary;
 
 public class ManagerUpdateUser implements IGuiController {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private BranchManagerBoundary managerBoundry = guiObjectsFactory.branchManagerBoundary;
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private BranchManagerGuiManager branchManagerGuiManager = BranchManagerGuiManager.getInstance();
+	private BranchManagerBoundary managerBoundry = branchManagerGuiManager.getBranchManagerBoundary();
 	private User user = null;
 
 	@FXML
@@ -99,16 +103,15 @@ public class ManagerUpdateUser implements IGuiController {
 
 	@Override
 	public void openWindow() {
-		guiObjectsFactory.mainWindowController.changeWindowName("Manager - update user");
-		guiObjectsFactory.mainWindowController.showNewWindow(managerUpdateUserPane);
+		mainWindowManager.mainWindowController.changeWindowName("Manager - update user");
+		mainWindowManager.mainWindowController.showNewWindow(managerUpdateUserPane);
 		userStatusCombo.getItems().setAll(UserStatus.values());
 		userTypeCombo.getItems().setAll(UserType.values());
 	}
 
 	@FXML
 	void UpdateUserInformation(ActionEvent event) {
-		managerBoundry.requestUpdateUserData(user.getUsername(), userTypeCombo.getSelectionModel().getSelectedItem(),
-				userStatusCombo.getSelectionModel().getSelectedItem());
+		managerBoundry.requestUpdateUserData(user.getUsername(), user.getUserType(), user.getStatus());
 	}
 
 	@FXML

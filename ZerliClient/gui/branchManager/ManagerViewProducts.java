@@ -19,11 +19,15 @@ import main.IGuiController;
 import order.Order;
 import order.OrderStatus;
 import order.ProductInOrder;
+import userGuiManagment.BranchManagerGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.BranchManagerBoundary;
 
 public class ManagerViewProducts implements IGuiController {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private BranchManagerBoundary managerBoundry = guiObjectsFactory.branchManagerBoundary;
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private BranchManagerGuiManager branchManagerGuiManager = BranchManagerGuiManager.getInstance();
+	private BranchManagerBoundary managerBoundry = branchManagerGuiManager.getBranchManagerBoundary();
 	private Order selectedOrder = null;
 	private ObservableList<ProductInOrder> productsObs = FXCollections.observableArrayList();
 	private IGuiController lastController = null;
@@ -68,9 +72,9 @@ public class ManagerViewProducts implements IGuiController {
 		}
 		if (selectedOrder.getOrderStatus().toString() == "WAITING_FOR_CANCELATION_APPROVAL") {
 			managerBoundry.requestApproveCancelation(selectedOrder.getOrderNumber(), true);
-			selectedOrder.setOrderStatus(OrderStatus.CANECELED);
+			selectedOrder.setOrderStatus(OrderStatus.CANCELED);
 		}
-		
+
 		managerApprovalConfirmed = (ManagerApprovalConfirmed) guiObjectsFactory
 				.loadFxmlFile("/branchManager/approvalConfirmed.fxml");
 		managerApprovalConfirmed.setOrder(selectedOrder);
@@ -80,7 +84,8 @@ public class ManagerViewProducts implements IGuiController {
 
 	@FXML
 	void BackToOrderSelectWindow(ActionEvent event) {
-		guiObjectsFactory.mainWindowController.showNewWindow(lastController.getBasePane());
+		MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+		mainWindowManager.mainWindowController.showNewWindow(lastController.getBasePane());
 		resetController();
 		lastController.openWindow();
 	}
@@ -98,8 +103,8 @@ public class ManagerViewProducts implements IGuiController {
 
 	@Override
 	public void openWindow() {
-		guiObjectsFactory.mainWindowController.showNewWindow(productInOrderPane);
-		guiObjectsFactory.mainWindowController.changeWindowName("Manager - Products In Selected Order");
+		mainWindowManager.mainWindowController.showNewWindow(productInOrderPane);
+		mainWindowManager.mainWindowController.changeWindowName("Manager - Products In Selected Order");
 		initializeProductsTable();
 		products = managerBoundry.getAllProductsInOrder(selectedOrder.getOrderNumber());
 		productsObs.setAll(products);

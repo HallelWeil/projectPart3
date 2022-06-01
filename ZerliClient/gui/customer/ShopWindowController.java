@@ -19,14 +19,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import shop.ShopBoundary;
+import userGuiManagment.AuthorizedCustomerGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 
 public class ShopWindowController implements IGuiController {
 
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private ShopBoundary shopBoundary = guiObjectsFactory.shopBoundary;
+	private AuthorizedCustomerGuiManager authorizedCustomerGuiManager = AuthorizedCustomerGuiManager.getInstance();
+	private ShopBoundary shopBoundary = AuthorizedCustomerGuiManager.getInstance().getShopBoundary();
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	private HashMap<Integer, ItemInCartController> itemInCartMap = new HashMap<Integer, ItemInCartController>();
 	private int customizedItemID = 0;// give each customize item unique temp id
 	private HashMap<Integer, CustomizedProduct> CustomizedProducts = new HashMap<Integer, CustomizedProduct>();
@@ -130,7 +132,7 @@ public class ShopWindowController implements IGuiController {
 
 	@FXML
 	void PalceOrder(ActionEvent event) {
-		guiObjectsFactory.branch_Delivery.openWindow();
+		authorizedCustomerGuiManager.getBranch_Delivery().openWindow();
 	}
 
 	@FXML
@@ -146,27 +148,27 @@ public class ShopWindowController implements IGuiController {
 		switch (((Tab) event.getSource()).getId()) {
 		case "congratulationFlowersTab":
 			products = shopBoundary.chooseCategory("congratulationFlowers");
-			guiObjectsFactory.productManager.fillProductList(congratulationFlowersBase, products);
+			authorizedCustomerGuiManager.getProductManager().fillProductList(congratulationFlowersBase, products);
 			break;
 		case "singleItemsTab":
 			products = shopBoundary.chooseCategory("singleItems");
-			guiObjectsFactory.productManager.fillProductList(singleItemsBase, products);
+			authorizedCustomerGuiManager.getProductManager().fillProductList(singleItemsBase, products);
 			break;
 		case "weddingFlowersTab":
 			products = shopBoundary.chooseCategory("weddingFlowers");
-			guiObjectsFactory.productManager.fillProductList(weddingFlowersbase, products);
+			authorizedCustomerGuiManager.getProductManager().fillProductList(weddingFlowersbase, products);
 			break;
 		case "birthdayFlowersTab":
 			products = shopBoundary.chooseCategory("birthdayFlowers");
-			guiObjectsFactory.productManager.fillProductList(birthdayFlowerBase, products);
+			authorizedCustomerGuiManager.getProductManager().fillProductList(birthdayFlowerBase, products);
 			break;
 		case "babyFlowersTab":
 			products = shopBoundary.chooseCategory("babyFlowers");
-			guiObjectsFactory.productManager.fillProductList(newBabyFlowersBase, products);
+			authorizedCustomerGuiManager.getProductManager().fillProductList(newBabyFlowersBase, products);
 			break;
 		case "AnniversaryFlowersTab":
 			products = shopBoundary.chooseCategory("AnniversaryFlowers");
-			guiObjectsFactory.productManager.fillProductList(anniversaryFlowersBase, products);
+			authorizedCustomerGuiManager.getProductManager().fillProductList(anniversaryFlowersBase, products);
 			break;
 
 		default:
@@ -183,19 +185,18 @@ public class ShopWindowController implements IGuiController {
 
 	@Override
 	public void resetController() {
-		// TODO Auto-generated method stub
-
+		//
 	}
 
 	@Override
 	public void openWindow() {
 		// move to the next window
-		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
+		mainWindowManager.mainWindowController.showNewWindow(basePane);
 		// change to the name
-		guiObjectsFactory.mainWindowController.changeWindowName("Shop");
+		mainWindowManager.mainWindowController.changeWindowName("Shop");
 		// get the first category
 		ArrayList<Product> products = shopBoundary.chooseCategory("birthdayFlowers");
-		guiObjectsFactory.productManager.fillProductList(birthdayFlowerBase, products);
+		authorizedCustomerGuiManager.getProductManager().fillProductList(birthdayFlowerBase, products);
 		// set the customized product handling window
 		if (!isOpen) {
 			costumizedProductsChooseList.setItems(comboBoxList);
@@ -242,7 +243,7 @@ public class ShopWindowController implements IGuiController {
 			return;
 		}
 		currentCustomizedProduct.addItemToProduct(product);
-		ItemInCustomizedProductController newController = GuiObjectsFactory.getInstance().productManager
+		ItemInCustomizedProductController newController = authorizedCustomerGuiManager.getProductManager()
 				.createNewCSItem(product);
 		costumizedProductItemList.getChildren().add(newController.getBasePane());
 
@@ -261,7 +262,7 @@ public class ShopWindowController implements IGuiController {
 		updateCSError("");
 		costumizedItemName.setText(customizedProduct.getName());
 		for (Product p : customizedProduct.getItems()) {
-			ItemInCustomizedProductController newController = GuiObjectsFactory.getInstance().productManager
+			ItemInCustomizedProductController newController = authorizedCustomerGuiManager.getProductManager()
 					.createNewCSItem(p);
 			costumizedProductItemList.getChildren().add(newController.getBasePane());
 		}
@@ -271,13 +272,11 @@ public class ShopWindowController implements IGuiController {
 	void addCPToCart(ActionEvent event) {
 		if (shopBoundary.addToCart(currentCustomizedProduct, 1))// add to cart
 		{
-			ItemInCartController controller = GuiObjectsFactory.getInstance().productManager
+			ItemInCartController controller = authorizedCustomerGuiManager.getProductManager()
 					.createNewCartItem(currentCustomizedProduct, 1);
-			GuiObjectsFactory.getInstance().shopWindowController.addProductGuiObjectToCart(controller.getBasePane(),
-					controller);
+			addProductGuiObjectToCart(controller.getBasePane(), controller);
 		} else {
-			GuiObjectsFactory.getInstance().shopWindowController.updateAmount(1,
-					currentCustomizedProduct.getProductID());
+			updateAmount(1, currentCustomizedProduct.getProductID());
 		}
 		cartTabPane.getSelectionModel().select(cartTab);
 	}
@@ -377,5 +376,10 @@ public class ShopWindowController implements IGuiController {
 			botVal = 40;
 		}
 		currentCustomizedProduct.choosePrice(topVal, botVal);
+	}
+
+	public void emptyCart() {
+		itemInCartMap = new HashMap<Integer, ItemInCartController>();
+		cartItemsList.getChildren().clear();
 	}
 }

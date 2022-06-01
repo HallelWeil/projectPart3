@@ -1,16 +1,22 @@
 package ceo;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import branch.Branch;
+import branchManager.ManagerViewProducts;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
@@ -23,22 +29,29 @@ import reportGUI.QuarterlyOrdersReportController;
 import reportGUI.QuarterlyRevenueReportController;
 import reportGUI.RevenueReportController;
 import reportGUI.SatisfactionReportController;
+import userGuiManagment.CEOGuiManager;
+import userGuiManagment.MainWindowGuiManager;
 import usersManagment.CEOBoundary;
 
 public class CEOcontroller implements IGuiController {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
-	private CEOBoundary ceoBoundry = guiObjectsFactory.ceoBoundry;
+	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	private CEOBoundary ceoBoundry = CEOGuiManager.getInstance().getCeoBoundry();
 	private IReportController leftReportController;
 	private IReportController rightReportController;
 	private IReportController middleReportController;
 	private Report report = null;
-	
+	private OrderReportController orderReportController;
+	private RevenueReportController revenueReportController;
+	private QuarterlyOrdersReportController quarterlyOrdersReportController;
+	private QuarterlyRevenueReportController quarterlyRevenueReportController;
+	private SatisfactionReportController SatisfactionReportController;
 
-    @FXML
-    private AnchorPane MiddleReport;
-    
-    @FXML
-    private ScrollPane middleScroll;
+	@FXML
+	private AnchorPane MiddleReport;
+
+	@FXML
+	private ScrollPane middleScroll;
 
 	@FXML
 	private Button getReportBot;
@@ -87,7 +100,7 @@ public class CEOcontroller implements IGuiController {
 	void openReport(ActionEvent event) {
 		previewReport(MiddleReport, middleReportController);
 		middleScroll.setVisible(true);
-		
+
 	}
 
 	@FXML
@@ -102,9 +115,8 @@ public class CEOcontroller implements IGuiController {
 		previewReport(rightReport, rightReportController);
 		middleScroll.setVisible(false);
 	}
-		
 
-	private void previewReport(Pane anchor, IReportController reportController) {
+	private void previewReport(AnchorPane anchor, IReportController reportController) {
 		openReportBot.setDisable(true);
 		previewReportLeftBot.setDisable(true);
 		previewReportRightBot.setDisable(true);
@@ -155,9 +167,9 @@ public class CEOcontroller implements IGuiController {
 	}
 
 	@Override
-	public void openWindow(){
-		guiObjectsFactory.mainWindowController.changeWindowName("CEO - view report");
-		guiObjectsFactory.mainWindowController.showNewWindow(ceoWatchReportPane);
+	public void openWindow() {
+		mainWindowManager.mainWindowController.changeWindowName("CEO - view report");
+		mainWindowManager.mainWindowController.showNewWindow(ceoWatchReportPane);
 		ArrayList<Integer> yearsList = (ArrayList<Integer>) IntStream.range(2000, LocalDate.now().getYear() + 1).boxed()
 				.collect(Collectors.toList());
 		Collections.reverse(yearsList);

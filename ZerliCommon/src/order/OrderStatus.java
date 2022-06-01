@@ -16,11 +16,11 @@ public enum OrderStatus {
 	/**
 	 * the cancellation was approved
 	 */
-	CANECELED,
+	CANCELED,
 	/**
 	 * waiting for cancellation approval from branch manager
 	 */
-	WAITING_FOR_CANCELATION_APPROVAL,
+	WAITING_FOR_CANCELLATION_APPROVAL,
 	/**
 	 * 
 	 */

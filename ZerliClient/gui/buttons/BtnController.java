@@ -1,5 +1,7 @@
 package buttons;
 
+import java.lang.invoke.SwitchPoint;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,11 +12,17 @@ import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
 import user.UserType;
+import userGuiManagment.AuthorizedCustomerGuiManager;
+import userGuiManagment.BranchEmployeeGuiManager;
+import userGuiManagment.BranchManagerGuiManager;
+import userGuiManagment.CEOGuiManager;
+import userGuiManagment.CourierGuiManager;
+import userGuiManagment.CustomerServiceGuiManager;
+import userGuiManagment.MainWindowGuiManager;
+import userGuiManagment.MarketingGuiManager;
 import usersManagment.UserBoundary;
 
 public class BtnController implements IGuiController {
-
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 
 	@FXML
 	private AnchorPane basePane;
@@ -83,32 +91,32 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void managePromotions(ActionEvent event) {
-		guiObjectsFactory.managePromotions.openWindow();
+		MarketingGuiManager.getInstance().getManagePromotions().openWindow();
 	}
 
 	@FXML
 	void goToUserHomepage(ActionEvent event) {
-		guiObjectsFactory.userHomeWindowController.openWindow();
+		MainWindowGuiManager.getInstance().userHomeWindowController.openWindow();
 	}
 
 	@FXML
 	void accessibility(ActionEvent event) {
-		guiObjectsFactory.accessibilityPageController.openWindow();
+		MainWindowGuiManager.getInstance().accessibilityPageController.openWindow();
 	}
 
 	@FXML
 	void approvedelivery(ActionEvent event) {
-		guiObjectsFactory.courierConfirmDelivery.openWindow();
+		CourierGuiManager.getInstance().getCourierConfirmDelivery().openWindow();
 	}
 
 	@FXML
 	void createComplaint(ActionEvent event) {
-		guiObjectsFactory.newComplaintController.openWindow();
+		CustomerServiceGuiManager.getInstance().getNewComplaintController().openWindow();
 	}
 
 	@FXML
 	void createPromotion(ActionEvent event) {
-		guiObjectsFactory.createPromotion.openWindow();
+		MarketingGuiManager.getInstance().getCreatePromotion().openWindow();
 	}
 
 	@FXML
@@ -118,64 +126,65 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	void goToHomepage(ActionEvent event) {
-		guiObjectsFactory.mainWindowController.openWindow();
+		MainWindowGuiManager.getInstance().mainWindowController.openWindow();
 	}
 
 	@FXML
 	void login(ActionEvent event) {
-		guiObjectsFactory.loginGuiController.openWindow();
+		MainWindowGuiManager.getInstance().loginGuiController.openWindow();
 	}
 
 	@FXML
 	void logout(ActionEvent event) {
-		guiObjectsFactory.userBaundary.requestLogOut();
-		guiObjectsFactory.resetAll();
-		guiObjectsFactory.mainWindowController.openWindow();
+		resetAll();
+		MainWindowGuiManager.getInstance().userBaundary.requestLogOut();
+		MainWindowGuiManager.getInstance().loginGuiController.resetController();
+		MainWindowGuiManager.getInstance().mainWindowController.openWindow();
 	}
 
 	@FXML
 	void manageOrders(ActionEvent event) {
-		guiObjectsFactory.managerApproveController.openWindow();
+		BranchManagerGuiManager.getInstance().getManagerApproveController().openWindow();
 	}
 
 	@FXML
 	void manageUsers(ActionEvent event) {
-		guiObjectsFactory.managerUsersManagmetController.openWindow();
+		BranchManagerGuiManager.getInstance().getManagerUsersManagmetController().openWindow();
 	}
 
 	@FXML
 	void openOrdersHistory(ActionEvent event) {
-		guiObjectsFactory.ordersHistoryController.openWindow();
+		AuthorizedCustomerGuiManager.getInstance().getOrdersHistoryController().openWindow();
 	}
 
 	@FXML
 	void openReports(ActionEvent event) {
 		if (UserBoundary.CurrentUser != null) {
 			if (UserBoundary.CurrentUser.getUserType() == UserType.BranchManager)
-				guiObjectsFactory.managerWatchReportController.openWindow();
+				BranchManagerGuiManager.getInstance().getManagerWatchReportController().openWindow();
 			else if (UserBoundary.CurrentUser.getUserType() == UserType.CEO)
-				guiObjectsFactory.ceoController.openWindow();
+				CEOGuiManager.getInstance().getCeoController().openWindow();
 		}
 	}
 
 	@FXML
 	void openShop(ActionEvent event) {
-		guiObjectsFactory.shopWindowController.openWindow();
+		AuthorizedCustomerGuiManager.getInstance().getShopWindowController().openWindow();
 	}
 
 	@FXML
 	void surveyAnswers(ActionEvent event) {
-		guiObjectsFactory.searchSurvey.openWindow();
+		BranchEmployeeGuiManager.getInstance().getSearchSurvey().openWindow();
 	}
 
 	@FXML
 	void surveyResult(ActionEvent event) {
-		guiObjectsFactory.surveyResultsController.openWindow();
+		CustomerServiceGuiManager.getInstance().getSurveyResultsController().openWindow();
 	}
 
 	@FXML
 	void updateComplaint(ActionEvent event) {
-		guiObjectsFactory.showAllComplaints.openWindow();
+		CustomerServiceGuiManager.getInstance().getShowAllComplaints().openWindow();
 	}
 
 	@FXML
@@ -280,16 +289,46 @@ public class BtnController implements IGuiController {
 	@Override
 	public void openWindow() {
 		// move to the next window
-		guiObjectsFactory.mainWindowController.showNewWindow(basePane);
 	}
 
 	@FXML
 	void logoBtnPress(MouseEvent event) {
 		if (UserBoundary.getCurrentUser() == null) {
-			guiObjectsFactory.mainWindowController.openWindow();
+			MainWindowGuiManager.getInstance().mainWindowController.openWindow();
 		} else {
-			guiObjectsFactory.userHomeWindowController.openWindow();
+			MainWindowGuiManager.getInstance().userHomeWindowController.openWindow();
 		}
+	}
+
+	private void resetAll() {
+		if (UserBoundary.CurrentUser != null) {
+			switch (UserBoundary.CurrentUser.getUserType()) {
+			case AuthorizedCustomer:
+				AuthorizedCustomerGuiManager.getInstance().logout();
+				break;
+			case BranchEmployee:
+				BranchEmployeeGuiManager.getInstance().logout();
+				break;
+			case BranchManager:
+				BranchManagerGuiManager.getInstance().logout();
+				break;
+			case CEO:
+				CEOGuiManager.getInstance().logout();
+				break;
+			case Courier:
+				CourierGuiManager.getInstance().logout();
+				break;
+			case CustomerServiceEmloyee:
+				CustomerServiceGuiManager.getInstance().logout();
+				break;
+			case MarketingEmployee:
+				MarketingGuiManager.getInstance().logout();
+				break;
+			default:
+				break;
+			}
+		}
+
 	}
 
 }

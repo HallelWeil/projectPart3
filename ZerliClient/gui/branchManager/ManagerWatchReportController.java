@@ -88,8 +88,7 @@ public class ManagerWatchReportController implements IGuiController {
 		ArrayList<Integer> yearsList = (ArrayList<Integer>) IntStream.range(2000, LocalDate.now().getYear() + 1).boxed()
 				.collect(Collectors.toList());
 		Collections.reverse(yearsList);
-		ArrayList<Integer> monthsList = (ArrayList<Integer>) IntStream.range(1, 13).boxed()
-				.collect(Collectors.toList());
+		ArrayList<Integer> monthsList = (ArrayList<Integer>) IntStream.range(1, 13).boxed().collect(Collectors.toList());
 		managerReportMonth.getItems().setAll(monthsList);
 		managerReportYear.getItems().setAll(yearsList);
 		managerReportType.getItems().setAll(ReportType.MONTHLY_ORDERS_REPORT, ReportType.MONTHLY_REVENU_EREPORT);
@@ -119,11 +118,10 @@ public class ManagerWatchReportController implements IGuiController {
 		reportController.openWindow();
 		reportPane.getChildren().setAll(reportController.getBasePane());
 	}
-
-	private void loadFXMLs() throws IOException {
+	
+	private void loadFXMLs() throws IOException{
 		orderReportController = (OrderReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/ordersReport.fxml");
-		revenueReportController = (RevenueReportController) guiObjectsFactory
-				.loadFxmlFile("/reportGUI/revenueReport.fxml");
+		revenueReportController = (RevenueReportController) guiObjectsFactory.loadFxmlFile("/reportGUI/revenueReport.fxml");	
 	}
 
 	private IReportController getController() throws IOException {

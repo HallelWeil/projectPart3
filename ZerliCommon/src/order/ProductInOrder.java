@@ -52,5 +52,13 @@ public class ProductInOrder implements Serializable{
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+		s.append("[ ");
+		s.append(orderNumber + ", " + name + ", " + price + ", " + amount + ", ");
+		s.append(total + ", " + category + "]");
+		return s.toString();
+	}
 
 }

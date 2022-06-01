@@ -14,7 +14,7 @@ import report.Report;
 
 public class SatisfactionReportController implements IGuiController, IReportController {
 	QuarterlySatisfactionReport satisfactionReport = null;
-	Series<Integer, Integer> monthSeries = null;
+	Series<String, Integer> monthSeries = null;
 	int[] complaintsPerMonth = null;
 	
 
@@ -28,7 +28,7 @@ public class SatisfactionReportController implements IGuiController, IReportCont
 	private Label compansationsNum;
 
 	@FXML
-	private BarChart<Integer, Integer> complaintsChart;
+	private BarChart<String, Integer> complaintsChart;
 
 	@FXML
 	private Label complaintsNum;
@@ -76,7 +76,7 @@ public class SatisfactionReportController implements IGuiController, IReportCont
 		monthSeries = new XYChart.Series<>();
 		complaintsPerMonth = satisfactionReport.getComplaintsPerMonth();
 		for (int i = 0; i < 3; i++) {
-			monthSeries.getData().add(new XYChart.Data<Integer, Integer>(i, complaintsPerMonth[i]));
+			monthSeries.getData().add(new XYChart.Data<String, Integer>(i + "", complaintsPerMonth[i]));
 		}
 		complaintsChart.getData().add(monthSeries);
 	}

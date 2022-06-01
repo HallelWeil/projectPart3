@@ -1,6 +1,7 @@
 package userGuiManagment;
 
 import PromotionWindow.CreatePromotionWindowController;
+import PromotionWindow.PromotionCreatedSuccessfullyWindowController;
 import PromotionWindow.managePromotionWindowController;
 import main.GuiObjectsFactory;
 import usersManagment.MarketingEmployeeBoundary;
@@ -13,6 +14,7 @@ public class MarketingGuiManager implements IUserGuiManager {
 	// the controllers
 	private CreatePromotionWindowController createPromotion;
 	private managePromotionWindowController managePromotions;
+	private PromotionCreatedSuccessfullyWindowController promotionCreatedSuccessfully;
 	// Boundaries
 	private MarketingEmployeeBoundary marketingEmployeeBoundary;
 
@@ -47,6 +49,14 @@ public class MarketingGuiManager implements IUserGuiManager {
 			marketingEmployeeBoundary = new MarketingEmployeeBoundary();
 		}
 		return marketingEmployeeBoundary;
+	}
+
+	public PromotionCreatedSuccessfullyWindowController getPromotionCreatedSuccessfully() {
+		if(promotionCreatedSuccessfully==null) {
+			promotionCreatedSuccessfully = (PromotionCreatedSuccessfullyWindowController) guiObjectsFactory
+					.loadFxmlFile("/PromotionWindow/AddedSuccessfully.fxml");
+		}
+		return promotionCreatedSuccessfully;
 	}
 
 	@Override

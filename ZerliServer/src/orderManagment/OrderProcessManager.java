@@ -23,6 +23,7 @@ public class OrderProcessManager {
 
 	private Order activeOrder;
 	private double creditUse = 0;
+	private boolean discount = false;
 	private String userID;
 	private String username;
 
@@ -34,6 +35,7 @@ public class OrderProcessManager {
 		creditUse = 0;
 		userID = "";
 		username = "";
+		discount = false;
 	}
 
 	/**
@@ -82,6 +84,7 @@ public class OrderProcessManager {
 		if (dbcontroller.getAllOrdersOfCustomer(null, username).size() == 0) {
 			// you get 20% off for the first order
 			price = 0.8 * price;
+			discount = true;
 			activeOrder.setOrderData(activeOrder.getOrderData() + "\n20% off for your first order!");
 		}
 		// 2. check if there is credit, if there is -> use the credit
@@ -90,8 +93,8 @@ public class OrderProcessManager {
 			// if there is enough credit for the full price
 			if (credit >= price) {
 				activeOrder.setOrderData(activeOrder.getOrderData() + "\nUsed Shop credit for " + price);
-				price = 0;
 				creditUse = price;
+				price = 0;
 			} else {
 				price = price - credit;
 				creditUse = credit;
@@ -112,6 +115,12 @@ public class OrderProcessManager {
 	public boolean payForOrder(String cardInfo) {
 		PaymentController paymnetControlelr = new PaymentController();
 		CreditController creditController = new CreditController();
+		double finalPrice = activeOrder.getPrice();
+		// 1. get the discount
+		if (discount) {
+			finalPrice = finalPrice * 0.8;
+			activeOrder.setPrice(finalPrice);
+		}
 		// 1. try to use the credit
 		if (creditUse > 0) {
 			if (!creditController.useShopCredit(userID, creditUse)) {

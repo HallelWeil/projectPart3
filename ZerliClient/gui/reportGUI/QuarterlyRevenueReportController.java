@@ -13,7 +13,7 @@ import report.Report;
 
 public class QuarterlyRevenueReportController implements IGuiController, IReportController {
 	private QuarterlyRevenueReport revenueReport = null;
-	private Series<Integer, Double> daySeries;
+	private Series<String, Double> daySeries;
 	private double[][] revenuePerDay;
 
     @FXML
@@ -26,7 +26,7 @@ public class QuarterlyRevenueReportController implements IGuiController, IReport
     private Label dateLabel;
 
     @FXML
-    private LineChart<Integer, Double> incomeDayChart;
+    private LineChart<String, Double> incomeDayChart;
 
     @FXML
     private Label mostProfitItemLabel;
@@ -70,7 +70,7 @@ public class QuarterlyRevenueReportController implements IGuiController, IReport
 		revenuePerDay = revenueReport.getRevenuePerDay();
 		for (int i = 0; i < 3; i++) {
 			for(int j=0; j<31; j++) {
-				daySeries.getData().add(new XYChart.Data<Integer, Double>(i*31 + j, revenuePerDay[i][j]));
+				daySeries.getData().add(new XYChart.Data<String, Double>(i*31 + j + "", revenuePerDay[i][j]));
 			}
 		}
 		incomeDayChart.getData().add(daySeries);

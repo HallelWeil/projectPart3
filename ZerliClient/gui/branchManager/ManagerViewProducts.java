@@ -1,5 +1,7 @@
 package branchManager;
 
+import java.util.ArrayList;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +17,7 @@ import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.Order;
+import order.OrderStatus;
 import order.ProductInOrder;
 import userGuiManagment.BranchManagerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
@@ -28,6 +31,8 @@ public class ManagerViewProducts implements IGuiController {
 	private Order selectedOrder = null;
 	private ObservableList<ProductInOrder> productsObs = FXCollections.observableArrayList();
 	private IGuiController lastController = null;
+	private ArrayList<ProductInOrder> products;
+	ManagerApprovalConfirmed managerApprovalConfirmed;
 
 	@FXML
 	private Button approveBot;
@@ -61,10 +66,20 @@ public class ManagerViewProducts implements IGuiController {
 
 	@FXML
 	void ApproveOrder(ActionEvent event) {
-		if (selectedOrder.getOrderStatus().toString() == "WAITING_FOR_APPROAVL")
+		if (selectedOrder.getOrderStatus().toString() == "WAITING_FOR_APPROAVL") {
 			managerBoundry.requestApproveOrder(selectedOrder.getOrderNumber(), true);
-		if (selectedOrder.getOrderStatus().toString() == "WAITING_FOR_CANCELATION_APPROVAL")
+			selectedOrder.setOrderStatus(OrderStatus.APPROVED);
+		}
+		if (selectedOrder.getOrderStatus().toString() == "WAITING_FOR_CANCELATION_APPROVAL") {
 			managerBoundry.requestApproveCancelation(selectedOrder.getOrderNumber(), true);
+			selectedOrder.setOrderStatus(OrderStatus.CANECELED);
+		}
+
+		managerApprovalConfirmed = (ManagerApprovalConfirmed) guiObjectsFactory
+				.loadFxmlFile("/branchManager/approvalConfirmed.fxml");
+		managerApprovalConfirmed.setOrder(selectedOrder);
+		managerApprovalConfirmed.setProducts(products);
+		managerApprovalConfirmed.openWindow();
 	}
 
 	@FXML
@@ -91,7 +106,8 @@ public class ManagerViewProducts implements IGuiController {
 		mainWindowManager.mainWindowController.showNewWindow(productInOrderPane);
 		mainWindowManager.mainWindowController.changeWindowName("Manager - Products In Selected Order");
 		initializeProductsTable();
-		productsObs.setAll(managerBoundry.getAllProductsInOrder(selectedOrder.getOrderNumber()));
+		products = managerBoundry.getAllProductsInOrder(selectedOrder.getOrderNumber());
+		productsObs.setAll(products);
 		productsInOrderTable.setItems(productsObs);
 		if (selectedOrder.getOrderStatus().toString() == "WAITING_FOR_APPROAVL")
 			approveBot.setText("Approve Order");

@@ -155,7 +155,7 @@ public class OrdersController {
 		double refund = 0;
 		long orderTime = order.getArrivalDate().getTime();
 		long currentTime = System.currentTimeMillis();
-		long timeDiff = currentTime - orderTime;
+		long timeDiff = orderTime - currentTime;
 		if (timeDiff < HOUR_IN_MILLISECONS) {
 			// no refund in the lsat hour
 			refund = 0;
@@ -175,14 +175,14 @@ public class OrdersController {
 		if (userCard == null) {
 			throw new Exception("Order canceled, no card info was found for the refund");
 		}
+		User user = dbController.getUser(order.getUsername());
 		if (refund > 0) {
 			// give refund!
 			CreditController creditController = new CreditController();
-			creditController.refund(userCard, refund);
+			creditController.refund(user.getPersonID(), refund);
 		}
 		// 6. we got here - the order approved successfully
 		// 7. send reminder and we done!
-		User user = dbController.getUser(order.getUsername());
 		sendReminder(order, " canceled ", refund, user);
 	}
 

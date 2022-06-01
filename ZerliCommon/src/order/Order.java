@@ -206,7 +206,7 @@ public class Order implements Serializable {
 		StringBuilder s = new StringBuilder();
 		s.append("[ ");
 		s.append(orderNumber + ", " + price + ", " + branchName + ", ");
-		s.append(data + ", " + orderDate + "," + personalLetter + "]");
+		s.append(data + ", " + orderDate + ", " + personalLetter + "]");
 		return s.toString();
 	}
 }

@@ -18,15 +18,15 @@ public class Complaint implements Serializable {
 	private String answer;
 	private double compensation;
 	private Status status;
-	private String customerUserName;
+	private String customerID;
 	private Timestamp creationTime;
 
-	public Complaint(String responsibleEmployeeUserName, String complaint, String customerUserName) {
+	public Complaint(String responsibleEmployeeUserName, String complaint, String customerID) {
 		super();
 		this.complaintsNumber = -1;
 		this.responsibleEmployeeUserName = responsibleEmployeeUserName;
 		this.complaint = complaint;
-		this.customerUserName = customerUserName;
+		this.customerID = customerID;
 		status = Status.Active;
 		compensation = 0;
 		creationTime = new Timestamp(System.currentTimeMillis());
@@ -76,12 +76,12 @@ public class Complaint implements Serializable {
 		this.responsibleEmployeeUserName = responsibleEmployeeUserName;
 	}
 
-	public String getCustomerUserName() {
-		return customerUserName;
+	public String getCustomerID() {
+		return customerID;
 	}
 
-	public void setCustomerUserName(String customerUserName) {
-		this.customerUserName = customerUserName;
+	public void setCustomerID(String customerID) {
+		this.customerID = customerID;
 	}
 
 	public Timestamp getCreationTime() {

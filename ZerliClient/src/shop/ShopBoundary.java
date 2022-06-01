@@ -1,6 +1,10 @@
 package shop;
 
-import catalog.Item;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
+import cart.ProductInCart;
+import catalog.CustomizedProduct;
 import catalog.Product;
 import order.DeliveryDetails;
 import order.Order;
@@ -10,10 +14,13 @@ public class ShopBoundary {
 	private CartController cartCon;
 	private CatalogController catalogCon;
 	private boolean homeDeliveryflag = false;
+	private boolean personalCard = false;
+	private ArrayList<Integer> cartItemsIDs;
 
 	public ShopBoundary() {
 		this.cartCon = new CartController();
 		this.catalogCon = new CatalogController();
+		cartItemsIDs = new ArrayList<Integer>();
 	}
 
 	// category methods//
@@ -21,9 +28,10 @@ public class ShopBoundary {
 	 * choose a category to browse the catalog
 	 * 
 	 * @param category
+	 * @return
 	 */
-	public void chooseCategory(String category) {
-		catalogCon.chooseCategory(category);
+	public ArrayList<Product> chooseCategory(String category) {
+		return catalogCon.chooseCategory(category);
 
 	}
 
@@ -32,17 +40,9 @@ public class ShopBoundary {
 	 * add a new customized product to the cart
 	 * 
 	 * @param newProudctName
-	 * @throws an exception -when the user tries to add a new product that has a
-	 *            name that already exist in the cart
 	 */
-	public void requestCustomizedProduct(String newProudctName) {
-		try {
-			cartCon.createNewProduct(newProudctName);
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-
+	public void addNewCustomizedProduct(CustomizedProduct proudct) {
+		cartCon.addNewProductToCart(proudct);
 	}
 
 	/**
@@ -50,8 +50,13 @@ public class ShopBoundary {
 	 * 
 	 * @param product
 	 */
-	public void addToCart(Product product) {
-		cartCon.addToCart(product);
+	public boolean addToCart(Product product, int amount) {
+		cartCon.addToCart(product, amount);
+		if (cartItemsIDs.contains(product.getProductID()))
+			return false;
+		else
+			cartItemsIDs.add(product.getProductID());
+		return true;
 
 	}
 
@@ -62,8 +67,8 @@ public class ShopBoundary {
 	 * @param productName
 	 */
 
-	public void addItemToProduct(Item item, String productName) {
-		cartCon.addItemToProduct(item, productName);
+	public void addItemToProduct(Product item, int productID) {
+		cartCon.addItemToProduct(item, productID);
 
 	}
 
@@ -74,17 +79,25 @@ public class ShopBoundary {
 	 * @param item
 	 */
 
-	public void deleteItemFromCart(String productName, Item item) {
-		cartCon.deleteItemFromProduct(item, productName);
+	public void deleteItemFromCart(int productID, Product item) {
+		cartCon.deleteItemFromProduct(item, productID);
+		if (cartItemsIDs.contains(productID))
+			cartItemsIDs.remove(cartItemsIDs.indexOf(productID));
 	}
 
 	/**
 	 * delete a product form the cart
 	 * 
 	 * @param product
+	 * @return
 	 */
-	public void deleteProductFromCart(Product product) {
+	public boolean deleteProductFromCart(Product product) {
 		cartCon.deleteFromCart(product);
+		if (cartItemsIDs.contains(product.getProductID())) {
+			cartItemsIDs.remove(cartItemsIDs.indexOf(product.getProductID()));
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -129,7 +142,16 @@ public class ShopBoundary {
 	public void selectDeliveryOption(boolean isHomedelivery) {
 
 		homeDeliveryflag = isHomedelivery;
+		if(isHomedelivery)
+		cartCon.chooseHomeDelivery();
 
+	}
+	/**
+	 * request to get list of all branches 
+	 * @return arraylist of all branches 
+	 */
+	public ArrayList<String> getAllBranches(){
+		return cartCon.getAllBrances();
 	}
 
 	/**
@@ -162,5 +184,22 @@ public class ShopBoundary {
 	public boolean payForOrder() {
 		return cartCon.payForOrder();
 	}
+
+	public boolean isHomeDeliveryflag() {
+		return homeDeliveryflag;
+	}
+
+	public boolean isPersonalCardflag() {
+		return personalCard;
+	}
+
+	public void selectPersonalCard(boolean b) {
+		personalCard = b;	
+	}
+
+	public void submitDetailsForArivalDate(Timestamp arrivalDate) {
+		cartCon.setArrivelOrPickupDateAndTime(arrivalDate);		
+	}
+	
 
 }

@@ -80,14 +80,25 @@ public class ReportsController {
 	 * database
 	 */
 	public void saveAllReports() {
-		for (Report report : orderReports)
-			dbController.saveReportToDB(report);
-		for (Report report : revenueReports)
-			dbController.saveReportToDB(report);
+		for (Report report : orderReports) {
+			try {
+				dbController.saveReportToDB(report);
+			} catch (Exception e) {
+			}
+		}
+		for (Report report : revenueReports) {
+			try {
+				dbController.saveReportToDB(report);
+			} catch (Exception e) {
+			}
+		}
 		if (IsQuarterly) {
-			dbController.saveReportToDB(quarterlyOrdersReport);
-			dbController.saveReportToDB(quarterlyRevenueReport);
-			dbController.saveReportToDB(quarterlySatisfactionReport);
+			try {
+				dbController.saveReportToDB(quarterlyOrdersReport);
+				dbController.saveReportToDB(quarterlyRevenueReport);
+				dbController.saveReportToDB(quarterlySatisfactionReport);
+			} catch (Exception e) {
+			}
 		}
 	}
 
@@ -105,21 +116,23 @@ public class ReportsController {
 		// orders
 		HashMap<String, ArrayList<Order>> sortedLists = new HashMap<String, ArrayList<Order>>();
 		for (String branch : branches) {
+			ArrayList<Order> temp = sortedLists.get(branch);
+			if (temp == null) {
+				temp = new ArrayList<Order>();
+				sortedLists.put(branch, temp);
+			}
 			for (Order order : allOrders) {
 				if (order.getBranchName().equals(branch)) {
-					ArrayList<Order> temp = sortedLists.get(branch);
-					if (temp == null) {
-						temp = new ArrayList<Order>();
-						temp.add(order);
-						sortedLists.put(branch, temp);
-					} else {
-						temp.add(order);
-					}
+
+					temp.add(order);
 				}
 			}
 		}
+
 		// create all the monthly reports
-		for (String branch : branches) {
+		for (
+
+		String branch : branches) {
 			createMonthlyReports(month, year, branch, sortedLists.get(branch));
 		}
 		// if needed create the quarterly reports
@@ -178,7 +191,7 @@ public class ReportsController {
 			// add the report fields to the quarterly report
 			newReport.addProfitableItem(report.getMostProfitableItem());
 			newReport.addToTotalRevenue(report.getTotalRevenue());
-			newReport.setMonthlyAvarageRevenu(tempMonth, report.getAvarageMonthlyRevenue());
+			newReport.setMonthlyAvarageRevenu(tempMonth, report.getAverageMonthlyRevenue());
 		}
 		// if the total order is bigger than 0, get the average
 		if (totalOrders != 0)
@@ -197,25 +210,27 @@ public class ReportsController {
 		// local variables
 		int tempMonth;
 		// for each report add the report details to the quarterly report
-		for (OrdersReport report : tempOrdersReports) {
-			tempMonth = report.getMonth();
-			// get the orders per day from the report, for each day of the month
-			int[] ordersPerDay = report.getOrdersPerDay();
-			for (int i = 0; i < ordersPerDay.length; i++) {
-				newReport.addOrdersOnDay(i + 1, tempMonth, ordersPerDay[i]);
+		if (tempOrdersReports != null)
+			for (OrdersReport report : tempOrdersReports) {
+				tempMonth = report.getMonth();
+				// get the orders per day from the report, for each day of the month
+				int[] ordersPerDay = report.getOrdersPerDay();
+				for (int i = 0; i < ordersPerDay.length; i++) {
+					newReport.addOrdersOnDay(i + 1, tempMonth, ordersPerDay[i]);
+				}
+				// get the orders per category, for each category
+				HashMap<String, Integer> ordersPerCategory = report.getOrdersPerCategory();
+				if (ordersPerCategory.keySet() != null)
+					for (String category : ordersPerCategory.keySet()) {
+						newReport.addToCategory(category, ordersPerCategory.get(category));
+					}
+				// get the total orders
+				newReport.addToTotalOrders(report.getTotalOrders());
+				// get the most popular item
+				newReport.addPopularItem(report.getMostPopularItem());
+				// get the monthly average
+				newReport.setAvarageMonthlyOrders(report.getAvarageMonthlyOrders(), tempMonth);
 			}
-			// get the orders per category, for each category
-			HashMap<String, Integer> ordersPerCategory = report.getOrdersPerCategory();
-			for (String category : ordersPerCategory.keySet()) {
-				newReport.addToCategory(category, ordersPerCategory.get(category));
-			}
-			// get the total orders
-			newReport.addToTotalOrders(report.getTotalOrders());
-			// get the most popular item
-			newReport.addPopularItem(report.getMostPopularItem());
-			// get the monthly average
-			newReport.setAvarageMonthlyOrders(report.getAvarageMonthlyOrders(), tempMonth);
-		}
 		// save the newly created report
 		quarterlyOrdersReport = newReport;
 	}
@@ -249,24 +264,27 @@ public class ReportsController {
 		HashMap<String, Integer> itemsCounter = new HashMap<String, Integer>();
 		HashMap<String, Double> itemsRevCounter = new HashMap<String, Double>();
 		double revenue = 0;
-		for (Order order : orders) {
-			for (ProductInOrder item : order.getItems()) {
-				addToCounter(itemsCounter, item.getName(), item.getAmount());
-				addToRevCounter(itemsRevCounter, item.getName(), item.getAmount() * item.getPrice());
-				newOrdersReport.addOrderOnDay(order.getOrderDate().getDay());
-				newOrdersReport.addToCategory(item.getCategory(), item.getAmount());
-				newRevenueReport.addOrderRevenuOnDay(order.getOrderDate().getDay(), order.getPrice());
-				counter++;
-				revenue += order.getPrice();
+		if (orders != null)
+			for (Order order : orders) {
+				order.setItems(dbController.getAllProductsInOrder(order.getOrderNumber()));
+				if (order.getItems() != null)
+					for (ProductInOrder item : order.getItems()) {
+						addToCounter(itemsCounter, item.getName(), item.getAmount());
+						addToRevCounter(itemsRevCounter, item.getName(), item.getAmount() * item.getPrice());
+						newOrdersReport.addOrderOnDay(order.getOrderDate().getDay());
+						newOrdersReport.addToCategory(item.getCategory(), item.getAmount());
+						newRevenueReport.addOrderRevenuOnDay(order.getOrderDate().getDay(), order.getPrice());
+						counter++;
+						revenue += order.getPrice();
+					}
 			}
-		}
 		if (counter == 0)
-			newRevenueReport.setAvarageRevenuePerOrder(revenue);
+			newRevenueReport.setAverageRevenuePerOrder(revenue);
 		else
-			newRevenueReport.setAvarageRevenuePerOrder(revenue / counter);
+			newRevenueReport.setAverageRevenuePerOrder(revenue / counter);
 		// save the values
 		newRevenueReport.setTotalRevenue(revenue);
-		newRevenueReport.setAvarageMonthlyRevenue(avgRevenue);
+		newRevenueReport.setAverageMonthlyRevenue(avgRevenue);
 		newOrdersReport.setAvarageMonthlyOrders(avgOrders);
 		newOrdersReport.setTotalOrders(counter);
 		int maxAmount = 0;

@@ -13,9 +13,12 @@ import java.util.Base64;
 import catalog.Product;
 import common.Status;
 import complaint.Complaint;
+import files.SimpleFile;
+import order.DeliveryDetails;
 import order.Order;
 import order.OrderStatus;
 import order.ProductInOrder;
+import promotion.Promotion;
 import report.Report;
 import survey.Survey;
 import user.User;
@@ -51,6 +54,7 @@ public class DBObjectsManager {
 			object = ois.readObject();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			return null;
 		}
 		return object;
 	}
@@ -76,7 +80,7 @@ public class DBObjectsManager {
 				order.setOrderNumber(res.getInt("orderNumber"));
 				order.setOrderDate(res.getTimestamp("orderDate"));
 				order.setArrivalDate(res.getTimestamp("arrivalDate"));
-				order.setHomeDelivery(res.getBoolean("deliveryType"));
+				order.setHomeDelivery(res.getBoolean("homeDelivery"));
 				order.setBranchName(res.getString("branchName"));
 				order.setPrice(res.getDouble("price"));
 				order.setUsername(res.getString("customerID"));
@@ -99,8 +103,12 @@ public class DBObjectsManager {
 						res.getString("q4"), res.getString("q5"), res.getString("q6"));
 				int[] answers = new int[6];
 				for (int i = 1; i <= 6; i++) {
-					answers[i] = res.getInt("a" + i);
+					answers[i - 1] = res.getInt("a" + i);
 				}
+				SimpleFile resultFile = (SimpleFile) blobToObject(res.getBlob("surveyResult"));
+				survey.setResultFile(resultFile);
+				survey.setAnswers(answers);
+				survey.setNumberOfParticipants(res.getInt("participants"));
 				surveys.add(survey);
 				survey.setSurveyNumber(res.getInt("surveyNumber"));
 			}
@@ -114,12 +122,13 @@ public class DBObjectsManager {
 		ArrayList<Complaint> complaints = new ArrayList<>();
 		try {
 			while (res.next()) {
-				Complaint complaint = new Complaint(res.getString("responsibleEmployeeID"), res.getString("complaint"),
-						res.getString("customerID"));
+				Complaint complaint = new Complaint(res.getString("responsibleEmployeeUsername"),
+						res.getString("complaint"), res.getString("customerID"));
 				complaint.setAnswer(res.getString("answer"));
 				complaint.setCompensation(res.getDouble("compensation"));
 				complaint.setComplaintsNumber(res.getInt("complaintNumber"));
 				complaint.setStatus(Status.valueOf(res.getString("status")));
+				complaint.setCreationTime(res.getTimestamp("creationTime"));
 				complaints.add(complaint);
 				// need set for participants and answers
 			}
@@ -135,9 +144,12 @@ public class DBObjectsManager {
 			while (res.next()) {
 				Product product = new Product(res.getInt("productID"));
 				product.setName(res.getString("name"));
-				product.setPrice(0);
+				product.setPrice(res.getDouble("price"));
 				product.setDescription(res.getString("description"));
 				product.setColors(res.getString("colors"));
+				product.setCategory(res.getString("category"));
+				product.setProductID(res.getInt("productID"));
+				product.setOldPrice(res.getDouble("oldPrice"));
 				product.setImage(null);
 				products.add(product);
 			}
@@ -236,6 +248,55 @@ public class DBObjectsManager {
 			System.out.println(e.getMessage());
 		}
 		return branches;
+	}
+
+	public ArrayList<Promotion> promotionsDB(ResultSet res) {
+		ArrayList<Promotion> promotions = new ArrayList<>();
+		try {
+			while (res.next()) {
+				Promotion promotion = new Promotion();
+				promotion.setCreationDate(res.getTimestamp("creationDate"));
+				promotion.setDiscount(res.getDouble("discount"));
+				promotion.setProductID(res.getInt("productID"));
+				promotion.setPromotionNumber(res.getInt("promotionID"));
+				promotion.setPromotionText(res.getString("promotionText"));
+				promotion.setStatus(Status.valueOf(res.getString("status")));
+				promotions.add(promotion);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return promotions;
+	}
+
+	public DeliveryDetails deliveryDetailsDB(ResultSet res) {
+		DeliveryDetails deliveryDetails = null;
+		try {
+			if (res.next()) {
+				deliveryDetails = new DeliveryDetails();
+				deliveryDetails.setOrderID(res.getInt("orderNumber"));
+				deliveryDetails.setAddress(res.getString("address"));
+				deliveryDetails.setComments(res.getString("comments"));
+				deliveryDetails.setFirstName(res.getString("firstName"));
+				deliveryDetails.setLastName(res.getString("lastName"));
+				deliveryDetails.setPhoneNumber(res.getString("phoneNumber"));
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return deliveryDetails;
+	}
+
+	public double shopCreditDB(ResultSet res) {
+		double credit = -1;
+		try {
+			if (res.next()) {
+				credit = res.getDouble("credit");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return credit;
 	}
 
 }

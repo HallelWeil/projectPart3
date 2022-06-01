@@ -19,6 +19,8 @@ public class PaymentController {
 	public boolean pay(String cardInfo, double amount) throws Exception {
 		if (amount < 0)
 			throw new Exception("Cant pay " + amount);
+		if (cardInfo == null)
+			return false;
 		// if the credit card info is bad return false
 		// pay the amount
 		return true;
@@ -30,11 +32,10 @@ public class PaymentController {
 	 * @param cardInfo
 	 * @param amount   the amount to refund
 	 * @return true on success
-	 * @throws Exception if the card info is not ok
 	 */
-	public boolean refund(String cardInfo, double amount) throws Exception {
+	public boolean refund(String cardInfo, double amount) {
 		if (amount <= 0)
-			throw new Exception("Cant refund " + amount);
+			return false;
 		// if the credit card info is bad return false
 		// refund the amount
 		return true;

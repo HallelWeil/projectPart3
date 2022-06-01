@@ -26,7 +26,8 @@ public enum MsgType {
 	 */
 	CREATE_COMPLAINT,
 	/**
-	 * request for all the complaints belonging to the employee, expected answer=RETURN_ALL_COMPLAINTS
+	 * request for all the complaints belonging to the employee, expected
+	 * answer=RETURN_ALL_COMPLAINTS
 	 */
 	GET_ALL_COMPLAINTS,
 	/**
@@ -38,15 +39,18 @@ public enum MsgType {
 	 */
 	ACTIVATE_PROMOTION,
 	/**
-	 * get a specific page of a specific category, expected answer=RETURN_CATALOG_PAGE
+	 * get a specific page of a specific category, expected
+	 * answer=RETURN_CATALOG_PAGE
 	 */
 	GET_CATALOG_PAGE,
 	/**
-	 * Send the cart to the server, expect order in return, expected answer=RETURN_ORDER
+	 * Send the cart to the server, expect order in return, expected
+	 * answer=RETURN_ORDER
 	 */
 	PLACE_ORDER_REQUEST,
 	/**
-	 * Pay for the order with the given order number, expected answer=RETURN_PAYMENT_APPROVAL
+	 * Pay for the order with the given order number, expected
+	 * answer=RETURN_PAYMENT_APPROVAL
 	 */
 	PAY_FOR_ORDER,
 	/**
@@ -90,13 +94,38 @@ public enum MsgType {
 	 */
 	GET_ALL_ORDERS,
 	/**
-	 * update order status(approve, not approved, canceled, refunded), expected answer=COMPLETED
+	 * update order status(approve, not approved, canceled, refunded), expected
+	 * answer=COMPLETED
 	 */
 	UPDATE_ORDER_STATUS,
 	/**
 	 * get report with type month and year
 	 */
 	GET_REPORT,
+	/**
+	 * get the branch list
+	 */
+	GET_BRANCH_LIST,
+	/**
+	 * request user data
+	 */
+	GET_USER,
+	/**
+	 * get a single order
+	 */
+	GET_ORDER,
+	/**
+	 * create and activate new promotion
+	 */
+	CREATE_NEW_PROMOTION,
+	/**
+	 * End active promotion
+	 */
+	END_PROMOTION,
+	/**
+	 * get all the promotions
+	 */
+	GET_ALL_PROMOTIONS,
 	// server -> client
 	/**
 	 * return a report
@@ -138,5 +167,17 @@ public enum MsgType {
 	 * return all the user's order
 	 */
 	RETURN_ALL_ORDERS,
+	/**
+	 * Return arraylist of branch names
+	 */
+	RETURN_BRANCH_NAMES,
+	/**
+	 * return user data
+	 */
+	RETURN_USER,
+	/**
+	 * return all the promotions
+	 */
+	RETURN_ALL_PROMOTIONS,
 
 }

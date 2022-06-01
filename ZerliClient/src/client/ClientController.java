@@ -8,6 +8,10 @@ import java.io.IOException;
 public class ClientController extends AbstractClient {
 
 	/**
+	 * how much time we wait before we timeout(in 100 millis)
+	 */
+	private static final int TIME_TO_WAIT_BEFORE_TIMEOUT =1000000000;// 300;
+	/**
 	 * awaitResponse used to make thread sleep until thread of
 	 * handleMessageFromServer finish his work
 	 */
@@ -53,11 +57,12 @@ public class ClientController extends AbstractClient {
 	 */
 	public static ClientController getInstance_WithArguments(String host, int port, ClientBoundary clientBoundary)
 			throws IOException {
-		if (client == null) // if client null mean we still not init it and this is how to init by its constructor 
+		if (client == null) // if client null mean we still not init it and this is how to init by its
+							// constructor
 		{
 			client = new ClientController(host, port, clientBoundary);
 		}
-		return client; 
+		return client;
 	}
 
 	/**
@@ -76,13 +81,15 @@ public class ClientController extends AbstractClient {
 	}
 
 	public void handleMessageFromClientUI(Object message) {
+		int timeOut = 0;
 		try {
 			openConnection();// in order to send more than one message
 			awaitResponse = true;
 			sendToServer(message); // this is the only way to communicate with the server
-			while (awaitResponse) {
+			while (awaitResponse && timeOut <= TIME_TO_WAIT_BEFORE_TIMEOUT) {
 				try {
 					Thread.sleep(100);
+					timeOut++;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -91,6 +98,16 @@ public class ClientController extends AbstractClient {
 			e.printStackTrace();
 			display("Could not send message to server: Terminating client." + e);
 			quit();
+		}
+		if (timeOut > TIME_TO_WAIT_BEFORE_TIMEOUT) {
+			display("Could not send message to server: Terminating client.");
+			// try to send exit msg, dont wait for response
+			try {
+				sendToServer(MsgController.createEXITMsg());
+			} catch (IOException e) {
+				// do nothing , if we can't its ok too
+			}
+			System.exit(0);
 		}
 	}
 
@@ -108,7 +125,6 @@ public class ClientController extends AbstractClient {
 		Msg receivedMsg;
 		MsgController parseMSG;
 		if (msg instanceof Msg) {
-			receivedMsg = new Msg();
 			receivedMsg = (Msg) msg;
 			parseMSG = new MsgController();
 			if (!(parseMSG.mgsParser(receivedMsg))) // in case returned failed mean no type founded we returned msg

@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import cart.Cart;
+import cart.ProductInCart;
 import catalog.CustomizedProduct;
-import catalog.Item;
 import catalog.Product;
 import client.ClientController;
 import client.MsgController;
@@ -29,15 +29,9 @@ public class CartController {
 	 * @param name
 	 * @throws Exception
 	 */
-	public void createNewProduct(String name) throws Exception {
-		CustomizedProduct newProduct = new CustomizedProduct(-1, name);
-		if (CustomizedProductsInCart.contains(newProduct)) {
-			throw new Exception("item  name allready exist");
-
-		}
+	public void addNewProductToCart(CustomizedProduct newProduct) {
 		CustomizedProductsInCart.add(newProduct);
 		myCart.addItem(newProduct, 1);
-
 	}
 
 	/**
@@ -46,12 +40,12 @@ public class CartController {
 	 * @param item
 	 * @param Productname
 	 */
-	public void addItemToProduct(Item item, String productName) {
+	public void addItemToProduct(Product item, int productID) {
 
 		for (int i = 0; i < CustomizedProductsInCart.size(); i++) {
 			if (CustomizedProductsInCart.get(i) instanceof CustomizedProduct)
-				if (CustomizedProductsInCart.get(i).getName().equals(productName)) {
-					((CustomizedProduct) CustomizedProductsInCart.get(i)).getItemsList().add(item);
+				if (CustomizedProductsInCart.get(i).getProductID() == productID) {
+					((CustomizedProduct) CustomizedProductsInCart.get(i)).getItems().add(item);
 
 				}
 		}
@@ -63,12 +57,12 @@ public class CartController {
 	 * 
 	 * @param item
 	 */
-	public void deleteItemFromProduct(Item item, String  productName) {
+	public void deleteItemFromProduct(Product item, int productID) {
 		for (int i = 0; i < CustomizedProductsInCart.size(); i++) {
 			if (CustomizedProductsInCart.get(i) instanceof CustomizedProduct)
-				if (CustomizedProductsInCart.get(i).getName().equals( productName)) {
-					((CustomizedProduct) CustomizedProductsInCart.get(i)).getItemsList().remove(item);
-					
+				if (CustomizedProductsInCart.get(i).getProductID() == productID) {
+					((CustomizedProduct) CustomizedProductsInCart.get(i)).getItems().remove(item);
+
 				}
 		}
 
@@ -79,9 +73,10 @@ public class CartController {
 	 * 
 	 * @param product
 	 */
-	public void addToCart(Product product) {
+	public void addToCart(Product product, int amount) {
 
-		myCart.addItem(product, 1);
+		myCart.addItem(product, amount);
+
 	}
 
 	/**
@@ -95,7 +90,7 @@ public class CartController {
 			myCart.removeItem(product.getName());
 			myCart.calculatePrice();
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
 		}
 	}
@@ -128,32 +123,51 @@ public class CartController {
 
 		myCart.setGreetingCard(card);
 	}
+
 	/**
 	 * adding delivery information when choosing home delivery
+	 * 
 	 * @param details
 	 */
-	
 
 	public void addDeliveryDetails(DeliveryDetails details) {
 		myCart.setDeliveryDetails(details);
 
 	}
+
 	/**
-	 * change the flag form false to true - home delivery was chosen 
+	 * change the flag form false to true - home delivery was chosen
 	 */
 	public void chooseHomeDelivery() {
 		myCart.setWithHomeDelivery(true);
 	}
+
 	/**
-	 * choose a branch to ship or to pick the order 
+	 * choose a branch to ship or to pick the order
+	 * 
 	 * @param branchName
 	 */
 	public void chooseBranchForOrder(String branchName) {
 		myCart.setBranchName(branchName);
 	}
+	
+	/**
+	 * get the List of all Branches to display for customer to choose one 
+	 * @return arrayList of all branches 
+	 */
+	public ArrayList<String> getAllBrances() {
+		
+		MsgController msgController = clientController.sendMsg(MsgController.createGET_BRANCH_LISTMsg());
+		if (msgController.getType() == MsgType.RETURN_BRANCH_NAMES) {
+			return msgController.getBranchNames();
+		}
+		return null;
+		}
+
 
 	/**
 	 * place the order, send to server and return the order object
+	 * 
 	 * @return a new order
 	 */
 	public Order placeOrder() {
@@ -164,18 +178,22 @@ public class CartController {
 		return null;
 
 	}
+
 	/**
-	 * pay for a new order ,send to server and return true when the payment is approved
+	 * pay for a new order ,send to server and return true when the payment is
+	 * approved
+	 * 
 	 * @return false- when payment is not approved ,true - when payment is approved
 	 */
 	public boolean payForOrder() {
 		MsgController msgController = clientController.sendMsg(MsgController.createPAY_FOR_ORDERMsg());
-		if(msgController.getType()==MsgType.RETURN_PAYMENT_APPROVAL)
+		if (msgController.getType() == MsgType.RETURN_PAYMENT_APPROVAL)
 			return true;
 		return false;
-	} 
-	
+	}
+
 	public void setArrivelOrPickupDateAndTime(Timestamp time) {
 		myCart.setArrivalDate(time);
 	}
+
 }

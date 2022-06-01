@@ -19,6 +19,11 @@ public class UserBoundary {
 	public static User CurrentUser;
 
 	/**
+	 * Save the error string for errors
+	 */
+	public String errorMsg;
+
+	/**
 	 * call the user controller action to login, return the needed result
 	 * 
 	 * @param username
@@ -35,6 +40,7 @@ public class UserBoundary {
 		}
 		if (loginResults.getType().equals(MsgType.ERROR)) {
 			System.out.println(loginResults.getErrorMsg());
+			errorMsg = loginResults.getErrorMsg();
 		}
 		return false;
 	}
@@ -45,7 +51,7 @@ public class UserBoundary {
 	public void requestLogOut() {
 		// call the user controller action to logout,
 		userController.logout();
-		CurrentUser = new User(); // reset the user
+		CurrentUser = null; // reset the user
 		loginResults = new MsgController();
 	}
 

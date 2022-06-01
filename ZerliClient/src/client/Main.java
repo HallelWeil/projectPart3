@@ -5,15 +5,12 @@ import java.util.ArrayList;
 
 import catalog.Product;
 import order.Order;
-import order.OrderStatus;
 import report.Report;
 import report.ReportType;
 import shop.CartController;
 import shop.CatalogController;
 import user.*;
-import user.UserType;
 import usersManagment.AuthorizedCustomerBoundary;
-import usersManagment.BranchManagerBoundary;
 import usersManagment.CEOBoundary;
 import usersManagment.UserBoundary;
 
@@ -62,7 +59,7 @@ public class Main {
 			System.out.println(p.getName());
 		}
 		CartController cartController = new CartController();
-		cartController.addToCart(products.get(0));
+		//cartController.addToCart(products.get(0));
 		cartController.addGreetingCard("hello");
 		cartController.setArrivelOrPickupDateAndTime(new Timestamp(System.currentTimeMillis()+4000000));
 		System.out.println("price = " + cartController.calculatePrice());

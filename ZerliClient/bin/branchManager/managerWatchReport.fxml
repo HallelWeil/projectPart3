@@ -27,7 +27,10 @@
             <ComboBox fx:id="managerReportYear" layoutX="34.0" layoutY="129.0" prefWidth="150.0" promptText="year" />
             <ComboBox fx:id="managerReportMonth" layoutX="34.0" layoutY="172.0" prefWidth="150.0" promptText="month" />
             <ComboBox fx:id="managerReportType" layoutX="31.0" layoutY="64.0" prefWidth="150.0" promptText="report type" />
-            <Label fx:id="reportMessage" layoutX="31.0" layoutY="642.0" prefHeight="17.0" prefWidth="91.0" textFill="RED" />
+            <Label fx:id="reportMessage" alignment="CENTER" layoutX="19.0" layoutY="620.0" prefHeight="40.0" prefWidth="224.0" text="Repost doesn't exist" textFill="RED" visible="false">
+               <font>
+                  <Font name="System Bold Italic" size="18.0" />
+               </font></Label>
             <Button fx:id="managerGetReport" contentDisplay="TOP" layoutX="34.0" layoutY="348.0" mnemonicParsing="false" onAction="#getReport" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #2f41a7;" text="Get report" textFill="WHITE">
                <font>
                   <Font name="System Bold Italic" size="11.0" />

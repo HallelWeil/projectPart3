@@ -77,7 +77,7 @@ public class BranchManagerBoundary extends UserBoundary {
 		order.setOrderNumber(orderNumber);
 		if (isApproved) // branchManger not approve Cancellation
 		{
-			order.setOrderStatus(OrderStatus.CANECELED);
+			order.setOrderStatus(OrderStatus.CANCELED);
 		} else {
 			order.setOrderStatus(OrderStatus.APPROVED); // branchManger didn't accept to cancel then he approved the
 														// order

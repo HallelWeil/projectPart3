@@ -72,7 +72,7 @@ public class ManagerViewProducts implements IGuiController {
 		}
 		if (selectedOrder.getOrderStatus().toString() == "WAITING_FOR_CANCELATION_APPROVAL") {
 			managerBoundry.requestApproveCancelation(selectedOrder.getOrderNumber(), true);
-			selectedOrder.setOrderStatus(OrderStatus.CANECELED);
+			selectedOrder.setOrderStatus(OrderStatus.CANCELED);
 		}
 
 		managerApprovalConfirmed = (ManagerApprovalConfirmed) guiObjectsFactory

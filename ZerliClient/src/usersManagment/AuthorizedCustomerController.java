@@ -43,7 +43,7 @@ public class AuthorizedCustomerController {
 	public boolean requestOrderCancellation(Order order) {
 
 		if (order.getOrderStatus() == OrderStatus.APPROVED||order.getOrderStatus() == OrderStatus.WAITING_FOR_APPROAVL)//
-			order.setOrderStatus(OrderStatus.WAITING_FOR_CANCELATION_APPROVAL);
+			order.setOrderStatus(OrderStatus.WAITING_FOR_CANCELLATION_APPROVAL);
 		MsgController msgController = clientController.sendMsg(MsgController.createUPDATE_ORDER_STATUSMsg(order));
 		if (msgController.getType() == MsgType.COMPLETED)
 			return true;

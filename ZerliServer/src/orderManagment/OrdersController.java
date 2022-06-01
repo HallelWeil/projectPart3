@@ -37,10 +37,10 @@ public class OrdersController {
 			throw new Exception("This order wasn't for home delivery! please check again");
 		// 4. check if the order status is correct
 		switch (order.getOrderStatus()) {
-		case CANECELED:
+		case CANCELED:
 		case NOT_APPROVED:
 		case WAITING_FOR_APPROAVL:
-		case WAITING_FOR_CANCELATION_APPROVAL:
+		case WAITING_FOR_CANCELLATION_APPROVAL:
 		case WAITING_FOR_PAYMENT:
 			throw new Exception(
 					"This order wasn't ready for delivery! the order is: \n" + order.getOrderStatus().toString());
@@ -71,7 +71,7 @@ public class OrdersController {
 		case APPROVED:
 			approveOrder(order.getOrderNumber());
 			break;
-		case CANECELED:
+		case CANCELED:
 			cancelOrder(order.getOrderNumber());
 			break;
 		case NOT_APPROVED:
@@ -89,10 +89,10 @@ public class OrdersController {
 		switch (order.getOrderStatus()) {
 		case APPROVED:
 			throw new Exception("The order already been approved");
-		case CANECELED:
+		case CANCELED:
 		case COLLECTED:
 		case COMPLETED:
-		case WAITING_FOR_CANCELATION_APPROVAL:
+		case WAITING_FOR_CANCELLATION_APPROVAL:
 		case WAITING_FOR_PAYMENT:
 			throw new Exception("You dont need to approve the order \n the order is :" + order.getOrderStatus());
 		default:
@@ -115,11 +115,11 @@ public class OrdersController {
 		switch (order.getOrderStatus()) {
 		case NOT_APPROVED:
 			throw new Exception("The order is already not approved");
-		case CANECELED:
+		case CANCELED:
 		case APPROVED:
 		case COLLECTED:
 		case COMPLETED:
-		case WAITING_FOR_CANCELATION_APPROVAL:
+		case WAITING_FOR_CANCELLATION_APPROVAL:
 		case WAITING_FOR_PAYMENT:
 			throw new Exception("You dont need to not approve the order \n the order is :" + order.getOrderStatus());
 		default:
@@ -140,7 +140,7 @@ public class OrdersController {
 		Order order = dbController.getOrdrFromDB(ordernumber);
 		// 2. check the order current status
 		switch (order.getOrderStatus()) {
-		case CANECELED:
+		case CANCELED:
 			throw new Exception("The order already been canceled");
 		case APPROVED:
 		case COLLECTED:
@@ -167,7 +167,7 @@ public class OrdersController {
 			refund = order.getPrice();
 		}
 		// 4. we can update the order status
-		order.setOrderStatus(OrderStatus.CANECELED);
+		order.setOrderStatus(OrderStatus.CANCELED);
 		if (!dbController.updateOrder(order))
 			throw new Exception("Failed to cancel the order! please try again later");
 		// 5. we can give the refund

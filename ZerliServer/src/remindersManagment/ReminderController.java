@@ -1,5 +1,7 @@
 package remindersManagment;
 
+import simulators.ServerSimulatorsManager;
+
 /**
  * Manage reminders, send SMS or Email. not implemented for future use.
  * 
@@ -7,9 +9,6 @@ package remindersManagment;
  *
  */
 public class ReminderController {
-
-	private String SMSend = "";
-	private String mailStart = "";
 
 	/**
 	 * Send EMail
@@ -20,6 +19,8 @@ public class ReminderController {
 	public void sendEmail(String emailAddress, String msgText) {
 		// send the email
 		// with the given text
+		String msg = "Send Email to: " + emailAddress + "\n" + msgText + "\n";
+		ServerSimulatorsManager.getInstance().SimulationsLog.add(msg);
 	}
 
 	/**
@@ -31,5 +32,7 @@ public class ReminderController {
 	public void sendSMS(String phoneNumber, String msgText) {
 		// send sms
 		// with the given text
+		String msg = "Send SMS to: " + phoneNumber + "\n" + msgText + "\n";
+		ServerSimulatorsManager.getInstance().SimulationsLog.add(msg);
 	}
 }

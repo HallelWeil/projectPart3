@@ -38,6 +38,7 @@ public class ServerMsgController {
 	private String branch;
 	private int orderNumber;
 	private int promotionNumber;
+	private int productNumber;
 
 	private void resetParser() {
 		this.type = MsgType.NONE;
@@ -60,6 +61,7 @@ public class ServerMsgController {
 		branch = "";
 		orderNumber = 0;
 		promotionNumber = 0;
+		productNumber = 0;
 	}
 
 	/**
@@ -90,9 +92,6 @@ public class ServerMsgController {
 			break;
 		case PLACE_ORDER_REQUEST:
 			cart = (Cart) newMsg.data;
-			break;
-		case UPDATE_CATALOG:
-			product = (Product) newMsg.data;
 			break;
 		case CREATE_SURVEY:
 			survey = (Survey) newMsg.data;
@@ -146,6 +145,13 @@ public class ServerMsgController {
 		case ACTIVATE_PROMOTION:
 			promotionNumber = (int) newMsg.data;
 			break;
+		case UPDATE_CATALOG:
+		case ADD_TO_CATALOG:
+			product = (Product) newMsg.data;
+			break;
+		case REMOVE_FROM_CATALOG:
+			productNumber = (int) newMsg.data;
+			break;
 		case GET_ALL_COMPLAINTS:
 		case GET_ALL_ORDERS:
 		case LOG_OUT_REQUEST:
@@ -163,7 +169,7 @@ public class ServerMsgController {
 	}
 
 	// getters
-	
+
 	public int getPromotionNumber() {
 		return promotionNumber;
 	}
@@ -250,6 +256,10 @@ public class ServerMsgController {
 
 	public int getOrderNumber() {
 		return orderNumber;
+	}
+
+	public int getProductNumber() {
+		return productNumber;
 	}
 
 	// create msg static methods

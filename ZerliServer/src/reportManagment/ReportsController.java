@@ -68,7 +68,7 @@ public class ReportsController {
 		this.month = month;
 		branches = null;// get all the branches names from the dataBase
 		// quarter end in the months: 3, 6, 9, 12, all the months divided by 3
-		if (month % 3 == 0) {
+		if ((month + 1) % 3 == 0) {
 			IsQuarterly = true;
 		}
 		orderReports = new ArrayList<OrdersReport>();
@@ -150,17 +150,19 @@ public class ReportsController {
 	private void createQuarterlyReports() {
 		// create quarterly reports
 		// get all the revenue reports for the time period
-		ArrayList<Report> reportList = null;// dbController.//
+		ArrayList<Report> reportList = dbController.getAllReportsInTimePeriod(month - 2, month - 1, year);
 		// create new arraylist for all the revenue reports(including the new ones)
 		ArrayList<RevenueReport> tempRevenueReports = new ArrayList<RevenueReport>(this.revenueReports);
 		// create new arraylist for all the order reports(including the new ones)
 		ArrayList<OrdersReport> tempOrdersReports = new ArrayList<OrdersReport>(this.orderReports);
 		// sort the report to their lists
-		for (Report report : reportList) {
-			if (report.getType() == ReportType.MONTHLY_ORDERS_REPORT) {
-				tempOrdersReports.add((OrdersReport) report);
-			} else if (report.getType() == ReportType.MONTHLY_REVENU_EREPORT) {
-				tempRevenueReports.add((RevenueReport) report);
+		if (reportList != null) {
+			for (Report report : reportList) {
+				if (report.getType() == ReportType.MONTHLY_ORDERS_REPORT) {
+					tempOrdersReports.add((OrdersReport) report);
+				} else if (report.getType() == ReportType.MONTHLY_REVENU_EREPORT) {
+					tempRevenueReports.add((RevenueReport) report);
+				}
 			}
 		}
 		createQuarterlyOrdersReport(tempOrdersReports);
@@ -177,7 +179,7 @@ public class ReportsController {
 	 * @param totalOrders        the total number of orders in the quarter
 	 */
 	private void createQuarterlyRevenueReport(ArrayList<RevenueReport> tempRevenueReports, int totalOrders) {
-		QuarterlyRevenueReport newReport = new QuarterlyRevenueReport(month, year);
+		QuarterlyRevenueReport newReport = new QuarterlyRevenueReport(month / 3, year);
 		// local variables
 		int tempMonth;
 		// for each report add the report details to the quarterly report
@@ -206,7 +208,7 @@ public class ReportsController {
 	 * @param tempOrdersReports the list of all the orders reports for this quarter
 	 */
 	private void createQuarterlyOrdersReport(ArrayList<OrdersReport> tempOrdersReports) {
-		QuarterlyOrdersReport newReport = new QuarterlyOrdersReport(month, year);
+		QuarterlyOrdersReport newReport = new QuarterlyOrdersReport(month / 3, year);
 		// local variables
 		int tempMonth;
 		// for each report add the report details to the quarterly report
@@ -239,8 +241,14 @@ public class ReportsController {
 	 * create the quarterly satisfaction report
 	 */
 	private void createQuarterlySatisfactionReport() {
-		QuarterlySatisfactionReport newReport = new QuarterlySatisfactionReport(month, year);
+		QuarterlySatisfactionReport newReport = new QuarterlySatisfactionReport(month / 3, year);
 		// create the report
+		// 1. count all the complaints from each month
+		int[] months = new int[3];
+		months[0] = dbController.countComplaints(month - 2, year);
+		months[1] = dbController.countComplaints(month - 1, year);
+		months[2] = dbController.countComplaints(month, year);
+		newReport.setComplaintsPerMonth(months);
 		quarterlySatisfactionReport = newReport;
 	}
 

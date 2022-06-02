@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.io.Serializable;
 import java.sql.Blob;
@@ -131,7 +132,7 @@ public class DBController {
 	}
 
 	public boolean deleteOrder(int orderNum) {
-		String s = "DELETE FROM " + DBname + ".orders WHERE (orderNumber = '" + orderNum + "' );";
+		String s = "DELETE FROM " + DBname + ".orders WHERE (orderNumber = " + orderNum + " );";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
@@ -397,6 +398,20 @@ public class DBController {
 		return complaints;
 	}
 
+	public int countComplaints(int month, int year) {
+		String s = "SELECT COUNT(1) FROM " + DBname + ".complaint WHERE MONTH(DATE(creationTime)) = " + month
+				+ " AND YEAR(DATE(creationTime)) = " + year + ";";
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		int result = 0;
+		try {
+			if (res.next())
+				result = res.getInt("COUNT(1)");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	public boolean addSurveyResult(int surveyNumber, Blob surveyResult) {
 		// create the query
 		String data = objectManager.objectToBlobString(surveyResult);
@@ -491,7 +506,7 @@ public class DBController {
 	}
 
 	public Product getProduct(int productID) {
-		String s = "SELECT * FROM " + DBname + ".product WHERE (productID = '" + productID + "');";
+		String s = "SELECT * FROM " + DBname + ".product WHERE (productID = " + productID + ");";
 		// get the result
 		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
 		// get the returned values
@@ -502,13 +517,44 @@ public class DBController {
 			return prod.get(0);
 	}
 
+	public boolean deleteProduct(int productNumber) {
+		String s = "DELETE FROM " + DBname + ".product WHERE (productID = " + productNumber + " );";
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
 	public boolean updateProduct(Product product) {
+		// create the query
+		String s = "UPDATE  " + DBname + ".product  SET oldPrice  = " + product.getOldPrice() + ",  price = "
+				+ product.getPrice() + ", name = '" + product.getName() + "', description = '"
+				+ product.getDescription() + "', colors = '" + product.getColors() + "' , category = '"
+				+ product.getCategory() + "'  WHERE productID = " + product.getProductID() + ";";
+		// send query + get result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	public boolean updateProductPrice(Product product) {
 		// create the query
 		String s = "UPDATE  " + DBname + ".product  SET oldPrice  = " + product.getOldPrice() + ",  price = "
 				+ product.getPrice() + " WHERE productID = " + product.getProductID() + ";";
 		// send query + get result
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
+	}
+
+	public int saveProductToDB(Product product) {
+		int lastID = -1;
+		String s = "INSERT INTO " + DBname + ".product VALUES(default,'" + product.getName() + "'," + product.getPrice()
+				+ ",'" + product.getDescription() + "','" + product.getColors() + "', NULL ,'" + product.getCategory()
+				+ "'," + product.getOldPrice() + ");";
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		if (res) {
+			s = "SELECT last_insert_id() as last_id from " + DBname + ".product";
+			ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
+			lastID = objectManager.lastID(idRes);
+		}
+		return lastID;
 	}
 
 	public boolean updatePromotion(int promotionID, Status status) {

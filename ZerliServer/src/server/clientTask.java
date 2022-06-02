@@ -3,6 +3,7 @@ package server;
 import java.util.ArrayList;
 
 import catalog.Product;
+import catalogManagment.CatalogController;
 import complaint.Complaint;
 import complaintsManagment.ComplaintsController;
 import database.DBController;
@@ -14,6 +15,7 @@ import orderManagment.OrdersController;
 import promotionManagment.PromotionManager;
 import report.OrdersReport;
 import report.Report;
+import report.ReportType;
 import survey.Survey;
 import user.User;
 
@@ -54,6 +56,8 @@ public class ClientTask {
 	 */
 	private Msg newMsgToSend;
 
+	private CatalogController catalogController;
+
 	private PromotionManager promotionManager;
 
 	public ClientTask(ConnectionToClient client) {
@@ -66,6 +70,7 @@ public class ClientTask {
 		ErrorMsg = ServerMsgController.createERRORMsg("");
 		orderProcessManager = null;
 		promotionManager = new PromotionManager();
+		catalogController = new CatalogController();
 	}
 
 	/**
@@ -232,8 +237,14 @@ public class ClientTask {
 	private void handleCEORequest() {
 		switch (msgController.getType()) {
 		case GET_REPORT:
+			String branch = msgController.getBranch();
+			ReportType type = msgController.getReportType();
+			if (type == ReportType.QUARTERLY_ORDERS_REPORT || type == ReportType.QUARTERLY_REVENUE_REPORT
+					|| type == ReportType.QUARTERLY_SATISFACTION_REPORT) {
+				branch = "ALL";
+			}
 			Report tempReport = new Report(msgController.getMonth(), msgController.getYear(),
-					msgController.getReportType(), msgController.getBranch());
+					msgController.getReportType(), branch);
 			Report report = dbController.getReportFromDB(tempReport);
 			newMsgToSend = ServerMsgController.creatRETURN_REPORTMsg(report);
 			break;
@@ -342,11 +353,34 @@ public class ClientTask {
 		case GET_ALL_PROMOTIONS:
 			newMsgToSend = promotionManager.getAllPromotions();
 			break;
+		case GET_CATALOG_PAGE:
+			// get catalog page
+			ArrayList<Product> catalog = catalogController.getCatalogCategory(msgController.getCategory());
+			newMsgToSend = ServerMsgController.createRETURN_CATALOG_PAGEMsg(catalog);
+			break;
 		case UPDATE_CATALOG:
-			if (dbController.updateProduct(msgController.getProduct()))
+			try {
+				catalogController.updateProduct(msgController.getProduct());
 				newMsgToSend = CompletedMsg;
-			else
-				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to update the catalog");
+			} catch (Exception e) {
+				newMsgToSend = ServerMsgController.createERRORMsg(e.getMessage());
+			}
+			break;
+		case ADD_TO_CATALOG:
+			try {
+				catalogController.addNewProduct(msgController.getProduct());
+				newMsgToSend = CompletedMsg;
+			} catch (Exception e) {
+				newMsgToSend = ServerMsgController.createERRORMsg(e.getMessage());
+			}
+			break;
+		case REMOVE_FROM_CATALOG:
+			try {
+				catalogController.deleteProduct(msgController.getProductNumber());
+				newMsgToSend = CompletedMsg;
+			} catch (Exception e) {
+				newMsgToSend = ServerMsgController.createERRORMsg(e.getMessage());
+			}
 			break;
 		default:
 			// handle cant do it
@@ -390,7 +424,7 @@ public class ClientTask {
 		switch (msgController.getType()) {
 		case GET_CATALOG_PAGE:
 			// get catalog page
-			ArrayList<Product> catalog = dbController.getCatalogCategory(msgController.getCategory());// toto
+			ArrayList<Product> catalog = catalogController.getCatalogCategory(msgController.getCategory());
 			newMsgToSend = ServerMsgController.createRETURN_CATALOG_PAGEMsg(catalog);
 			break;
 		case GET_ALL_ORDERS:
@@ -418,7 +452,8 @@ public class ClientTask {
 		case PLACE_ORDER_REQUEST:
 			// use the order controller
 			orderProcessManager = new OrderProcessManager();
-			Order order = orderProcessManager.placeOrder(msgController.getCart(), 0, user.getUsername(),user.getPersonID());
+			Order order = orderProcessManager.placeOrder(msgController.getCart(), 0, user.getUsername(),
+					user.getPersonID());
 			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
 			break;
 		case UPDATE_ORDER_STATUS:

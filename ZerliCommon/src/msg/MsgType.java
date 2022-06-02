@@ -126,6 +126,14 @@ public enum MsgType {
 	 * get all the promotions
 	 */
 	GET_ALL_PROMOTIONS,
+	/**
+	 * Add new product to the catalog
+	 */
+	ADD_TO_CATALOG,
+	/**
+	 * Delete product from the catalog
+	 */
+	REMOVE_FROM_CATALOG,
 	// server -> client
 	/**
 	 * return a report

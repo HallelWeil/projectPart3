@@ -43,7 +43,7 @@
          <children>
             <ImageView fitHeight="695.0" fitWidth="1200.0" opacity="0.5">
                <image>
-                  <Image url="@../../lib/backround/fullBackground.jpg" />
+                  <Image url="@../backround/fullBackground.jpg" />
                </image>
             </ImageView>
             <VBox fx:id="bottomBox" prefHeight="695.0" prefWidth="1200.0" />

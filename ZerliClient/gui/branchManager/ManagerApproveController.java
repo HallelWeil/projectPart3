@@ -91,6 +91,9 @@ public class ManagerApproveController implements IGuiController {
 
 	@Override
 	public void openWindow() {
+		selectedOrder = null;
+		errorLabel.setVisible(false);
+		guidanceLabel.setVisible(false);
 		mainWindowManager.mainWindowController.showNewWindow(orderApprovePane);
 		initializeOrdersTable();
 		managerOrderTable.getItems().setAll(managerBoundry.getAllOrdersToApprove());
@@ -113,8 +116,8 @@ public class ManagerApproveController implements IGuiController {
 	@FXML
 	void GoToSelectedOrderWindow(ActionEvent event) throws IOException {
 		selectedOrder = managerOrderTable.getSelectionModel().getSelectedItem();
-		String statusOfSelected = selectedOrder.getOrderStatus().toString();
-		if (statusOfSelected == "WAITING_FOR_APPROAVL" || statusOfSelected == "WAITING_FOR_CANCELATION_APPROVAL") {
+		if (selectedOrder.getOrderStatus() == OrderStatus.WAITING_FOR_APPROAVL
+				|| selectedOrder.getOrderStatus() == OrderStatus.WAITING_FOR_CANCELLATION_APPROVAL) {
 			viewProductsController = (ManagerViewProducts) guiObjectsFactory
 					.loadFxmlFile("/branchManager/productsInOrderView.fxml");
 			viewProductsController.setLastController(this);

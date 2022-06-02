@@ -68,7 +68,7 @@ public class PromotionManager {
 		}
 		product.setPrice(product.getOldPrice());
 		product.setOldPrice(0);
-		if (!dbController.updateProduct(product)) {
+		if (!dbController.updateProductPrice(product)) {
 			errorMsg.data = "Failed to update product price";
 			return errorMsg;
 		}
@@ -103,7 +103,7 @@ public class PromotionManager {
 		}
 		product.setOldPrice(product.getPrice());
 		product.setPrice(calculateNewPrice(product.getPrice(), promotion.getDiscount()));
-		if (!DBController.getInstance().updateProduct(product)) {
+		if (!DBController.getInstance().updateProductPrice(product)) {
 			errorMsg.data = "Failed to update product price";
 			return false;
 		}

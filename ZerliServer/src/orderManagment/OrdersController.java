@@ -1,5 +1,7 @@
 package orderManagment;
 
+import java.sql.Timestamp;
+
 import database.DBController;
 import order.*;
 import paymentManagment.CreditController;
@@ -18,46 +20,8 @@ public class OrdersController {
 	/**
 	 * 1 h = 3600000 ms
 	 */
-	private static final int HOUR_IN_MILLISECONS = 3600000;
-
-	/**
-	 * Approve the order delivery - update status to collected
-	 * 
-	 * @param ordernumber
-	 * @throws Exception - if failed throw exception with the error msg
-	 */
-	public void approveOrderDelivery(int ordernumber) throws Exception {
-		// 1. try to get the order from the database
-		Order order = dbController.getOrdrFromDB(ordernumber);
-		// 2. confirm the order exist
-		if (order == null)
-			throw new Exception("There is no such order!");
-		// 3. check if it has a home delivery
-		if (!order.isHomeDelivery())
-			throw new Exception("This order wasn't for home delivery! please check again");
-		// 4. check if the order status is correct
-		switch (order.getOrderStatus()) {
-		case CANCELED:
-		case NOT_APPROVED:
-		case WAITING_FOR_APPROAVL:
-		case WAITING_FOR_CANCELLATION_APPROVAL:
-		case WAITING_FOR_PAYMENT:
-			throw new Exception(
-					"This order wasn't ready for delivery! the order is: \n" + order.getOrderStatus().toString());
-		case COLLECTED:
-			throw new Exception("The order delivery already confirmed");
-		case APPROVED:
-			break;
-		default:
-			break;
-		}
-		// 5. we can confirm the order delivery!
-		order.setOrderStatus(OrderStatus.COLLECTED);
-		if (!dbController.updateOrder(order))
-			throw new Exception("Failed to confirm the order delivery! please try again later");
-
-		// 6. we got here - the order delivery confirmed successfully
-	}
+	private static final long HOUR_IN_MILLISECONS = 3600000;
+	private static final long FIVE_MINUTES_IN_MILLISECONS = 300000;
 
 	/**
 	 * update the order status -> to approve, not approved and canceled, give refund
@@ -105,7 +69,14 @@ public class OrdersController {
 		// 6. we got here - the order approved successfully
 		// 7. send reminder and we done!
 		User user = dbController.getUser(order.getUsername());
-		sendReminder(order, " approved ", 0, user);
+		String text = "";
+		if (order.isHomeDelivery()) {
+			text = "Your order delivery time is " + order.getArrivalDate().toLocalDateTime().toString();
+		} else {
+			text = "Your order delivery time is " + order.getArrivalDate().toLocalDateTime().toString() + "\nFrom "
+					+ order.getBranchName();
+		}
+		sendReminder(order, " approved ", 0, user, text);
 	}
 
 	private void notApproveOrder(int ordernumber) throws Exception {
@@ -132,7 +103,7 @@ public class OrdersController {
 		// 6. we got here - the order is not approved
 		// 7. send reminder and we done!
 		User user = dbController.getUser(order.getUsername());
-		sendReminder(order, " not approved ", 0, user);
+		sendReminder(order, " not approved ", 0, user, "Please contact our cudtomer support team for more information");
 	}
 
 	private void cancelOrder(int ordernumber) throws Exception {
@@ -183,20 +154,120 @@ public class OrdersController {
 		}
 		// 6. we got here - the order approved successfully
 		// 7. send reminder and we done!
-		sendReminder(order, " canceled ", refund, user);
+		sendReminder(order, " canceled ", refund, user, "");
 	}
 
-	private void sendReminder(Order order, String orderIs, double refund, User user) {
+	/**
+	 * Send reminder, sms and email about the given order
+	 * 
+	 * @param order          the reminder is amout this order
+	 * @param orderIs        the order update
+	 * @param refund         the refunded amount, 0 if nothing was refunded
+	 * @param user           the user who will receive the reminders
+	 * @param additionalText optional additional text
+	 */
+	private void sendReminder(Order order, String orderIs, double refund, User user, String additionalText) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Hello " + user.getFirstName() + " " + user.getLastName() + "\n");
-		sb.append("Your order " + order.getOrderNumber() + " was " + orderIs);
+		sb.append("Your order, order number " + order.getOrderNumber() + " was " + orderIs + "\n");
 		if (refund > 0) {
-			sb.append("You will receive refund of " + refund);
+			sb.append("You will receive refund of " + refund + " as store credit\n");
+			sb.append("You can use your credit in our system for your next orders");
 		}
-		sb.append("automatic message from Zerli system");
+		sb.append(additionalText);
+		sb.append("Have a great day!\n");
+		sb.append("\nautomatic message from Zerli system\n");
 		String msgString = sb.toString();
 		ReminderController reminders = new ReminderController();
-		reminders.sendEmail(msgString, user.getEmail());
-		reminders.sendSMS(msgString, user.getPhoneNumber());
+		reminders.sendEmail(user.getEmail(), msgString);
+		reminders.sendSMS(user.getPhoneNumber(), msgString);
 	}
+
+	/**
+	 * Approve the order delivery - update status to collected, if the delivery was
+	 * late -> give the customer full refund
+	 * 
+	 * @param ordernumber
+	 * @throws Exception - if failed throw exception with the error msg
+	 */
+	public void approveOrderDelivery(int ordernumber) throws Exception {
+		// get the delivery time
+		Timestamp deliveryTime = new Timestamp(System.currentTimeMillis());
+		// 1. try to get the order from the database
+		Order order = dbController.getOrdrFromDB(ordernumber);
+		// 2. confirm the order exist
+		if (order == null)
+			throw new Exception("There is no such order!");
+		// 3. check if it has a home delivery
+		if (!order.isHomeDelivery())
+			throw new Exception("This order wasn't for home delivery! please check again");
+		// 4. check if the order status is correct
+		switch (order.getOrderStatus()) {
+		case CANCELED:
+		case NOT_APPROVED:
+		case WAITING_FOR_APPROAVL:
+		case WAITING_FOR_CANCELLATION_APPROVAL:
+		case WAITING_FOR_PAYMENT:
+			throw new Exception(
+					"This order wasn't ready for delivery! the order is: \n" + order.getOrderStatus().toString());
+		case COLLECTED:
+			throw new Exception("The order delivery already confirmed");
+		case APPROVED:
+			break;
+		default:
+			break;
+		}
+		// 5. we can confirm the order delivery!
+		order.setOrderStatus(OrderStatus.COLLECTED);
+		if (!dbController.updateOrder(order))
+			throw new Exception("Failed to confirm the order delivery! please try again later");
+
+		// 6. we got here - the order delivery confirmed successfully
+		// 6. lets check if the delivery was late
+		handleLateDelivery(order, deliveryTime);
+	}
+
+	/**
+	 * Check if the order delivered on time(with 5 minutes of the wanted time) , if
+	 * not give the customer full refund for the order, send the customer email and
+	 * sms on both cases with the relevant notification
+	 * 
+	 * @param order
+	 * @param deliveryTime
+	 */
+	private void handleLateDelivery(Order order, Timestamp deliveryTime) {
+		boolean onTime = false;
+		long timeDiff = order.getArrivalDate().getTime() - deliveryTime.getTime();
+		// if the delivery time was before the wanted arrival time -> all good
+		if (timeDiff > 0) {
+			onTime = true;
+		}
+		// we give the delivery man 5 minutes more from the delivery time
+		else if (FIVE_MINUTES_IN_MILLISECONS + timeDiff > 0) {
+			onTime = true;
+		}
+		// the delivery was late!
+		else {
+			onTime = false;
+		}
+		// 7.lets get the customer details
+		User customer = dbController.getUser(order.getUsername());
+		if (customer == null) {
+			return; // can't really do much
+		}
+		// 8. lets create the reminder
+		StringBuilder sb = new StringBuilder();
+		sb.append("Hello " + customer.getFirstName() + " " + customer.getLastName() + "\n");
+		if (onTime) {
+			// arrived on time, inform the customer that we love him <3
+			sendReminder(order, "has arrived!", 0, customer, "Thanks for using our amazing app\\n");
+		} else {
+			sendReminder(order, "arrived late", order.getOrderNumber(), customer,
+					"We are sorry for the inconvenience\n");
+			// lets give him a refund
+			CreditController creditController = new CreditController();
+			creditController.refund(customer.getPersonID(), order.getPrice());
+		}
+	}
+
 }

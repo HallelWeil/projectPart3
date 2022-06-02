@@ -14,26 +14,30 @@ public class ClientUI extends Application {
 	public static String host;
 	public static int port;
 	public static Stage globalstage;
+	public static ConnectGuiController connectGuiController;
 
 	@Override
 	public void start(Stage stage) {
 
 		clientBoundary = new ClientBoundary();
-		clientBoundary.connect(host, port);
-		MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 		globalstage = stage;
-		try {
-
+		// load the connection controller
+		connectGuiController = (ConnectGuiController) GuiObjectsFactory.getInstance()
+				.loadFxmlFile("/main/ConnectToServerScreen.fxml");
+		if (clientBoundary.connect(host, port)) {
+			MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 			Scene scene = new Scene(mainWindowManager.mainWindowController.getMainWindowRoot());
 			stage.setScene(scene);
 			stage.show();
 			mainWindowManager.mainWindowController.init();
 			mainWindowManager.mainWindowController.openWindow();
-
-		} catch (Exception e) {
-			System.out.println("gui problem " + e.getMessage());
-			e.printStackTrace();
+		} else {
+			// failed to connect, open the connection window
+			Scene scene = new Scene(connectGuiController.getBasePane());
+			stage.setScene(scene);
+			stage.show();
 		}
+
 	}
 
 	/**

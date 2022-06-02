@@ -4,6 +4,8 @@ import common.Status;
 import complaint.Complaint;
 import database.DBController;
 import paymentManagment.CreditController;
+import remindersManagment.ReminderController;
+import user.User;
 
 public class ComplaintsController {
 	DBController dbController = DBController.getInstance();
@@ -29,11 +31,44 @@ public class ComplaintsController {
 			creditController.refund(complaint.getCustomerID(), inputComplaint.getCompensation());
 		}
 	}
-	
+
 	public boolean createComplaint(Complaint complaint) {
-		if(dbController.createComplaint(complaint)!=-1)
+		if (dbController.createComplaint(complaint) != -1)
 			return true;
 		return false;
+	}
+
+	/**
+	 * Check if a complaint still not been dealt with, if not send the responsible
+	 * employee a reminder to his email address and to his phone
+	 * 
+	 * @param complaintNumber
+	 */
+	public void sendComplaintReminder(int complaintNumber) {
+		// 1. first we check if the complaint still not completed
+		Complaint complaint = dbController.getComplaint(complaintNumber);
+		if (complaint == null) {
+			return;// no complaint was found, nothing to do here
+		}
+		if (complaint.getStatus() != Status.Active) {
+			return;// the complaint was already handled
+		}
+		// 2. lets get the responsible employee info
+		User responsibleEmployee = dbController.getUser(complaint.getResponsibleEmployeeUserName());
+		if (responsibleEmployee == null) {
+			return;// not exist, nothing to do here
+		}
+		// 3. creating the complaint reminder
+		StringBuilder sb = new StringBuilder();
+		sb.append("Hello " + responsibleEmployee.getFirstName() + " " + responsibleEmployee.getLastName() + "\n");
+		sb.append("It's alredy been 24 hours!\n");
+		sb.append("please handle the complaint, complaint number " + complaintNumber + "\n");
+		sb.append("automatic message from Zerli system\n");
+		// 4. sending the reminder
+		ReminderController reminderController = new ReminderController();
+		String reminder = sb.toString();
+		reminderController.sendEmail(responsibleEmployee.getEmail(), reminder);
+		reminderController.sendSMS(responsibleEmployee.getPhoneNumber(), reminder);
 	}
 
 }

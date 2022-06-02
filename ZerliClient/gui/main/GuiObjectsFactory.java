@@ -60,7 +60,6 @@ public class GuiObjectsFactory {
 			FXMLLoader loader = new FXMLLoader();
 			final URL resource = getClass().getResource(filePath);
 			loader.setLocation(resource);
-			System.out.println(resource);
 			loader.load();
 			return (IGuiController) loader.getController();
 		} catch (IOException e) {

@@ -39,9 +39,6 @@ public class BtnController implements IGuiController {
 	private Button createPromotionBtn;
 
 	@FXML
-	private ImageView deleteBtn;
-
-	@FXML
 	private Button enterSurveyAnswersBtn;
 
 	@FXML
@@ -216,10 +213,6 @@ public class BtnController implements IGuiController {
 
 	public Button getCreatePromotionBtn() {
 		return createPromotionBtn;
-	}
-
-	public ImageView getDeleteBtn() {
-		return deleteBtn;
 	}
 
 	public Button getEnterSurveyAnswersBtn() {

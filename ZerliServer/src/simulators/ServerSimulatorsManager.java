@@ -28,6 +28,7 @@ public class ServerSimulatorsManager implements Runnable {
 
 	public ObservableList<String> SimulationsLog;
 	private ServerSimulationsController controller;
+	public Stage simStage;
 
 	public void runSimulators() {
 		AnchorPane root;
@@ -36,12 +37,14 @@ public class ServerSimulatorsManager implements Runnable {
 			final URL resource = getClass().getResource("/simulators/ServerSimulations.fxml");
 			loader.setLocation(resource);
 			root = loader.load();
-			Stage stage = new Stage();
-			stage.setTitle("Simulations");
+			simStage = new Stage();
+			simStage.setTitle("Simulations");
 			controller = loader.getController();
 			controller.initLog();
-			stage.setScene(new Scene(root));
-			stage.show();
+			simStage.setScene(new Scene(root));
+			simStage.show();
+			simStage.setX(0);
+			simStage.setY(200);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

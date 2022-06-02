@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class ServerUI extends Application {
 	private ServerGuiController controller;
+	private Thread simThread;
 
 	@Override
 	public void start(Stage stage) {
@@ -21,14 +22,18 @@ public class ServerUI extends Application {
 			stage.setTitle("Server");
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
+			stage.setOnCloseRequest(event -> {
+				System.out.println("Server is closing");
+				stop();
+			});
 			stage.show();
 		} catch (Exception e) {
 			System.out.println("gui problem");
 			e.printStackTrace();
 		}
 		// run the simulators
-		Thread t = new Thread(ServerSimulatorsManager.getInstance());
-		t.run();
+		simThread = new Thread(ServerSimulatorsManager.getInstance());
+		simThread.run();
 	}
 
 	@Override

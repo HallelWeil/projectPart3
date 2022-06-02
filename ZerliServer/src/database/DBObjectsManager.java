@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import catalog.Product;
 import common.Status;
 import complaint.Complaint;
@@ -78,8 +81,8 @@ public class DBObjectsManager {
 			while (res.next()) {
 				Order order = new Order();
 				order.setOrderNumber(res.getInt("orderNumber"));
-				order.setOrderDate(res.getTimestamp("orderDate"));
-				order.setArrivalDate(res.getTimestamp("arrivalDate"));
+				order.setOrderDate(res.getTimestamp("orderDate", Calendar.getInstance()));
+				order.setArrivalDate(res.getTimestamp("arrivalDate", Calendar.getInstance()));
 				order.setHomeDelivery(res.getBoolean("homeDelivery"));
 				order.setBranchName(res.getString("branchName"));
 				order.setPrice(res.getDouble("price"));
@@ -128,7 +131,7 @@ public class DBObjectsManager {
 				complaint.setCompensation(res.getDouble("compensation"));
 				complaint.setComplaintsNumber(res.getInt("complaintNumber"));
 				complaint.setStatus(Status.valueOf(res.getString("status")));
-				complaint.setCreationTime(res.getTimestamp("creationTime"));
+				complaint.setCreationTime(res.getTimestamp("creationTime", Calendar.getInstance()));
 				complaints.add(complaint);
 				// need set for participants and answers
 			}
@@ -255,7 +258,7 @@ public class DBObjectsManager {
 		try {
 			while (res.next()) {
 				Promotion promotion = new Promotion();
-				promotion.setCreationDate(res.getTimestamp("creationDate"));
+				promotion.setCreationDate(res.getTimestamp("creationDate", Calendar.getInstance()));
 				promotion.setDiscount(res.getDouble("discount"));
 				promotion.setProductID(res.getInt("productID"));
 				promotion.setPromotionNumber(res.getInt("promotionID"));

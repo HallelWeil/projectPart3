@@ -150,20 +150,20 @@ public class CartController {
 	public void chooseBranchForOrder(String branchName) {
 		myCart.setBranchName(branchName);
 	}
-	
+
 	/**
-	 * get the List of all Branches to display for customer to choose one 
-	 * @return arrayList of all branches 
+	 * get the List of all Branches to display for customer to choose one
+	 * 
+	 * @return arrayList of all branches
 	 */
 	public ArrayList<String> getAllBrances() {
-		
+
 		MsgController msgController = clientController.sendMsg(MsgController.createGET_BRANCH_LISTMsg());
 		if (msgController.getType() == MsgType.RETURN_BRANCH_NAMES) {
 			return msgController.getBranchNames();
 		}
 		return null;
-		}
-
+	}
 
 	/**
 	 * place the order, send to server and return the order object
@@ -194,6 +194,16 @@ public class CartController {
 
 	public void setArrivelOrPickupDateAndTime(Timestamp time) {
 		myCart.setArrivalDate(time);
+	}
+
+	public int getAmount(int productID) {
+		ArrayList<ProductInCart> products = myCart.getProductsInCart();
+		for (int i = 0; i < products.size(); i++) {
+			if (products.get(i).getProduct().getProductID() == productID) {
+				return products.get(i).getAmount();
+			}
+		}
+		return 0;
 	}
 
 }

@@ -17,10 +17,15 @@ public class CustomizedProduct extends Product {
 	 */
 	private double priceRangeLowLimit;
 
+	private String type;
+
 	public CustomizedProduct(int productID, String name) {
 		super(productID);
 		super.setName(name);
+		super.setColors("colorful");
+		super.setCategory("CustomizedProduct");
 		items = new ArrayList<Product>();
+		type = "Bouquet";
 	}
 
 	public void addItemToProduct(Product product) {
@@ -49,6 +54,14 @@ public class CustomizedProduct extends Product {
 	@Override
 	public String getName() {
 		return super.getName() + "(Customized)";
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

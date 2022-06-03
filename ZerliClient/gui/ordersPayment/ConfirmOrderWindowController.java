@@ -175,11 +175,11 @@ public class ConfirmOrderWindowController implements IGuiController {
 		// if the price to pay not equals to the total price
 		if (authorizedCustomerGuiManager.order.getPriceToPay() != authorizedCustomerGuiManager.order.getPrice()) {
 			oldPriceTxt.setText(authorizedCustomerGuiManager.order.getPrice() + "");
-			orderDataLabel.setText(authorizedCustomerGuiManager.order.getOrderData());
+
 		} else {
 			oldPriceTxt.setText("");
-			orderDataLabel.setText("");
 		}
+		orderDataLabel.setText(authorizedCustomerGuiManager.order.getOrderData());
 	}
 
 	/**

@@ -197,18 +197,30 @@
                                           <Font name="System Bold Italic" size="12.0" />
                                        </font>
                                     </Button>
-                                    <ScrollPane hbarPolicy="NEVER" layoutX="10.0" prefHeight="364.0" prefWidth="280.0">
+                                    <ScrollPane hbarPolicy="NEVER" layoutX="10.0" prefHeight="297.0" prefWidth="280.0">
                                        <content>
-                                          <VBox fx:id="costumizedProductItemList" prefHeight="363.0" prefWidth="280.0" />
+                                          <VBox fx:id="costumizedProductItemList" prefHeight="294.0" prefWidth="268.0" />
                                        </content>
                                     </ScrollPane>
-                                    <Label fx:id="customizedProductErrorLabel" layoutX="32.0" layoutY="444.0" prefHeight="17.0" prefWidth="250.0" textFill="RED">
+                                    <ComboBox fx:id="itemPriceRange" layoutX="155.0" layoutY="317.0" onAction="#changeItemPrice" prefHeight="25.0" prefWidth="124.0" promptText="price range" />
+                                    <Label layoutX="21.0" layoutY="319.0" text="Choose price range:">
                                        <font>
-                                          <Font name="System Bold" size="14.0" />
+                                          <Font name="System Bold Italic" size="14.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="itemPriceRange" layoutX="157.0" layoutY="383.0" onAction="#changeItemPrice" prefHeight="25.0" prefWidth="124.0" promptText="price range" />
-                                    <Label layoutX="23.0" layoutY="386.0" text="Choose price range:">
+                                    <Label layoutX="67.0" layoutY="354.0" text="Choose type:">
+                                       <font>
+                                          <Font name="System Bold Italic" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="64.0" layoutY="391.0" text="Choose color:">
+                                       <font>
+                                          <Font name="System Bold Italic" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="itemType" layoutX="155.0" layoutY="352.0" onAction="#changeItemType" prefHeight="25.0" prefWidth="124.0" promptText="type" />
+                                    <ComboBox fx:id="itemColor" layoutX="155.0" layoutY="388.0" onAction="#changeItemColor" prefHeight="25.0" prefWidth="124.0" promptText="color" />
+                                    <Label fx:id="customizedProductErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="421.0" prefHeight="48.0" prefWidth="250.0" textAlignment="CENTER">
                                        <font>
                                           <Font name="System Bold Italic" size="14.0" />
                                        </font>

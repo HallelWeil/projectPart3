@@ -66,14 +66,28 @@ public class OrdersController {
 		order.setOrderStatus(OrderStatus.APPROVED);
 		if (!dbController.updateOrder(order))
 			throw new Exception("Failed to approve the order! please try again later");
-		// 6. we got here - the order approved successfully
+		// 6. if the order time is too close, we will change it t 3 hours from now, only
+		// if its home delivery
+		if (order.isHomeDelivery()) {
+			long orderTime = order.getArrivalDate().getTime();
+			long currentTime = System.currentTimeMillis();
+			long timeDiff = currentTime - orderTime;
+			if (timeDiff < 3 * HOUR_IN_MILLISECONS) {
+				orderTime = currentTime + 3 * HOUR_IN_MILLISECONS;
+				order.setArrivalDate(new Timestamp(orderTime));
+				// save the change to the database
+				if (!DBController.getInstance().updateOrderArrivalTime(order))
+					throw new Exception("Failed to update the order arrival time!");
+			}
+		}
+		// 7. we got here - the order approved successfully
 		// 7. send reminder and we done!
 		User user = dbController.getUser(order.getUsername());
 		String text = "";
 		if (order.isHomeDelivery()) {
 			text = "Your order delivery time is " + order.getArrivalDate().toLocalDateTime().toString();
 		} else {
-			text = "Your order delivery time is " + order.getArrivalDate().toLocalDateTime().toString() + "\nFrom "
+			text = "Your pickup time is " + order.getArrivalDate().toLocalDateTime().toString() + "\nFrom "
 					+ order.getBranchName();
 		}
 		sendReminder(order, " approved ", 0, user, text);

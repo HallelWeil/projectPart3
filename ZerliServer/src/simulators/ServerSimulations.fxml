@@ -6,15 +6,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="435.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="simulators.ServerSimulationsController">
    <children>
-      <Button fx:id="importDataBtn" layoutX="37.0" layoutY="65.0" mnemonicParsing="false" onAction="#importData" prefHeight="56.0" prefWidth="131.0" text="Import data" />
+      <Button fx:id="importDataBtn" layoutX="152.0" layoutY="111.0" mnemonicParsing="false" onAction="#importData" prefHeight="56.0" prefWidth="131.0" text="Import user" />
       <TextArea fx:id="simulationsLog" layoutX="33.0" layoutY="262.0" prefHeight="280.0" prefWidth="369.0" />
       <Label layoutX="139.0" layoutY="230.0" text="Simulation Log">
          <font>
             <Font name="System Bold Italic" size="22.0" />
          </font>
       </Label>
+      <Label fx:id="connectLabel" contentDisplay="CENTER" layoutX="89.0" layoutY="184.0" prefHeight="17.0" prefWidth="258.0" text="Please connect to the database first!" textAlignment="CENTER" />
+      <Label layoutX="64.0" layoutY="13.0" prefHeight="85.0" prefWidth="287.0" text="We can use the import user button to simulate importing user data, the database must be connected. in the simulation log we can see the messages and payment whenever they happens" textAlignment="CENTER" wrapText="true" />
    </children>
 </AnchorPane>

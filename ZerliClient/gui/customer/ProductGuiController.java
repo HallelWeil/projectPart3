@@ -76,7 +76,7 @@ public class ProductGuiController implements IGuiController {
 						.createNewCartItem(product, num);
 				shopWindowController.addProductGuiObjectToCart(controller.getBasePane(), controller);
 			} else {
-				shopWindowController.updateAmount(num, product.getProductID());
+				shopWindowController.updateAmount(product.getProductID());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

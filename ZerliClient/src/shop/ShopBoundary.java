@@ -109,7 +109,11 @@ public class ShopBoundary {
 	public void chooseAmount(Product product, int amount) {
 		cartCon.editAmount(product, amount);
 	}
-
+	
+	public int getAmount(int productID) {
+		return cartCon.getAmount(productID);
+	}
+	
 	/**
 	 * public void openCart() {
 	 * 

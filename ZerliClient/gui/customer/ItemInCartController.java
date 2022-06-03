@@ -52,6 +52,8 @@ public class ItemInCartController implements IGuiController {
 				amount = 0;
 			currentAmount = amount;
 			shopBoundary.chooseAmount(product, currentAmount);
+			amountTextField.setText("" + shopBoundary.getAmount(product.getProductID()));
+
 		} catch (Exception e) {
 			amountTextField.setText(currentAmount + "");
 		}
@@ -94,7 +96,7 @@ public class ItemInCartController implements IGuiController {
 	public void updateAmount(int amount) {
 		if (amount < 0)
 			amount = 0;
-		currentAmount = currentAmount + amount;
+		currentAmount = amount;
 		amountTextField.setText(currentAmount + "");
 	}
 

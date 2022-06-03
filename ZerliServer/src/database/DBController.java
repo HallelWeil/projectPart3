@@ -14,6 +14,7 @@ import order.Order;
 import order.ProductInOrder;
 import promotion.Promotion;
 import report.Report;
+import simulators.ImportedUserData;
 import survey.Survey;
 import user.User;
 import user.UserStatus;
@@ -46,7 +47,9 @@ public class DBController {
 	/**
 	 * class to handle ResultSet
 	 */
-	DBObjectsManager objectManager;
+	private DBObjectsManager objectManager;
+
+	public boolean isConnected = false;
 
 	private DBController() {
 		dbBoundry = new DBBoundry();
@@ -74,12 +77,14 @@ public class DBController {
 			throw new Exception("Error - can't connect to the database");
 
 		}
+		isConnected = true;
 	}
 
 	/**
 	 * Disconnect from the database
 	 */
 	public void disConnectFromDB() {
+		isConnected = false;
 		dbBoundry.disconnectDB();
 	}
 
@@ -115,6 +120,15 @@ public class DBController {
 		return res;
 	}
 
+	public boolean updateOrderArrivalTime(Order order) {
+		// create the query
+		String s = "UPDATE  " + DBname + ".order  SET arrivalDate = TIMESTAMP '" + order.getArrivalDate()
+				+ "'  WHERE (orderNumber = " + order.getOrderNumber() + ") ;";
+		// send query + get result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
 	public int saveOrderToDB(Order order) {
 		int lastID = -1;
 		String s = "INSERT INTO " + DBname + ".order VALUES (default, TIMESTAMP '" + order.getOrderDate()
@@ -141,7 +155,7 @@ public class DBController {
 		// create the query
 		String s = "INSERT INTO " + DBname + ".productinorder VALUES ('" + product.getOrderNumber() + "','"
 				+ product.getName() + "'," + product.getPrice() + "," + product.getAmount() + ",'"
-				+ product.getCategory() + "');";
+				+ product.getCategory() + "','" + product.getData() + "');";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
@@ -162,6 +176,7 @@ public class DBController {
 				item.setName(res.getString("name"));
 				item.setOrderNumber(orderNumber);
 				item.setPrice(res.getDouble("price"));
+				item.setData(res.getString("data"));
 				itemsList.add(item);
 			}
 		} catch (Exception e) {
@@ -607,6 +622,25 @@ public class DBController {
 
 	public boolean saveShopCreditToDB(String id, double credit) {
 		String s = "INSERT INTO " + DBname + ".shopcredit VALUES( '" + id + "' , " + credit + " );";
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	/**
+	 * For import users data into our database
+	 * 
+	 * @param user
+	 */
+	public boolean createNewUser(ImportedUserData user) {
+		if (user == null)
+			return false;
+		String status = "Active";
+		if (user.getType().equals("NonAuthorizedCustomer"))
+			status = "NotActive";
+		String s = "INSERT INTO " + DBname + ".users VALUES( '" + user.getUserName() + "' ,'" + user.getPassword()
+				+ "' ,'" + user.getType() + "' , 0 ,'" + user.getFirstname() + "' ,'" + user.getLastname() + "' ,'"
+				+ user.getEmail() + "' ,'" + user.getPhone() + "' ,'" + user.getId() + "' ,'" + status + "' ,'"
+				+ user.getBranch() + "' );";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}

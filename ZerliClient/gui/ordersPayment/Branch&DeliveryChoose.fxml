@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="basePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ordersPayment.BranchDeliveryChooseWindowController">
+<AnchorPane fx:id="basePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ordersPayment.BranchDeliveryChooseWindowController">
    <children>
       <CheckBox fx:id="GreetingCardChoosen" layoutX="543.0" layoutY="459.0" mnemonicParsing="false" text="Add gretting card">
          <font>
@@ -34,7 +34,7 @@
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Button>
-      <RadioButton fx:id="homeDeliverytoggle" layoutX="541.0" layoutY="320.0" mnemonicParsing="false" onAction="#HomeDeliveryChoose" text="Home Delivery (Free)" toggleGroup="$DeliveryOption">
+      <RadioButton fx:id="homeDeliverytoggle" layoutX="541.0" layoutY="320.0" mnemonicParsing="false" onAction="#HomeDeliveryChoose" text="Home Delivery (18)" toggleGroup="$DeliveryOption">
          <font>
             <Font size="14.0" />
          </font>

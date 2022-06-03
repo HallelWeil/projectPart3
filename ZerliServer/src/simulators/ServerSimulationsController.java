@@ -1,13 +1,21 @@
 package simulators;
 
+import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDateTime;
 
+import database.DBController;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class ServerSimulationsController {
 
@@ -16,11 +24,37 @@ public class ServerSimulationsController {
 	private Button importDataBtn;
 
 	@FXML
+	private Label connectLabel;
+
+	@FXML
 	private TextArea simulationsLog;
 
 	@FXML
 	void importData(ActionEvent event) {
+		if (DBController.getInstance().isConnected) {
+			connectLabel.setVisible(false);
 
+			// open the create user window
+			try {
+				AnchorPane root;
+				FXMLLoader loader = new FXMLLoader();
+				final URL resource = getClass().getResource("/simulators/ImportUserWindow.fxml");
+				loader.setLocation(resource);
+				root = loader.load();
+				Stage stage = new Stage();
+				((ImportUserController) loader.getController()).init(stage);
+				stage.setTitle("Simulations");
+				stage.setScene(new Scene(root));
+				stage.show();
+				stage.setX(0);
+				stage.setY(200);
+				ServerSimulatorsManager.getInstance().simStage.hide();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			connectLabel.setVisible(true);
+		}
 	}
 
 	public void initLog() {

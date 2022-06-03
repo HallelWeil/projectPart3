@@ -131,6 +131,12 @@ public class ShopWindowController implements IGuiController {
 	private ComboBox<String> itemPriceRange;
 
 	@FXML
+	private ComboBox<String> itemColor;
+
+	@FXML
+	private ComboBox<String> itemType;
+
+	@FXML
 	void PalceOrder(ActionEvent event) {
 		authorizedCustomerGuiManager.getBranch_Delivery().openWindow();
 	}
@@ -202,7 +208,13 @@ public class ShopWindowController implements IGuiController {
 			costumizedProductsChooseList.setItems(comboBoxList);
 			String[] pricing = { "10-20", "20-30", "30-40", "40-50" };
 			itemPriceRange.setItems(FXCollections.observableArrayList(pricing));
+			String[] colors = { "colorful", "red", "blue", "green", "yellow", "purple", "pink" };
+			itemColor.setItems(FXCollections.observableArrayList(colors));
+			String[] types = { "Bouquet", "Arrangement", "Vase" };
+			itemType.setItems(FXCollections.observableArrayList(types));
 			itemPriceRange.setDisable(true);
+			itemColor.setDisable(true);
+			itemType.setDisable(true);
 			saveChangeBtn.setDisable(true);
 			addCPtoCart.setDisable(true);
 		}
@@ -225,9 +237,11 @@ public class ShopWindowController implements IGuiController {
 		itemInCartMap.remove(p);
 	}
 
-	public void updateAmount(int amount, int productId) {
-		if (itemInCartMap.containsKey(productId)) {
-			itemInCartMap.get(productId).updateAmount(amount);
+	public void updateAmount(int productId) {
+		synchronized (itemInCartMap) {
+			if (itemInCartMap.containsKey(productId)) {
+				itemInCartMap.get(productId).updateAmount(shopBoundary.getAmount(productId));
+			}
 		}
 	}
 
@@ -276,7 +290,7 @@ public class ShopWindowController implements IGuiController {
 					.createNewCartItem(currentCustomizedProduct, 1);
 			addProductGuiObjectToCart(controller.getBasePane(), controller);
 		} else {
-			updateAmount(1, currentCustomizedProduct.getProductID());
+			updateAmount(currentCustomizedProduct.getProductID());
 		}
 		cartTabPane.getSelectionModel().select(cartTab);
 	}
@@ -288,6 +302,8 @@ public class ShopWindowController implements IGuiController {
 		costumizedItemName.setDisable(false);
 		costumizedProductItemList.getChildren().removeAll(costumizedProductItemList.getChildren());
 		itemPriceRange.setDisable(false);
+		itemColor.setDisable(false);
+		itemType.setDisable(false);
 		saveChangeBtn.setDisable(false);
 		addCPtoCart.setDisable(false);
 	}
@@ -319,11 +335,8 @@ public class ShopWindowController implements IGuiController {
 		}
 
 		currentCustomizedProduct.setName(name);
-		currentCustomizedProduct.setCategory("CustomizedProduct");
-		currentCustomizedProduct.setColors("");
 		currentCustomizedProduct.setDescription("Customized Product");
 		changePrice(range);
-
 		// if its a new product
 		if (customizedItemID == currentCustomizedProduct.getProductID()) {
 			CustomizedProducts.put(customizedItemID, currentCustomizedProduct);
@@ -345,6 +358,8 @@ public class ShopWindowController implements IGuiController {
 		CustomizedProduct p = CustomizedProducts.get(id);
 		chooseCustomizedProduct(p);
 		itemPriceRange.setDisable(false);
+		itemColor.setDisable(false);
+		itemType.setDisable(false);
 		saveChangeBtn.setDisable(false);
 		addCPtoCart.setDisable(false);
 
@@ -378,8 +393,21 @@ public class ShopWindowController implements IGuiController {
 		currentCustomizedProduct.choosePrice(topVal, botVal);
 	}
 
+	@FXML
+	void changeItemColor(ActionEvent event) {
+		String color = itemColor.getValue();
+		currentCustomizedProduct.setColors(color);
+	}
+
+	@FXML
+	void changeItemType(ActionEvent event) {
+		String type = itemType.getValue();
+		currentCustomizedProduct.setType(type);
+	}
+
 	public void emptyCart() {
 		itemInCartMap = new HashMap<Integer, ItemInCartController>();
 		cartItemsList.getChildren().clear();
 	}
+
 }

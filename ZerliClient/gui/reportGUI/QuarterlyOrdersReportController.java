@@ -23,32 +23,32 @@ public class QuarterlyOrdersReportController implements IGuiController, IReportC
 	private HashMap<String, Integer> ordersPerCategory;
 	private Series<String, Integer> daySeries;
 
-    @FXML
-    private Label averageOrdersMonthLabel;
+	@FXML
+	private Label averageOrdersMonthLabel;
 
-    @FXML
-    private Label dateLabel;
+	@FXML
+	private Label dateLabel;
 
-    @FXML
-    private CategoryAxis dayAxis;
+	@FXML
+	private CategoryAxis dayAxis;
 
-    @FXML
-    private Label orderNumLabel;
+	@FXML
+	private Label orderNumLabel;
 
-    @FXML
-    private NumberAxis ordersNumAxis;
+	@FXML
+	private NumberAxis ordersNumAxis;
 
-    @FXML
-    private PieChart ordersPerCategoryChart;
+	@FXML
+	private PieChart ordersPerCategoryChart;
 
-    @FXML
-    private LineChart<String, Integer> ordersPerDayChart;
+	@FXML
+	private LineChart<String, Integer> ordersPerDayChart;
 
-    @FXML
-    private Label popularItemLabel;
-    
-    @FXML
-    private AnchorPane quarterlyOrderReportPane;
+	@FXML
+	private Label popularItemLabel;
+
+	@FXML
+	private AnchorPane quarterlyOrderReportPane;
 
 	@Override
 	public Pane getBasePane() {
@@ -66,7 +66,7 @@ public class QuarterlyOrdersReportController implements IGuiController, IReportC
 		ordersPerCategory.clear();
 		ordersPerDayChart.getData().clear();
 		ordersPerDay = null;
-		ordersReport = null;	
+		ordersReport = null;
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class QuarterlyOrdersReportController implements IGuiController, IReportC
 			dateLabel.setText(ordersReport.getMonth() + "/" + ordersReport.getYear());
 			orderNumLabel.setText(ordersReport.getTotalOrders() + "");
 			popularItemLabel.setText(ordersReport.getMostPopularItems().toString());
-			averageOrdersMonthLabel.setText(String.format("%02d", ordersReport.getAvarageMonthlyOrders()));
+			averageOrdersMonthLabel.setText(ordersReport.getAvarageMonthlyOrders() + "");
 			setPerDayChart();
 			setPerCategoryChart();
 		}
@@ -87,19 +87,19 @@ public class QuarterlyOrdersReportController implements IGuiController, IReportC
 		for (Entry<String, Integer> entry : ordersPerCategory.entrySet()) {
 			ordersPerCategoryChart.getData().add(new PieChart.Data(entry.getKey(), entry.getValue()));
 		}
-		
+
 	}
 
 	private void setPerDayChart() {
 		daySeries = new XYChart.Series<>();
 		ordersPerDay = ordersReport.getOrdersPerDay();
 		for (int i = 0; i < 3; i++) {
-			for(int j=0; j<31; j++) {
-				daySeries.getData().add(new XYChart.Data<String, Integer>(i*31 + j + "", ordersPerDay[i][j]));
+			for (int j = 0; j < 31; j++) {
+				daySeries.getData().add(new XYChart.Data<String, Integer>(i * 31 + j + "", ordersPerDay[i][j]));
 			}
 		}
 		ordersPerDayChart.getData().add(daySeries);
-		
+
 	}
 
 	@Override

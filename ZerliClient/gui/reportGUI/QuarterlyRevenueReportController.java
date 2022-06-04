@@ -56,7 +56,7 @@ public class QuarterlyRevenueReportController implements IGuiController, IReport
 	@Override
 	public void openWindow() {
 		AveragePerOrderLabel.setText(revenueReport.getAverageRevenuePerOrder() + "");
-		averageGlobalRevLabel.setText(revenueReport.getAvarageMonthlyRevenue() + "");
+		averageGlobalRevLabel.setText(revenueReport.getAverageRevenuePerOrder() + "");
 		dateLabel.setText(revenueReport.getMonth() + "/" + revenueReport.getYear());
 		mostProfitItemLabel.setText(revenueReport.getMostProfitableItem().toString());
 		totalRevLabel.setText(revenueReport.getTotalRevenue() + "");

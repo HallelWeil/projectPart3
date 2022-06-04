@@ -57,6 +57,9 @@ public class ReportsController {
 	 */
 	private int year;
 
+	private double avgOrders = 0;
+	private double avgRev = 0;
+
 	/**
 	 * Construct new report controller for the month+year
 	 * 
@@ -130,10 +133,21 @@ public class ReportsController {
 		}
 
 		// create all the monthly reports
-		for (
-
-		String branch : branches) {
+		avgOrders = 0;
+		avgRev = 0;
+		for (String branch : branches) {
 			createMonthlyReports(month, year, branch, sortedLists.get(branch));
+		}
+		// get the average
+		if (branches.size() > 0) {
+			avgOrders = avgOrders / branches.size();
+			avgRev = avgRev / branches.size();
+		}
+		for (OrdersReport r : orderReports) {
+			r.setAvarageMonthlyOrders(avgOrders);
+		}
+		for (RevenueReport r : revenueReports) {
+			r.setAverageMonthlyRevenue(avgRev);
 		}
 		// if needed create the quarterly reports
 		if (IsQuarterly) {
@@ -265,9 +279,6 @@ public class ReportsController {
 	private void createMonthlyReports(int month, int year, String branchName, ArrayList<Order> orders) {
 		OrdersReport newOrdersReport = new OrdersReport(month, year, ReportType.MONTHLY_ORDERS_REPORT, branchName);
 		RevenueReport newRevenueReport = new RevenueReport(month, year, ReportType.MONTHLY_REVENU_EREPORT, branchName);
-		// get the average from the db
-		double avgOrders = 0;// get the average orders in all the orders reports
-		double avgRevenue = 0;// get the average revenue
 		// find the most popular item and the other details
 		int counter = 0;
 		HashMap<String, Integer> itemsCounter = new HashMap<String, Integer>();
@@ -286,6 +297,7 @@ public class ReportsController {
 						counter++;
 						revenue += order.getPrice();
 					}
+				avgOrders++;
 			}
 		if (counter == 0)
 			newRevenueReport.setAverageRevenuePerOrder(revenue);
@@ -293,9 +305,10 @@ public class ReportsController {
 			newRevenueReport.setAverageRevenuePerOrder(revenue / counter);
 		// save the values
 		newRevenueReport.setTotalRevenue(revenue);
-		newRevenueReport.setAverageMonthlyRevenue(avgRevenue);
-		newOrdersReport.setAvarageMonthlyOrders(avgOrders);
+		newRevenueReport.setAverageMonthlyRevenue(0);
+		newOrdersReport.setAvarageMonthlyOrders(0);
 		newOrdersReport.setTotalOrders(counter);
+		avgRev += revenue;
 		int maxAmount = 0;
 		double maxRevenu = 0;
 		String name1 = "", name2 = "";

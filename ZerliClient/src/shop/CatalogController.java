@@ -6,11 +6,17 @@ import client.ClientController;
 import client.MsgController;
 import msg.MsgType;
 
+/**
+ * Controller for the catalog -> use or management, can get a category, edit a
+ * product or add a new one
+ * 
+ *
+ */
 public class CatalogController {
 	private ClientController clientController = ClientController.getInstance();
 
 	/**
-	 * change the category, get the category page(default should be 1)
+	 * get the category products
 	 * 
 	 * @param category
 	 */
@@ -23,7 +29,7 @@ public class CatalogController {
 	}
 
 	/**
-	 * update the catalog send to server and return true when the product is updated
+	 * update product in catalog
 	 * 
 	 * @param product
 	 * @throws Exception - if failed -throw exception with the error msg

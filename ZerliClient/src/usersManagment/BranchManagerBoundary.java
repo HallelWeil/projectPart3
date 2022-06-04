@@ -1,9 +1,7 @@
 package usersManagment;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
-import client.ClientBoundary;
 import client.ClientController;
 import client.MsgController;
 import msg.Msg;
@@ -16,13 +14,12 @@ import user.UserStatus;
 import user.UserType;
 
 /**
- * use the branch manager contoller and the different controllers for the needed
- * actions
+ * use the branch manager controller and the different controllers for the
+ * needed actions
  * 
- * @author halel
  *
  */
-public class BranchManagerBoundary extends UserBoundary {
+public class BranchManagerBoundary {
 
 	/**
 	 * clientController used to communicate with clientController and let the
@@ -128,6 +125,12 @@ public class BranchManagerBoundary extends UserBoundary {
 		return null; // in case returned msg was ERROR for Example mean Report not found or exist
 	}
 
+	/**
+	 * get user data
+	 * 
+	 * @param username
+	 * @return
+	 */
 	public User requestUser(String username) {
 		msg = MsgController.createGET_USERMsg(username);
 		msgController = clientController.sendMsg(msg);
@@ -137,6 +140,11 @@ public class BranchManagerBoundary extends UserBoundary {
 		return null; // in case returned msg was ERROR for Example mean user not found or exist
 	}
 
+	/**
+	 * get all the branch orders
+	 * 
+	 * @return
+	 */
 	public ArrayList<Order> getAllOrdersToApprove() {
 		msg = MsgController.createGET_ALL_ORDERSMsg();
 		msgController = clientController.sendMsg(msg);
@@ -146,6 +154,12 @@ public class BranchManagerBoundary extends UserBoundary {
 		return null; // in case returned msg was ERROR for Example mean orders not found or exist
 	}
 
+	/**
+	 * get all the product in order
+	 * 
+	 * @param orderNumber
+	 * @return
+	 */
 	public ArrayList<ProductInOrder> getAllProductsInOrder(int orderNumber) {
 		msg = MsgController.createGET_ORDERMsg(orderNumber);
 		msgController = clientController.sendMsg(msg);
@@ -155,6 +169,12 @@ public class BranchManagerBoundary extends UserBoundary {
 		return null; // in case returned msg was ERROR for Example mean orders not found or exist
 	}
 
+	/**
+	 * get all the customers waiting for approval
+	 * 
+	 * @return
+	 * @throws Exception on failure -> throw with error message
+	 */
 	public ArrayList<User> getAllWaitingForApprovalCustomers() throws Exception {
 		msg = MsgController.createGET_ALL_USERSMsg(UserType.NonAuthorizedCustomer);
 		msgController = clientController.sendMsg(msg);
@@ -164,6 +184,12 @@ public class BranchManagerBoundary extends UserBoundary {
 		return msgController.getUsers();
 	}
 
+	/**
+	 * get all the active customers
+	 * 
+	 * @return
+	 * @throws Exception on failure -> throw with error message
+	 */
 	public ArrayList<User> getAllActiveCustomers() throws Exception {
 		msg = MsgController.createGET_ALL_USERSMsg(UserType.AuthorizedCustomer);
 		msgController = clientController.sendMsg(msg);
@@ -173,6 +199,12 @@ public class BranchManagerBoundary extends UserBoundary {
 		return msgController.getUsers();
 	}
 
+	/**
+	 * get all the branch's employees
+	 * 
+	 * @return
+	 * @throws Exception on failure -> throw with error message
+	 */
 	public ArrayList<User> getAllEmployees() throws Exception {
 		msg = MsgController.createGET_ALL_USERSMsg(UserType.BranchEmployee);
 		msgController = clientController.sendMsg(msg);
@@ -182,6 +214,13 @@ public class BranchManagerBoundary extends UserBoundary {
 		return msgController.getUsers();
 	}
 
+	/**
+	 * approve a customer, must have active card to be approved
+	 * 
+	 * @param customer
+	 * @param cardIinfo
+	 * @throws Exception on failure -> throw with error message
+	 */
 	public void approveCustomer(User customer, String cardIinfo) throws Exception {
 		// add the card
 		addCard(customer, cardIinfo);
@@ -194,6 +233,11 @@ public class BranchManagerBoundary extends UserBoundary {
 			throw new Exception(msgController.getErrorMsg());
 	}
 
+	/**
+	 * get the branch list
+	 * 
+	 * @return
+	 */
 	public ArrayList<String> getBranches() {
 		msg = MsgController.createGET_BRANCH_LISTMsg();
 		msgController = clientController.sendMsg(msg);
@@ -202,6 +246,13 @@ public class BranchManagerBoundary extends UserBoundary {
 		return msgController.getBranchNames();
 	}
 
+	/**
+	 * add card for a customer
+	 * 
+	 * @param customer
+	 * @param cardIinfo
+	 * @throws Exception on failure -> throw with error message
+	 */
 	public void addCard(User customer, String cardIinfo) throws Exception {
 		msg = MsgController.createADD_CARDMsg(cardIinfo, customer.getUsername());
 		msgController = clientController.sendMsg(msg);

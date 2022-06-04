@@ -7,6 +7,12 @@ import main.GuiObjectsFactory;
 import main.IGuiController;
 import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * Controller for the accessibility window, for now can only contact support for
+ * help, will be added in future version
+ * 
+ *
+ */
 public class AccessibilityPageController implements IGuiController {
 
 	@FXML

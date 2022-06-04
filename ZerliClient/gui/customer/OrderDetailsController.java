@@ -147,7 +147,9 @@ public class OrderDetailsController implements IGuiController {
 
 	public void setSelectedOrder(Order order) {
 		selectedOrder = order;
-		selectedOrder.setItems(authorizedCustomerBoundary.getAllProductsInOrder(selectedOrder.getOrderNumber()));
+		Order tempOrder = authorizedCustomerBoundary.getfullOrder(selectedOrder.getOrderNumber());
+		if (tempOrder != null)
+			selectedOrder = tempOrder;
 		OrderStatus status = selectedOrder.getOrderStatus();
 		if (status == OrderStatus.APPROVED || status == OrderStatus.WAITING_FOR_APPROAVL) {
 			cancelBtn.setDisable(false);

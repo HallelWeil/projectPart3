@@ -13,10 +13,25 @@ import msg.MsgType;
 import order.DeliveryDetails;
 import order.Order;
 
+/**
+ * Manage the active cart for the shop, save the items, calculate the price and
+ * manage the order process data
+ * 
+ *
+ */
 public class CartController {
 
+	/**
+	 * the cart object
+	 */
 	private Cart myCart;
+	/**
+	 * customized product list, to manage them
+	 */
 	private ArrayList<Product> CustomizedProductsInCart = new ArrayList<>();
+	/**
+	 * the client controller
+	 */
 	private ClientController clientController = ClientController.getInstance();
 
 	public CartController() {
@@ -24,10 +39,9 @@ public class CartController {
 	}
 
 	/**
-	 * crate new customized product
+	 * add new customized product to the cart
 	 * 
-	 * @param name
-	 * @throws Exception
+	 * @param newProduct
 	 */
 	public void addNewProductToCart(CustomizedProduct newProduct) {
 		CustomizedProductsInCart.add(newProduct);
@@ -46,10 +60,8 @@ public class CartController {
 			if (CustomizedProductsInCart.get(i) instanceof CustomizedProduct)
 				if (CustomizedProductsInCart.get(i).getProductID() == productID) {
 					((CustomizedProduct) CustomizedProductsInCart.get(i)).getItems().add(item);
-
 				}
 		}
-
 	}
 
 	/**
@@ -69,7 +81,7 @@ public class CartController {
 	}
 
 	/**
-	 * add item to cart
+	 * add product to cart
 	 * 
 	 * @param product
 	 */
@@ -117,7 +129,7 @@ public class CartController {
 	}
 
 	/**
-	 * add replace greeting card
+	 * add/replace greeting card
 	 */
 	public void addGreetingCard(String card) {
 

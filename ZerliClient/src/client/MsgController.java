@@ -16,6 +16,14 @@ import survey.Survey;
 import user.User;
 import user.UserType;
 
+/**
+ * message controller, can parse give message and save the type and fields in
+ * the corresponding class members, hold static methods to create each type of
+ * out client message
+ * 
+ * @author halel
+ *
+ */
 public class MsgController {
 
 	private MsgType type;

@@ -2,8 +2,6 @@ package client;
 
 import java.io.IOException;
 import msg.Msg;
-import order.Order;
-import msg.*;
 
 /**
  * boundary of the client , make the zerliClientController,class contains 3

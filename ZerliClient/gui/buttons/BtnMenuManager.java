@@ -1,9 +1,12 @@
 package buttons;
 
-import user.UserStatus;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.UserBoundary;
 
+/**
+ * manage the top menu. place the correct buttons for each type of user
+ *
+ */
 public class BtnMenuManager {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();

@@ -18,6 +18,7 @@ import report.Report;
 import report.ReportType;
 import survey.Survey;
 import user.User;
+import usersManagment.UserManagmentController;
 
 /**
  * manage a single client tasks, base on the client user type(if connected)
@@ -185,14 +186,8 @@ public class ClientTask {
 	 * status and get all the order belonging to his branch
 	 */
 	private void handleBranchManagerRequest() {
+		UserManagmentController userManagmentController = new UserManagmentController();
 		switch (msgController.getType()) {
-		case UPATE_USER_DATA:
-			if (dbController.updateUser(msgController.getUser().getUsername(), msgController.getUser().getUserType(),
-					msgController.getUser().getStatus()))
-				newMsgToSend = CompletedMsg;
-			else
-				newMsgToSend = ServerMsgController.createERRORMsg("Error! failed to update the user information");
-			break;
 		case UPDATE_ORDER_STATUS:
 			OrdersController orderController = new OrdersController();
 			try {
@@ -223,6 +218,35 @@ public class ClientTask {
 					msgController.getReportType(), user.getBranchName());
 			Report report = dbController.getReportFromDB(tempReport);
 			newMsgToSend = ServerMsgController.creatRETURN_REPORTMsg(report);
+			break;
+		case GET_ALL_USERS:
+			ArrayList<User> users;
+			switch (msgController.getUserType()) {
+			case AuthorizedCustomer:
+			case NonAuthorizedCustomer:
+				users = dbController.getAllUserType(msgController.getUserType());
+				break;
+			default:
+				users = dbController.getAllBranchEmployees(user.getBranchName());
+				break;
+			}
+			newMsgToSend = ServerMsgController.createRETURN_ALL_USERSMsg(users);
+			break;
+		case ADD_CARD:
+			try {
+				userManagmentController.addCard(msgController.getUserName(), msgController.getCardinfo());
+				newMsgToSend = CompletedMsg;
+			} catch (Exception e) {
+				newMsgToSend = ServerMsgController.createERRORMsg(e.getMessage());
+			}
+			break;
+		case UPATE_USER_DATA:
+			try {
+				userManagmentController.updateUserData(msgController.getUser());
+				newMsgToSend = CompletedMsg;
+			} catch (Exception e) {
+				newMsgToSend = ServerMsgController.createERRORMsg(e.getMessage());
+			}
 			break;
 		default:
 			// handle cant do it

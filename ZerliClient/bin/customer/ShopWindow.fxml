@@ -131,7 +131,7 @@
                                              <graphic>
                                                 <ImageView fitHeight="33.0" fitWidth="30.0">
                                                    <image>
-                                                      <Image url="@../../lib/icons/spring.png" />
+                                                      <Image url="@../icons/spring.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>

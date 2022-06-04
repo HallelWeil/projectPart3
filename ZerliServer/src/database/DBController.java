@@ -482,8 +482,10 @@ public class DBController {
 		// get the result
 		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
 		// get the returned values
-		User user = objectManager.userDB(res);
-		return user;
+		ArrayList<User> users = objectManager.userDB(res);
+		if (users.size() > 0)
+			return users.get(0);
+		return null;
 	}
 
 	public String getCardInfo(String username) {
@@ -644,4 +646,50 @@ public class DBController {
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
+
+	public boolean saveCardInfo(String userName, String cardInfo) {
+		String s = "INSERT INTO " + DBname + ".creditdetails VALUES('" + userName + "' , '" + cardInfo + "');";
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	public boolean updateCardInfo(String userName, String cardInfo) {
+		// create the query
+		String s = "UPDATE  " + DBname + ".creditdetails  SET cardInfo = '" + cardInfo + "' WHERE username = '"
+				+ userName + "' ;";
+		// send query + get result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	public boolean updateAllUserData(User user) {
+		// create the query
+		String s = "UPDATE  " + DBname + ".users  SET userType = '" + user.getUserType().toString()
+				+ "',  firstName = '" + user.getFirstName() + "' , lastName = '" + user.getLastName() + "' , email ='"
+				+ user.getEmail() + "', phoneNumber = '" + user.getPhoneNumber() + "' , personID = '"
+				+ user.getPersonID() + "', status = '" + user.getStatus().toString() + "' , branch = '"
+				+ user.getBranchName() + "' WHERE username = '" + user.getUsername() + "' ;";
+		// send query + get result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	public ArrayList<User> getAllUserType(UserType userType) {
+		String s = "SELECT * FROM " + DBname + ".users WHERE (userType = '" + userType.toString() + "');";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		ArrayList<User> users = objectManager.userDB(res);
+		return users;
+	}
+
+	public ArrayList<User> getAllBranchEmployees(String branch) {
+		String s = "SELECT * FROM " + DBname + ".users WHERE (branch = '" + branch + "');";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		ArrayList<User> users = objectManager.userDB(res);
+		return users;
+	}
+
 }

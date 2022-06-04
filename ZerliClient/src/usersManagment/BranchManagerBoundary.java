@@ -97,33 +97,18 @@ public class BranchManagerBoundary extends UserBoundary {
 	}
 
 	/**
-	 * update user type + status, can be null if only wanted to update one of the
-	 * fields return boolean if the request succeed
+	 * update a user data
 	 * 
-	 * @param userName
-	 * @param type
-	 * @param status
-	 * @return
+	 * @param user
+	 * @throws Exception - throw exception with error msg on failure
 	 */
-	public boolean requestUpdateUserData(String userName, UserType type, UserStatus status) {
+	public void requestUpdateUserData(User user) throws Exception {
 
-		User user = UserBoundary.CurrentUser;
-		if (type != null) // check if field null then we didn't need to update
-		{
-			user.setUserType(type);
-		}
-		if (status != null) {
-			user.setStatus(status);
-		}
-		user.setUsername(userName);
 		msg = MsgController.createUPATE_USER_DATAMsg(user);
 		msgController = clientController.sendMsg(msg);
-		if (msgController.getType().equals(MsgType.COMPLETED)) // receive completed in type mean update has been done
-																// and succeed
-		{
-			return true;
+		if (msgController.getType().equals(MsgType.ERROR)) {
+			throw new Exception(msgController.getErrorMsg());
 		}
-		return false;
 	}
 
 	/**
@@ -168,6 +153,60 @@ public class BranchManagerBoundary extends UserBoundary {
 			return msgController.getOrder().getItems();
 		}
 		return null; // in case returned msg was ERROR for Example mean orders not found or exist
+	}
+
+	public ArrayList<User> getAllWaitingForApprovalCustomers() throws Exception {
+		msg = MsgController.createGET_ALL_USERSMsg(UserType.NonAuthorizedCustomer);
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType().equals(MsgType.ERROR)) {
+			throw new Exception(msgController.getErrorMsg());
+		}
+		return msgController.getUsers();
+	}
+
+	public ArrayList<User> getAllActiveCustomers() throws Exception {
+		msg = MsgController.createGET_ALL_USERSMsg(UserType.AuthorizedCustomer);
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType().equals(MsgType.ERROR)) {
+			throw new Exception(msgController.getErrorMsg());
+		}
+		return msgController.getUsers();
+	}
+
+	public ArrayList<User> getAllEmployees() throws Exception {
+		msg = MsgController.createGET_ALL_USERSMsg(UserType.BranchEmployee);
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType().equals(MsgType.ERROR)) {
+			throw new Exception(msgController.getErrorMsg());
+		}
+		return msgController.getUsers();
+	}
+
+	public void approveCustomer(User customer, String cardIinfo) throws Exception {
+		// add the card
+		addCard(customer, cardIinfo);
+		// update the info
+		customer.setStatus(UserStatus.Active);
+		customer.setUserType(UserType.AuthorizedCustomer);
+		msg = MsgController.createUPATE_USER_DATAMsg(customer);
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType() == MsgType.ERROR)
+			throw new Exception(msgController.getErrorMsg());
+	}
+
+	public ArrayList<String> getBranches() {
+		msg = MsgController.createGET_BRANCH_LISTMsg();
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType() == MsgType.ERROR)
+			return new ArrayList<String>();
+		return msgController.getBranchNames();
+	}
+
+	public void addCard(User customer, String cardIinfo) throws Exception {
+		msg = MsgController.createADD_CARDMsg(cardIinfo, customer.getUsername());
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType() == MsgType.ERROR)
+			throw new Exception(msgController.getErrorMsg());
 	}
 
 }

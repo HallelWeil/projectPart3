@@ -192,10 +192,11 @@ public class DBObjectsManager {
 		return reports;
 	}
 
-	public User userDB(ResultSet res) {
+	public ArrayList<User> userDB(ResultSet res) {
+		ArrayList<User> arr = new ArrayList<User>();
 		User user = null;
 		try {
-			if (res.next()) {
+			while (res.next()) {
 				user = new User();
 				user.setUsername(res.getString("username"));
 				user.setUserType(UserType.valueOf(res.getString("userType")));
@@ -208,11 +209,12 @@ public class DBObjectsManager {
 				user.setStatus(UserStatus.valueOf(res.getString("status")));
 				user.setPersonID(res.getString("personID"));
 				user.setBranchName(res.getString("branch"));
+				arr.add(user);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		return user;
+		return arr;
 	}
 
 	public String cardDB(ResultSet res) {

@@ -14,6 +14,7 @@ import report.Report;
 import report.ReportType;
 import survey.Survey;
 import user.User;
+import user.UserType;
 
 public class MsgController {
 
@@ -29,6 +30,7 @@ public class MsgController {
 	private String errorMsg;
 	private ArrayList<String> branchNames;
 	private ArrayList<Promotion> Allpromotions;
+	private ArrayList<User> users;
 
 	public MsgController() {
 		resetParser();
@@ -97,8 +99,12 @@ public class MsgController {
 		case RETURN_ALL_PROMOTIONS:
 			Allpromotions = (ArrayList<Promotion>) newMsg.data;
 			break;
+		case RETURN_ALL_USERS:
+			users = (ArrayList<User>) newMsg.data;
+			break;
 		case ERROR:
 			errorMsg = (String) newMsg.data;
+			break;
 		case RETURN_PAYMENT_APPROVAL:
 		case APPROVE_LOGOUT:
 		case EXIT:
@@ -157,6 +163,10 @@ public class MsgController {
 
 	public ArrayList<String> getBranchNames() {
 		return branchNames;
+	}
+
+	public ArrayList<User> getUsers() {
+		return users;
 	}
 
 	// create msg static methods
@@ -518,6 +528,33 @@ public class MsgController {
 		Msg msg = new Msg();
 		msg.type = MsgType.ADD_TO_CATALOG;
 		msg.data = product;
+		return msg;
+	}
+
+	/**
+	 * get all users with the type
+	 * 
+	 * @return
+	 */
+	public static Msg createGET_ALL_USERSMsg(UserType type) {
+		Msg msg = new Msg();
+		msg.type = MsgType.GET_ALL_USERS;
+		msg.data = type;
+		return msg;
+	}
+
+	/**
+	 * save card for user
+	 * 
+	 * @return
+	 */
+	public static Msg createADD_CARDMsg(String cardInfo, String username) {
+		Msg msg = new Msg();
+		msg.type = MsgType.ADD_CARD;
+		ArrayList<String> arr = new ArrayList<>();
+		arr.add(cardInfo);
+		arr.add(username);
+		msg.data = arr;
 		return msg;
 	}
 

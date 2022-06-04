@@ -25,7 +25,7 @@
       </Label>
       <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="550.0" layoutY="150.0">
          <image>
-            <Image url="@../../lib/icons/redx.png" />
+            <Image url="@../icons/redx.png" />
          </image>
       </ImageView>
    </children>

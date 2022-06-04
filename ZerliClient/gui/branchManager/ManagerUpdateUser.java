@@ -1,12 +1,17 @@
 package branchManager;
 
+import client.ClientBoundary;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
@@ -17,67 +22,137 @@ import user.UserType;
 import userGuiManagment.BranchManagerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.BranchManagerBoundary;
+import usersManagment.UserBoundary;
 
 public class ManagerUpdateUser implements IGuiController {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	private BranchManagerGuiManager branchManagerGuiManager = BranchManagerGuiManager.getInstance();
-	private BranchManagerBoundary managerBoundry = branchManagerGuiManager.getBranchManagerBoundary();
+	private BranchManagerBoundary boundary = branchManagerGuiManager.getBranchManagerBoundary();
 	private User user = null;
+	private boolean isAuthorized = false, isanAuthorized = false, isEmployees = false;
+
+	@FXML
+	private Label errorLabel;
+
+	@FXML
+	private AnchorPane infoPane;
 
 	@FXML
 	private AnchorPane managerUpdateUserPane;
 
 	@FXML
-	private TextField usernameSearch;
+	private Button selcetBtn;
 
 	@FXML
-	private Button updateInfoBot;
+	private Label typeLAbel;
 
 	@FXML
-	private TextField userBranchInfo;
+	private Button viewAuthorizedBtn;
 
 	@FXML
-	private TextField userEmailInfo;
+	private Button viewEmployeesBtn;
 
 	@FXML
-	private TextField userFirstNameInfo;
+	private Button viewanAuthorizedBtn;
 
 	@FXML
-	private Label userFirstNameText;
+	private TableView<User> customersTable;
 
 	@FXML
-	private TextField userID;
+	private TableColumn<String, String> emailCol;
 
 	@FXML
-	private TextField userLastNameInfo;
+	private TableColumn<String, String> firstNameCol;
 
 	@FXML
-	private Label userLastNameText;
+	private TableColumn<String, String> idCol;
 
 	@FXML
-	private TextField userPhoneInfo;
+	private TableColumn<String, String> lastNameCol;
 
 	@FXML
-	private ComboBox<UserStatus> userStatusCombo;
+	private TableColumn<String, String> phoneCol;
+
+	private ObservableList<User> customers = FXCollections.observableArrayList();
 
 	@FXML
-	private ComboBox<UserType> userTypeCombo;
+	void viewAuthorized(ActionEvent event) {
+		customers.clear();
+		try {
+			customers.setAll(boundary.getAllActiveCustomers());
+		} catch (Exception e) {
+			errorLabel.setText(e.getMessage());
+			return;
+		}
+		isAuthorized = true;
+		isanAuthorized = false;
+		isEmployees = false;
+		user = null;
+		typeLAbel.setText("View active Customers");
+		customersTable.setItems(customers);
+	}
 
 	@FXML
-	private TextField userUsername;
+	void viewEmployees(ActionEvent event) {
+		customers.clear();
+		try {
+			customers.setAll(boundary.getAllEmployees());
+		} catch (Exception e) {
+			errorLabel.setText(e.getMessage());
+			return;
+		}
+		isAuthorized = false;
+		isanAuthorized = false;
+		isEmployees = true;
+		user = null;
+		typeLAbel.setText("View " + UserBoundary.CurrentUser.getBranchName() + " Employees");
+		customersTable.setItems(customers);
+	}
 
 	@FXML
-	private TextField userIsConnected;
+	void viewanAuthorized(ActionEvent event) {
+		customers.clear();
+		try {
+			customers.setAll(boundary.getAllWaitingForApprovalCustomers());
+		} catch (Exception e) {
+			errorLabel.setText(e.getMessage());
+			return;
+		}
+		isAuthorized = false;
+		isanAuthorized = true;
+		isEmployees = false;
+		user = null;
+		typeLAbel.setText("View Customers waiting for approval");
+		errorLabel.setText("");
+		customersTable.setItems(customers);
+	}
 
 	@FXML
-	private Button watchUserBot;
+	void viewSelected(ActionEvent event) {
+		user = customersTable.getSelectionModel().getSelectedItem();
+		if (user != null) {
+			// change window
+			if (isanAuthorized) {
+				ApproveCustomerController controller = (ApproveCustomerController) guiObjectsFactory
+						.loadFxmlFile("/branchManager/ApproveCustomer.fxml");
+				controller.setCustomer(user);
+				controller.openWindow();
+			} else if (isAuthorized) {
+				ManageCustomerController controller = (ManageCustomerController) guiObjectsFactory
+						.loadFxmlFile("/branchManager/ManageCustomerWindow.fxml");
+				controller.setCustomer(user);
+				controller.openWindow();
+			} else if (isEmployees) {
+				ManageEmployeeController controller = (ManageEmployeeController) guiObjectsFactory
+						.loadFxmlFile("/branchManager/ManageEmployeeWindow.fxml");
+				controller.setEmployee(user);
+				controller.openWindow();
 
-	@FXML
-	private Label notFoundText;
+			}
 
-	ObservableList<UserStatus> statusObs;
-	ObservableList<UserType> typeObs;
+		}
+	}
 
 	@Override
 	public Pane getBasePane() {
@@ -87,50 +162,23 @@ public class ManagerUpdateUser implements IGuiController {
 	@Override
 	public void resetController() {
 		user = null;
-		userUsername.setText("");
-		userFirstNameInfo.setText("");
-		userLastNameInfo.setText("");
-		userEmailInfo.setText("");
-		userID.setText("");
-		userPhoneInfo.setText("");
-		userBranchInfo.setText("");
-		userIsConnected.setText("");
-		userTypeCombo.getSelectionModel().clearSelection();
-		userStatusCombo.getSelectionModel().clearSelection();
-		notFoundText.setVisible(false);
-
 	}
 
 	@Override
 	public void openWindow() {
 		mainWindowManager.mainWindowController.changeWindowName("Manager - update user");
 		mainWindowManager.mainWindowController.showNewWindow(managerUpdateUserPane);
-		userStatusCombo.getItems().setAll(UserStatus.values());
-		userTypeCombo.getItems().setAll(UserType.values());
+		typeLAbel.setText("");
+		initializeTable();
 	}
 
-	@FXML
-	void UpdateUserInformation(ActionEvent event) {
-		managerBoundry.requestUpdateUserData(user.getUsername(), user.getUserType(), user.getStatus());
-	}
-
-	@FXML
-	void WatchUserInfo(ActionEvent event) {
-		user = managerBoundry.requestUser(usernameSearch.getText());
-		if (user != null) {
-			userUsername.setText(user.getUsername());
-			userFirstNameInfo.setText(user.getFirstName());
-			userLastNameInfo.setText(user.getLastName());
-			userEmailInfo.setText(user.getEmail());
-			userID.setText(user.getPersonID());
-			userPhoneInfo.setText(user.getPhoneNumber());
-			userBranchInfo.setText(user.getBranchName());
-			userIsConnected.setText(Boolean.toString(user.isConnected()));
-			userTypeCombo.getSelectionModel().select(user.getUserType());
-			userStatusCombo.getSelectionModel().select(user.getStatus());
-		} else {
-			notFoundText.setVisible(true);
-		}
+	private void initializeTable() {
+		customersTable.getItems().clear();
+		emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+		firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+		idCol.setCellValueFactory(new PropertyValueFactory<>("personID"));
+		lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+		phoneCol.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
 	}
 
 }

@@ -15,6 +15,7 @@ import report.Report;
 import report.ReportType;
 import survey.Survey;
 import user.User;
+import user.UserType;
 
 public class ServerMsgController {
 
@@ -39,6 +40,8 @@ public class ServerMsgController {
 	private int orderNumber;
 	private int promotionNumber;
 	private int productNumber;
+	private String cardinfo;
+	private UserType userType;
 
 	private void resetParser() {
 		this.type = MsgType.NONE;
@@ -56,6 +59,7 @@ public class ServerMsgController {
 		password = null;
 		user = null;
 		order = null;
+		cardinfo = null;
 		year = 0;
 		month = 0;
 		branch = "";
@@ -152,6 +156,14 @@ public class ServerMsgController {
 		case REMOVE_FROM_CATALOG:
 			productNumber = (int) newMsg.data;
 			break;
+		case ADD_CARD:
+			ArrayList<String> arr = (ArrayList<String>) newMsg.data;
+			cardinfo = arr.get(0);
+			userName = arr.get(1);
+			break;
+		case GET_ALL_USERS:
+			userType = (UserType) newMsg.data;
+			break;
 		case GET_ALL_COMPLAINTS:
 		case GET_ALL_ORDERS:
 		case LOG_OUT_REQUEST:
@@ -172,6 +184,14 @@ public class ServerMsgController {
 
 	public int getPromotionNumber() {
 		return promotionNumber;
+	}
+
+	public UserType getUserType() {
+		return userType;
+	}
+
+	public String getCardinfo() {
+		return cardinfo;
 	}
 
 	public void setPromotionNumber(int promotionNumber) {
@@ -447,6 +467,18 @@ public class ServerMsgController {
 		Msg msg = new Msg();
 		msg.type = MsgType.RETURN_ALL_PROMOTIONS;
 		msg.data = promotions;
+		return msg;
+	}
+
+	/**
+	 * RETURN_ALL_USERS msg
+	 * 
+	 * @return
+	 */
+	public static Msg createRETURN_ALL_USERSMsg(ArrayList<User> users) {
+		Msg msg = new Msg();
+		msg.type = MsgType.RETURN_ALL_USERS;
+		msg.data = users;
 		return msg;
 	}
 }

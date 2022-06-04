@@ -10,7 +10,7 @@
    <children>
       <ImageView fitHeight="695.0" fitWidth="1200.0" opacity="0.5">
          <image>
-            <Image url="@../../lib/backround/fullBackground.jpg" />
+            <Image url="@../backround/fullBackground.jpg" />
          </image>
       </ImageView>
       <Label fx:id="welcomeLabel" layoutX="307.0" layoutY="118.0" prefHeight="47.0" prefWidth="587.0" textAlignment="CENTER">

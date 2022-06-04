@@ -2,9 +2,7 @@ package scheduledTasks;
 
 import java.sql.Timestamp;
 
-import complaint.Complaint;
 import complaintsManagment.ComplaintsController;
-import remindersManagment.ReminderController;
 
 /**
  * Scheduled reminder, in the given time a reminder will be sent. can be sms or

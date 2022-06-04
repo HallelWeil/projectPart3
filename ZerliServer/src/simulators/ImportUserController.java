@@ -11,6 +11,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * simple gui controller to simulate importing user's data
+ * 
+ * @author halel
+ *
+ */
 public class ImportUserController {
 
 	@FXML
@@ -47,6 +53,11 @@ public class ImportUserController {
 
 	private Stage stage;
 
+	/**
+	 * get all the fields and "import" the user
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void addUser(ActionEvent event) {
 		ImportedUserData data = new ImportedUserData();
@@ -146,6 +157,11 @@ public class ImportUserController {
 
 	}
 
+	/**
+	 * init the controller
+	 * 
+	 * @param stage
+	 */
 	public void init(Stage stage) {
 		this.stage = stage;
 		stage.setOnCloseRequest(event -> {

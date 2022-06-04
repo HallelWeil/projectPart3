@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 import database.DBController;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ListChangeListener.Change;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +16,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+/**
+ * controller for the main window of the simulators, "importing" data, payment
+ * and sending sms\email
+ * 
+ * @author halel
+ *
+ */
 public class ServerSimulationsController {
 
 	private ServerSimulatorsManager serverSimulatorsManager = ServerSimulatorsManager.getInstance();
@@ -29,6 +35,11 @@ public class ServerSimulationsController {
 	@FXML
 	private TextArea simulationsLog;
 
+	/**
+	 * open the import data window
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void importData(ActionEvent event) {
 		if (DBController.getInstance().isConnected) {
@@ -57,6 +68,9 @@ public class ServerSimulationsController {
 		}
 	}
 
+	/**
+	 * init the log
+	 */
 	public void initLog() {
 		serverSimulatorsManager.SimulationsLog.addListener(new ListChangeListener<String>() {
 			@SuppressWarnings("rawtypes")
@@ -68,6 +82,9 @@ public class ServerSimulationsController {
 		});
 	}
 
+	/**
+	 * update the log
+	 */
 	public void updateConsole() {
 		synchronized (serverSimulatorsManager.SimulationsLog) {
 			for (int i = 0; i < serverSimulatorsManager.SimulationsLog.size(); i++) {

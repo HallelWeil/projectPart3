@@ -22,7 +22,6 @@ public class ScheduledReportCreationTask extends ScheduledTask {
 
 	@Override
 	public void run() {
-		//System.out.println("im creating the reports!");
 		// get the month and year of the last month
 		int month = LocalDateTime.now().getMonthValue();
 		int year = LocalDateTime.now().getYear();

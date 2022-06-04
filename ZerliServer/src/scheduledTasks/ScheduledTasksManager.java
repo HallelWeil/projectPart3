@@ -1,20 +1,13 @@
 package scheduledTasks;
 
-import java.io.IOException;
-import java.nio.CharBuffer;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 import common.Status;
 import complaint.Complaint;
 import database.DBController;
-import report.Report;
-import report.ReportType;
-import user.User;
 
 /**
  * manage all the scheduled tasks. singleton. there is only one tasks manager.

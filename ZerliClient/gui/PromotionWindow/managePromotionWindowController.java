@@ -101,12 +101,14 @@ public class managePromotionWindowController implements IGuiController {
 		if (selectedCol.getStatus() == Status.Canceled) {
 			try {
 				marketingGuiManager.getMarketingEmployeeBoundary().activatePromotion(selectedCol.getPromotionNumber());
+				initmywindow();
+				errorLabel.setText("Promotion activated!");
 			} catch (Exception e) {
 				errorLabel.setText(e.getMessage());
 				return;
 			}
 		} else if (selectedCol.getStatus() == Status.Active) {
-			errorLabel.setText("the promotion is already activated");
+			errorLabel.setText("the promotion is already active");
 			return;
 		}
 	}
@@ -118,15 +120,14 @@ public class managePromotionWindowController implements IGuiController {
 			try {
 				marketingGuiManager.getMarketingEmployeeBoundary()
 						.deActivatePromotion(selectedCol.getPromotionNumber());
+				initmywindow();
+				errorLabel.setText("Promotion deactivated!");
 			} catch (Exception e) {
 				errorLabel.setText(e.getMessage());
 				return;
 			}
-		}
-		if (selectedCol.getStatus() == Status.Canceled)
-			;
-		{
-			errorLabel.setText("the promotion is already deActivate");
+		} else if (selectedCol.getStatus() == Status.Canceled) {
+			errorLabel.setText("the promotion is already not active");
 			return;
 		}
 	}

@@ -11,8 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
-import java.util.TimeZone;
-
 import catalog.Product;
 import common.Status;
 import complaint.Complaint;
@@ -56,7 +54,6 @@ public class DBObjectsManager {
 			ObjectInputStream ois = new ObjectInputStream(bis);
 			object = ois.readObject();
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			return null;
 		}
 		return object;
@@ -69,7 +66,6 @@ public class DBObjectsManager {
 				lastID = res.getInt("last_id");
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
 		}
 		return lastID;
 
@@ -93,7 +89,6 @@ public class DBObjectsManager {
 				orders.add(order);
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
 		}
 		return orders;
 	}
@@ -116,7 +111,6 @@ public class DBObjectsManager {
 				survey.setSurveyNumber(res.getInt("surveyNumber"));
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return surveys;
 	}
@@ -136,7 +130,6 @@ public class DBObjectsManager {
 				// need set for participants and answers
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return complaints;
 	}
@@ -157,7 +150,6 @@ public class DBObjectsManager {
 				products.add(product);
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return products;
 	}
@@ -175,7 +167,6 @@ public class DBObjectsManager {
 				products.add(product);
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return products;
 	}
@@ -187,7 +178,6 @@ public class DBObjectsManager {
 				reports.add((Report) blobToObject(res.getBlob("data")));
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return reports;
 	}
@@ -212,7 +202,6 @@ public class DBObjectsManager {
 				arr.add(user);
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return arr;
 	}
@@ -225,22 +214,20 @@ public class DBObjectsManager {
 				// need set for participants and answers
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return info;
 	}
 
 	public Blob surveyResultDB(ResultSet res) {
-		java.sql.Blob pdf;
+		java.sql.Blob pdf = null;
 		try {
 			if (res.next()) {
 				pdf = res.getBlob("surveyResult");
 				// need set for participants and answers
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
-		return null;
+		return pdf;
 	}
 
 	public ArrayList<String> branchNameDB(ResultSet res) {
@@ -250,7 +237,6 @@ public class DBObjectsManager {
 				branches.add(res.getString("branchName"));
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return branches;
 	}
@@ -269,7 +255,6 @@ public class DBObjectsManager {
 				promotions.add(promotion);
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return promotions;
 	}
@@ -287,7 +272,6 @@ public class DBObjectsManager {
 				deliveryDetails.setPhoneNumber(res.getString("phoneNumber"));
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return deliveryDetails;
 	}
@@ -299,7 +283,6 @@ public class DBObjectsManager {
 				credit = res.getDouble("credit");
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return credit;
 	}

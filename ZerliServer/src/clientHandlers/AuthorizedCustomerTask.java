@@ -3,20 +3,31 @@ package clientHandlers;
 import java.util.ArrayList;
 
 import catalog.Product;
+import catalogManagment.CatalogController;
 import msg.Msg;
 import order.Order;
 import orderManagment.OrderProcessManager;
 import server.ServerMsgController;
 
+/**
+ * handle the authorized customer actions, can view the catalog, get his orders
+ * history, pay for order ,place order and update order status
+ */
 public class AuthorizedCustomerTask extends ClientTasks {
 	/**
-	 * order controller to manage the order process
+	 * order process controller to manage the order process
 	 */
-	private OrderProcessManager orderController;
+	private OrderProcessManager orderProcessManager;
+
+	/**
+	 * to handle the catalog use
+	 */
+	private CatalogController catalogController;
 
 	public AuthorizedCustomerTask(HandleClientTask clientTaskHandler) {
 		super(clientTaskHandler);
-		// TODO Auto-generated constructor stub
+		orderProcessManager = new OrderProcessManager();
+		catalogController = new CatalogController();
 	}
 
 	/**
@@ -24,36 +35,24 @@ public class AuthorizedCustomerTask extends ClientTasks {
 	 * history, pay for order ,place order and update order status
 	 */
 	@Override
-	public Msg handleTask(Object msg) {
-		// if no correct msg was found
-		if (msgController.mgsParser(msg) == false)
-			return ErrorMsg;
+	public Msg handleTask(ServerMsgController msgController) {
 		switch (msgController.getType()) {
-		case LOG_OUT_REQUEST:
-		case EXIT:
-			// to log out remove the user entity
-			dbController.disconnectUser(clientTaskHandler.getActiveUser().getUsername());
-			this.orderController = null;
-			clientTaskHandler.setActiveUser(null);
-			newMsgToSend = ServerMsgController.createAPPROVE_LOGOUTMsg();
-			break;
 		case GET_CATALOG_PAGE:
 			// get catalog page
-			ArrayList<Product> catalog = dbController.getCatalogCategory(msgController.getCategory());// toto
+			ArrayList<Product> catalog = catalogController.getCatalogCategory(msgController.getCategory());
 			newMsgToSend = ServerMsgController.createRETURN_CATALOG_PAGEMsg(catalog);
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(null,
-					clientTaskHandler.getActiveUser().getUsername());
+			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(null, user.getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		case PAY_FOR_ORDER:
 			// get the card info
-			String cardInfo = dbController.getCardInfo(clientTaskHandler.getActiveUser().getUsername());
+			String cardInfo = dbController.getCardInfo(user.getUsername());
 			// use the order controller to pay
-			if (orderController.payForOrder(cardInfo)) {
+			if (orderProcessManager.payForOrder(cardInfo)) {
 				// payment succeed, save the order!
-				if (orderController.saveOrderToDB()) {
+				if (orderProcessManager.saveOrderToDB()) {
 					// the order saved successfully
 					newMsgToSend = ServerMsgController.createRETURN_PAYMENT_APPROVALMsg();
 				} else {
@@ -63,18 +62,22 @@ public class AuthorizedCustomerTask extends ClientTasks {
 				newMsgToSend = ServerMsgController.createERRORMsg("Payment declined!");
 			}
 			// reset the order controller
-			orderController.reset();
+			orderProcessManager.reset();
 			break;
 		case PLACE_ORDER_REQUEST:
 			// use the order controller
-			orderController = new OrderProcessManager();
-			Order order = orderController.placeOrder(msgController.getCart(), 0,
-					clientTaskHandler.getActiveUser().getUsername(), clientTaskHandler.getActiveUser().getPersonID());
+			orderProcessManager = new OrderProcessManager();
+			Order order = orderProcessManager.placeOrder(msgController.getCart(), 0, user.getUsername(),
+					user.getPersonID());
 			newMsgToSend = ServerMsgController.createRETURN_ORDERMsg(order);
 			break;
 		case UPDATE_ORDER_STATUS:
 			// update order status in the db
-			dbController.updateOrder(msgController.getOrder());
+			if (dbController.updateOrder(msgController.getOrder())) {
+				newMsgToSend = CompletedMsg;
+			} else {
+				newMsgToSend = ServerMsgController.createERRORMsg("Failed to cancel the order");
+			}
 			break;
 		case GET_ORDER:
 			Order order2 = dbController.getOrdrFromDB(msgController.getOrderNumber());
@@ -85,7 +88,6 @@ public class AuthorizedCustomerTask extends ClientTasks {
 			// handle cant do it
 			newMsgToSend = ServerMsgController.createERRORMsg("Error! unauthorized access");
 			break;
-
 		}
 		return newMsgToSend;
 	}

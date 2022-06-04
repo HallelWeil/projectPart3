@@ -1,5 +1,11 @@
 package simulators;
 
+/**
+ * simple class to save the imported user's data
+ * 
+ * @author halel
+ *
+ */
 public class ImportedUserData {
 
 	private String userName;

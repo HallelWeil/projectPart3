@@ -1,7 +1,5 @@
 package usersManagment;
 
-import java.util.ArrayList;
-
 import database.DBController;
 import paymentManagment.PaymentController;
 import user.*;

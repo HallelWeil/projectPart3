@@ -134,7 +134,6 @@ public class ManagerWatchReportController implements IGuiController {
 	}
 
 	private IReportController getController() throws IOException {
-		System.out.println(report.getType().ordinal());
 		switch (report.getType()) {
 		case MONTHLY_ORDERS_REPORT:
 			return orderReportController;

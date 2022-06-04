@@ -5,14 +5,13 @@ import java.sql.Timestamp;
 import database.DBController;
 import order.*;
 import paymentManagment.CreditController;
-import paymentManagment.PaymentController;
 import remindersManagment.ReminderController;
 import user.User;
 
 /**
- * controller for the different actions for order management
+ * controller for the different actions for order management, approving and
+ * canceling orders and all the relevant reminders
  * 
- * @author halel
  *
  */
 public class OrdersController {
@@ -46,6 +45,13 @@ public class OrdersController {
 		}
 	}
 
+	/**
+	 * approve order, if the delivery time is too close -> change it to 3 hours from
+	 * now, send the relevant reminders
+	 * 
+	 * @param ordernumber
+	 * @throws Exception -> on error -> with the error msg
+	 */
 	private void approveOrder(int ordernumber) throws Exception {
 		// 1. get the order from the database
 		Order order = dbController.getOrdrFromDB(ordernumber);
@@ -93,6 +99,12 @@ public class OrdersController {
 		sendReminder(order, " approved ", 0, user, text);
 	}
 
+	/**
+	 * TBD, set order to not approved
+	 * 
+	 * @param ordernumber
+	 * @throws Exception on error -> with the error msg
+	 */
 	private void notApproveOrder(int ordernumber) throws Exception {
 		// 1. get the order from the database
 		Order order = dbController.getOrdrFromDB(ordernumber);
@@ -120,6 +132,12 @@ public class OrdersController {
 		sendReminder(order, " not approved ", 0, user, "Please contact our cudtomer support team for more information");
 	}
 
+	/**
+	 * cancel order, handle the refund and the relevant reminders
+	 * 
+	 * @param ordernumber
+	 * @throws Exception
+	 */
 	private void cancelOrder(int ordernumber) throws Exception {
 		// 1. get the order from the database
 		Order order = dbController.getOrdrFromDB(ordernumber);

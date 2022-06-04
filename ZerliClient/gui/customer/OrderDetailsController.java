@@ -140,7 +140,7 @@ public class OrderDetailsController implements IGuiController {
 	@FXML
 	void cancelOrder(ActionEvent event) {
 		if (authorizedCustomerBoundary.requestOrderCancellation(selectedOrder))
-			msgLabel.setText("Order Cancelation request approved");
+			msgLabel.setText("Request sent, you will recieved notifiaction on approval");
 		else
 			msgLabel.setText("can't cancel the order");
 	}

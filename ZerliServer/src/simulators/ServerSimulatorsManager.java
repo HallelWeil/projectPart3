@@ -6,11 +6,15 @@ import java.net.URL;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+/**
+ * manage all the simulations - payment, sms\email , importing user data.
+ * singleton, the server controller for the above actions can access this
+ * manager to show their actions
+ */
 public class ServerSimulatorsManager implements Runnable {
 
 	private static ServerSimulatorsManager instance;
@@ -30,6 +34,9 @@ public class ServerSimulatorsManager implements Runnable {
 	private ServerSimulationsController controller;
 	public Stage simStage;
 
+	/**
+	 * run the simulations
+	 */
 	public void runSimulators() {
 		AnchorPane root;
 		try {

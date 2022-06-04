@@ -176,7 +176,6 @@ public class CEOcontroller implements IGuiController {
 		monthsList = (ArrayList<Integer>) IntStream.range(1, 13).boxed().collect(Collectors.toList());
 		periodsList = (ArrayList<Integer>) IntStream.range(1, 5).boxed().collect(Collectors.toList());
 		branches = ceoBoundry.getBranches();
-		System.out.println(branches);
 		ceoReportBranch.getItems().setAll(branches);
 		ceoReportMonth.getItems().setAll(monthsList);
 		ceoReportYear.getItems().setAll(yearsList);

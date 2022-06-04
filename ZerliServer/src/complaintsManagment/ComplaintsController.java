@@ -7,9 +7,19 @@ import paymentManagment.CreditController;
 import remindersManagment.ReminderController;
 import user.User;
 
+/**
+ * manage complaints, creating handling and relevant reminders
+ *
+ */
 public class ComplaintsController {
 	DBController dbController = DBController.getInstance();
 
+	/**
+	 * handle complaint answer, refund if needed and relevant reminders
+	 * 
+	 * @param inputComplaint
+	 * @throws Exception - on error throw exception with error msg
+	 */
 	public void handleComplaintAnswer(Complaint inputComplaint) throws Exception {
 		// 1. get the complaint from the database
 		Complaint complaint = dbController.getComplaint(inputComplaint.getComplaintsNumber());
@@ -32,6 +42,12 @@ public class ComplaintsController {
 		}
 	}
 
+	/**
+	 * create new complaint
+	 * 
+	 * @param complaint
+	 * @return true on success
+	 */
 	public boolean createComplaint(Complaint complaint) {
 		if (dbController.createComplaint(complaint) != -1)
 			return true;

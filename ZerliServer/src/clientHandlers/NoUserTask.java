@@ -1,39 +1,44 @@
 package clientHandlers;
 
+import java.util.ArrayList;
+
 import msg.Msg;
 import server.ServerMsgController;
-import user.User;
 
+/**
+ * the action for non connected user, can login
+ */
 public class NoUserTask extends ClientTasks {
 
 	public NoUserTask(HandleClientTask clientTaskHandler) {
 		super(clientTaskHandler);
-		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * the action for non connected user, can login
+	 */
 	@Override
-	public Msg handleTask(Object msg) {
-		// if no correct msg was found
-		if (msgController.mgsParser(msg) == false)
-			return ErrorMsg;
+	public Msg handleTask(ServerMsgController msgController) {
+
 		// action for none connected clients
 		switch (msgController.getType()) {
+		case GET_BRANCH_LIST:
+			ArrayList<String> branches = dbController.getAllBranches();
+			newMsgToSend = ServerMsgController.createRETURN_BRANCH_NAMESMsg(branches);
+			break;
 		case LOGIN_REQUEST:
 			// get User with userName and Password from db
 			try {
 				if (dbController.connectUser(msgController.getUserName(), msgController.getPassword())) {
-					User user = dbController.getUser(msgController.getUserName());
-					clientTaskHandler.setActiveUser(user);
+					user = dbController.getUser(msgController.getUserName());
 					newMsgToSend = ServerMsgController.createAPPROVE_LOGINMsg(user);
+					this.clientTaskHandler.login(user);
 				} else {// wrong username or password
 					newMsgToSend = ServerMsgController.createERRORMsg("Wrong username and password");
 				}
 			} catch (Exception e) {
 				newMsgToSend = ServerMsgController.createERRORMsg("The user already connected");// already connected msg
 			}
-			break;
-		case EXIT:
-			// none
 			break;
 		case ERROR:
 			// none

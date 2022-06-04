@@ -15,9 +15,9 @@ import paymentManagment.CreditController;
 import paymentManagment.PaymentController;
 
 /**
- * Create a order from a cart, manage orders status and approval
+ * Create a order from a cart, manage the order process, creation to full
+ * payment
  * 
- * @author halel
  *
  */
 public class OrderProcessManager {
@@ -29,7 +29,7 @@ public class OrderProcessManager {
 	private String username;
 
 	/**
-	 * Reset the orderController
+	 * Reset the OrderProcessManager
 	 */
 	public void reset() {
 		activeOrder = new Order();
@@ -83,6 +83,10 @@ public class OrderProcessManager {
 		return newOrder;
 	}
 
+	/**
+	 * Add the discount(on first order) and the use of shop credit if exist update
+	 * the relevant fields accordingly
+	 */
 	private void getDiscountAndCredit() {
 		DBController dbcontroller = DBController.getInstance();
 		CreditController creditController = new CreditController();

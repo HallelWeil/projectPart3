@@ -261,6 +261,7 @@ public class ReportsController {
 	 * @param branchName the report branch
 	 * @param orders     list of the orders in this month for this branch
 	 */
+	@SuppressWarnings("deprecation")
 	private void createMonthlyReports(int month, int year, String branchName, ArrayList<Order> orders) {
 		OrdersReport newOrdersReport = new OrdersReport(month, year, ReportType.MONTHLY_ORDERS_REPORT, branchName);
 		RevenueReport newRevenueReport = new RevenueReport(month, year, ReportType.MONTHLY_REVENU_EREPORT, branchName);

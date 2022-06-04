@@ -3,7 +3,6 @@ package database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.io.Serializable;
 import java.sql.Blob;
 import catalog.Product;
 import common.Status;
@@ -240,7 +239,6 @@ public class DBController {
 	// will be implemented in the future, not supposed to work
 	public boolean saveReportToDB(Report report) {
 		// create the query
-		byte[] data;
 		String sdata = objectManager.objectToBlobString(report);
 		String s = "INSERT INTO " + DBname + ".report VALUES ('" + report.getBranchName() + "','"
 				+ report.getType().toString() + "','" + report.getYear() + "','" + report.getMonth() + "','" + sdata

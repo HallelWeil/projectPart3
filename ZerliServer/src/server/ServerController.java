@@ -2,10 +2,10 @@ package server;
 
 import java.util.HashMap;
 
+import clientHandlers.HandleClientTask;
 import database.DBController;
 import msg.Msg;
 import ocsf.server.*;
-import order.Order;
 
 /**
  * Server controller, using OCSF manage the server and clients threads, send and
@@ -16,11 +16,6 @@ import order.Order;
  * @version 02
  */
 public class ServerController extends AbstractServer {
-	// Class variables *************************************************
-	/**
-	 * The database controller
-	 */
-	private DBController dbController;
 	/**
 	 * The server boundary , to update the gui
 	 */
@@ -28,6 +23,7 @@ public class ServerController extends AbstractServer {
 	/**
 	 * The massage controller, for parser/msg creation
 	 */
+	@SuppressWarnings("unused")
 	private ServerMsgController msgController;
 
 	/**
@@ -38,7 +34,7 @@ public class ServerController extends AbstractServer {
 	/**
 	 * 
 	 */
-	private HashMap<ConnectionToClient, ClientTask> clientsTasks;
+	private HashMap<ConnectionToClient, HandleClientTask> clientsTasks;
 
 	// Class Constructor *************************************************
 	/**
@@ -50,11 +46,10 @@ public class ServerController extends AbstractServer {
 	 */
 	public ServerController(int port, DBController dbController, ServerBoundary sb) {
 		super(port);
-		this.dbController = dbController;
 		this.serverBoundary = sb;
 		msgController = new ServerMsgController();
 		hostName = "Server";
-		clientsTasks = new HashMap<ConnectionToClient, ClientTask>();
+		clientsTasks = new HashMap<ConnectionToClient, HandleClientTask>();
 	}
 
 	/**
@@ -67,7 +62,7 @@ public class ServerController extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		Msg returnMsg = new Msg();
 		if(clientsTasks.containsKey(client)) {
-			ClientTask task = clientsTasks.get(client);
+			HandleClientTask task = clientsTasks.get(client);
 			returnMsg = task.handleTask(msg);
 		}
 		else {
@@ -76,7 +71,6 @@ public class ServerController extends AbstractServer {
 		try {
 			client.sendToClient(returnMsg);
 		} catch (Exception e) {
-			System.out.println("ERROR - Could not send to client");
 			serverBoundary.setStatus("ERROR - Could not send to client " + returnMsg.type + client);
 		}
 	}
@@ -95,7 +89,7 @@ public class ServerController extends AbstractServer {
 		serverBoundary.updateClientsTable(client.toString(), "Active", tempHost, client.getName());
 		serverBoundary.setStatus("Client connected to server from " + client);
 		// add the clients to the client tasks map
-		ClientTask newClientTask = new ClientTask(client);
+		HandleClientTask newClientTask = new HandleClientTask(client);
 		if (!clientsTasks.containsKey(client)) {
 			clientsTasks.put(client, newClientTask);
 		} else {

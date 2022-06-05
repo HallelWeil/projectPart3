@@ -88,6 +88,14 @@ public class BtnController implements IGuiController {
 	private Button managePromotionsBtn;
 
 	@FXML
+	private Button manageCatalogBtn;
+
+	@FXML
+	void manageCatalog(ActionEvent event) {
+		MarketingGuiManager.getInstance().getManageCatalogController().openWindow();
+	}
+
+	@FXML
 	void managePromotions(ActionEvent event) {
 		MarketingGuiManager.getInstance().getManagePromotions().openWindow();
 	}
@@ -274,6 +282,10 @@ public class BtnController implements IGuiController {
 
 	public Button getManagePromotionsBtn() {
 		return managePromotionsBtn;
+	}
+
+	public Button getManageCatalogBtn() {
+		return manageCatalogBtn;
 	}
 
 	public ImageView getLogo() {

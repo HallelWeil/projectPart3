@@ -1,5 +1,11 @@
 package order;
 
+/**
+ * the order status
+ * 
+ * @author halel
+ *
+ */
 public enum OrderStatus {
 	/**
 	 * Approved and collected
@@ -22,11 +28,15 @@ public enum OrderStatus {
 	 */
 	WAITING_FOR_CANCELLATION_APPROVAL,
 	/**
-	 * 
+	 * after order has been placed, before the payment
 	 */
 	WAITING_FOR_PAYMENT,
 	/**
-	 * 
+	 * the order is approved -> waiting to be collected or delivered
 	 */
-	APPROVED, NOT_APPROVED,
+	APPROVED,
+	/**
+	 * TBD
+	 */
+	NOT_APPROVED,
 }

@@ -35,6 +35,9 @@ public class ServerSimulationsController {
 	@FXML
 	private TextArea simulationsLog;
 
+	@FXML
+	private Button importTableBtn;
+
 	/**
 	 * open the import data window
 	 * 
@@ -93,6 +96,22 @@ public class ServerSimulationsController {
 				simulationsLog.appendText(s + "\n");
 				serverSimulatorsManager.SimulationsLog.remove(i);
 			}
+		}
+	}
+
+	/**
+	 * Import a table from the users managment system database
+	 */
+	@FXML
+	void importTable(ActionEvent event) {
+		if (DBController.getInstance().isConnected) {
+			connectLabel.setVisible(false);
+
+			// import the table
+			UserDataImportFromDB dataImportFromDB = new UserDataImportFromDB();
+			dataImportFromDB.importUserDataTable();
+		} else {
+			connectLabel.setVisible(true);
 		}
 	}
 }

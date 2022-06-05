@@ -3,6 +3,10 @@ package userGuiManagment;
 import PromotionWindow.CreatePromotionWindowController;
 import PromotionWindow.PromotionCreatedSuccessfullyWindowController;
 import PromotionWindow.managePromotionWindowController;
+import catalog.Product;
+import catalogManegment.EditProductContorller;
+import catalogManegment.NewProductController;
+import catalogManegment.ShowCatagoryFromCatalogContorllerGUI;
 import main.GuiObjectsFactory;
 import usersManagment.MarketingEmployeeBoundary;
 
@@ -15,6 +19,8 @@ public class MarketingGuiManager implements IUserGuiManager {
 	private CreatePromotionWindowController createPromotion;
 	private managePromotionWindowController managePromotions;
 	private PromotionCreatedSuccessfullyWindowController promotionCreatedSuccessfully;
+	private ShowCatagoryFromCatalogContorllerGUI manageCatalogController;
+
 	// Boundaries
 	private MarketingEmployeeBoundary marketingEmployeeBoundary;
 
@@ -52,11 +58,32 @@ public class MarketingGuiManager implements IUserGuiManager {
 	}
 
 	public PromotionCreatedSuccessfullyWindowController getPromotionCreatedSuccessfully() {
-		if(promotionCreatedSuccessfully==null) {
+		if (promotionCreatedSuccessfully == null) {
 			promotionCreatedSuccessfully = (PromotionCreatedSuccessfullyWindowController) guiObjectsFactory
 					.loadFxmlFile("/PromotionWindow/AddedSuccessfully.fxml");
 		}
 		return promotionCreatedSuccessfully;
+	}
+
+	public ShowCatagoryFromCatalogContorllerGUI getManageCatalogController() {
+		if (manageCatalogController == null) {
+			manageCatalogController = (ShowCatagoryFromCatalogContorllerGUI) guiObjectsFactory
+					.loadFxmlFile("/catalogManegment/UpdateTheCatalogPage.fxml");
+		}
+		return manageCatalogController;
+	}
+
+	public void opedNewEditProductWindow(Product product) {
+		EditProductContorller controller = (EditProductContorller) GuiObjectsFactory.getInstance()
+				.loadFxmlFile("/catalogManegment/EditProductPage.fxml");
+		controller.setSelectedProduct(product);
+		controller.openWindow();
+	}
+
+	public void opedNewCreateProductWindow() {
+		NewProductController controller = (NewProductController) GuiObjectsFactory.getInstance()
+				.loadFxmlFile("/catalogManegment/NewProductWindow.fxml");
+		controller.openWindow();
 	}
 
 	@Override

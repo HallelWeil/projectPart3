@@ -2,6 +2,12 @@ package order;
 
 import java.io.Serializable;
 
+/**
+ * Delivery details for the order
+ * 
+ * @author halel
+ *
+ */
 public class DeliveryDetails implements Serializable {
 
 	/**
@@ -72,5 +78,5 @@ public class DeliveryDetails implements Serializable {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	
+
 }

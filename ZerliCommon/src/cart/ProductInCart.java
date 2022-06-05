@@ -1,10 +1,13 @@
 package cart;
 
 import java.io.Serializable;
-import java.util.Objects;
-
 import catalog.Product;
 
+/**
+ * simple entity for the product in cart, save the product and the amount
+ * 
+ *
+ */
 public class ProductInCart implements Serializable {
 
 	/**

@@ -89,7 +89,7 @@ public class ManagerUpdateUser implements IGuiController {
 		isanAuthorized = false;
 		isEmployees = false;
 		user = null;
-		typeLAbel.setText("View active Customers");
+		typeLAbel.setText("View authorized Customers");
 		customersTable.setItems(customers);
 	}
 

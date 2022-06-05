@@ -7,6 +7,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * general class to manage the creation of object from files and files from
+ * objects
+ * 
+ * @author halel
+ *
+ */
 public class FilesController {
 
 	/**
@@ -18,7 +25,6 @@ public class FilesController {
 	 */
 	public SimpleFile savePdfFileToObject(String path, String newfileName) {
 		SimpleFile newSimpleFile = new SimpleFile();
-		String name = newfileName;
 		try {
 			File newFile = new File(path);
 			int size = (int) newFile.length();

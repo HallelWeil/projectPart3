@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="basePane" prefHeight="695.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="customerService.UpdateComplaint">
    <children>
-      <Label fx:id="answerLabel" layoutX="211.0" layoutY="211.0" text="answer">
+      <Label fx:id="answerLabel" layoutX="150.0" layoutY="216.0" text="answer">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font></Label>
@@ -23,7 +23,7 @@
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Label fx:id="msgLabel" alignment="CENTER" layoutX="154.0" layoutY="491.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="77.0" prefWidth="841.0" textAlignment="CENTER">
+      <Label fx:id="msgLabel" alignment="CENTER" layoutX="154.0" layoutY="491.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="77.0" prefWidth="841.0" textAlignment="CENTER" textFill="#ec0606">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>

@@ -1,5 +1,11 @@
 package msg;
 
+/**
+ * The Message types
+ * 
+ * @author halel
+ *
+ */
 public enum MsgType {
 
 	// common types

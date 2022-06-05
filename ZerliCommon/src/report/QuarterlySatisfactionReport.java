@@ -1,7 +1,17 @@
 package report;
 
+/**
+ * quarterly general satisfaction report
+ * 
+ * @author halel
+ *
+ */
 public class QuarterlySatisfactionReport extends Report {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int[] complaintsPerMonth;
 
 	public QuarterlySatisfactionReport(int month, int year) {

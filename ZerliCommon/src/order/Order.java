@@ -24,20 +24,54 @@ public class Order implements Serializable {
 	 * The unique order id number
 	 */
 	private int orderNumber;
+	/**
+	 * the order creation date
+	 */
 	private Timestamp orderDate;
+	/**
+	 * the order expected arrival date
+	 */
 	private Timestamp arrivalDate;
+	/**
+	 * the branch we ordered from
+	 */
 	private String branchName;
+	/**
+	 * is the order with home delivery?
+	 */
 	private boolean homeDelivery;
+	/**
+	 * the order total price\cost
+	 */
 	private double price;
+	/**
+	 * the order personal letter(not a must, but its free :) )
+	 */
 	private String personalLetter;
+	/**
+	 * the order status
+	 */
 	private OrderStatus orderStatus;
+	/**
+	 * additional data for the order, you should check it out!
+	 */
 	private String data;
+	/**
+	 * the items in the order
+	 */
 	private ArrayList<ProductInOrder> items;
+	/**
+	 * delivery details -> only if needed
+	 */
 	private DeliveryDetails deliveryDetails;
+	/**
+	 * the customer user name
+	 */
 	private String username;
+	/**
+	 * the actoal price for the order (after discount + use of shop credit)
+	 */
 	private double priceToPay;
-
-	
 
 	public double getPriceToPay() {
 		return priceToPay;

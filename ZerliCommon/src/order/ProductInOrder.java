@@ -2,18 +2,45 @@ package order;
 
 import java.io.Serializable;
 
+/**
+ * product in order, no need to save the full product, only the relevant fields
+ * 
+ * @author halel
+ *
+ */
 public class ProductInOrder implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	/**
+	 * the order the product is in
+	 */
 	private int orderNumber;
+	/**
+	 * the product name
+	 */
 	private String name;
+	/**
+	 * the product price
+	 */
 	private double price;
+	/**
+	 * the amount of this product in the order
+	 */
 	private int amount;
+	/**
+	 * the total price for this items
+	 */
 	private double total;
+	/**
+	 * the product category
+	 */
 	private String category;
+	/**
+	 * additional data
+	 */
 	private String data = "";
 
 	public double getTotal() {

@@ -128,7 +128,7 @@ public class ManageCustomerController implements IGuiController {
 		// got all the info, update the customer info
 		try {
 			boundary.requestUpdateUserData(selectedCustomer);
-			errorLabel.setText("Employee data updated!");
+			errorLabel.setText("Customer data updated!");
 		} catch (Exception e) {
 			errorLabel.setText(e.getMessage());
 		}

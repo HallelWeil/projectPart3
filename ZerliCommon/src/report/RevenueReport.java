@@ -1,18 +1,36 @@
 package report;
 
-import java.sql.Date;
-import java.util.HashMap;
-
+/**
+ * the branch monthly revenue report
+ * 
+ * @author halel
+ *
+ */
 public class RevenueReport extends Report {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	/**
+	 * revenue per day
+	 */
 	private double[] revenuePerDay;
+	/**
+	 * total revenue for this month
+	 */
 	private double totalRevenue;
+	/**
+	 * average monthly revenue(across all branches)
+	 */
 	private double averageMonthlyRevenue;
+	/**
+	 * average revenue per order
+	 */
 	private double averageRevenuePerOrder;
+	/**
+	 * the most profitable item, we got the most money for this item!
+	 */
 	private String mostProfitableItem;
 
 	public RevenueReport(int month, int year, ReportType type, String branchName) {
@@ -67,6 +85,5 @@ public class RevenueReport extends Report {
 	public double[] getRevenuePerDay() {
 		return revenuePerDay;
 	}
-	
 
 }

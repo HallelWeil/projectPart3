@@ -3,8 +3,18 @@ package report;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * quarterly all branches orders report
+ * 
+ * @author halel
+ *
+ */
 public class QuarterlyOrdersReport extends Report {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * orders per day,per month, the 0 place is the 1st day and so on each row of
 	 * the matrix is a month, each column of the matrix is the day

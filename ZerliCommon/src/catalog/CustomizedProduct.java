@@ -2,6 +2,13 @@ package catalog;
 
 import java.util.ArrayList;
 
+/**
+ * representing a customized product, a product with list of components(other
+ * products), have "colors" "type" and price range field
+ * 
+ * @author halel
+ *
+ */
 public class CustomizedProduct extends Product {
 
 	/**

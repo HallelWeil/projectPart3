@@ -11,11 +11,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.layout.Pane;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import shop.ShopBoundary;
 import userGuiManagment.AuthorizedCustomerGuiManager;
 
+/**
+ * controller for the product in catalog gui object
+ * 
+ * @author halel
+ *
+ */
 public class ProductGuiController implements IGuiController {
 
 	private ShopBoundary shopBoundary = AuthorizedCustomerGuiManager.getInstance().getShopBoundary();
@@ -59,11 +64,19 @@ public class ProductGuiController implements IGuiController {
 
 	private Product product;
 
+	/**
+	 * add to customized product
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void addToProduct(ActionEvent event) {
 		shopWindowController.addProductToCustomizedProduct(product);
 	}
 
+	/**
+	 * add this product to the cart
+	 */
 	@FXML
 	void addToCart(ActionEvent event) {
 		try {
@@ -75,16 +88,20 @@ public class ProductGuiController implements IGuiController {
 				ItemInCartController controller = AuthorizedCustomerGuiManager.getInstance().getProductManager()
 						.createNewCartItem(product, num);
 				shopWindowController.addProductGuiObjectToCart(controller.getBasePane(), controller);
-			} else {
+			} else {// already in cart, update the amount
 				shopWindowController.updateAmount(product.getProductID());
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			amount.setText("1");
 		}
 
 	}
 
+	/**
+	 * set the product for this gui object
+	 * 
+	 * @param product
+	 */
 	public void setProduct(Product product) {
 		// for future update
 		// imagePane,oldPriceLabel
@@ -110,13 +127,11 @@ public class ProductGuiController implements IGuiController {
 
 	@Override
 	public void resetController() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void openWindow() {
-		// TODO Auto-generated method stub
 	}
 
 	public Product getProduct() {

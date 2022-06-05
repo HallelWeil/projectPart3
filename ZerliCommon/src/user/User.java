@@ -2,24 +2,59 @@ package user;
 
 import java.io.Serializable;
 
+/**
+ * User entity in our system
+ * 
+ * @author halel
+ *
+ */
 public class User implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	/**
+	 * the username
+	 */
 	private String username;
+	/**
+	 * the password
+	 */
 	private String password;
+	/**
+	 * the user type
+	 */
 	private UserType userType;
+	/**
+	 * is the user already connected?
+	 */
 	private boolean connected;
+	/**
+	 * the user first name
+	 */
 	private String firstName;
+	/**
+	 * the user last name
+	 */
 	private String lastName;
+	/**
+	 * the user email
+	 */
 	private String email;
+	/**
+	 * the user phone number
+	 */
 	private String phoneNumber;
+	/**
+	 * the user personal id
+	 */
 	private String personID;
+	/**
+	 * the account status
+	 */
 	private UserStatus status;
-	
+
 	/**
 	 * for branch employee and branch manager only
 	 */
@@ -117,5 +152,4 @@ public class User implements Serializable {
 		this.personID = personID;
 	}
 
-	
 }

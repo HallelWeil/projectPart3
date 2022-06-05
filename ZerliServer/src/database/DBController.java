@@ -43,6 +43,7 @@ public class DBController {
 	 * The database boundary
 	 */
 	private DBBoundry dbBoundry;
+
 	/**
 	 * class to handle ResultSet
 	 */
@@ -54,6 +55,10 @@ public class DBController {
 		dbBoundry = new DBBoundry();
 		objectManager = new DBObjectsManager();
 		DBname = "";
+	}
+
+	public DBBoundry getDbBoundry() {
+		return dbBoundry;
 	}
 
 	/**
@@ -672,7 +677,7 @@ public class DBController {
 		return res;
 	}
 
-	public ArrayList<User> getAllUserType(UserType userType) {
+	public ArrayList<User> getAllUsersWithType(UserType userType) {
 		String s = "SELECT * FROM " + DBname + ".users WHERE (userType = '" + userType.toString() + "');";
 		// get the result
 		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);

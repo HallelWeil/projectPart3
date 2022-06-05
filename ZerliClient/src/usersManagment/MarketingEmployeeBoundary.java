@@ -2,8 +2,10 @@ package usersManagment;
 
 import java.util.ArrayList;
 
+import catalog.Product;
 import promotion.Promotion;
 import promotions.PromotionController;
+import shop.CatalogController;
 
 /**
  * the marketing employee boundary, can manage promotions and manage the catalog
@@ -13,13 +15,23 @@ import promotions.PromotionController;
 public class MarketingEmployeeBoundary {
 
 	private PromotionController promotionController;
+	private CatalogController catalogController;
 
 	public MarketingEmployeeBoundary() {
 		promotionController = new PromotionController();
+		catalogController = new CatalogController();
 	}
 
-	public void updateCatalog() {
+	public void addProduct(Product procuct) throws Exception {
+		catalogController.saveNewProduct(procuct);
+	}
+	
+	public void updateCatalog(Product product) throws Exception {
+		catalogController.updateCatalog(product);
+	}
 
+	public ArrayList<Product> getCategory(String category) {
+		return catalogController.chooseCategory(category);
 	}
 
 	/**

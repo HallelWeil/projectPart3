@@ -67,7 +67,7 @@ public class BranchManagerTask extends ClientTasks {
 			switch (msgController.getUserType()) {
 			case AuthorizedCustomer:
 			case NonAuthorizedCustomer:
-				users = dbController.getAllUserType(msgController.getUserType());
+				users = dbController.getAllUsersWithType(msgController.getUserType());
 				break;
 			default:
 				users = dbController.getAllBranchEmployees(user.getBranchName());

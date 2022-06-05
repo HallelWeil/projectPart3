@@ -1,7 +1,5 @@
 package customer;
 
-import java.sql.Timestamp;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.DeliveryDetails;
 import order.Order;
@@ -25,6 +22,12 @@ import userGuiManagment.AuthorizedCustomerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.AuthorizedCustomerBoundary;
 
+/**
+ * controller for order details window, show the full details of the order
+ * 
+ * @author halel
+ *
+ */
 public class OrderDetailsController implements IGuiController {
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	private AuthorizedCustomerBoundary authorizedCustomerBoundary = AuthorizedCustomerGuiManager.getInstance()
@@ -75,7 +78,10 @@ public class OrderDetailsController implements IGuiController {
 	ObservableList<ProductInOrder> productsObs = FXCollections.observableArrayList();
 	Order selectedOrder;
 
-	public void initializeProductsTable() {
+	/**
+	 * init the products in order table
+	 */
+	private void initializeProductsTable() {
 		productsObs.clear();
 		productsInOrderTable.getItems().clear();
 		productCategoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
@@ -98,6 +104,9 @@ public class OrderDetailsController implements IGuiController {
 		mainWindowManager.mainWindowController.showNewWindow(orderDetailsBasePane);
 	}
 
+	/**
+	 * display the delivery\pickup details
+	 */
 	private void displayDeliveryDetails() {
 		DeliveryDetails delivery = selectedOrder.getDeliveryDetails();
 		StringBuilder s = new StringBuilder();
@@ -137,6 +146,11 @@ public class OrderDetailsController implements IGuiController {
 		AuthorizedCustomerGuiManager.getInstance().getOrdersHistoryController().openWindow();
 	}
 
+	/**
+	 * cancel the order
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void cancelOrder(ActionEvent event) {
 		if (authorizedCustomerBoundary.requestOrderCancellation(selectedOrder))
@@ -145,6 +159,11 @@ public class OrderDetailsController implements IGuiController {
 			msgLabel.setText("can't cancel the order");
 	}
 
+	/**
+	 * set the order object for this window
+	 * 
+	 * @param order
+	 */
 	public void setSelectedOrder(Order order) {
 		selectedOrder = order;
 		Order tempOrder = authorizedCustomerBoundary.getfullOrder(selectedOrder.getOrderNumber());

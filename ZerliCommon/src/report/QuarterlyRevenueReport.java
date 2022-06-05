@@ -2,8 +2,18 @@ package report;
 
 import java.util.ArrayList;
 
+/**
+ * quarterly all branches revenue report
+ * 
+ * @author halel
+ *
+ */
 public class QuarterlyRevenueReport extends Report {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * revenue for each day of the quarter(3 month in 3 rows,31 days in each row)
 	 */

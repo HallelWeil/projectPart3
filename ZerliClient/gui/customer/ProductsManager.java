@@ -4,13 +4,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import catalog.Product;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import main.GuiObjectsFactory;
 
+/**
+ * manager for creating the different gui object for the catalog\cart. load the
+ * fxml files and fill the object's fields
+ * 
+ * @author halel
+ *
+ */
 public class ProductsManager {
 
 	private static final String productFxmlPath = "/customer/ProductInCatalog.fxml";
@@ -19,7 +23,7 @@ public class ProductsManager {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 
 	/**
-	 * Fille the list view with gui object of the Products
+	 * Fill the list view with gui object of the Products
 	 * 
 	 * @param list
 	 * @param productLsi
@@ -36,6 +40,12 @@ public class ProductsManager {
 		}
 	}
 
+	/**
+	 * create new product in catalog gui object
+	 * 
+	 * @param product
+	 * @return
+	 */
 	private Pane createNewProduct(Product product) {
 		ProductGuiController newController;
 		newController = (ProductGuiController) guiObjectsFactory.loadFxmlFile(productFxmlPath);
@@ -43,6 +53,13 @@ public class ProductsManager {
 		return newController.getBasePane();
 	}
 
+	/**
+	 * create new item in cart gui object
+	 * 
+	 * @param product
+	 * @param amount
+	 * @return
+	 */
 	public ItemInCartController createNewCartItem(Product product, int amount) {
 		ItemInCartController newController;
 		newController = (ItemInCartController) guiObjectsFactory.loadFxmlFile(cartItemPath);
@@ -50,6 +67,12 @@ public class ProductsManager {
 		return newController;
 	}
 
+	/**
+	 * create new item in customized product gui object
+	 * 
+	 * @param product
+	 * @return
+	 */
 	public ItemInCustomizedProductController createNewCSItem(Product product) {
 		ItemInCustomizedProductController newController;
 		newController = (ItemInCustomizedProductController) guiObjectsFactory.loadFxmlFile(CSItemPath);

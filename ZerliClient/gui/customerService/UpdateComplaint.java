@@ -49,6 +49,13 @@ public class UpdateComplaint implements IGuiController {
 
 	@FXML
 	void updateComplaint(ActionEvent event) {
+		if(answerText.getText() == "" || compensationText.getText() == "")
+		{
+			msgLabel.setText("Please enter the details");
+
+		}
+		else
+		{
 		String answer = answerText.getText();
 		double compensation = Double.valueOf(compensationText.getText());
 		Status status = Status.Completed;
@@ -60,6 +67,7 @@ public class UpdateComplaint implements IGuiController {
 		} catch (Exception e) {
 			msgLabel.setText("Complaint unsuccessfully update");
 
+		}
 		}
 	}
 

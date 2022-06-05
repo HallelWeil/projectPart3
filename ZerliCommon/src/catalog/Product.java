@@ -2,8 +2,15 @@ package catalog;
 
 import java.io.Serializable;
 import java.sql.Blob;
-import java.util.Objects;
 
+/**
+ * represent a product entity, with unique id, name, price , old price(save the
+ * original price if the product is on sale), description, colors, category and
+ * image(TBD) fields
+ * 
+ * @author halel
+ *
+ */
 public class Product implements Serializable {
 
 	/**
@@ -80,8 +87,6 @@ public class Product implements Serializable {
 	public void setProductID(int productID) {
 		this.productID = productID;
 	}
-	
-	
 
 	public double getOldPrice() {
 		return oldPrice;

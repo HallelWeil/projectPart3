@@ -10,20 +10,30 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import shop.ShopBoundary;
 import userGuiManagment.AuthorizedCustomerGuiManager;
-import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * controller for the Item in cart gui object, for item in cart with all the
+ * fields and options
+ * 
+ * @author halel
+ *
+ */
 public class ItemInCartController implements IGuiController {
-	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	private ShopBoundary shopBoundary = AuthorizedCustomerGuiManager.getInstance().getShopBoundary();
 	private ShopWindowController shopWindowController = AuthorizedCustomerGuiManager.getInstance()
 			.getShopWindowController();
 
+	/**
+	 * the product our item represents
+	 */
 	private Product product;
 
+	/**
+	 * the current amount of the product
+	 */
 	private int currentAmount;
 
 	@FXML
@@ -44,6 +54,11 @@ public class ItemInCartController implements IGuiController {
 	@FXML
 	private Label priceLabel;
 
+	/**
+	 * change the amount
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void changeAmount(InputMethodEvent event) {
 		try {
@@ -59,10 +74,15 @@ public class ItemInCartController implements IGuiController {
 		}
 	}
 
+	/**
+	 * remove the item from the cart
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void removeItem(ActionEvent event) {
 		if (shopBoundary.deleteProductFromCart(product)) {
-			shopWindowController.removeProductGuiObjectToCart(this.baseLayer);
+			shopWindowController.removeProductGuiObjectToCart(this.baseLayer, product.getProductID());
 		}
 	}
 
@@ -73,7 +93,6 @@ public class ItemInCartController implements IGuiController {
 
 	@Override
 	public void resetController() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -82,6 +101,12 @@ public class ItemInCartController implements IGuiController {
 
 	}
 
+	/**
+	 * init the product we represents
+	 * 
+	 * @param product
+	 * @param amount
+	 */
 	public void setProduct(Product product, int amount) {
 		this.product = product;
 		productNameLabel.setText(product.getName());
@@ -93,6 +118,11 @@ public class ItemInCartController implements IGuiController {
 		return product;
 	}
 
+	/**
+	 * update the amount(if added more from this product)
+	 * 
+	 * @param amount
+	 */
 	public void updateAmount(int amount) {
 		if (amount < 0)
 			amount = 0;

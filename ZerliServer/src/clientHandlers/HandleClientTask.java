@@ -72,7 +72,7 @@ public class HandleClientTask {
 				dbController.disconnectUser(ActiveUser.getUsername());
 				logout();
 			}
-			return ServerMsgController.createAPPROVE_LOGOUTMsg();
+			return null;
 		case GET_BRANCH_LIST:
 			return ServerMsgController.createRETURN_BRANCH_NAMESMsg(dbController.getAllBranches());
 		default:

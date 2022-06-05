@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import clientHandlers.HandleClientTask;
@@ -64,6 +65,13 @@ public class ServerController extends AbstractServer {
 		if(clientsTasks.containsKey(client)) {
 			HandleClientTask task = clientsTasks.get(client);
 			returnMsg = task.handleTask(msg);
+			if(returnMsg == null) {
+				try {
+					client.close();
+				} catch (IOException e) {
+				}
+				return;
+			}
 		}
 		else {
 			//todo handle the error

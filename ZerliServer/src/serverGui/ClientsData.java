@@ -78,4 +78,9 @@ public class ClientsData {
 		return this.uniqueClientName.equals(other.getClientName());
 	}
 
+	public void setIpAdress(String ipAdress) {
+		this.ipAddress.set(ipAdress);
+		
+	}
+
 }

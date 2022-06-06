@@ -76,11 +76,15 @@ public class ShowChoosenSurvey implements IGuiController {
 		if (f == null)
 			return;
 		String path = f.getAbsolutePath();
-		try {
-			surveyBoundary.enterSurveyResult(selectedSurvey.getSurveyNumber(), path);
-			msgLabel.setText("Result file saved !");
-		} catch (Exception e) {
-			msgLabel.setText("Failed " + e.getMessage());
+		if(path.endsWith(".pdf")) {
+			try {
+				surveyBoundary.enterSurveyResult(selectedSurvey.getSurveyNumber(), path);
+				msgLabel.setText("Result file saved !");
+			} catch (Exception e) {
+				msgLabel.setText("Failed " + e.getMessage());
+			}
+		}else {
+			msgLabel.setText("File has wrong format !");
 		}
 	}
 

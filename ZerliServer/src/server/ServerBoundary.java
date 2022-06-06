@@ -63,6 +63,7 @@ public class ServerBoundary {
 		ScheduledTasksManager scheduledTasksManager = ScheduledTasksManager.getInstance();
 		Thread scheduledTasksThread = new Thread(scheduledTasksManager);
 		scheduledTasksThread.start();
+
 		return true;
 	}
 

@@ -93,6 +93,8 @@ public class UpdateComplaint implements IGuiController {
 		// change to the name
 		mainWindowManager.mainWindowController
 				.changeWindowName("update Complaint - number #" + selectedcomplaint.getComplaintsNumber());
+
+		msgLabel.setText("");
 	}
 
 	@FXML

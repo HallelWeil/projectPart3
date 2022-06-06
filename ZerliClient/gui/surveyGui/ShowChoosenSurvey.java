@@ -37,6 +37,9 @@ public class ShowChoosenSurvey implements IGuiController {
 	private Button showConclusionsBtn;
 
 	@FXML
+	private Button backBtn;
+
+	@FXML
 	private TextField pathText;
 
 	@FXML
@@ -68,7 +71,7 @@ public class ShowChoosenSurvey implements IGuiController {
 	@FXML
 	void saveFile(ActionEvent event) {
 		FileChooser fc = new FileChooser();
-		fc.setSelectedExtensionFilter(new ExtensionFilter("PDF files", "pdf"));
+		fc.setSelectedExtensionFilter(new ExtensionFilter("PDF files (*.pdf)", "*.pdf"));
 		File f = fc.showOpenDialog(ClientUI.globalstage);
 		if (f == null)
 			return;
@@ -84,7 +87,9 @@ public class ShowChoosenSurvey implements IGuiController {
 	@FXML
 	public void conclusions() {
 		FileChooser fc = new FileChooser();
-		fc.setSelectedExtensionFilter(new ExtensionFilter("PDF files", "pdf"));
+		String[] exts = new String[1];
+		exts[0] = ".pdf";
+		fc.getExtensionFilters().setAll(new ExtensionFilter("PDF files (*.pdf)", "*.pdf"));
 		File f = fc.showSaveDialog(ClientUI.globalstage);
 		if (f == null)
 			return;

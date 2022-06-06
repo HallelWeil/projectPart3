@@ -28,7 +28,6 @@ public class ServerUI extends Application {
 	public void start(Stage stage) {
 		AnchorPane root;
 		try {
-			// load the server fxml
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/serverGui/ServerGUI.fxml"));
 			root = loader.load();
 			controller = loader.getController();

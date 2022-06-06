@@ -67,7 +67,7 @@ public class CustomerServiceGuiManager implements IUserGuiManager {
 
 	public SurveyResults getSurveyResultsController() {
 		if (surveyResultsController == null) {
-			surveyResultsController = (SurveyResults) guiObjectsFactory.loadFxmlFile("/surveyGui/surveyResults.fxml");
+			surveyResultsController = (SurveyResults) guiObjectsFactory.loadFxmlFile("/surveyGui/SurveyResults.fxml");
 		}
 		return surveyResultsController;
 	}

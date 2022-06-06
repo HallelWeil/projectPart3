@@ -224,6 +224,7 @@ public class ShopBoundary {
 
 	public void emptyCart() {
 		cartCon = new CartController();
+		cartItemsIDs = new ArrayList<Integer>();
 	}
 
 }

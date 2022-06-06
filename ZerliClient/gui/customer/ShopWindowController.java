@@ -543,6 +543,7 @@ public class ShopWindowController implements IGuiController {
 	 */
 	public void emptyCart() {
 		itemInCartMap = new HashMap<Integer, ItemInCartController>();
+		
 		cartItemsList.getChildren().clear();
 	}
 

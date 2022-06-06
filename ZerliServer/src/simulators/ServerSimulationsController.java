@@ -106,10 +106,10 @@ public class ServerSimulationsController {
 	void importTable(ActionEvent event) {
 		if (DBController.getInstance().isConnected) {
 			connectLabel.setVisible(false);
-
 			// import the table
 			UserDataImportFromDB dataImportFromDB = new UserDataImportFromDB();
 			dataImportFromDB.importUserDataTable();
+			importTableBtn.setDisable(true);
 		} else {
 			connectLabel.setVisible(true);
 		}

@@ -29,7 +29,6 @@ public class UserDataImportFromDB {
 				ServerSimulatorsManager.getInstance().SimulationsLog.add("Failed to add user: " + user.getUserName());
 			}
 		}
-
 	}
 
 	/**

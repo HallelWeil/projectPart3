@@ -71,7 +71,7 @@ public class ReportsController {
 		this.month = month;
 		branches = null;// get all the branches names from the dataBase
 		// quarter end in the months: 3, 6, 9, 12, all the months divided by 3
-		if ((month + 1) % 3 == 0) {
+		if ((month) % 3 == 0) {
 			IsQuarterly = true;
 		}
 		orderReports = new ArrayList<OrdersReport>();

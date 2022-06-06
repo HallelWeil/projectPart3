@@ -33,7 +33,7 @@ public class SurveyResults implements IGuiController {
 	private TableView<Survey> surveysTable;
 
 	@FXML
-	private Button selectsurveyBtn;
+	private Button viewSurvrey;
 
 	@FXML
 	private TableColumn<Survey, Integer> surveyNumberlCol;
@@ -56,10 +56,10 @@ public class SurveyResults implements IGuiController {
 		initializeSurveysTable();
 		try {
 			surveysObs.setAll(surveyBoundary.getAllSurvey());
+			surveysTable.setItems(surveysObs);
 		} catch (Exception e) {
 			//
 		}
-		surveysTable.setItems(surveysObs);
 		mainWindowManager.mainWindowController.changeWindowName("Surveys");
 		mainWindowManager.mainWindowController.showNewWindow(showSurveyBasePane);
 	}

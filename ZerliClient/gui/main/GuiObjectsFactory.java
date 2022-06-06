@@ -38,6 +38,7 @@ public class GuiObjectsFactory {
 			loader.load();
 			return (IGuiController) loader.getController();
 		} catch (IOException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

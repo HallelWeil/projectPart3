@@ -37,6 +37,9 @@ public class ShowChoosenSurvey implements IGuiController {
 	private Button showConclusionsBtn;
 
 	@FXML
+	private Button backBtn;
+
+	@FXML
 	private TextField pathText;
 
 	@FXML

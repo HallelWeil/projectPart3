@@ -61,6 +61,8 @@ public class ServerSimulatorsManager implements Runnable {
 	public void run() {
 		// run the simulations
 		runSimulators();
+
+		
 	}
 
 }

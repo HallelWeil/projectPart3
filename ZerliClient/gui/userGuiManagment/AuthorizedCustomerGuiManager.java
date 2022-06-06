@@ -16,7 +16,7 @@ import shop.ShopBoundary;
 import usersManagment.AuthorizedCustomerBoundary;
 
 /**
- * Singleton, manage all the different user window, for each window controller
+ * Singleton, manage all the different customer window, for each window controller
  * when trying to get the controller, load the fxml if not already loaded
  * 
  * @author halel

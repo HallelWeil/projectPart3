@@ -8,13 +8,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.DeliveryDetails;
 import shop.ShopBoundary;
 import userGuiManagment.AuthorizedCustomerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * controller for the window: the personal card form
+ *
+ */
 public class personalcardWindowController implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();

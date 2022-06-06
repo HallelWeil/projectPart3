@@ -3,7 +3,6 @@ package userGuiManagment;
 import accessibility.AccessibilityPageController;
 import buttons.BtnController;
 import buttons.BtnMenuManager;
-import customer.ProductsManager;
 import main.GuiObjectsFactory;
 import mainWindow.LoginGuiController;
 import mainWindow.MainWindowController;
@@ -11,6 +10,13 @@ import mainWindow.StartingWindowGuiController;
 import usersHomeWindows.UserHomeWindowGuiController;
 import usersManagment.UserBoundary;
 
+/**
+ * Manage the main window, and the global windows(login, accessibility...), init
+ * all the windows on system start
+ * 
+ * @author halel
+ *
+ */
 public class MainWindowGuiManager implements IUserGuiManager {
 
 	private static MainWindowGuiManager mainWindowGuiManager;

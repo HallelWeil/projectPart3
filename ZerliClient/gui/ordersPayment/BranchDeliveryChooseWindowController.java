@@ -19,13 +19,15 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
-import main.GuiObjectsFactory;
 import main.IGuiController;
-import order.DeliveryDetails;
 import shop.ShopBoundary;
 import userGuiManagment.AuthorizedCustomerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * controller for the window: choosing the branch + home delivery or pickup
+ *
+ */
 public class BranchDeliveryChooseWindowController implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
@@ -68,9 +70,7 @@ public class BranchDeliveryChooseWindowController implements IGuiController {
 	@FXML
 	private Label ErrorText;
 
-	private Timestamp arrivalDate = new Timestamp(0, 0, 0, 0, 0, 0, 0);
-
-	private GuiObjectsFactory guiobjectfactory = GuiObjectsFactory.getInstance();
+	private Timestamp arrivalDate = new Timestamp(0);
 
 	@Override
 	public Pane getBasePane() {

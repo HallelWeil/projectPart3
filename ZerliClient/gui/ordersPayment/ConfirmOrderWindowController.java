@@ -18,7 +18,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.DeliveryDetails;
 import order.ProductInOrder;
@@ -26,6 +25,10 @@ import shop.ShopBoundary;
 import userGuiManagment.AuthorizedCustomerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * controller for the window: confirm the order and pay(or go back)
+ *
+ */
 public class ConfirmOrderWindowController implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
@@ -78,8 +81,6 @@ public class ConfirmOrderWindowController implements IGuiController {
 	private Label orderDataLabel;
 
 	public Boolean isGift = false, isEmailSend = false;
-
-	private GuiObjectsFactory guiobjectfactory = GuiObjectsFactory.getInstance();
 
 	private ObservableList<ProductInOrder> data = FXCollections.observableArrayList();
 

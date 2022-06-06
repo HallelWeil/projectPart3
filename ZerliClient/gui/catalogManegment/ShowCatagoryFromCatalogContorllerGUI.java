@@ -18,6 +18,10 @@ import userGuiManagment.MainWindowGuiManager;
 import userGuiManagment.MarketingGuiManager;
 import usersManagment.MarketingEmployeeBoundary;
 
+/**
+ * controller for the window: view the and choose from the catalog window
+ *
+ */
 public class ShowCatagoryFromCatalogContorllerGUI implements IGuiController {
 	private MarketingGuiManager marketingEmployeeGuiManager = MarketingGuiManager.getInstance();
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();

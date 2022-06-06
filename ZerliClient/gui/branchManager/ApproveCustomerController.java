@@ -13,6 +13,11 @@ import userGuiManagment.BranchManagerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.BranchManagerBoundary;
 
+/**
+ * controller for the approve customer window
+ *
+ * 
+ */
 public class ApproveCustomerController implements IGuiController {
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	private BranchManagerGuiManager branchManagerGuiManager = BranchManagerGuiManager.getInstance();

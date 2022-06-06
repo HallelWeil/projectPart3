@@ -1,28 +1,21 @@
 package branchEmployee;
 
 import javafx.fxml.FXML;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import survey.Survey;
 import userGuiManagment.BranchEmployeeGuiManager;
 import userGuiManagment.MainWindowGuiManager;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
+/**
+ * controller for the entering the survey answers window
+ *
+ */
 public class SurveyControllerGUI implements IGuiController {
 	private BranchEmployeeGuiManager branchEmployeeGuiManager = BranchEmployeeGuiManager.getInstance();
 
@@ -79,7 +72,6 @@ public class SurveyControllerGUI implements IGuiController {
 	@FXML
 	private Button prevPageButton;
 
-	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 	private String[] questions;
 	private int surveyNumber;
 

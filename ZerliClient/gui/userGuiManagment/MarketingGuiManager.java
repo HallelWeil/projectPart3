@@ -10,6 +10,14 @@ import catalogManegment.ShowCatagoryFromCatalogContorllerGUI;
 import main.GuiObjectsFactory;
 import usersManagment.MarketingEmployeeBoundary;
 
+/**
+ * Singleton, manage all the different marketing employee windows, for each
+ * window controller when trying to get the controller, load the fxml if not
+ * already loaded
+ * 
+ * @author halel
+ *
+ */
 public class MarketingGuiManager implements IUserGuiManager {
 
 	private static MarketingGuiManager marketingGuiManager;

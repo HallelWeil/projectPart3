@@ -78,7 +78,7 @@ public class OrdersController {
 			long orderTime = order.getArrivalDate().getTime();
 			long currentTime = System.currentTimeMillis();
 			long timeDiff = currentTime - orderTime;
-			if (timeDiff < 3 * HOUR_IN_MILLISECONS) {
+			if (timeDiff < 3 * HOUR_IN_MILLISECONS || currentTime > orderTime) {
 				orderTime = currentTime + 3 * HOUR_IN_MILLISECONS;
 				order.setArrivalDate(new Timestamp(orderTime));
 				// save the change to the database
@@ -207,7 +207,7 @@ public class OrdersController {
 			sb.append("You can use your credit in our system for your next orders");
 		}
 		sb.append(additionalText);
-		sb.append("Have a great day!\n");
+		sb.append("\nHave a great day!\n");
 		sb.append("\nautomatic message from Zerli system\n");
 		String msgString = sb.toString();
 		ReminderController reminders = new ReminderController();
@@ -292,10 +292,9 @@ public class OrdersController {
 		sb.append("Hello " + customer.getFirstName() + " " + customer.getLastName() + "\n");
 		if (onTime) {
 			// arrived on time, inform the customer that we love him <3
-			sendReminder(order, "has arrived!", 0, customer, "Thanks for using our amazing app\\n");
+			sendReminder(order, "has arrived!", 0, customer, "Thanks for using our amazing app\n");
 		} else {
-			sendReminder(order, "arrived late", order.getOrderNumber(), customer,
-					"We are sorry for the inconvenience\n");
+			sendReminder(order, "arrived late", order.getPrice(), customer, "We are sorry for the inconvenience\n");
 			// lets give him a refund
 			CreditController creditController = new CreditController();
 			creditController.refund(customer.getPersonID(), order.getPrice());

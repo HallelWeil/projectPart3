@@ -25,7 +25,7 @@
          </font>
       </Label>
       <TextField fx:id="userUsername" disable="true" editable="false" layoutX="160.0" layoutY="165.0" prefHeight="25.0" prefWidth="182.0" />
-      <TextField fx:id="userEmailInfo" layoutX="510.0" layoutY="165.0" prefHeight="25.0" prefWidth="201.0" />
+      <TextField fx:id="userEmailInfo" disable="true" editable="false" layoutX="510.0" layoutY="165.0" prefHeight="25.0" prefWidth="201.0" />
       <Label layoutX="57.0" layoutY="215.0" text="First Name:">
          <font>
             <Font size="18.0" />

@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.GuiObjectsFactory;
@@ -20,13 +19,14 @@ import report.Report;
 import report.ReportType;
 import reportGUI.IReportController;
 import reportGUI.OrderReportController;
-import reportGUI.QuarterlyOrdersReportController;
-import reportGUI.QuarterlyRevenueReportController;
 import reportGUI.RevenueReportController;
-import reportGUI.SatisfactionReportController;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.BranchManagerBoundary;
 
+/**
+ * controller for the window: watch reports window
+ *
+ */
 public class ManagerWatchReportController implements IGuiController {
 	IReportController reportController = null;
 	BranchManagerBoundary managerBoundry = new BranchManagerBoundary();
@@ -102,9 +102,14 @@ public class ManagerWatchReportController implements IGuiController {
 
 	@FXML
 	void getReport(ActionEvent event) {
-		report = managerBoundry.requestViewReport(managerReportType.getSelectionModel().getSelectedItem(),
-				managerReportMonth.getSelectionModel().getSelectedItem(),
-				managerReportYear.getSelectionModel().getSelectedItem());
+		try {
+			report = managerBoundry.requestViewReport(managerReportType.getSelectionModel().getSelectedItem(),
+					managerReportMonth.getSelectionModel().getSelectedItem(),
+					managerReportYear.getSelectionModel().getSelectedItem());
+		} catch (Exception e) {
+			// return
+			return;
+		}
 		if (report != null) {
 			managerOpenReport.setDisable(false);
 			managerGetReport.setDisable(true);

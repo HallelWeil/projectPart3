@@ -16,6 +16,10 @@ import userGuiManagment.BranchManagerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.BranchManagerBoundary;
 
+/**
+ * controller for the management of the employees users information window
+ *
+ */
 public class ManageEmployeeController implements IGuiController {
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	private BranchManagerGuiManager branchManagerGuiManager = BranchManagerGuiManager.getInstance();

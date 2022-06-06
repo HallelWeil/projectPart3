@@ -18,6 +18,10 @@ import promotion.Promotion;
 import userGuiManagment.MainWindowGuiManager;
 import userGuiManagment.MarketingGuiManager;
 
+/**
+ * controller for the window: manage promotion window
+ *
+ */
 public class managePromotionWindowController implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();

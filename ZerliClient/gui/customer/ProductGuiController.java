@@ -81,7 +81,7 @@ public class ProductGuiController implements IGuiController {
 	void addToCart(ActionEvent event) {
 		try {
 			int num = Integer.valueOf(amount.getText());
-			if (num < 0)
+			if (num <= 0)
 				num = 1;
 			if (shopBoundary.addToCart(product, num))// add to cart
 			{

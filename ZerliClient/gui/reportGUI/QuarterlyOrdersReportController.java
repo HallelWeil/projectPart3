@@ -17,6 +17,10 @@ import main.IGuiController;
 import report.QuarterlyOrdersReport;
 import report.Report;
 
+/**
+ * controller for the window: the quarterly orders report
+ *
+ */
 public class QuarterlyOrdersReportController implements IGuiController, IReportController {
 	QuarterlyOrdersReport ordersReport = null;
 	private int[][] ordersPerDay;

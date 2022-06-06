@@ -10,6 +10,12 @@ import user.UserType;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.UserBoundary;
 
+/**
+ * the user main window(for the user home screen) including a welcome string
+ * 
+ * @author halel
+ *
+ */
 public class UserHomeWindowGuiController implements IGuiController {
 
 	private static final String userWelcomeString = "Welcome ";

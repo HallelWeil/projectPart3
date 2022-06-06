@@ -7,14 +7,28 @@ import simulators.ServerSimulatorsManager;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * the main for the server application, open the server window
+ *
+ */
 public class ServerUI extends Application {
+	/**
+	 * the gui controller
+	 */
 	private ServerGuiController controller;
+	/**
+	 * the simulations thread
+	 */
 	private Thread simThread;
 
+	/**
+	 * start the server application
+	 */
 	@Override
 	public void start(Stage stage) {
 		AnchorPane root;
 		try {
+			// load the server fxml
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/serverGui/ServerGUI.fxml"));
 			root = loader.load();
 			controller = loader.getController();

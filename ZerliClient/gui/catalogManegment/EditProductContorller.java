@@ -13,6 +13,10 @@ import userGuiManagment.MainWindowGuiManager;
 import userGuiManagment.MarketingGuiManager;
 import usersManagment.MarketingEmployeeBoundary;
 
+/**
+ * controller for the window: edit a product window
+ *
+ */
 public class EditProductContorller implements IGuiController {
 	private MarketingGuiManager marketingEmployeeGuiManager = MarketingGuiManager.getInstance();
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();

@@ -12,6 +12,10 @@ import main.IGuiController;
 import report.QuarterlySatisfactionReport;
 import report.Report;
 
+/**
+ * controller for the window: the quarterly satisfaction report
+ *
+ */
 public class SatisfactionReportController implements IGuiController, IReportController {
 	QuarterlySatisfactionReport satisfactionReport = null;
 	Series<String, Integer> monthSeries = null;

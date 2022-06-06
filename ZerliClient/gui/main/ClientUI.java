@@ -6,6 +6,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * the main for the client ui
+ *
+ */
 public class ClientUI extends Application {
 
 	public static final String DEFAULT_HOST = "localhost";
@@ -16,9 +20,12 @@ public class ClientUI extends Application {
 	public static Stage globalstage;
 	public static ConnectGuiController connectGuiController;
 
+	/**
+	 * start the client application, try to connect to the server, open the
+	 * connection window on fail
+	 */
 	@Override
 	public void start(Stage stage) {
-
 		clientBoundary = new ClientBoundary();
 		globalstage = stage;
 		// load the connection controller
@@ -29,8 +36,8 @@ public class ClientUI extends Application {
 			Scene scene = new Scene(mainWindowManager.mainWindowController.getMainWindowRoot());
 			stage.setScene(scene);
 			stage.show();
-			stage.setMaxHeight(800);
-			stage.setMaxWidth(1200);
+			stage.setMaxHeight(820);
+			stage.setMaxWidth(1220);
 			stage.setMinHeight(800);
 			stage.setMinWidth(1200);
 			stage.setOnCloseRequest(event -> {

@@ -16,6 +16,10 @@ import userGuiManagment.BranchManagerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.BranchManagerBoundary;
 
+/**
+ * controller for managing the customer user information
+ * 
+ */
 public class ManageCustomerController implements IGuiController {
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	private BranchManagerGuiManager branchManagerGuiManager = BranchManagerGuiManager.getInstance();

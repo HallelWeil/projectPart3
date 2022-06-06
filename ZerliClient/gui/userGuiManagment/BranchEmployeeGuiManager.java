@@ -5,6 +5,14 @@ import branchEmployee.SurveyControllerGUI;
 import main.GuiObjectsFactory;
 import usersManagment.BranchEmployeeBoundary;
 
+/**
+ * Singleton, manage all the different branch employee windows, for each window
+ * controller when trying to get the controller, load the fxml if not already
+ * loaded
+ * 
+ * @author halel
+ *
+ */
 public class BranchEmployeeGuiManager implements IUserGuiManager {
 
 	private static BranchEmployeeGuiManager branchEmployeeGuiManager;

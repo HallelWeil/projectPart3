@@ -5,16 +5,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import survey.Survey;
 import userGuiManagment.BranchEmployeeGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * controller for the search survey window
+ *
+ */
 public class SearchSurverControllerGUI implements IGuiController {
 	private BranchEmployeeGuiManager branchEmployeeGuiManager = BranchEmployeeGuiManager.getInstance();
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();

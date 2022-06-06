@@ -2,16 +2,18 @@ package ordersPayment;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import main.GuiObjectsFactory;
 import main.IGuiController;
-import shop.ShopBoundary;
 import userGuiManagment.AuthorizedCustomerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
+import usersManagment.UserBoundary;
 
+/**
+ * controller for the window: payment success message window
+ *
+ */
 public class SuccedPayWindowController implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
@@ -45,16 +47,16 @@ public class SuccedPayWindowController implements IGuiController {
 		initmywindow();
 		mainWindowManager.mainWindowController.showNewWindow(basepane);
 		mainWindowManager.mainWindowController.changeWindowName("Payment Approval");
-		//we done withthe order lets empty the cart
+		// we done withthe order lets empty the cart
 		authorizedCustomerGuiManager.getShopBoundary().emptyCart();
 		authorizedCustomerGuiManager.getShopWindowController().emptyCart();
 	}
 
 	public void initmywindow() {
+		// change email to what in user object in userBoudary
 		if (authorizedCustomerGuiManager.getConfirmOrder().isEmailSend) {
-			labelSendEmail.setText(labelSendEmail.getText() + "\nA receipt send to email :"
-					+ mainWindowManager.userBaundary.CurrentUser.getEmail()); // change email to what in user object in
-																				// userBoudary
+			labelSendEmail.setText(
+					labelSendEmail.getText() + "\nA receipt send to email :" + UserBoundary.CurrentUser.getEmail());
 		}
 	}
 

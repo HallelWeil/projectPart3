@@ -4,6 +4,13 @@ import ceo.CEOcontroller;
 import main.GuiObjectsFactory;
 import usersManagment.CEOBoundary;
 
+/**
+ * Singleton, manage all the different ceo windows, for each window controller
+ * when trying to get the controller, load the fxml if not already loaded
+ * 
+ * @author halel
+ *
+ */
 public class CEOGuiManager implements IUserGuiManager {
 
 	private static CEOGuiManager ceoGuiManager;
@@ -24,17 +31,15 @@ public class CEOGuiManager implements IUserGuiManager {
 		return ceoGuiManager;
 	}
 
-	
-	
 	public CEOcontroller getCeoController() {
-		if(ceoController==null) {
+		if (ceoController == null) {
 			ceoController = (CEOcontroller) guiObjectsFactory.loadFxmlFile("/ceo/ceoWatchReport.fxml");
 		}
 		return ceoController;
 	}
 
 	public CEOBoundary getCeoBoundry() {
-		if(ceoBoundry==null) {
+		if (ceoBoundry == null) {
 			ceoBoundry = new CEOBoundary();
 
 		}

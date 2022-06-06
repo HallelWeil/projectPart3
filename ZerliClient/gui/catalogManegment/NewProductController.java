@@ -13,6 +13,10 @@ import userGuiManagment.MainWindowGuiManager;
 import userGuiManagment.MarketingGuiManager;
 import usersManagment.MarketingEmployeeBoundary;
 
+/**
+ * controller for the window: create new product window
+ *
+ */
 public class NewProductController implements IGuiController {
 
 	private MarketingGuiManager marketingEmployeeGuiManager = MarketingGuiManager.getInstance();
@@ -97,7 +101,7 @@ public class NewProductController implements IGuiController {
 		}
 		// get the colors
 		temp = colorTxt.getText();
-		if (temp.equals("") || temp == null){
+		if (temp.equals("") || temp == null) {
 			errorlabel.setText("Please add colors");
 			return;
 		}

@@ -12,6 +12,9 @@ public class QuarterlySatisfactionReport extends Report {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	/**
+	 * the complaints per month
+	 */
 	private int[] complaintsPerMonth;
 
 	public QuarterlySatisfactionReport(int month, int year) {
@@ -42,6 +45,9 @@ public class QuarterlySatisfactionReport extends Report {
 		return complaintsPerMonth;
 	}
 
+	/**
+	 * get the total number of complaints
+	 */
 	public int getNumberOfComplaints() {
 		return complaintsPerMonth[0] + complaintsPerMonth[1] + complaintsPerMonth[2];
 	}

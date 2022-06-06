@@ -32,7 +32,7 @@ public class NonAuthorizedCustomerTask extends ClientTasks {
 			newMsgToSend = ServerMsgController.createRETURN_CATALOG_PAGEMsg(catalog);
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(null, user.getUsername());
+			ArrayList<Order> orders = dbController.getAllOrdersOfCustomer(user.getUsername());
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		case UPDATE_ORDER_STATUS:

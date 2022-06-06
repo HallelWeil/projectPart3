@@ -5,6 +5,7 @@ import msg.Msg;
 import ocsf.server.ConnectionToClient;
 import server.ServerMsgController;
 import user.User;
+import usersManagment.LoginConrtroller;
 
 /**
  * handle the client task, manage the connection to different user types and
@@ -60,19 +61,19 @@ public class HandleClientTask {
 		// handle logout and exit tasks
 		switch (msgController.getType()) {
 		case LOG_OUT_REQUEST:
+			LoginConrtroller loginConrtroller = new LoginConrtroller();
+			Msg returnMsg = loginConrtroller.logout(ActiveUser);
 			if (ActiveUser != null) {
-				// to log out remove the user entity
-				dbController.disconnectUser(ActiveUser.getUsername());
 				logout();
 			}
-			return ServerMsgController.createAPPROVE_LOGOUTMsg();
+			return returnMsg;
 		case EXIT:
+			LoginConrtroller loginConrtroller2 = new LoginConrtroller();
+			Msg returnMsg2 = loginConrtroller2.forceLogout(ActiveUser);
 			if (ActiveUser != null) {
-				// to log out remove the user entity
-				dbController.disconnectUser(ActiveUser.getUsername());
 				logout();
 			}
-			return null;
+			return returnMsg2;
 		case GET_BRANCH_LIST:
 			return ServerMsgController.createRETURN_BRANCH_NAMESMsg(dbController.getAllBranches());
 		default:

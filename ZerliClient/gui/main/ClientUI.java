@@ -29,6 +29,14 @@ public class ClientUI extends Application {
 			Scene scene = new Scene(mainWindowManager.mainWindowController.getMainWindowRoot());
 			stage.setScene(scene);
 			stage.show();
+			stage.setMaxHeight(800);
+			stage.setMaxWidth(1200);
+			stage.setMinHeight(800);
+			stage.setMinWidth(1200);
+			stage.setOnCloseRequest(event -> {
+				System.out.println("Client is closing");
+				stop();
+			});
 			mainWindowManager.mainWindowController.init();
 			mainWindowManager.mainWindowController.openWindow();
 		} else {

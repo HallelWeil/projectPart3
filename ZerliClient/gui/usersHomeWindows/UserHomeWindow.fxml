@@ -13,11 +13,16 @@
             <Image url="@../backround/fullBackground.jpg" />
          </image>
       </ImageView>
-      <Label fx:id="welcomeLabel" layoutX="307.0" layoutY="118.0" prefHeight="47.0" prefWidth="587.0" textAlignment="CENTER">
+      <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="249.0" layoutY="104.0" prefHeight="65.0" prefWidth="702.0" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold Italic" size="28.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="innerPane" layoutX="176.0" layoutY="267.0" prefHeight="337.0" prefWidth="850.0" />
+      <Label fx:id="accountStatusLabel" alignment="CENTER" layoutX="308.0" layoutY="176.0" prefHeight="47.0" prefWidth="587.0" textAlignment="CENTER">
          <font>
             <Font name="System Bold Italic" size="24.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="innerPane" layoutX="176.0" layoutY="204.0" prefHeight="400.0" prefWidth="850.0" />
    </children>
 </AnchorPane>

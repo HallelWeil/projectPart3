@@ -26,8 +26,17 @@ import user.User;
 import user.UserStatus;
 import user.UserType;
 
+/**
+ * Manage the creation of the different object from the result set
+ */
 public class DBObjectsManager {
 
+	/**
+	 * change object into a string to put in database query as blob
+	 * 
+	 * @param object - the object we want to save as blob
+	 * @return String representing the object.
+	 */
 	String objectToBlobString(Object object) {
 		byte[] data;
 		String sdata = "";
@@ -44,6 +53,13 @@ public class DBObjectsManager {
 		return sdata;
 	}
 
+	/**
+	 * change blob object into the original object
+	 * 
+	 * @param blob
+	 * @return the original object from blob.
+	 */
+
 	Object blobToObject(java.sql.Blob blob) {
 		Object object = null;
 		byte[] data;
@@ -59,6 +75,12 @@ public class DBObjectsManager {
 		return object;
 	}
 
+	/**
+	 * 
+	 * @param res - resultSet of query to get last id
+	 * @return last id generated automatically in the database
+	 */
+
 	int lastID(ResultSet res) {
 		int lastID = -1;
 		try {
@@ -70,6 +92,13 @@ public class DBObjectsManager {
 		return lastID;
 
 	}
+
+	/**
+	 * create the ArrayList<Order> object from the resultset
+	 * 
+	 * @param res - resultSet of query to get orders
+	 * @return ArrayList<Order> object
+	 */
 
 	ArrayList<Order> orderDB(ResultSet res) {
 		ArrayList<Order> orders = new ArrayList<>();
@@ -93,6 +122,12 @@ public class DBObjectsManager {
 		return orders;
 	}
 
+	/**
+	 * 
+	 * @param res - resultSet of query to get surveys
+	 * @return ArrayList<Survey> object
+	 */
+
 	ArrayList<Survey> surveyDB(ResultSet res) {
 		ArrayList<Survey> surveys = new ArrayList<>();
 		try {
@@ -115,6 +150,12 @@ public class DBObjectsManager {
 		return surveys;
 	}
 
+	/**
+	 * 
+	 * @param res resultSet of query to get complaints
+	 * @return ArrayList<Complaint> object
+	 */
+
 	public ArrayList<Complaint> complaintDB(ResultSet res) {
 		ArrayList<Complaint> complaints = new ArrayList<>();
 		try {
@@ -133,6 +174,12 @@ public class DBObjectsManager {
 		}
 		return complaints;
 	}
+
+	/**
+	 * 
+	 * @param res - resultSet of query to get products
+	 * @return ArrayList<Product> object
+	 */
 
 	public ArrayList<Product> productDB(ResultSet res) {
 		ArrayList<Product> products = new ArrayList<>();
@@ -154,6 +201,12 @@ public class DBObjectsManager {
 		return products;
 	}
 
+	/**
+	 * 
+	 * @param res - resultSet of query to get 'Product In Order'.
+	 * @return ArrayList<ProductInOrder>
+	 */
+
 	public ArrayList<ProductInOrder> productsInOrderDB(ResultSet res) {
 		ArrayList<ProductInOrder> products = new ArrayList<>();
 		try {
@@ -171,6 +224,12 @@ public class DBObjectsManager {
 		return products;
 	}
 
+	/**
+	 * 
+	 * @param res - resultSet of query to get reports.
+	 * @return ArrayList<Report> object
+	 */
+
 	public ArrayList<Report> reportDB(ResultSet res) {
 		ArrayList<Report> reports = new ArrayList<>();
 		try {
@@ -181,6 +240,12 @@ public class DBObjectsManager {
 		}
 		return reports;
 	}
+
+	/**
+	 * 
+	 * @param res - resultSet of query to get user.
+	 * @return User object
+	 */
 
 	public ArrayList<User> userDB(ResultSet res) {
 		ArrayList<User> arr = new ArrayList<User>();
@@ -206,6 +271,12 @@ public class DBObjectsManager {
 		return arr;
 	}
 
+	/**
+	 * 
+	 * @param res - resultSet of query to get card's info.
+	 * @return String with the card's information.
+	 */
+
 	public String cardDB(ResultSet res) {
 		String info = null;
 		try {
@@ -217,6 +288,12 @@ public class DBObjectsManager {
 		}
 		return info;
 	}
+
+	/**
+	 * 
+	 * @param res - resultSet of query to get survey's result's blob.
+	 * @return Blob object
+	 */
 
 	public Blob surveyResultDB(ResultSet res) {
 		java.sql.Blob pdf = null;
@@ -230,6 +307,12 @@ public class DBObjectsManager {
 		return pdf;
 	}
 
+	/**
+	 * 
+	 * @param res - resultSet of query to get branch's names.
+	 * @return ArrayList<String> object
+	 */
+
 	public ArrayList<String> branchNameDB(ResultSet res) {
 		ArrayList<String> branches = new ArrayList<>();
 		try {
@@ -240,6 +323,12 @@ public class DBObjectsManager {
 		}
 		return branches;
 	}
+
+	/**
+	 * 
+	 * @param res - resultSet of query to get promotion's.
+	 * @return ArrayList<Promotion> object.
+	 */
 
 	public ArrayList<Promotion> promotionsDB(ResultSet res) {
 		ArrayList<Promotion> promotions = new ArrayList<>();
@@ -259,6 +348,12 @@ public class DBObjectsManager {
 		return promotions;
 	}
 
+	/**
+	 * 
+	 * @param res - resultSet of query to get delivery details.
+	 * @return DeliveryDetails object
+	 */
+
 	public DeliveryDetails deliveryDetailsDB(ResultSet res) {
 		DeliveryDetails deliveryDetails = null;
 		try {
@@ -275,6 +370,12 @@ public class DBObjectsManager {
 		}
 		return deliveryDetails;
 	}
+
+	/**
+	 * 
+	 * @param res - resultSet of query to get user's credit amount.
+	 * @return double object
+	 */
 
 	public double shopCreditDB(ResultSet res) {
 		double credit = -1;

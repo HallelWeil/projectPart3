@@ -10,7 +10,7 @@ public class ClientController extends AbstractClient {
 	/**
 	 * how much time we wait before we timeout(in 100 millis)
 	 */
-	private static final int TIME_TO_WAIT_BEFORE_TIMEOUT =1000000000;// 300;
+	private static final int TIME_TO_WAIT_BEFORE_TIMEOUT = 1000000000;// 300;
 	/**
 	 * awaitResponse used to make thread sleep until thread of
 	 * handleMessageFromServer finish his work
@@ -85,6 +85,9 @@ public class ClientController extends AbstractClient {
 		try {
 			openConnection();// in order to send more than one message
 			awaitResponse = true;
+			if (((Msg) message).type.equals(MsgType.EXIT)) {
+				awaitResponse = false;
+			}
 			sendToServer(message); // this is the only way to communicate with the server
 			while (awaitResponse && timeOut <= TIME_TO_WAIT_BEFORE_TIMEOUT) {
 				try {

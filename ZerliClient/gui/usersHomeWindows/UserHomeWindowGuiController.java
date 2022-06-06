@@ -5,7 +5,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.*;
+import user.UserStatus;
+import user.UserType;
 import userGuiManagment.MainWindowGuiManager;
+import usersManagment.UserBoundary;
 
 public class UserHomeWindowGuiController implements IGuiController {
 
@@ -21,6 +24,9 @@ public class UserHomeWindowGuiController implements IGuiController {
 
 	@FXML
 	private Label welcomeLabel;
+
+	@FXML
+	private Label accountStatusLabel;
 
 	/**
 	 * Go to the user home window
@@ -38,9 +44,18 @@ public class UserHomeWindowGuiController implements IGuiController {
 	 */
 	public void onEntering() {
 		// get the users full name
-		String fullName = mainWindowManager.userBaundary.CurrentUser.getFirstName() + " "
-				+ mainWindowManager.userBaundary.CurrentUser.getLastName();
+		String fullName = UserBoundary.CurrentUser.getFirstName() + " " + UserBoundary.CurrentUser.getLastName();
 		welcomeLabel.setText(userWelcomeString + fullName);
+		if (UserBoundary.CurrentUser.getUserType() == UserType.NonAuthorizedCustomer) {
+			accountStatusLabel.setText("Your account is not authorized!");
+		} else if (UserBoundary.CurrentUser.getStatus().equals(UserStatus.Frozen))
+			accountStatusLabel.setText("Your account is frozen!");
+		else if (UserBoundary.CurrentUser.getStatus().equals(UserStatus.NotActive))
+			accountStatusLabel.setText("Your account is not active!");
+		else {
+			accountStatusLabel.setText("");
+		}
+
 	}
 
 	@Override

@@ -44,7 +44,7 @@ public class BranchManagerTask extends ClientTasks {
 			}
 			break;
 		case GET_ALL_ORDERS:
-			ArrayList<Order> orders = dbController.getAllOrdersInBranch(user.getBranchName(), null);
+			ArrayList<Order> orders = dbController.getAllOrdersInBranch(user.getBranchName());
 			newMsgToSend = ServerMsgController.createRETURN_ALL_ORDERSMsg(orders);
 			break;
 		case GET_USER:

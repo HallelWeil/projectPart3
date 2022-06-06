@@ -140,8 +140,8 @@ public class ReportsController {
 		}
 		// get the average
 		if (branches.size() > 0) {
-			avgOrders = avgOrders / branches.size();
-			avgRev = avgRev / branches.size();
+			avgOrders = roundDouble(avgOrders / branches.size());
+			avgRev = roundDouble(avgRev / branches.size());
 		}
 		for (OrdersReport r : orderReports) {
 			r.setAvarageMonthlyOrders(avgOrders);
@@ -211,7 +211,7 @@ public class ReportsController {
 		}
 		// if the total order is bigger than 0, get the average
 		if (totalOrders != 0)
-			newReport.setAverageRevenuePerOrder(newReport.getTotalRevenue() / totalOrders);
+			newReport.setAverageRevenuePerOrder(roundDouble(newReport.getTotalRevenue() / totalOrders));
 		// save the newly created report
 		quarterlyRevenueReport = newReport;
 	}
@@ -302,9 +302,9 @@ public class ReportsController {
 		if (counter == 0)
 			newRevenueReport.setAverageRevenuePerOrder(revenue);
 		else
-			newRevenueReport.setAverageRevenuePerOrder(revenue / counter);
+			newRevenueReport.setAverageRevenuePerOrder(roundDouble(revenue / counter));
 		// save the values
-		newRevenueReport.setTotalRevenue(revenue);
+		newRevenueReport.setTotalRevenue(roundDouble(revenue));
 		newRevenueReport.setAverageMonthlyRevenue(0);
 		newOrdersReport.setAvarageMonthlyOrders(0);
 		newOrdersReport.setTotalOrders(counter);
@@ -363,5 +363,15 @@ public class ReportsController {
 			number += amount;
 		}
 		itemsCounter.put(name, number);
+	}
+
+	/**
+	 * round a double up to 2 decimal places
+	 * 
+	 * @param num
+	 * @return
+	 */
+	private double roundDouble(double num) {
+		return Math.round(num * 100.0) / 100.0;
 	}
 }

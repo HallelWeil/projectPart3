@@ -118,10 +118,17 @@ public class PromotionManager {
 		return ServerMsgController.createRETURN_ALL_PROMOTIONSMsg(dbController.getAllPromotions());
 	}
 
+	/**
+	 * calculate the product new price for the promotion
+	 * 
+	 * @param price    the original price
+	 * @param discount the discount
+	 * @return the new price
+	 */
 	private double calculateNewPrice(double price, double discount) {
 		Double newPrice = price - price * discount;
-		// create the price
-		newPrice = newPrice.intValue() - 1 + 0.99;
+		// round the price
+		newPrice = Math.round(newPrice * 100.0) / 100.0;
 		return newPrice;
 	}
 

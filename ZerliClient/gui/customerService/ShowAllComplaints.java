@@ -20,6 +20,10 @@ import userGuiManagment.CustomerServiceGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.CustomerServiceEmployeeBoundary;
 
+/**
+ * controller for the window: show all the complaints window
+ *
+ */
 public class ShowAllComplaints implements IGuiController {
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	private CustomerServiceEmployeeBoundary complaintBoundary = CustomerServiceGuiManager.getInstance()
@@ -37,6 +41,9 @@ public class ShowAllComplaints implements IGuiController {
 
 	@FXML
 	private Label complaintLabel;
+
+	@FXML
+	private Label msgLabel;
 
 	@FXML
 	private TableColumn<Complaint, Integer> complaintsNumberCol;
@@ -87,15 +94,20 @@ public class ShowAllComplaints implements IGuiController {
 	public void resetController() {
 		complaintObs.clear();
 		ComplaintTable.getItems().clear();
+		msgLabel.setText("");
 	}
 
 	@FXML
 	void GoToUpdateComplaintWindow(ActionEvent event) {
 		selectedComplaint = ComplaintTable.getSelectionModel().getSelectedItem();
 		if (selectedComplaint != null) {
-			mainWindowManager.mainWindowController.changeWindowName("update complaint");
-			updateComplaint.setSelectedComplaint(selectedComplaint);
-			updateComplaint.openWindow();
+			if (selectedComplaint.getStatus().equals(Status.Completed)) {
+				msgLabel.setText("Complaint completed");
+			} else {
+				mainWindowManager.mainWindowController.changeWindowName("update complaint");
+				updateComplaint.setSelectedComplaint(selectedComplaint);
+				updateComplaint.openWindow();
+			}
 		}
 
 	}

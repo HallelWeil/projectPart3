@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import cart.Cart;
 import cart.ProductInCart;
 import catalog.CustomizedProduct;
+import catalog.Product;
 import database.DBController;
 import order.Order;
 import order.OrderStatus;
@@ -14,9 +15,9 @@ import paymentManagment.CreditController;
 import paymentManagment.PaymentController;
 
 /**
- * Create a order from a cart, manage orders status and approval
+ * Create a order from a cart, manage the order process, creation to full
+ * payment
  * 
- * @author halel
  *
  */
 public class OrderProcessManager {
@@ -28,7 +29,7 @@ public class OrderProcessManager {
 	private String username;
 
 	/**
-	 * Reset the orderController
+	 * Reset the OrderProcessManager
 	 */
 	public void reset() {
 		activeOrder = new Order();
@@ -69,6 +70,12 @@ public class OrderProcessManager {
 		// calculate the price and get the items
 		ArrayList<ProductInOrder> items = new ArrayList<ProductInOrder>();
 		newOrder.setPrice(calculateOrderPriceAndGetItems(cart.getProductsInCart(), items));
+		if (newOrder.isHomeDelivery()) {
+			// add the shipping cost!
+			newOrder.setPrice(newOrder.getPrice() + 18);
+			newOrder.setOrderData(newOrder.getOrderData() + "18 for the delivery!");
+
+		}
 		newOrder.setItems(items);
 		newOrder.setPersonalLetter(cart.getGreetingCard());
 		activeOrder = newOrder;
@@ -76,6 +83,10 @@ public class OrderProcessManager {
 		return newOrder;
 	}
 
+	/**
+	 * Add the discount(on first order) and the use of shop credit if exist update
+	 * the relevant fields accordingly
+	 */
 	private void getDiscountAndCredit() {
 		DBController dbcontroller = DBController.getInstance();
 		CreditController creditController = new CreditController();
@@ -168,21 +179,29 @@ public class OrderProcessManager {
 		ProductInOrder tempProductInOrder;
 		// for each product in the list
 		for (ProductInCart product : products) {
-			tempPrice = 0;
-			// if its a customized product calculate the price base on the items cost
-			if (product.getProduct() instanceof CustomizedProduct) {
-				CustomizedProduct tempProduct = (CustomizedProduct) (product.getProduct());
-				tempPrice = tempProduct.getPriceRangeHighLimit();// the price is the high selected limit
-			}
-			// for regular product
-			else {
-				tempPrice = product.getProduct().getPrice();
-			}
+
 			tempProductInOrder = new ProductInOrder();
 			tempProductInOrder.setAmount(product.getAmount());
 			tempProductInOrder.setCategory(product.getProduct().getCategory());
 			tempProductInOrder.setOrderNumber(0);// no number for now
-			tempProductInOrder.setName(product.getProduct().getName());
+			tempPrice = 0;
+			// if its a customized product calculate the price base on the items cost
+			// and add the name + items
+			if (product.getProduct() instanceof CustomizedProduct) {
+				CustomizedProduct temp = (CustomizedProduct) product.getProduct();
+				tempPrice = temp.getPriceRangeHighLimit();// the price is the high selected limit
+				tempProductInOrder.setName(temp.getName() + "," + temp.getDescription() + "," + temp.getType());
+				StringBuilder sb = new StringBuilder();
+				sb.append("[");
+				for (Product p : temp.getItems()) {
+					sb.append(p.getName() + ",");
+				}
+				sb.replace(sb.length() - 1, sb.length() - 1, "]");
+				tempProductInOrder.addData(sb.toString());
+			} else {
+				tempProductInOrder.setName(product.getProduct().getName());
+				tempPrice = product.getProduct().getPrice();
+			}
 			tempProductInOrder.setPrice(tempPrice);
 			tempPrice = tempPrice * product.getAmount();
 			items.add(tempProductInOrder);

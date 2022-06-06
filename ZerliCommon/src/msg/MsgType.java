@@ -1,5 +1,11 @@
 package msg;
 
+/**
+ * The Message types
+ * 
+ * @author halel
+ *
+ */
 public enum MsgType {
 
 	// common types
@@ -126,6 +132,22 @@ public enum MsgType {
 	 * get all the promotions
 	 */
 	GET_ALL_PROMOTIONS,
+	/**
+	 * Add new product to the catalog
+	 */
+	ADD_TO_CATALOG,
+	/**
+	 * Delete product from the catalog
+	 */
+	REMOVE_FROM_CATALOG,
+	/**
+	 * get all users with a user type
+	 */
+	GET_ALL_USERS,
+	/**
+	 * add card for user, or update the existing card
+	 */
+	ADD_CARD,
 	// server -> client
 	/**
 	 * return a report
@@ -179,5 +201,8 @@ public enum MsgType {
 	 * return all the promotions
 	 */
 	RETURN_ALL_PROMOTIONS,
-
+	/**
+	 * return arraylist of users
+	 */
+	RETURN_ALL_USERS,
 }

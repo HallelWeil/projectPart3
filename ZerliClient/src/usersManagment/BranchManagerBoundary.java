@@ -1,9 +1,7 @@
 package usersManagment;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
-import client.ClientBoundary;
 import client.ClientController;
 import client.MsgController;
 import msg.Msg;
@@ -16,13 +14,12 @@ import user.UserStatus;
 import user.UserType;
 
 /**
- * use the branch manager contoller and the different controllers for the needed
- * actions
+ * use the branch manager controller and the different controllers for the
+ * needed actions
  * 
- * @author halel
  *
  */
-public class BranchManagerBoundary extends UserBoundary {
+public class BranchManagerBoundary {
 
 	/**
 	 * clientController used to communicate with clientController and let the
@@ -97,33 +94,18 @@ public class BranchManagerBoundary extends UserBoundary {
 	}
 
 	/**
-	 * update user type + status, can be null if only wanted to update one of the
-	 * fields return boolean if the request succeed
+	 * update a user data
 	 * 
-	 * @param userName
-	 * @param type
-	 * @param status
-	 * @return
+	 * @param user
+	 * @throws Exception - throw exception with error msg on failure
 	 */
-	public boolean requestUpdateUserData(String userName, UserType type, UserStatus status) {
+	public void requestUpdateUserData(User user) throws Exception {
 
-		User user = UserBoundary.CurrentUser;
-		if (type != null) // check if field null then we didn't need to update
-		{
-			user.setUserType(type);
-		}
-		if (status != null) {
-			user.setStatus(status);
-		}
-		user.setUsername(userName);
 		msg = MsgController.createUPATE_USER_DATAMsg(user);
 		msgController = clientController.sendMsg(msg);
-		if (msgController.getType().equals(MsgType.COMPLETED)) // receive completed in type mean update has been done
-																// and succeed
-		{
-			return true;
+		if (msgController.getType().equals(MsgType.ERROR)) {
+			throw new Exception(msgController.getErrorMsg());
 		}
-		return false;
 	}
 
 	/**
@@ -143,6 +125,12 @@ public class BranchManagerBoundary extends UserBoundary {
 		return null; // in case returned msg was ERROR for Example mean Report not found or exist
 	}
 
+	/**
+	 * get user data
+	 * 
+	 * @param username
+	 * @return
+	 */
 	public User requestUser(String username) {
 		msg = MsgController.createGET_USERMsg(username);
 		msgController = clientController.sendMsg(msg);
@@ -152,6 +140,11 @@ public class BranchManagerBoundary extends UserBoundary {
 		return null; // in case returned msg was ERROR for Example mean user not found or exist
 	}
 
+	/**
+	 * get all the branch orders
+	 * 
+	 * @return
+	 */
 	public ArrayList<Order> getAllOrdersToApprove() {
 		msg = MsgController.createGET_ALL_ORDERSMsg();
 		msgController = clientController.sendMsg(msg);
@@ -161,6 +154,12 @@ public class BranchManagerBoundary extends UserBoundary {
 		return null; // in case returned msg was ERROR for Example mean orders not found or exist
 	}
 
+	/**
+	 * get all the product in order
+	 * 
+	 * @param orderNumber
+	 * @return
+	 */
 	public ArrayList<ProductInOrder> getAllProductsInOrder(int orderNumber) {
 		msg = MsgController.createGET_ORDERMsg(orderNumber);
 		msgController = clientController.sendMsg(msg);
@@ -168,6 +167,97 @@ public class BranchManagerBoundary extends UserBoundary {
 			return msgController.getOrder().getItems();
 		}
 		return null; // in case returned msg was ERROR for Example mean orders not found or exist
+	}
+
+	/**
+	 * get all the customers waiting for approval
+	 * 
+	 * @return
+	 * @throws Exception on failure -> throw with error message
+	 */
+	public ArrayList<User> getAllWaitingForApprovalCustomers() throws Exception {
+		msg = MsgController.createGET_ALL_USERSMsg(UserType.NonAuthorizedCustomer);
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType().equals(MsgType.ERROR)) {
+			throw new Exception(msgController.getErrorMsg());
+		}
+		return msgController.getUsers();
+	}
+
+	/**
+	 * get all the active customers
+	 * 
+	 * @return
+	 * @throws Exception on failure -> throw with error message
+	 */
+	public ArrayList<User> getAllActiveCustomers() throws Exception {
+		msg = MsgController.createGET_ALL_USERSMsg(UserType.AuthorizedCustomer);
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType().equals(MsgType.ERROR)) {
+			throw new Exception(msgController.getErrorMsg());
+		}
+		return msgController.getUsers();
+	}
+
+	/**
+	 * get all the branch's employees
+	 * 
+	 * @return
+	 * @throws Exception on failure -> throw with error message
+	 */
+	public ArrayList<User> getAllEmployees() throws Exception {
+		msg = MsgController.createGET_ALL_USERSMsg(UserType.BranchEmployee);
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType().equals(MsgType.ERROR)) {
+			throw new Exception(msgController.getErrorMsg());
+		}
+		return msgController.getUsers();
+	}
+
+	/**
+	 * approve a customer, must have active card to be approved
+	 * 
+	 * @param customer
+	 * @param cardIinfo
+	 * @throws Exception on failure -> throw with error message
+	 */
+	public void approveCustomer(User customer, String cardIinfo) throws Exception {
+		// add the card
+		addCard(customer, cardIinfo);
+		// update the info
+		customer.setStatus(UserStatus.Active);
+		customer.setUserType(UserType.AuthorizedCustomer);
+		msg = MsgController.createUPATE_USER_DATAMsg(customer);
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType() == MsgType.ERROR)
+			throw new Exception(msgController.getErrorMsg());
+	}
+
+	/**
+	 * get the branch list
+	 * 
+	 * @return
+	 */
+	public ArrayList<String> getBranches() {
+		msg = MsgController.createGET_BRANCH_LISTMsg();
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType() == MsgType.ERROR)
+			return new ArrayList<String>();
+		return msgController.getBranchNames();
+	}
+
+	/**
+	 * add card for a customer
+	 * 
+	 * @param customer
+	 * @param cardIinfo
+	 * @throws Exception on failure -> throw with error message
+	 */
+	public void addCard(User customer, String cardIinfo) throws Exception {
+		msg = MsgController.createADD_CARDMsg(cardIinfo, customer.getUsername());
+		msgController = clientController.sendMsg(msg);
+		if (msgController.getType() == MsgType.ERROR)
+			throw new Exception(msgController.getErrorMsg());
 	}
 
 }

@@ -7,7 +7,6 @@ import client.MsgController;
 import msg.MsgType;
 import order.Order;
 import order.OrderStatus;
-import order.ProductInOrder;
 
 public class AuthorizedCustomerController {
 	/**
@@ -27,13 +26,6 @@ public class AuthorizedCustomerController {
 	}
 
 	/**
-	 * create the catalog boundary
-	 */
-	public void requestBrowseTheCatalog() {
-
-	}
-
-	/**
 	 * request to cancel an existing order ,send to server a request and return true
 	 * when the cancellation is approved
 	 * 
@@ -42,7 +34,8 @@ public class AuthorizedCustomerController {
 	 */
 	public boolean requestOrderCancellation(Order order) {
 
-		if (order.getOrderStatus() == OrderStatus.APPROVED||order.getOrderStatus() == OrderStatus.WAITING_FOR_APPROAVL)//
+		if (order.getOrderStatus() == OrderStatus.APPROVED
+				|| order.getOrderStatus() == OrderStatus.WAITING_FOR_APPROAVL)//
 			order.setOrderStatus(OrderStatus.WAITING_FOR_CANCELLATION_APPROVAL);
 		MsgController msgController = clientController.sendMsg(MsgController.createUPDATE_ORDER_STATUSMsg(order));
 		if (msgController.getType() == MsgType.COMPLETED)
@@ -50,10 +43,16 @@ public class AuthorizedCustomerController {
 		return false;
 	}
 
-	public ArrayList<ProductInOrder> getAllProductsInOrder(int orderNumber) {
+	/**
+	 * get the full order with all the details
+	 * 
+	 * @param orderNumber
+	 * @return
+	 */
+	public Order getfullOrder(int orderNumber) {
 		MsgController msgController = clientController.sendMsg(MsgController.createGET_ORDERMsg(orderNumber));
 		if (msgController.getType() == MsgType.RETURN_ORDER)
-			return msgController.getOrder().getItems();
+			return msgController.getOrder();
 		return null;
 	}
 

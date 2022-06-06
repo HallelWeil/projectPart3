@@ -5,6 +5,14 @@ import java.sql.Timestamp;
 
 import common.Status;
 
+/**
+ * represents a complaints. have a responsible employee (the one who created the
+ * complaint), complaint string(the complaint), answer(the answer text for the
+ * complaint), status, customer id and creation time fields
+ * 
+ * @author halel
+ *
+ */
 public class Complaint implements Serializable {
 
 	/**

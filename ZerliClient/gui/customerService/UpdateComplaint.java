@@ -8,14 +8,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import userGuiManagment.CustomerServiceGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.CustomerServiceEmployeeBoundary;
 
+/**
+ * controller for the window: update complaint window
+ *
+ */
 public class UpdateComplaint implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
@@ -49,17 +51,22 @@ public class UpdateComplaint implements IGuiController {
 
 	@FXML
 	void updateComplaint(ActionEvent event) {
-		String answer = answerText.getText();
-		double compensation = Double.valueOf(compensationText.getText());
-		Status status = Status.Completed;
+		if (answerText.getText() == "" || compensationText.getText() == "") {
+			msgLabel.setText("Please enter the details");
 
-		try {
-			complaintBoundary.handlingComplaints(selectedcomplaint, answer, compensation, status);
-			msgLabel.setText("Complaint successfully update");
+		} else {
+			String answer = answerText.getText();
+			double compensation = Double.valueOf(compensationText.getText());
+			Status status = Status.Completed;
 
-		} catch (Exception e) {
-			msgLabel.setText("Complaint unsuccessfully update");
+			try {
+				complaintBoundary.handlingComplaints(selectedcomplaint, answer, compensation, status);
+				msgLabel.setText("Complaint successfully update");
 
+			} catch (Exception e) {
+				msgLabel.setText("Complaint unsuccessfully update");
+
+			}
 		}
 	}
 

@@ -9,6 +9,11 @@ import files.SimpleFile;
 import survey.Survey;
 import msg.MsgType;
 
+/**
+ * manage the survey interactions, can get a survey, get all the surveys, add
+ * survey answers or survey result pdf file
+ * 
+ */
 public class SurveyController {
 
 	private Survey survey;
@@ -21,7 +26,12 @@ public class SurveyController {
 	}
 
 	/**
-	 * need to get pdf file and add it to the blob in the entity, to save in db
+	 * get a path and a survey number, open the file using the path and save the
+	 * file as object- to send to the server
+	 * 
+	 * @param sNumber the survey number
+	 * @param path    the file path
+	 * @throws Exception on failure -> throw with error message
 	 */
 	public void enterSurveyResults(int sNumber, String path) throws Exception {
 		FilesController fileController = new FilesController();
@@ -33,11 +43,10 @@ public class SurveyController {
 	}
 
 	/**
-	 * to create new survey, need to get the survey number from the db using client
-	 * controller then create the survey entity and send it to client controller
+	 * create new survey, need the questions for the survey
 	 * 
-	 * @param questions
-	 * @throws Exception
+	 * @param questions -> must be 6 questions
+	 * @throws Exception on failure -> throw with error message
 	 */
 	public void CreateSurvey(String[] questions) throws Exception {
 
@@ -49,6 +58,14 @@ public class SurveyController {
 
 	}
 
+	/**
+	 * add answers to existing survey, the answers are number from 1 to 10, must be
+	 * 6 answers
+	 * 
+	 * @param answers      6 answers -> numbers from 1 to 10
+	 * @param surveyNumber the survey number
+	 * @throws Exception on failure -> throw with error message
+	 */
 	public void enterSurveyAnswers(int[] answers, int surveyNumber) throws Exception {
 		// save the survey result using clientcontroller.saveSurveyResult
 		if (answers.length == 6) {
@@ -64,6 +81,13 @@ public class SurveyController {
 			throw new Exception("incorrect number of answers");
 	}
 
+	/**
+	 * get survey with the given survey number
+	 * 
+	 * @param surveyNumber
+	 * @return
+	 * @throws Exception on failure -> throw with error message
+	 */
 	public Survey getSurvey(int surveyNumber) throws Exception {
 		msgController = client.sendMsg(MsgController.createGET_SURVEYMsg(surveyNumber));
 		if (msgController.getType() == MsgType.ERROR)
@@ -74,8 +98,6 @@ public class SurveyController {
 	/**
 	 * get all the Surveys
 	 * 
-	 * @param
-	 * @return
 	 */
 	public ArrayList<Survey> getAllSurvey() throws Exception {
 		MsgController msgController = client.sendMsg(MsgController.createGET_ALL_SURVEYMsg());
@@ -84,6 +106,13 @@ public class SurveyController {
 		return msgController.getSurveys();
 	}
 
+	/**
+	 * get the survey result from the object and save it as pdf file on the given
+	 * path
+	 * 
+	 * @param sm   the file object
+	 * @param path
+	 */
 	public void saveSurveyResultToLocalFile(SimpleFile sm, String path) {
 		FilesController fileController = new FilesController();
 		fileController.savePdfFileFromObjectToPath(path, sm);

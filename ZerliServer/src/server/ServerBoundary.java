@@ -8,7 +8,6 @@ import javafx.collections.ObservableList;
 import msg.Msg;
 import scheduledTasks.ScheduledTasksManager;
 import serverGui.ClientsData;
-import serverGui.ServerGuiController;
 
 /**
  * Boundary for the prototype server, create the server controller, manage
@@ -48,7 +47,6 @@ public class ServerBoundary {
 			dbController.connectToDB(DBname, DBuser, DBpassword);
 			setStatus("Connected to database successfully");// on success
 		} catch (Exception ex) {
-			// System.out.println("ERROR - Could not connect to database!");
 			setStatus(ex.getMessage());// on failure
 			return false;
 		}

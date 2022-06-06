@@ -17,42 +17,45 @@ import main.IGuiController;
 import report.OrdersReport;
 import report.Report;
 
+/**
+ * controller for the window: the orders report
+ *
+ */
 public class OrderReportController implements IGuiController, IReportController {
 	private OrdersReport ordersReport = null;
 	private int[] ordersPerDay;
 	private HashMap<String, Integer> ordersPerCategory;
 	private Series<String, Integer> daySeries;
 
-    @FXML
-    private Label averageOrdersMonthLabel;
+	@FXML
+	private Label averageOrdersMonthLabel;
 
-    @FXML
-    private Label branchLabel;
+	@FXML
+	private Label branchLabel;
 
-    @FXML
-    private Label dateLabel;
+	@FXML
+	private Label dateLabel;
 
-    @FXML
-    private CategoryAxis dayAxis;
+	@FXML
+	private CategoryAxis dayAxis;
 
-    @FXML
-    private Label orderNumLabel;
+	@FXML
+	private Label orderNumLabel;
 
-    @FXML
-    private AnchorPane orderReportPane;
+	@FXML
+	private AnchorPane orderReportPane;
 
-    @FXML
-    private NumberAxis ordersNumAxis;
+	@FXML
+	private NumberAxis ordersNumAxis;
 
-    @FXML
-    private PieChart ordersPerCategoryChart;
+	@FXML
+	private PieChart ordersPerCategoryChart;
 
-    @FXML
-    private LineChart<String, Integer> ordersPerDayChart;
+	@FXML
+	private LineChart<String, Integer> ordersPerDayChart;
 
-    @FXML
-    private Label popularItemLabel;
-	
+	@FXML
+	private Label popularItemLabel;
 
 	@Override
 	public Pane getBasePane() {
@@ -89,7 +92,7 @@ public class OrderReportController implements IGuiController, IReportController 
 	}
 
 	public void setReport(Report ordersReport) {
-		this.ordersReport =  (OrdersReport) ordersReport;
+		this.ordersReport = (OrdersReport) ordersReport;
 
 	}
 

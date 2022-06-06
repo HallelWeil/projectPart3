@@ -2,17 +2,20 @@ package clientHandlers;
 
 import database.DBController;
 import msg.Msg;
-import ocsf.server.ConnectionToClient;
-import orderManagment.OrderProcessManager;
 import server.ServerMsgController;
 import user.User;
 
+/**
+ * the abstarct class for the client task, for each type of connected client we
+ * have a extended class to handle the tasks, the tasks handles dont care which
+ * client in connected, we save error and completed msgs, database controller ,
+ * the client task handler(for login\out) and the active user object
+ * 
+ *
+ */
 public abstract class ClientTasks {
 	// class variables
-	/**
-	 * to parse the massages
-	 */
-	protected ServerMsgController msgController;
+
 	/**
 	 * the database controller
 	 */
@@ -30,13 +33,17 @@ public abstract class ClientTasks {
 	 * the client task handler
 	 */
 	protected HandleClientTask clientTaskHandler;
+	/**
+	 * the active user
+	 */
+	protected User user;
 
 	public ClientTasks(HandleClientTask clientTaskHandler) {
 		this.clientTaskHandler = clientTaskHandler;
 		this.dbController = DBController.getInstance();
-		msgController = new ServerMsgController();
 		CompletedMsg = ServerMsgController.createCOMPLETEDMsg();
 		ErrorMsg = ServerMsgController.createERRORMsg("");
+		user = clientTaskHandler.getActiveUser();
 	}
 
 	/**
@@ -45,5 +52,5 @@ public abstract class ClientTasks {
 	 * @param msg
 	 * @return
 	 */
-	public abstract Msg handleTask(Object msg);
+	public abstract Msg handleTask(ServerMsgController msgController);
 }

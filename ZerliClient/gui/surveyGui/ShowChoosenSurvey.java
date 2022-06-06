@@ -17,6 +17,10 @@ import userGuiManagment.CustomerServiceGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.CustomerServiceEmployeeBoundary;
 
+/**
+ * controller for the window: show the survey window
+ *
+ */
 public class ShowChoosenSurvey implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();

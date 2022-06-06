@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="mainWindowRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #d5dbdb;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainWindow.MainWindowController">
+<VBox fx:id="mainWindowRoot" maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #d5dbdb;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainWindow.MainWindowController">
    <children>
       <GridPane fx:id="TopMenu" alignment="CENTER" prefHeight="105.0" style="-fx-background-color: #85d9dc; -fx-border-color: black;">
         <columnConstraints>
@@ -43,7 +43,7 @@
          <children>
             <ImageView fitHeight="695.0" fitWidth="1200.0" opacity="0.5">
                <image>
-                  <Image url="@../../lib/backround/fullBackground.jpg" />
+                  <Image url="@../backround/fullBackground.jpg" />
                </image>
             </ImageView>
             <VBox fx:id="bottomBox" prefHeight="695.0" prefWidth="1200.0" />

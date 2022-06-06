@@ -4,6 +4,14 @@ import courier.CourierControllerGUI;
 import main.GuiObjectsFactory;
 import usersManagment.CourierBoundary;
 
+/**
+ * Singleton, manage all the different courier windows, for each window
+ * controller when trying to get the controller, load the fxml if not already
+ * loaded
+ * 
+ * @author halel
+ *
+ */
 public class CourierGuiManager implements IUserGuiManager {
 
 	private static CourierGuiManager courierGuiManager;

@@ -1,6 +1,5 @@
 package customer;
 
-import catalog.CustomizedProduct;
 import catalog.Product;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,18 +8,20 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import main.GuiObjectsFactory;
 import main.IGuiController;
-import shop.ShopBoundary;
 import userGuiManagment.AuthorizedCustomerGuiManager;
-import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * the controller for item in customized product gui object
+ * 
+ * @author halel
+ *
+ */
 public class ItemInCustomizedProductController implements IGuiController {
 
-	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
-	private ShopBoundary shopBoundary = AuthorizedCustomerGuiManager.getInstance().getShopBoundary();
-	private ShopWindowController shopWindowController = AuthorizedCustomerGuiManager.getInstance().getShopWindowController();
-	
+	private ShopWindowController shopWindowController = AuthorizedCustomerGuiManager.getInstance()
+			.getShopWindowController();
+
 	@FXML
 	private HBox baseLayer;
 
@@ -52,13 +53,11 @@ public class ItemInCustomizedProductController implements IGuiController {
 
 	@Override
 	public void resetController() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void openWindow() {
-		// TODO Auto-generated method stub
 
 	}
 

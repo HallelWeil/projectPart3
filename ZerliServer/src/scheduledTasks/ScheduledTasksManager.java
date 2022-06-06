@@ -1,20 +1,13 @@
 package scheduledTasks;
 
-import java.io.IOException;
-import java.nio.CharBuffer;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 import common.Status;
 import complaint.Complaint;
 import database.DBController;
-import report.Report;
-import report.ReportType;
-import user.User;
 
 /**
  * manage all the scheduled tasks. singleton. there is only one tasks manager.
@@ -131,20 +124,14 @@ public class ScheduledTasksManager implements Runnable {
 				// if its from the last 24 hours
 				if ((complaint.getCreationTime().getTime() - currentTime) <= DAY_IN_MILLISECONDS) {
 					// add new reminder 24 hours after the creation of the complaint
-					ScheduledReminder newReminder = new ScheduledReminder(
-							new Timestamp(complaint.getCreationTime().getTime() + DAY_IN_MILLISECONDS));
-					// get the responsible employee details from the database
-					User responsibleEmployee = dbController.getUser(complaint.getResponsibleEmployeeUserName());
-					if (responsibleEmployee != null) {
-						String complaintReminderText = "please handle complaint " + complaint.getComplaintsNumber()
-								+ "\n" + "thanks";
-						newReminder.setEmail(responsibleEmployee.getEmail(), complaintReminderText);
-						newReminder.setSMS(responsibleEmployee.getPhoneNumber(), complaintReminderText);
-						newScheduledTask.add(newReminder);
-					}
+					ScheduledComplaintReminder newReminder = new ScheduledComplaintReminder(
+							new Timestamp(complaint.getCreationTime().getTime() + DAY_IN_MILLISECONDS),
+							complaint.getComplaintsNumber());
+					newScheduledTask.add(newReminder);
 				}
 			}
 		}
+
 		// get the last month month + year values
 		// get the month and year of the last month
 		int month = LocalDateTime.now().getMonthValue();

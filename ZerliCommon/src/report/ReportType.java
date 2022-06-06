@@ -1,5 +1,11 @@
 package report;
 
+/**
+ * the reports types
+ * 
+ * @author halel
+ *
+ */
 public enum ReportType {
 	/**
 	 * monthly branch orders report

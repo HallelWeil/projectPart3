@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Calendar;
 import catalog.Product;
 import common.Status;
 import complaint.Complaint;
@@ -25,10 +26,14 @@ import user.User;
 import user.UserStatus;
 import user.UserType;
 
+/**
+ * Manage the creation of the different object from the result set
+ */
 public class DBObjectsManager {
 
 	/**
 	 * change object into a string to put in database query as blob
+	 * 
 	 * @param object - the object we want to save as blob
 	 * @return String representing the object.
 	 */
@@ -47,9 +52,10 @@ public class DBObjectsManager {
 		}
 		return sdata;
 	}
-	
+
 	/**
 	 * change blob object into the original object
+	 * 
 	 * @param blob
 	 * @return the original object from blob.
 	 */
@@ -64,12 +70,11 @@ public class DBObjectsManager {
 			ObjectInputStream ois = new ObjectInputStream(bis);
 			object = ois.readObject();
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			return null;
 		}
 		return object;
 	}
-	
+
 	/**
 	 * 
 	 * @param res - resultSet of query to get last id
@@ -83,12 +88,11 @@ public class DBObjectsManager {
 				lastID = res.getInt("last_id");
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
 		}
 		return lastID;
 
 	}
-	
+
 	/**
 	 * create the ArrayList<Order> object from the resultset
 	 * 
@@ -102,8 +106,8 @@ public class DBObjectsManager {
 			while (res.next()) {
 				Order order = new Order();
 				order.setOrderNumber(res.getInt("orderNumber"));
-				order.setOrderDate(res.getTimestamp("orderDate"));
-				order.setArrivalDate(res.getTimestamp("arrivalDate"));
+				order.setOrderDate(res.getTimestamp("orderDate", Calendar.getInstance()));
+				order.setArrivalDate(res.getTimestamp("arrivalDate", Calendar.getInstance()));
 				order.setHomeDelivery(res.getBoolean("homeDelivery"));
 				order.setBranchName(res.getString("branchName"));
 				order.setPrice(res.getDouble("price"));
@@ -114,11 +118,10 @@ public class DBObjectsManager {
 				orders.add(order);
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
 		}
 		return orders;
 	}
-	
+
 	/**
 	 * 
 	 * @param res - resultSet of query to get surveys
@@ -143,11 +146,10 @@ public class DBObjectsManager {
 				survey.setSurveyNumber(res.getInt("surveyNumber"));
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return surveys;
 	}
-	
+
 	/**
 	 * 
 	 * @param res resultSet of query to get complaints
@@ -164,16 +166,15 @@ public class DBObjectsManager {
 				complaint.setCompensation(res.getDouble("compensation"));
 				complaint.setComplaintsNumber(res.getInt("complaintNumber"));
 				complaint.setStatus(Status.valueOf(res.getString("status")));
-				complaint.setCreationTime(res.getTimestamp("creationTime"));
+				complaint.setCreationTime(res.getTimestamp("creationTime", Calendar.getInstance()));
 				complaints.add(complaint);
 				// need set for participants and answers
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return complaints;
 	}
-	
+
 	/**
 	 * 
 	 * @param res - resultSet of query to get products
@@ -196,15 +197,14 @@ public class DBObjectsManager {
 				products.add(product);
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return products;
 	}
-	
+
 	/**
 	 * 
 	 * @param res - resultSet of query to get 'Product In Order'.
-	 * @return  ArrayList<ProductInOrder>
+	 * @return ArrayList<ProductInOrder>
 	 */
 
 	public ArrayList<ProductInOrder> productsInOrderDB(ResultSet res) {
@@ -220,11 +220,10 @@ public class DBObjectsManager {
 				products.add(product);
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return products;
 	}
-	
+
 	/**
 	 * 
 	 * @param res - resultSet of query to get reports.
@@ -238,21 +237,21 @@ public class DBObjectsManager {
 				reports.add((Report) blobToObject(res.getBlob("data")));
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return reports;
 	}
-	
+
 	/**
 	 * 
 	 * @param res - resultSet of query to get user.
 	 * @return User object
 	 */
 
-	public User userDB(ResultSet res) {
+	public ArrayList<User> userDB(ResultSet res) {
+		ArrayList<User> arr = new ArrayList<User>();
 		User user = null;
 		try {
-			if (res.next()) {
+			while (res.next()) {
 				user = new User();
 				user.setUsername(res.getString("username"));
 				user.setUserType(UserType.valueOf(res.getString("userType")));
@@ -265,13 +264,13 @@ public class DBObjectsManager {
 				user.setStatus(UserStatus.valueOf(res.getString("status")));
 				user.setPersonID(res.getString("personID"));
 				user.setBranchName(res.getString("branch"));
+				arr.add(user);
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
-		return user;
+		return arr;
 	}
-	
+
 	/**
 	 * 
 	 * @param res - resultSet of query to get card's info.
@@ -286,11 +285,10 @@ public class DBObjectsManager {
 				// need set for participants and answers
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return info;
 	}
-	
+
 	/**
 	 * 
 	 * @param res - resultSet of query to get survey's result's blob.
@@ -305,14 +303,13 @@ public class DBObjectsManager {
 				// need set for participants and answers
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return pdf;
 	}
-	
+
 	/**
 	 * 
-	 * @param res  - resultSet of query to get branch's names.
+	 * @param res - resultSet of query to get branch's names.
 	 * @return ArrayList<String> object
 	 */
 
@@ -323,11 +320,10 @@ public class DBObjectsManager {
 				branches.add(res.getString("branchName"));
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return branches;
 	}
-	
+
 	/**
 	 * 
 	 * @param res - resultSet of query to get promotion's.
@@ -339,7 +335,7 @@ public class DBObjectsManager {
 		try {
 			while (res.next()) {
 				Promotion promotion = new Promotion();
-				promotion.setCreationDate(res.getTimestamp("creationDate"));
+				promotion.setCreationDate(res.getTimestamp("creationDate", Calendar.getInstance()));
 				promotion.setDiscount(res.getDouble("discount"));
 				promotion.setProductID(res.getInt("productID"));
 				promotion.setPromotionNumber(res.getInt("promotionID"));
@@ -348,11 +344,10 @@ public class DBObjectsManager {
 				promotions.add(promotion);
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return promotions;
 	}
-	
+
 	/**
 	 * 
 	 * @param res - resultSet of query to get delivery details.
@@ -372,11 +367,10 @@ public class DBObjectsManager {
 				deliveryDetails.setPhoneNumber(res.getString("phoneNumber"));
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return deliveryDetails;
 	}
-	
+
 	/**
 	 * 
 	 * @param res - resultSet of query to get user's credit amount.
@@ -390,7 +384,6 @@ public class DBObjectsManager {
 				credit = res.getDouble("credit");
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return credit;
 	}

@@ -5,7 +5,7 @@ import msg.MsgType;
 import user.User;
 
 /**
- * the users boundary clas, manage login and update user type and access
+ * the users boundary class, manage login and update user type and access
  * information
  * 
  * @author halel

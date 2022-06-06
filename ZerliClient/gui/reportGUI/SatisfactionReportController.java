@@ -12,20 +12,17 @@ import main.IGuiController;
 import report.QuarterlySatisfactionReport;
 import report.Report;
 
+/**
+ * controller for the window: the quarterly satisfaction report
+ *
+ */
 public class SatisfactionReportController implements IGuiController, IReportController {
 	QuarterlySatisfactionReport satisfactionReport = null;
 	Series<String, Integer> monthSeries = null;
 	int[] complaintsPerMonth = null;
-	
-
-	@FXML
-	private Label answeredNum;
 
 	@FXML
 	private Label branchLabel;
-
-	@FXML
-	private Label compansationsNum;
 
 	@FXML
 	private BarChart<String, Integer> complaintsChart;
@@ -51,8 +48,6 @@ public class SatisfactionReportController implements IGuiController, IReportCont
 	public void resetController() {
 		dateLabel.setText("NoData");
 		complaintsNum.setText("NoData");
-		answeredNum.setText("NoData");
-		compansationsNum.setText("NoData");
 		monthSeries.getData().clear();
 		complaintsPerMonth = null;
 	}
@@ -61,9 +56,7 @@ public class SatisfactionReportController implements IGuiController, IReportCont
 	public void openWindow() {
 		dateLabel.setText(satisfactionReport.getStartMonth() + "/" + satisfactionReport.getStartYear()
 				+ satisfactionReport.getEndMonth() + "/" + satisfactionReport.getEndYear());
-		complaintsNum.setText("NoData");
-		answeredNum.setText("NoData");
-		compansationsNum.setText("NoData");
+		complaintsNum.setText("" + satisfactionReport.getNumberOfComplaints());
 		setPerMonthChart();
 	}
 
@@ -71,7 +64,7 @@ public class SatisfactionReportController implements IGuiController, IReportCont
 	public void setReport(Report report) {
 		this.satisfactionReport = (QuarterlySatisfactionReport) report;
 	}
-	
+
 	private void setPerMonthChart() {
 		monthSeries = new XYChart.Series<>();
 		complaintsPerMonth = satisfactionReport.getComplaintsPerMonth();

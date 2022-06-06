@@ -1,9 +1,8 @@
 package database;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.io.Serializable;
-import java.sql.Blob;
 import catalog.Product;
 import common.Status;
 import complaint.Complaint;
@@ -13,6 +12,7 @@ import order.Order;
 import order.ProductInOrder;
 import promotion.Promotion;
 import report.Report;
+import simulators.ImportedUserData;
 import survey.Survey;
 import user.User;
 import user.UserStatus;
@@ -42,15 +42,22 @@ public class DBController {
 	 * The database boundary
 	 */
 	private DBBoundry dbBoundry;
+
 	/**
 	 * class to handle ResultSet
 	 */
-	DBObjectsManager objectManager;
+	private DBObjectsManager objectManager;
+
+	public boolean isConnected = false;
 
 	private DBController() {
 		dbBoundry = new DBBoundry();
 		objectManager = new DBObjectsManager();
 		DBname = "";
+	}
+
+	public DBBoundry getDbBoundry() {
+		return dbBoundry;
 	}
 
 	/**
@@ -73,12 +80,14 @@ public class DBController {
 			throw new Exception("Error - can't connect to the database");
 
 		}
+		isConnected = true;
 	}
 
 	/**
 	 * Disconnect from the database
 	 */
 	public void disConnectFromDB() {
+		isConnected = false;
 		dbBoundry.disconnectDB();
 	}
 
@@ -115,12 +124,26 @@ public class DBController {
 	}
 
 	/**
+	 * update the order arrival time
+	 * 
+	 * @param order
+	 * @return
+	 */
+	public boolean updateOrderArrivalTime(Order order) {
+		// create the query
+		String s = "UPDATE  " + DBname + ".order  SET arrivalDate = TIMESTAMP '" + order.getArrivalDate()
+				+ "'  WHERE (orderNumber = " + order.getOrderNumber() + ") ;";
+		// send query + get result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	/**
 	 * Save new order in orders table in database
 	 * 
 	 * @param new order
 	 * @return order's ID generated in the database
 	 */
-
 	public int saveOrderToDB(Order order) {
 		int lastID = -1;
 		String s = "INSERT INTO " + DBname + ".order VALUES (default, TIMESTAMP '" + order.getOrderDate()
@@ -145,7 +168,7 @@ public class DBController {
 	 */
 
 	public boolean deleteOrder(int orderNum) {
-		String s = "DELETE FROM " + DBname + ".orders WHERE (orderNumber = '" + orderNum + "' );";
+		String s = "DELETE FROM " + DBname + ".orders WHERE (orderNumber = " + orderNum + " );";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
@@ -161,7 +184,7 @@ public class DBController {
 		// create the query
 		String s = "INSERT INTO " + DBname + ".productinorder VALUES ('" + product.getOrderNumber() + "','"
 				+ product.getName() + "'," + product.getPrice() + "," + product.getAmount() + ",'"
-				+ product.getCategory() + "');";
+				+ product.getCategory() + "','" + product.getData() + "');";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
@@ -189,6 +212,7 @@ public class DBController {
 				item.setName(res.getString("name"));
 				item.setOrderNumber(orderNumber);
 				item.setPrice(res.getDouble("price"));
+				item.setData(res.getString("data"));
 				itemsList.add(item);
 			}
 		} catch (Exception e) {
@@ -403,12 +427,12 @@ public class DBController {
 		pdf = objectManager.surveyResultDB(res);
 		return pdf;
 	}
-	
+
 	/**
 	 * save the result of a survey as blob is the database
 	 * 
 	 * @param surveyNumber - the number of the survey we save the result for
-	 * @param resultFile - the file we save as blob in the database
+	 * @param resultFile   - the file we save as blob in the database
 	 * @return true if the result file is saved in the database successfully
 	 */
 
@@ -422,7 +446,7 @@ public class DBController {
 		// get the returned values
 		return res;
 	}
-	
+
 	/**
 	 * get all survey's in the database
 	 * 
@@ -438,10 +462,10 @@ public class DBController {
 		ArrayList<Survey> surveys = objectManager.surveyDB(res);
 		return surveys;
 	}
-	
+
 	/**
 	 * 
-	 * @param answers - list with 6 score values, 1 for each question
+	 * @param answers      - list with 6 score values, 1 for each question
 	 * @param surveyNumber - the survey's number save the anwer's score to
 	 * @return true if the answers saved successfully
 	 */
@@ -456,7 +480,7 @@ public class DBController {
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
-	
+
 	/**
 	 * save new survey in the database
 	 * 
@@ -478,7 +502,7 @@ public class DBController {
 		}
 		return lastID;
 	}
-	
+
 	/**
 	 * save new complaint in the database
 	 * 
@@ -501,13 +525,21 @@ public class DBController {
 		return lastID;
 	}
 
+	/**
+	 * update existing complaint
+	 * 
+	 * @param answer
+	 * @param complaintNumber
+	 * @param status
+	 * @return
+	 */
 	public boolean updateComplaint(String answer, int complaintNumber, Status status) {
 		String s = "UPDATE  " + DBname + ".complaint  SET answer = '" + answer + "', status = '" + status.toString()
 				+ "' WHERE (complaintNumber = " + complaintNumber + ");";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
-	
+
 	/**
 	 * get complain from the database
 	 * 
@@ -525,7 +557,7 @@ public class DBController {
 		else
 			return null;
 	}
-	
+
 	/**
 	 * get all complaints of a specific employee
 	 * 
@@ -541,7 +573,7 @@ public class DBController {
 		ArrayList<Complaint> complaints = objectManager.complaintDB(res);
 		return complaints;
 	}
-	
+
 	/**
 	 * get all complaints in the database with a specific status
 	 * 
@@ -556,25 +588,28 @@ public class DBController {
 		ArrayList<Complaint> complaints = objectManager.complaintDB(res);
 		return complaints;
 	}
-	
+
 	/**
-	 * duplicate?
+	 * count the complaints in a month
 	 * 
-	 * @param surveyNumber
-	 * @param surveyResult
+	 * @param month
+	 * @param year
 	 * @return
 	 */
-
-	public boolean addSurveyResult(int surveyNumber, Blob surveyResult) {
-		// create the query
-		String data = objectManager.objectToBlobString(surveyResult);
-		String s = "UPDATE  " + DBname + ".survey  SET surveyResult = '" + surveyResult + "' WHERE (surveyNumber = "
-				+ data + ");";
-		// send query + get result
-		boolean res = (boolean) dbBoundry.sendQueary(s);
-		return res;
+	public int countComplaints(int month, int year) {
+		String s = "SELECT COUNT(1) FROM " + DBname + ".complaint WHERE MONTH(DATE(creationTime)) = " + month
+				+ " AND YEAR(DATE(creationTime)) = " + year + ";";
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		int result = 0;
+		try {
+			if (res.next())
+				result = res.getInt("COUNT(1)");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
-	
+
 	/**
 	 * get all products in the category
 	 * 
@@ -589,12 +624,12 @@ public class DBController {
 		ArrayList<Product> products = objectManager.productDB(res);
 		return products;
 	}
-	
+
 	/**
 	 * get all orders of the specified month and year
 	 * 
 	 * @param month - the month the orders requested were made
-	 * @param year -  the month the orders requested were made
+	 * @param year  - the month the orders requested were made
 	 * @return ArrayList<Order> of the specified month and year
 	 */
 
@@ -608,7 +643,7 @@ public class DBController {
 		ArrayList<Order> orders = objectManager.orderDB(res);
 		return orders;
 	}
-	
+
 	/**
 	 * get all products in the specified order.
 	 * 
@@ -625,13 +660,13 @@ public class DBController {
 		ArrayList<ProductInOrder> products = objectManager.productsInOrderDB(res);
 		return products;
 	}
-	
+
 	/**
 	 * get all reports between two specified month on a specific year
 	 * 
 	 * @param startMonths - the earliest month requested to get reports from.
-	 * @param endMonth - the latest month requested to get reports from.
-	 * @param year - the year requested to get the reports from.
+	 * @param endMonth    - the latest month requested to get reports from.
+	 * @param year        - the year requested to get the reports from.
 	 * @return ArrayList<Report> with reports of the appropriate month and year
 	 */
 
@@ -645,11 +680,11 @@ public class DBController {
 		ArrayList<Report> reports = objectManager.reportDB(res);
 		return reports;
 	}
-	
+
 	/**
 	 * get user object with the specified username.
 	 * 
-	 * @param username - the user's we want's username. 
+	 * @param username - the user's we want's username.
 	 * @return User object with the specified username.
 	 */
 
@@ -658,10 +693,12 @@ public class DBController {
 		// get the result
 		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
 		// get the returned values
-		User user = objectManager.userDB(res);
-		return user;
+		ArrayList<User> users = objectManager.userDB(res);
+		if (users.size() > 0)
+			return users.get(0);
+		return null;
 	}
-	
+
 	/**
 	 * get credit-card information
 	 * 
@@ -677,7 +714,7 @@ public class DBController {
 		String info = objectManager.cardDB(res);
 		return info;
 	}
-	
+
 	/**
 	 * get names of all branches in the database
 	 * 
@@ -693,11 +730,12 @@ public class DBController {
 		ArrayList<String> branches = objectManager.branchNameDB(res);
 		return branches;
 	}
-	
+
 	/**
 	 * save details of promotion in the database
 	 * 
-	 * @param promotion - promotion's object his details we want to save in the database
+	 * @param promotion - promotion's object his details we want to save in the
+	 *                  database
 	 * @return ID the of the promotion we saved in the database.
 	 */
 
@@ -715,7 +753,7 @@ public class DBController {
 		}
 		return lastID;
 	}
-	
+
 	/**
 	 * get the product of the specified product's id
 	 * 
@@ -724,7 +762,7 @@ public class DBController {
 	 */
 
 	public Product getProduct(int productID) {
-		String s = "SELECT * FROM " + DBname + ".product WHERE (productID = '" + productID + "');";
+		String s = "SELECT * FROM " + DBname + ".product WHERE (productID = " + productID + ");";
 		// get the result
 		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
 		// get the returned values
@@ -734,15 +772,43 @@ public class DBController {
 		else
 			return prod.get(0);
 	}
-	
+
+	/**
+	 * delete product from the database
+	 * 
+	 * @param productNumber
+	 * @return
+	 */
+	public boolean deleteProduct(int productNumber) {
+		String s = "DELETE FROM " + DBname + ".product WHERE (productID = " + productNumber + " );";
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
 	/**
 	 * update's product's price.
 	 * 
 	 * @param product - the product's object we update in the database.
 	 * @return true if the product's price updated successfully.
 	 */
-
 	public boolean updateProduct(Product product) {
+		// create the query
+		String s = "UPDATE  " + DBname + ".product  SET oldPrice  = " + product.getOldPrice() + ",  price = "
+				+ product.getPrice() + ", name = '" + product.getName() + "', description = '"
+				+ product.getDescription() + "', colors = '" + product.getColors() + "' , category = '"
+				+ product.getCategory() + "'  WHERE productID = " + product.getProductID() + ";";
+		// send query + get result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	/**
+	 * update product price
+	 * 
+	 * @param product
+	 * @return
+	 */
+	public boolean updateProductPrice(Product product) {
 		// create the query
 		String s = "UPDATE  " + DBname + ".product  SET oldPrice  = " + product.getOldPrice() + ",  price = "
 				+ product.getPrice() + " WHERE productID = " + product.getProductID() + ";";
@@ -750,15 +816,34 @@ public class DBController {
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
-	
+
+	/**
+	 * save new product to the database
+	 * 
+	 * @param product
+	 * @return
+	 */
+	public int saveProductToDB(Product product) {
+		int lastID = -1;
+		String s = "INSERT INTO " + DBname + ".product VALUES(default,'" + product.getName() + "'," + product.getPrice()
+				+ ",'" + product.getDescription() + "','" + product.getColors() + "', NULL ,'" + product.getCategory()
+				+ "'," + product.getOldPrice() + ");";
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		if (res) {
+			s = "SELECT last_insert_id() as last_id from " + DBname + ".product";
+			ResultSet idRes = (ResultSet) dbBoundry.sendQueary(s);
+			lastID = objectManager.lastID(idRes);
+		}
+		return lastID;
+	}
+
 	/**
 	 * update's promotion's status
 	 * 
 	 * @param promotionID - the id of the promotion that is updated
-	 * @param status - the new status of the promotion
+	 * @param status      - the new status of the promotion
 	 * @return - true if the status of the promotion updated successfully.
 	 */
-
 	public boolean updatePromotion(int promotionID, Status status) {
 		// create the query
 		String s = "UPDATE  " + DBname + ".promotion  SET status  = '" + status.toString() + "' WHERE promotionID = "
@@ -767,7 +852,7 @@ public class DBController {
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
-	
+
 	/***
 	 * get promotion with specified promotion's number.
 	 * 
@@ -786,7 +871,7 @@ public class DBController {
 		else
 			return promotions.get(0);
 	}
-	
+
 	/**
 	 * get all promotions in the database.
 	 * 
@@ -801,9 +886,10 @@ public class DBController {
 		ArrayList<Promotion> promotions = objectManager.promotionsDB(res);
 		return promotions;
 	}
-	
+
 	/**
 	 * get user's credit amount.
+	 * 
 	 * @param id - the user's id
 	 * @return the amount of credit the user have
 	 */
@@ -816,9 +902,10 @@ public class DBController {
 		double credit = objectManager.shopCreditDB(res);
 		return credit;
 	}
-	
+
 	/**
 	 * update user's credit amount.
+	 * 
 	 * @param id - the user's id
 	 * @return true if the credit amount updated successfully.
 	 */
@@ -831,18 +918,114 @@ public class DBController {
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
-	
+
 	/**
 	 * insert user's row on the database with credit's amount
 	 * 
-	 * @param id - id of the user
+	 * @param id     - id of the user
 	 * @param credit - the amount of credit the user have
 	 * @return true if the user's credit inserted successfully.
 	 */
-
 	public boolean saveShopCreditToDB(String id, double credit) {
 		String s = "INSERT INTO " + DBname + ".shopcredit VALUES( '" + id + "' , " + credit + " );";
 		boolean res = (boolean) dbBoundry.sendQueary(s);
 		return res;
 	}
+
+	/**
+	 * For import users data into our database
+	 * 
+	 * @param user
+	 */
+	public boolean createNewUser(ImportedUserData user) {
+		if (user == null)
+			return false;
+		String status = "Active";
+		if (user.getType().equals("NonAuthorizedCustomer"))
+			status = "NotActive";
+		String s = "INSERT INTO " + DBname + ".users VALUES( '" + user.getUserName() + "' ,'" + user.getPassword()
+				+ "' ,'" + user.getType() + "' , 0 ,'" + user.getFirstname() + "' ,'" + user.getLastname() + "' ,'"
+				+ user.getEmail() + "' ,'" + user.getPhone() + "' ,'" + user.getId() + "' ,'" + status + "' ,'"
+				+ user.getBranch() + "' );";
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	/**
+	 * save new card to the database
+	 * 
+	 * @param userName
+	 * @param cardInfo
+	 * @return
+	 */
+	public boolean saveCardInfo(String userName, String cardInfo) {
+		String s = "INSERT INTO " + DBname + ".creditdetails VALUES('" + userName + "' , '" + cardInfo + "');";
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	/**
+	 * update existing card info
+	 * 
+	 * @param userName
+	 * @param cardInfo
+	 * @return
+	 */
+	public boolean updateCardInfo(String userName, String cardInfo) {
+		// create the query
+		String s = "UPDATE  " + DBname + ".creditdetails  SET cardInfo = '" + cardInfo + "' WHERE username = '"
+				+ userName + "' ;";
+		// send query + get result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	/**
+	 * update all the users fields
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public boolean updateAllUserData(User user) {
+		// create the query
+		String s = "UPDATE  " + DBname + ".users  SET userType = '" + user.getUserType().toString()
+				+ "',  firstName = '" + user.getFirstName() + "' , lastName = '" + user.getLastName() + "' , email ='"
+				+ user.getEmail() + "', phoneNumber = '" + user.getPhoneNumber() + "' , personID = '"
+				+ user.getPersonID() + "', status = '" + user.getStatus().toString() + "' , branch = '"
+				+ user.getBranchName() + "' WHERE username = '" + user.getUsername() + "' ;";
+		// send query + get result
+		boolean res = (boolean) dbBoundry.sendQueary(s);
+		return res;
+	}
+
+	/**
+	 * get all the users with user type
+	 * 
+	 * @param userType
+	 * @return
+	 */
+	public ArrayList<User> getAllUsersWithType(UserType userType) {
+		String s = "SELECT * FROM " + DBname + ".users WHERE (userType = '" + userType.toString() + "');";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		ArrayList<User> users = objectManager.userDB(res);
+		return users;
+	}
+
+	/**
+	 * get all the users from a branch
+	 * 
+	 * @param branch
+	 * @return
+	 */
+	public ArrayList<User> getAllBranchEmployees(String branch) {
+		String s = "SELECT * FROM " + DBname + ".users WHERE (branch = '" + branch + "');";
+		// get the result
+		ResultSet res = (ResultSet) dbBoundry.sendQueary(s);
+		// get the returned values
+		ArrayList<User> users = objectManager.userDB(res);
+		return users;
+	}
+
 }

@@ -3,15 +3,12 @@ package branchManager;
 import java.io.IOException;
 import java.sql.Timestamp;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -19,12 +16,13 @@ import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.Order;
 import order.OrderStatus;
-import order.ProductInOrder;
-import userGuiManagment.BranchEmployeeGuiManager;
 import userGuiManagment.BranchManagerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.BranchManagerBoundary;
-
+/**
+ * controller for the window: managing the orders approval
+ *
+ */
 public class ManagerApproveController implements IGuiController {
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	private BranchManagerGuiManager branchManagerGuiManager = BranchManagerGuiManager.getInstance();
@@ -91,6 +89,9 @@ public class ManagerApproveController implements IGuiController {
 
 	@Override
 	public void openWindow() {
+		selectedOrder = null;
+		errorLabel.setVisible(false);
+		guidanceLabel.setVisible(false);
 		mainWindowManager.mainWindowController.showNewWindow(orderApprovePane);
 		initializeOrdersTable();
 		managerOrderTable.getItems().setAll(managerBoundry.getAllOrdersToApprove());
@@ -113,8 +114,8 @@ public class ManagerApproveController implements IGuiController {
 	@FXML
 	void GoToSelectedOrderWindow(ActionEvent event) throws IOException {
 		selectedOrder = managerOrderTable.getSelectionModel().getSelectedItem();
-		String statusOfSelected = selectedOrder.getOrderStatus().toString();
-		if (statusOfSelected == "WAITING_FOR_APPROAVL" || statusOfSelected == "WAITING_FOR_CANCELATION_APPROVAL") {
+		if (selectedOrder.getOrderStatus() == OrderStatus.WAITING_FOR_APPROAVL
+				|| selectedOrder.getOrderStatus() == OrderStatus.WAITING_FOR_CANCELLATION_APPROVAL) {
 			viewProductsController = (ManagerViewProducts) guiObjectsFactory
 					.loadFxmlFile("/branchManager/productsInOrderView.fxml");
 			viewProductsController.setLastController(this);

@@ -6,6 +6,14 @@ import branchManager.ManagerWatchReportController;
 import main.GuiObjectsFactory;
 import usersManagment.BranchManagerBoundary;
 
+/**
+ * Singleton, manage all the different branch manager windows, for each window
+ * controller when trying to get the controller, load the fxml if not already
+ * loaded
+ * 
+ * @author halel
+ *
+ */
 public class BranchManagerGuiManager implements IUserGuiManager {
 
 	private static BranchManagerGuiManager branchManagerGuiManager;

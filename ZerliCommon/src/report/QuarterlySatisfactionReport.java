@@ -1,34 +1,55 @@
 package report;
 
-public class QuarterlySatisfactionReport extends Report{
+/**
+ * quarterly general satisfaction report
+ * 
+ * @author halel
+ *
+ */
+public class QuarterlySatisfactionReport extends Report {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * the complaints per month
+	 */
+	private int[] complaintsPerMonth;
 
 	public QuarterlySatisfactionReport(int month, int year) {
 		super(month, year, ReportType.QUARTERLY_SATISFACTION_REPORT, "ALL");
 	}
 
+	public void setComplaintsPerMonth(int[] complaintsPerMonth) {
+		this.complaintsPerMonth = complaintsPerMonth;
+	}
+
 	public String getStartMonth() {
-		// TODO Auto-generated method stub
-		return null;
+		return (getMonth() * 3 - 2) + "";
 	}
 
 	public String getStartYear() {
-		// TODO Auto-generated method stub
-		return null;
+		return getYear() + "";
 	}
 
 	public String getEndMonth() {
-		// TODO Auto-generated method stub
-		return null;
+		return (getMonth() * 3) + "";
 	}
 
 	public String getEndYear() {
-		// TODO Auto-generated method stub
-		return null;
+		return getYear() + "";
 	}
 
 	public int[] getComplaintsPerMonth() {
-		// TODO Auto-generated method stub
-		return null;
+		return complaintsPerMonth;
+	}
+
+	/**
+	 * get the total number of complaints
+	 */
+	public int getNumberOfComplaints() {
+		return complaintsPerMonth[0] + complaintsPerMonth[1] + complaintsPerMonth[2];
 	}
 
 }

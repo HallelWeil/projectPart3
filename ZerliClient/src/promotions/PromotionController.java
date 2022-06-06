@@ -10,6 +10,11 @@ import msg.Msg;
 import msg.MsgType;
 import promotion.Promotion;
 
+/**
+ * Manage promotions, creation, update and getting the promotions data
+ * 
+ *
+ */
 public class PromotionController {
 
 	/**
@@ -72,15 +77,19 @@ public class PromotionController {
 		if (msgController.getType() == MsgType.ERROR)
 			throw new Exception(msgController.getErrorMsg());
 	}
-	
-public ArrayList<Promotion> getAllPromotions() {
-	MsgController msgController= ClientController.getInstance().sendMsg(MsgController.createGET_ALL_PROMOTIONSMsg());
-	if(msgController.getType() == MsgType.RETURN_ALL_PROMOTIONS)
-	{
-		return msgController.getAllpromotions();
-	}
-	return null;
-	
-		
+
+	/**
+	 * get all the promtions
+	 * 
+	 * @return
+	 */
+	public ArrayList<Promotion> getAllPromotions() {
+		MsgController msgController = ClientController.getInstance()
+				.sendMsg(MsgController.createGET_ALL_PROMOTIONSMsg());
+		if (msgController.getType() == MsgType.RETURN_ALL_PROMOTIONS) {
+			return msgController.getAllpromotions();
+		}
+		return null;
+
 	}
 }

@@ -3,18 +3,38 @@ package shop;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import cart.ProductInCart;
 import catalog.CustomizedProduct;
 import catalog.Product;
 import order.DeliveryDetails;
 import order.Order;
 
+/**
+ * boundary for the shop -> the catalog browsing and the order process. use the
+ * catalog and cart controllers
+ * 
+ *
+ */
 public class ShopBoundary {
 
+	/**
+	 * the cart controller
+	 */
 	private CartController cartCon;
+	/**
+	 * the catalog controller
+	 */
 	private CatalogController catalogCon;
+	/**
+	 * flag for home delivery option
+	 */
 	private boolean homeDeliveryflag = false;
+	/**
+	 * flag for the personal card option
+	 */
 	private boolean personalCard = false;
+	/**
+	 * save all the cart items productId
+	 */
 	private ArrayList<Integer> cartItemsIDs;
 
 	public ShopBoundary() {
@@ -110,11 +130,10 @@ public class ShopBoundary {
 		cartCon.editAmount(product, amount);
 	}
 
-	/**
-	 * public void openCart() {
-	 * 
-	 * show cart in full window?? }
-	 */
+	public int getAmount(int productID) {
+		return cartCon.getAmount(productID);
+	}
+
 	/**
 	 * place a new order and return an order object
 	 * 
@@ -205,6 +224,7 @@ public class ShopBoundary {
 
 	public void emptyCart() {
 		cartCon = new CartController();
+		cartItemsIDs = new ArrayList<Integer>();
 	}
 
 }

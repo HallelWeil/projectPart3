@@ -5,10 +5,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * controller for the window: the opening window, show welcome string and login
+ * button
+ * 
+ *
+ */
 public class StartingWindowGuiController implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();

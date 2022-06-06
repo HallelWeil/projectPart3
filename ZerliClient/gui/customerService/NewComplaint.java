@@ -9,16 +9,18 @@ import javafx.scene.control.Label;
 
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import userGuiManagment.CustomerServiceGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.CustomerServiceEmployeeBoundary;
 import usersManagment.UserBoundary;
 
+/**
+ * controller for the window: creating new complaint window
+ *
+ */
 public class NewComplaint implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();

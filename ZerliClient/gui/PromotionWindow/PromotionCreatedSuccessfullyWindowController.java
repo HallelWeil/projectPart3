@@ -7,10 +7,13 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * controller for the window: the promotion created successfully window
+ *
+ */
 public class PromotionCreatedSuccessfullyWindowController implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
@@ -25,8 +28,6 @@ public class PromotionCreatedSuccessfullyWindowController implements IGuiControl
 
 	@FXML
 	private Button FinishButton;
-
-	private GuiObjectsFactory guiobjectfactory = GuiObjectsFactory.getInstance();
 
 	@FXML
 	void FinishPressed(ActionEvent event) {

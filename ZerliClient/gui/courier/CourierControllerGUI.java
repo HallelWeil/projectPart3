@@ -5,20 +5,28 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import userGuiManagment.CourierGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.CourierBoundary;
 
+/**
+ * controller for the approve delivery window, can place order number and
+ * approve the delivery, get completed msg on success and relevant error msg on
+ * error
+ * 
+ * @author halel
+ *
+ */
 public class CourierControllerGUI implements IGuiController {
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
 	private CourierBoundary courierBoundary = CourierGuiManager.getInstance().getCourierBoundary();
 	private int orderNumber;
 
+	/**
+	 * the base for this window
+	 */
 	@FXML
 	private Pane DeliveryPane;
 
@@ -38,7 +46,7 @@ public class CourierControllerGUI implements IGuiController {
 	void ConfirmDelivery(ActionEvent event) {
 		String putInOrderNumber = orderNum_txt.getText();
 		if (!putInOrderNumber.matches("[0-9]+")) {
-			setError("Survey number must contain numbers only!");
+			setError("Order number must contain numbers only!");
 			return;
 		} else {
 			orderNumber = Integer.valueOf(putInOrderNumber);
@@ -62,7 +70,7 @@ public class CourierControllerGUI implements IGuiController {
 	void enterOrderNumber(ActionEvent event) {
 		String putInOrderNumber = orderNum_txt.getText();
 		if (!putInOrderNumber.matches("[0-9]+")) {
-			setError("Survey number must contain numbers only!");
+			setError("Order number must contain numbers only!");
 		} else {
 			orderNumber = Integer.valueOf(putInOrderNumber);
 		}

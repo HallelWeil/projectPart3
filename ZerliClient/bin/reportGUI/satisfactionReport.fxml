@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="satisfactionReportPane" prefHeight="750.0" prefWidth="630.0" style="-fx-border-color: black; -fx-border-width: 3;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reportGUI.SatisfactionReportController">
+<AnchorPane fx:id="satisfactionReportPane" prefHeight="750.0" prefWidth="630.0" style="-fx-border-color: black; -fx-border-width: 3;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reportGUI.SatisfactionReportController">
    <children>
       <Label layoutX="38.0" layoutY="29.0" text="Satisfaction Report:">
          <font>
@@ -25,27 +24,7 @@
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="37.0" layoutY="221.0" text="Number of Compansations:">
-         <font>
-            <Font name="System Bold Italic" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="35.0" layoutY="194.0" text="Number of Answered Complaints:">
-         <font>
-            <Font name="System Bold Italic" size="18.0" />
-         </font>
-      </Label>
       <Label fx:id="complaintsNum" layoutX="357.0" layoutY="167.0" text="noData">
-         <font>
-            <Font name="System Bold Italic" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="answeredNum" layoutX="357.0" layoutY="194.0" text="noData">
-         <font>
-            <Font name="System Bold Italic" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="compansationsNum" layoutX="357.0" layoutY="221.0" text="noData">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>

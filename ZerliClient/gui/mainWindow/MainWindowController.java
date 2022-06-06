@@ -1,22 +1,19 @@
 package mainWindow;
 
-import java.net.URL;
-
-import buttons.BtnController;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import main.ClientUI;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * controller for the window: the main window, all the othe windows are placed
+ * in this window, in the bottom box
+ * 
+ */
 public class MainWindowController implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();

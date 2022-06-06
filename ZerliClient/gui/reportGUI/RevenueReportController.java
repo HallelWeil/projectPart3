@@ -11,6 +11,10 @@ import main.IGuiController;
 import report.Report;
 import report.RevenueReport;
 
+/**
+ * controller for the window: the revenue report
+ *
+ */
 public class RevenueReportController implements IGuiController, IReportController {
 	private RevenueReport revenueReport = null;
 	private Series<String, Double> daySeries;
@@ -73,7 +77,7 @@ public class RevenueReportController implements IGuiController, IReportControlle
 		daySeries = new XYChart.Series<>();
 		revenuePerDay = revenueReport.getRevenuePerDay();
 		for (int i = 0; i < 31; i++) {
-			daySeries.getData().add(new XYChart.Data<String, Double>(i +"", revenuePerDay[i]));
+			daySeries.getData().add(new XYChart.Data<String, Double>(i + "", revenuePerDay[i]));
 		}
 		incomeDayChart.getData().add(daySeries);
 	}

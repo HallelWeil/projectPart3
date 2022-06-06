@@ -11,6 +11,10 @@ import javafx.scene.layout.Pane;
 import main.IGuiController;
 import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * controller for the window: the login window
+ *
+ */
 public class LoginGuiController implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();

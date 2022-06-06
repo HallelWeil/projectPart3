@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import catalog.Product;
 import order.DeliveryDetails;
 
+/**
+ * simple entity for the cart object, representing full cart with items
+ * 
+ *
+ */
 public class Cart implements Serializable {
 
 	/**
@@ -32,7 +37,7 @@ public class Cart implements Serializable {
 		deliveryDetails = null;
 		price = 0;
 		arrivalDate = null;
-		tempProduct= new ProductInCart(new Product(-1),1);
+		tempProduct = new ProductInCart(new Product(-1), 1);
 	}
 
 	/**
@@ -50,13 +55,19 @@ public class Cart implements Serializable {
 		else
 			productsInCart.add(newProduct);
 	}
-	public void removeItem(String productName)
-	{
+
+	/**
+	 * remove item from the cart
+	 * 
+	 * @param productName
+	 */
+	public void removeItem(String productName) {
 		tempProduct.getProduct().setName(productName);
 		if (productsInCart.contains(tempProduct)) {
 			productsInCart.remove(tempProduct);
 		}
 	}
+
 	public double getPrice() {
 		return price;
 	}
@@ -125,7 +136,5 @@ public class Cart implements Serializable {
 	public ArrayList<ProductInCart> getProductsInCart() {
 		return productsInCart;
 	}
-	
-	
 
 }

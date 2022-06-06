@@ -6,6 +6,10 @@ import msg.MsgType;
 import order.Order;
 import order.OrderStatus;
 
+/**
+ * boundary for the courier, can only approve delivery
+ *
+ */
 public class CourierBoundary {
 	private ClientController client = ClientController.getInstance();
 

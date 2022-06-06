@@ -8,6 +8,14 @@ import surveyGui.ShowChoosenSurvey;
 import surveyGui.SurveyResults;
 import usersManagment.CustomerServiceEmployeeBoundary;
 
+/**
+ * Singleton, manage all the different Customer Service employee windows, for
+ * each window controller when trying to get the controller, load the fxml if
+ * not already loaded
+ * 
+ * @author halel
+ *
+ */
 public class CustomerServiceGuiManager implements IUserGuiManager {
 
 	private static CustomerServiceGuiManager customerServiceGuiManager;

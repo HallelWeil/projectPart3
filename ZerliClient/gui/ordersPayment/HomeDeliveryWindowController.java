@@ -1,6 +1,5 @@
 package ordersPayment;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import java.time.LocalDate;
@@ -21,13 +20,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.DeliveryDetails;
 import shop.ShopBoundary;
 import userGuiManagment.AuthorizedCustomerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 
+/**
+ * controller for the window: the delivery details form
+ *
+ */
 public class HomeDeliveryWindowController implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
@@ -80,7 +82,7 @@ public class HomeDeliveryWindowController implements IGuiController {
 	private Label errorLabel;
 
 	public DeliveryDetails deliveryDetails = new DeliveryDetails();
-	private Timestamp arrivalDate = new Timestamp(0, 0, 0, 0, 0, 0, 0);
+	private Timestamp arrivalDate = new Timestamp(0);
 
 	private List<TextField> textFields;
 

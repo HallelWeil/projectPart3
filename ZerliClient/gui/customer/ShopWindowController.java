@@ -21,21 +21,49 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import main.IGuiController;
 import shop.ShopBoundary;
+import user.UserStatus;
+import user.UserType;
 import userGuiManagment.AuthorizedCustomerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
+import usersManagment.UserBoundary;
 
+/**
+ * manage the shop-> the catalog view, the cart and the customized products
+ * 
+ * @author halel
+ *
+ */
 public class ShopWindowController implements IGuiController {
-
 	private AuthorizedCustomerGuiManager authorizedCustomerGuiManager = AuthorizedCustomerGuiManager.getInstance();
 	private ShopBoundary shopBoundary = AuthorizedCustomerGuiManager.getInstance().getShopBoundary();
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
+	/**
+	 * save the items in cart controllers base on the product unique number
+	 */
 	private HashMap<Integer, ItemInCartController> itemInCartMap = new HashMap<Integer, ItemInCartController>();
+	/**
+	 * we give the customized products unique temp ids with negative numbers
+	 */
 	private int customizedItemID = 0;// give each customize item unique temp id
+	/**
+	 * save the customized products we created
+	 */
 	private HashMap<Integer, CustomizedProduct> CustomizedProducts = new HashMap<Integer, CustomizedProduct>();
+	/**
+	 * save the customozed products names
+	 */
 	private HashMap<String, Integer> customizedProductsNames = new HashMap<String, Integer>();
+	/**
+	 * list for the combo box items
+	 */
 	private ObservableList<String> comboBoxList = FXCollections.observableArrayList();
+	/**
+	 * save the currently edited customized product
+	 */
 	private CustomizedProduct currentCustomizedProduct;
-
+	/**
+	 * for the initial opening of the window
+	 */
 	private boolean isOpen = false;
 
 	@FXML
@@ -131,7 +159,22 @@ public class ShopWindowController implements IGuiController {
 	private ComboBox<String> itemPriceRange;
 
 	@FXML
+	private ComboBox<String> itemColor;
+
+	@FXML
+	private ComboBox<String> itemType;
+
+	/**
+	 * place the order, only if the cart is not empty
+	 * 
+	 * @param event
+	 */
+	@FXML
 	void PalceOrder(ActionEvent event) {
+		if (itemInCartMap.isEmpty()) {
+			cartErrorLabel.setText("The cart is empty!");
+			return;
+		}
 		authorizedCustomerGuiManager.getBranch_Delivery().openWindow();
 	}
 
@@ -140,6 +183,11 @@ public class ShopWindowController implements IGuiController {
 
 	}
 
+	/**
+	 * select category, get all the category products
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void selectCategoryTab(Event event) {
 		if (!isOpen)
@@ -188,6 +236,9 @@ public class ShopWindowController implements IGuiController {
 		//
 	}
 
+	/**
+	 * open the shop window, init all the fields, open the default category
+	 */
 	@Override
 	public void openWindow() {
 		// move to the next window
@@ -202,11 +253,25 @@ public class ShopWindowController implements IGuiController {
 			costumizedProductsChooseList.setItems(comboBoxList);
 			String[] pricing = { "10-20", "20-30", "30-40", "40-50" };
 			itemPriceRange.setItems(FXCollections.observableArrayList(pricing));
+			String[] colors = { "colorful", "red", "blue", "green", "yellow", "purple", "pink" };
+			itemColor.setItems(FXCollections.observableArrayList(colors));
+			String[] types = { "Bouquet", "Arrangement", "Vase" };
+			itemType.setItems(FXCollections.observableArrayList(types));
 			itemPriceRange.setDisable(true);
+			itemColor.setDisable(true);
+			itemType.setDisable(true);
 			saveChangeBtn.setDisable(true);
 			addCPtoCart.setDisable(true);
 		}
 		isOpen = true;
+		// if the customer is frozen/ not yet authorized
+		if (UserBoundary.CurrentUser.getStatus().equals(UserStatus.Frozen)
+				|| UserBoundary.CurrentUser.getUserType().equals(UserType.NonAuthorizedCustomer)) {
+			placeOrderBtn.setDisable(true);
+		} else {
+			placeOrderBtn.setDisable(false);
+		}
+		cartErrorLabel.setText("");
 	}
 
 	public VBox getCartPane() {
@@ -214,24 +279,50 @@ public class ShopWindowController implements IGuiController {
 
 	}
 
+	/**
+	 * add product to cart
+	 * 
+	 * @param p
+	 * @param controller
+	 */
 	public void addProductGuiObjectToCart(Pane p, ItemInCartController controller) {
 		cartItemsList.getChildren().add(p);
 		itemInCartMap.put(controller.getProduct().getProductID(), controller);
+		cartErrorLabel.setText("");
 	}
 
-	public void removeProductGuiObjectToCart(Pane p) {
+	/**
+	 * remove product from cart
+	 * 
+	 * @param p
+	 */
+	public void removeProductGuiObjectToCart(Pane p,int productID) {
 		if (cartItemsList.getChildren().contains(p))
 			cartItemsList.getChildren().remove(p);
-		itemInCartMap.remove(p);
+		itemInCartMap.remove(productID);
+		cartErrorLabel.setText("");
 	}
 
-	public void updateAmount(int amount, int productId) {
-		if (itemInCartMap.containsKey(productId)) {
-			itemInCartMap.get(productId).updateAmount(amount);
+	/**
+	 * update the product amount in cart
+	 * 
+	 * @param productId
+	 */
+	public void updateAmount(int productId) {
+		synchronized (itemInCartMap) {
+			if (itemInCartMap.containsKey(productId)) {
+				itemInCartMap.get(productId).updateAmount(shopBoundary.getAmount(productId));
+			}
 		}
+		cartErrorLabel.setText("");
 	}
 
 	// handle customized product
+	/**
+	 * add product to the active customized product
+	 * 
+	 * @param product
+	 */
 	public void addProductToCustomizedProduct(Product product) {
 		cartTabPane.getSelectionModel().select(CustomizedProductTab);
 		if (currentCustomizedProduct == null) {
@@ -249,11 +340,22 @@ public class ShopWindowController implements IGuiController {
 
 	}
 
+	/**
+	 * remove product from the active customized product
+	 * 
+	 * @param product
+	 * @param pane
+	 */
 	public void removeProductFromCustomizedProduct(Product product, Pane pane) {
 		currentCustomizedProduct.getItems().remove(product);
 		costumizedProductItemList.getChildren().remove(pane);
 	}
 
+	/**
+	 * select active customized product
+	 * 
+	 * @param customizedProduct
+	 */
 	private void chooseCustomizedProduct(CustomizedProduct customizedProduct) {
 		costumizedItemName.setDisable(true);
 		// empty the list
@@ -268,6 +370,11 @@ public class ShopWindowController implements IGuiController {
 		}
 	}
 
+	/**
+	 * add customized product to cart
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void addCPToCart(ActionEvent event) {
 		if (shopBoundary.addToCart(currentCustomizedProduct, 1))// add to cart
@@ -276,11 +383,16 @@ public class ShopWindowController implements IGuiController {
 					.createNewCartItem(currentCustomizedProduct, 1);
 			addProductGuiObjectToCart(controller.getBasePane(), controller);
 		} else {
-			updateAmount(1, currentCustomizedProduct.getProductID());
+			updateAmount(currentCustomizedProduct.getProductID());
 		}
 		cartTabPane.getSelectionModel().select(cartTab);
 	}
 
+	/**
+	 * create new customized product
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void createNewCustomizedProduct(ActionEvent event) {
 		currentCustomizedProduct = new CustomizedProduct(--customizedItemID, "");
@@ -288,10 +400,17 @@ public class ShopWindowController implements IGuiController {
 		costumizedItemName.setDisable(false);
 		costumizedProductItemList.getChildren().removeAll(costumizedProductItemList.getChildren());
 		itemPriceRange.setDisable(false);
+		itemColor.setDisable(false);
+		itemType.setDisable(false);
 		saveChangeBtn.setDisable(false);
 		addCPtoCart.setDisable(false);
 	}
 
+	/**
+	 * save changes to the customize product
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void saveChnages(ActionEvent event) {
 
@@ -319,11 +438,8 @@ public class ShopWindowController implements IGuiController {
 		}
 
 		currentCustomizedProduct.setName(name);
-		currentCustomizedProduct.setCategory("CustomizedProduct");
-		currentCustomizedProduct.setColors("");
 		currentCustomizedProduct.setDescription("Customized Product");
 		changePrice(range);
-
 		// if its a new product
 		if (customizedItemID == currentCustomizedProduct.getProductID()) {
 			CustomizedProducts.put(customizedItemID, currentCustomizedProduct);
@@ -335,21 +451,38 @@ public class ShopWindowController implements IGuiController {
 
 	}
 
+	/**
+	 * update the customized product error label
+	 * 
+	 * @param s
+	 */
 	private void updateCSError(String s) {
 		customizedProductErrorLabel.setText(s);
 	}
 
+	/**
+	 * init the customized product tab
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void customizedProductSelected(ActionEvent event) {
 		int id = customizedProductsNames.get(costumizedProductsChooseList.getValue());
 		CustomizedProduct p = CustomizedProducts.get(id);
 		chooseCustomizedProduct(p);
 		itemPriceRange.setDisable(false);
+		itemColor.setDisable(false);
+		itemType.setDisable(false);
 		saveChangeBtn.setDisable(false);
 		addCPtoCart.setDisable(false);
 
 	}
 
+	/**
+	 * choose price range
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void changeItemPrice(ActionEvent event) {
 		String range = itemPriceRange.getValue();
@@ -357,6 +490,11 @@ public class ShopWindowController implements IGuiController {
 
 	}
 
+	/**
+	 * set the price for the price range
+	 * 
+	 * @param range
+	 */
 	private void changePrice(String range) {
 		double topVal = 10, botVal = 20;
 		if (range.equals("10-20")) {
@@ -378,8 +516,35 @@ public class ShopWindowController implements IGuiController {
 		currentCustomizedProduct.choosePrice(topVal, botVal);
 	}
 
+	/**
+	 * change the active customized product color
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void changeItemColor(ActionEvent event) {
+		String color = itemColor.getValue();
+		currentCustomizedProduct.setColors(color);
+	}
+
+	/**
+	 * change the active customized product type
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void changeItemType(ActionEvent event) {
+		String type = itemType.getValue();
+		currentCustomizedProduct.setType(type);
+	}
+
+	/**
+	 * remove all from the cart gui
+	 */
 	public void emptyCart() {
 		itemInCartMap = new HashMap<Integer, ItemInCartController>();
+		
 		cartItemsList.getChildren().clear();
 	}
+
 }

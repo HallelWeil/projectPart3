@@ -8,9 +8,8 @@ import common.Status;
 import msg.MsgType;
 
 /**
- * manage complaints
+ * manage complaints, creating and updating
  * 
- * @author halel
  *
  */
 public class ComplaintsController {

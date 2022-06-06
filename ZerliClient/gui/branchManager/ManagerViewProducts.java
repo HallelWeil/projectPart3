@@ -7,10 +7,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -23,6 +21,10 @@ import userGuiManagment.BranchManagerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.BranchManagerBoundary;
 
+/**
+ * controller for the window: view product window
+ *
+ */
 public class ManagerViewProducts implements IGuiController {
 	private GuiObjectsFactory guiObjectsFactory = GuiObjectsFactory.getInstance();
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
@@ -66,11 +68,11 @@ public class ManagerViewProducts implements IGuiController {
 
 	@FXML
 	void ApproveOrder(ActionEvent event) {
-		if (selectedOrder.getOrderStatus().toString() == "WAITING_FOR_APPROAVL") {
+		if (selectedOrder.getOrderStatus() == OrderStatus.WAITING_FOR_APPROAVL) {
 			managerBoundry.requestApproveOrder(selectedOrder.getOrderNumber(), true);
 			selectedOrder.setOrderStatus(OrderStatus.APPROVED);
 		}
-		if (selectedOrder.getOrderStatus().toString() == "WAITING_FOR_CANCELATION_APPROVAL") {
+		if (selectedOrder.getOrderStatus() == OrderStatus.WAITING_FOR_CANCELLATION_APPROVAL) {
 			managerBoundry.requestApproveCancelation(selectedOrder.getOrderNumber(), true);
 			selectedOrder.setOrderStatus(OrderStatus.CANCELED);
 		}
@@ -109,9 +111,9 @@ public class ManagerViewProducts implements IGuiController {
 		products = managerBoundry.getAllProductsInOrder(selectedOrder.getOrderNumber());
 		productsObs.setAll(products);
 		productsInOrderTable.setItems(productsObs);
-		if (selectedOrder.getOrderStatus().toString() == "WAITING_FOR_APPROAVL")
+		if (selectedOrder.getOrderStatus() == OrderStatus.WAITING_FOR_APPROAVL)
 			approveBot.setText("Approve Order");
-		if (selectedOrder.getOrderStatus().toString() == "WAITING_FOR_CANCELATION_APPROVAL") {
+		if (selectedOrder.getOrderStatus() == OrderStatus.WAITING_FOR_CANCELLATION_APPROVAL) {
 			approveBot.setText("Approve Cancellation");
 		}
 	}

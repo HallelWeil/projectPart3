@@ -1,5 +1,7 @@
 package paymentManagment;
 
+import simulators.ServerSimulatorsManager;
+
 /**
  * not implemented, for future update. manage payment and refund
  * 
@@ -14,15 +16,16 @@ public class PaymentController {
 	 * @param cardInfo
 	 * @param amount   the amount to charge
 	 * @return true on success
-	 * @throws Exception if the card info is not ok
 	 */
-	public boolean pay(String cardInfo, double amount) throws Exception {
+	public boolean pay(String cardInfo, double amount) {
 		if (amount < 0)
-			throw new Exception("Cant pay " + amount);
+			return false;
 		if (cardInfo == null)
 			return false;
 		// if the credit card info is bad return false
 		// pay the amount
+		String msg = "Charge card: " + cardInfo + "\n" + "For: " + amount + "\n";
+		ServerSimulatorsManager.getInstance().SimulationsLog.add(msg);
 		return true;
 	}
 
@@ -38,6 +41,8 @@ public class PaymentController {
 			return false;
 		// if the credit card info is bad return false
 		// refund the amount
+		String msg = "Refund card: " + cardInfo + "\n" + "For: " + amount + "\n";
+		ServerSimulatorsManager.getInstance().SimulationsLog.add(msg);
 		return true;
 	}
 }

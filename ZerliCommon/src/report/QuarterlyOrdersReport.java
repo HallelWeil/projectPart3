@@ -3,8 +3,18 @@ package report;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * quarterly all branches orders report
+ * 
+ * @author halel
+ *
+ */
 public class QuarterlyOrdersReport extends Report {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * orders per day,per month, the 0 place is the 1st day and so on each row of
 	 * the matrix is a month, each column of the matrix is the day
@@ -40,7 +50,7 @@ public class QuarterlyOrdersReport extends Report {
 	public void addOrdersOnDay(int day, int month, int amount) {
 		if (day > 31 || day < 1)
 			return;
-		ordersPerDay[(month-1) % 3][day - 1] += amount;
+		ordersPerDay[(month - 1) % 3][day - 1] += amount;
 	}
 
 	public void addToCategory(String category, int amount) {
@@ -79,8 +89,8 @@ public class QuarterlyOrdersReport extends Report {
 		return totalOrders;
 	}
 
-	public double[] getAvarageMonthlyOrders() {
-		return avarageMonthlyOrders;
+	public String getAvarageMonthlyOrders() {
+		return avarageMonthlyOrders[0] + "," + avarageMonthlyOrders[1] + "," + avarageMonthlyOrders[2];
 	}
 
 	public void setAvarageMonthlyOrders(double amount, int month) {

@@ -1,7 +1,5 @@
 package buttons;
 
-import java.lang.invoke.SwitchPoint;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,7 +7,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import user.UserType;
 import userGuiManagment.AuthorizedCustomerGuiManager;
@@ -22,6 +19,10 @@ import userGuiManagment.MainWindowGuiManager;
 import userGuiManagment.MarketingGuiManager;
 import usersManagment.UserBoundary;
 
+/**
+ * controller for the buttons gui, hold the Buttons objects for the top menu,
+ * can get the object using getters and place on the windows
+ */
 public class BtnController implements IGuiController {
 
 	@FXML
@@ -37,9 +38,6 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	private Button createPromotionBtn;
-
-	@FXML
-	private ImageView deleteBtn;
 
 	@FXML
 	private Button enterSurveyAnswersBtn;
@@ -88,6 +86,14 @@ public class BtnController implements IGuiController {
 
 	@FXML
 	private Button managePromotionsBtn;
+
+	@FXML
+	private Button manageCatalogBtn;
+
+	@FXML
+	void manageCatalog(ActionEvent event) {
+		MarketingGuiManager.getInstance().getManageCatalogController().openWindow();
+	}
 
 	@FXML
 	void managePromotions(ActionEvent event) {
@@ -218,10 +224,6 @@ public class BtnController implements IGuiController {
 		return createPromotionBtn;
 	}
 
-	public ImageView getDeleteBtn() {
-		return deleteBtn;
-	}
-
 	public Button getEnterSurveyAnswersBtn() {
 		return enterSurveyAnswersBtn;
 	}
@@ -282,13 +284,17 @@ public class BtnController implements IGuiController {
 		return managePromotionsBtn;
 	}
 
+	public Button getManageCatalogBtn() {
+		return manageCatalogBtn;
+	}
+
 	public ImageView getLogo() {
 		return logo;
 	}
 
 	@Override
 	public void openWindow() {
-		// move to the next window
+
 	}
 
 	@FXML

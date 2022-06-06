@@ -170,6 +170,7 @@ public class ServerGuiController {
 			@Override
 			public void onChanged(Change c) {
 				updateConsole();
+
 			}
 		});
 	}

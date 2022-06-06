@@ -11,31 +11,35 @@ import main.IGuiController;
 import report.QuarterlyRevenueReport;
 import report.Report;
 
+/**
+ * controller for the window: the quarterly revenue report
+ *
+ */
 public class QuarterlyRevenueReportController implements IGuiController, IReportController {
 	private QuarterlyRevenueReport revenueReport = null;
 	private Series<String, Double> daySeries;
 	private double[][] revenuePerDay;
 
-    @FXML
-    private Label AveragePerOrderLabel;
+	@FXML
+	private Label AveragePerOrderLabel;
 
-    @FXML
-    private Label averageGlobalRevLabel;
+	@FXML
+	private Label averageGlobalRevLabel;
 
-    @FXML
-    private Label dateLabel;
+	@FXML
+	private Label dateLabel;
 
-    @FXML
-    private LineChart<String, Double> incomeDayChart;
+	@FXML
+	private LineChart<String, Double> incomeDayChart;
 
-    @FXML
-    private Label mostProfitItemLabel;
+	@FXML
+	private Label mostProfitItemLabel;
 
-    @FXML
-    private Label totalRevLabel;
-    
-    @FXML
-    private AnchorPane quarterlyRevenueReportPane;
+	@FXML
+	private Label totalRevLabel;
+
+	@FXML
+	private AnchorPane quarterlyRevenueReportPane;
 
 	@Override
 	public Pane getBasePane() {
@@ -56,21 +60,20 @@ public class QuarterlyRevenueReportController implements IGuiController, IReport
 	@Override
 	public void openWindow() {
 		AveragePerOrderLabel.setText(revenueReport.getAverageRevenuePerOrder() + "");
-		averageGlobalRevLabel.setText(revenueReport.getAvarageMonthlyRevenue() + "");
+		averageGlobalRevLabel.setText(revenueReport.getAverageRevenuePerOrder() + "");
 		dateLabel.setText(revenueReport.getMonth() + "/" + revenueReport.getYear());
 		mostProfitItemLabel.setText(revenueReport.getMostProfitableItem().toString());
 		totalRevLabel.setText(revenueReport.getTotalRevenue() + "");
 		setPerDayChart();
-		
+
 	}
-	
-	
+
 	private void setPerDayChart() {
 		daySeries = new XYChart.Series<>();
 		revenuePerDay = revenueReport.getRevenuePerDay();
 		for (int i = 0; i < 3; i++) {
-			for(int j=0; j<31; j++) {
-				daySeries.getData().add(new XYChart.Data<String, Double>(i*31 + j + "", revenuePerDay[i][j]));
+			for (int j = 0; j < 31; j++) {
+				daySeries.getData().add(new XYChart.Data<String, Double>(i * 31 + j + "", revenuePerDay[i][j]));
 			}
 		}
 		incomeDayChart.getData().add(daySeries);
@@ -79,7 +82,7 @@ public class QuarterlyRevenueReportController implements IGuiController, IReport
 	@Override
 	public void setReport(Report report) {
 		this.revenueReport = (QuarterlyRevenueReport) report;
-		
+
 	}
 
 }

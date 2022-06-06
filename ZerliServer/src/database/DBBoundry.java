@@ -44,7 +44,6 @@ public class DBBoundry {
 				return null;
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
 			return null;
 		}
 	}
@@ -87,7 +86,6 @@ public class DBBoundry {
 			conn.close();
 			return true;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			return false;
 		}
 	}

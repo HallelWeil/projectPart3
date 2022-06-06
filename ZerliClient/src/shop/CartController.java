@@ -13,10 +13,25 @@ import msg.MsgType;
 import order.DeliveryDetails;
 import order.Order;
 
+/**
+ * Manage the active cart for the shop, save the items, calculate the price and
+ * manage the order process data
+ * 
+ *
+ */
 public class CartController {
 
+	/**
+	 * the cart object
+	 */
 	private Cart myCart;
+	/**
+	 * customized product list, to manage them
+	 */
 	private ArrayList<Product> CustomizedProductsInCart = new ArrayList<>();
+	/**
+	 * the client controller
+	 */
 	private ClientController clientController = ClientController.getInstance();
 
 	public CartController() {
@@ -24,10 +39,9 @@ public class CartController {
 	}
 
 	/**
-	 * crate new customized product
+	 * add new customized product to the cart
 	 * 
-	 * @param name
-	 * @throws Exception
+	 * @param newProduct
 	 */
 	public void addNewProductToCart(CustomizedProduct newProduct) {
 		CustomizedProductsInCart.add(newProduct);
@@ -46,10 +60,8 @@ public class CartController {
 			if (CustomizedProductsInCart.get(i) instanceof CustomizedProduct)
 				if (CustomizedProductsInCart.get(i).getProductID() == productID) {
 					((CustomizedProduct) CustomizedProductsInCart.get(i)).getItems().add(item);
-
 				}
 		}
-
 	}
 
 	/**
@@ -69,7 +81,7 @@ public class CartController {
 	}
 
 	/**
-	 * add item to cart
+	 * add product to cart
 	 * 
 	 * @param product
 	 */
@@ -117,7 +129,7 @@ public class CartController {
 	}
 
 	/**
-	 * add replace greeting card
+	 * add/replace greeting card
 	 */
 	public void addGreetingCard(String card) {
 
@@ -150,20 +162,20 @@ public class CartController {
 	public void chooseBranchForOrder(String branchName) {
 		myCart.setBranchName(branchName);
 	}
-	
+
 	/**
-	 * get the List of all Branches to display for customer to choose one 
-	 * @return arrayList of all branches 
+	 * get the List of all Branches to display for customer to choose one
+	 * 
+	 * @return arrayList of all branches
 	 */
 	public ArrayList<String> getAllBrances() {
-		
+
 		MsgController msgController = clientController.sendMsg(MsgController.createGET_BRANCH_LISTMsg());
 		if (msgController.getType() == MsgType.RETURN_BRANCH_NAMES) {
 			return msgController.getBranchNames();
 		}
 		return null;
-		}
-
+	}
 
 	/**
 	 * place the order, send to server and return the order object
@@ -194,6 +206,16 @@ public class CartController {
 
 	public void setArrivelOrPickupDateAndTime(Timestamp time) {
 		myCart.setArrivalDate(time);
+	}
+
+	public int getAmount(int productID) {
+		ArrayList<ProductInCart> products = myCart.getProductsInCart();
+		for (int i = 0; i < products.size(); i++) {
+			if (products.get(i).getProduct().getProductID() == productID) {
+				return products.get(i).getAmount();
+			}
+		}
+		return 0;
 	}
 
 }

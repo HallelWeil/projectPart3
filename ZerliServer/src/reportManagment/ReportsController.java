@@ -57,6 +57,9 @@ public class ReportsController {
 	 */
 	private int year;
 
+	private double avgOrders = 0;
+	private double avgRev = 0;
+
 	/**
 	 * Construct new report controller for the month+year
 	 * 
@@ -68,7 +71,7 @@ public class ReportsController {
 		this.month = month;
 		branches = null;// get all the branches names from the dataBase
 		// quarter end in the months: 3, 6, 9, 12, all the months divided by 3
-		if (month % 3 == 0) {
+		if ((month + 1) % 3 == 0) {
 			IsQuarterly = true;
 		}
 		orderReports = new ArrayList<OrdersReport>();
@@ -130,10 +133,21 @@ public class ReportsController {
 		}
 
 		// create all the monthly reports
-		for (
-
-		String branch : branches) {
+		avgOrders = 0;
+		avgRev = 0;
+		for (String branch : branches) {
 			createMonthlyReports(month, year, branch, sortedLists.get(branch));
+		}
+		// get the average
+		if (branches.size() > 0) {
+			avgOrders = roundDouble(avgOrders / branches.size());
+			avgRev = roundDouble(avgRev / branches.size());
+		}
+		for (OrdersReport r : orderReports) {
+			r.setAvarageMonthlyOrders(avgOrders);
+		}
+		for (RevenueReport r : revenueReports) {
+			r.setAverageMonthlyRevenue(avgRev);
 		}
 		// if needed create the quarterly reports
 		if (IsQuarterly) {
@@ -150,17 +164,19 @@ public class ReportsController {
 	private void createQuarterlyReports() {
 		// create quarterly reports
 		// get all the revenue reports for the time period
-		ArrayList<Report> reportList = null;// dbController.//
+		ArrayList<Report> reportList = dbController.getAllReportsInTimePeriod(month - 2, month - 1, year);
 		// create new arraylist for all the revenue reports(including the new ones)
 		ArrayList<RevenueReport> tempRevenueReports = new ArrayList<RevenueReport>(this.revenueReports);
 		// create new arraylist for all the order reports(including the new ones)
 		ArrayList<OrdersReport> tempOrdersReports = new ArrayList<OrdersReport>(this.orderReports);
 		// sort the report to their lists
-		for (Report report : reportList) {
-			if (report.getType() == ReportType.MONTHLY_ORDERS_REPORT) {
-				tempOrdersReports.add((OrdersReport) report);
-			} else if (report.getType() == ReportType.MONTHLY_REVENU_EREPORT) {
-				tempRevenueReports.add((RevenueReport) report);
+		if (reportList != null) {
+			for (Report report : reportList) {
+				if (report.getType() == ReportType.MONTHLY_ORDERS_REPORT) {
+					tempOrdersReports.add((OrdersReport) report);
+				} else if (report.getType() == ReportType.MONTHLY_REVENU_EREPORT) {
+					tempRevenueReports.add((RevenueReport) report);
+				}
 			}
 		}
 		createQuarterlyOrdersReport(tempOrdersReports);
@@ -177,7 +193,7 @@ public class ReportsController {
 	 * @param totalOrders        the total number of orders in the quarter
 	 */
 	private void createQuarterlyRevenueReport(ArrayList<RevenueReport> tempRevenueReports, int totalOrders) {
-		QuarterlyRevenueReport newReport = new QuarterlyRevenueReport(month, year);
+		QuarterlyRevenueReport newReport = new QuarterlyRevenueReport(month / 3, year);
 		// local variables
 		int tempMonth;
 		// for each report add the report details to the quarterly report
@@ -195,7 +211,7 @@ public class ReportsController {
 		}
 		// if the total order is bigger than 0, get the average
 		if (totalOrders != 0)
-			newReport.setAverageRevenuePerOrder(newReport.getTotalRevenue() / totalOrders);
+			newReport.setAverageRevenuePerOrder(roundDouble(newReport.getTotalRevenue() / totalOrders));
 		// save the newly created report
 		quarterlyRevenueReport = newReport;
 	}
@@ -206,7 +222,7 @@ public class ReportsController {
 	 * @param tempOrdersReports the list of all the orders reports for this quarter
 	 */
 	private void createQuarterlyOrdersReport(ArrayList<OrdersReport> tempOrdersReports) {
-		QuarterlyOrdersReport newReport = new QuarterlyOrdersReport(month, year);
+		QuarterlyOrdersReport newReport = new QuarterlyOrdersReport(month / 3, year);
 		// local variables
 		int tempMonth;
 		// for each report add the report details to the quarterly report
@@ -239,8 +255,14 @@ public class ReportsController {
 	 * create the quarterly satisfaction report
 	 */
 	private void createQuarterlySatisfactionReport() {
-		QuarterlySatisfactionReport newReport = new QuarterlySatisfactionReport(month, year);
+		QuarterlySatisfactionReport newReport = new QuarterlySatisfactionReport(month / 3, year);
 		// create the report
+		// 1. count all the complaints from each month
+		int[] months = new int[3];
+		months[0] = dbController.countComplaints(month - 2, year);
+		months[1] = dbController.countComplaints(month - 1, year);
+		months[2] = dbController.countComplaints(month, year);
+		newReport.setComplaintsPerMonth(months);
 		quarterlySatisfactionReport = newReport;
 	}
 
@@ -253,12 +275,10 @@ public class ReportsController {
 	 * @param branchName the report branch
 	 * @param orders     list of the orders in this month for this branch
 	 */
+	@SuppressWarnings("deprecation")
 	private void createMonthlyReports(int month, int year, String branchName, ArrayList<Order> orders) {
 		OrdersReport newOrdersReport = new OrdersReport(month, year, ReportType.MONTHLY_ORDERS_REPORT, branchName);
 		RevenueReport newRevenueReport = new RevenueReport(month, year, ReportType.MONTHLY_REVENU_EREPORT, branchName);
-		// get the average from the db
-		double avgOrders = 0;// get the average orders in all the orders reports
-		double avgRevenue = 0;// get the average revenue
 		// find the most popular item and the other details
 		int counter = 0;
 		HashMap<String, Integer> itemsCounter = new HashMap<String, Integer>();
@@ -277,16 +297,18 @@ public class ReportsController {
 						counter++;
 						revenue += order.getPrice();
 					}
+				avgOrders++;
 			}
 		if (counter == 0)
 			newRevenueReport.setAverageRevenuePerOrder(revenue);
 		else
-			newRevenueReport.setAverageRevenuePerOrder(revenue / counter);
+			newRevenueReport.setAverageRevenuePerOrder(roundDouble(revenue / counter));
 		// save the values
-		newRevenueReport.setTotalRevenue(revenue);
-		newRevenueReport.setAverageMonthlyRevenue(avgRevenue);
-		newOrdersReport.setAvarageMonthlyOrders(avgOrders);
+		newRevenueReport.setTotalRevenue(roundDouble(revenue));
+		newRevenueReport.setAverageMonthlyRevenue(0);
+		newOrdersReport.setAvarageMonthlyOrders(0);
 		newOrdersReport.setTotalOrders(counter);
+		avgRev += revenue;
 		int maxAmount = 0;
 		double maxRevenu = 0;
 		String name1 = "", name2 = "";
@@ -341,5 +363,15 @@ public class ReportsController {
 			number += amount;
 		}
 		itemsCounter.put(name, number);
+	}
+
+	/**
+	 * round a double up to 2 decimal places
+	 * 
+	 * @param num
+	 * @return
+	 */
+	private double roundDouble(double num) {
+		return Math.round(num * 100.0) / 100.0;
 	}
 }

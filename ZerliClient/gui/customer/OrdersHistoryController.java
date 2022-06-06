@@ -7,23 +7,24 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import main.GuiObjectsFactory;
 import main.IGuiController;
 import order.Order;
 import order.OrderStatus;
-import order.ProductInOrder;
 import userGuiManagment.AuthorizedCustomerGuiManager;
 import userGuiManagment.MainWindowGuiManager;
 import usersManagment.AuthorizedCustomerBoundary;
-import usersManagment.BranchManagerBoundary;
 
+/**
+ * controller for the order history window
+ * 
+ * @author halel
+ *
+ */
 public class OrdersHistoryController implements IGuiController {
 
 	private MainWindowGuiManager mainWindowManager = MainWindowGuiManager.getInstance();
@@ -62,8 +63,8 @@ public class OrdersHistoryController implements IGuiController {
 	@FXML
 	private TableColumn<Order, OrderStatus> statusCol;
 
-	ObservableList<Order> ordersObs = FXCollections.observableArrayList();
-	Order selectedOrder;;
+	private ObservableList<Order> ordersObs = FXCollections.observableArrayList();
+	private Order selectedOrder;;
 
 	public void initializeOrdersTable() {
 		ordersObs.clear();
@@ -99,6 +100,11 @@ public class OrdersHistoryController implements IGuiController {
 		selectedOrder = null;
 	}
 
+	/**
+	 * select order, move to the order details window
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void selectOrder(ActionEvent event) {
 		selectedOrder = ordersTable.getSelectionModel().getSelectedItem();

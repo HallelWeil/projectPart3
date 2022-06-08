@@ -153,6 +153,7 @@ public class OrderProcessManager {
 			}
 			return false;
 		}
+		activeOrder.setOrderStatus(OrderStatus.WAITING_FOR_APPROAVL);
 		return true;
 	}
 

@@ -117,13 +117,12 @@ public class Order implements Serializable {
 	}
 
 	/**
-	 * Set the order id, must be positive number
+	 * Set the order id
 	 * 
 	 * @param orderID
 	 */
 	public void setOrderNumber(int orderID) {
-		if (orderID >= 0)
-			this.orderNumber = orderID;
+		this.orderNumber = orderID;
 	}
 
 	/**

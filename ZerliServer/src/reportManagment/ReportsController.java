@@ -124,19 +124,17 @@ public class ReportsController {
 				temp = new ArrayList<Order>();
 				sortedLists.put(branch, temp);
 			}
-			for (Order order : allOrders) {
-				if (order.getBranchName().equals(branch)) {
-
-					temp.add(order);
-				}
-			}
 		}
-
+		for (Order order : allOrders) {
+			ArrayList<Order> temp = sortedLists.get(order.getBranchName());
+			temp.add(order);
+		}
 		// create all the monthly reports
 		avgOrders = 0;
 		avgRev = 0;
 		for (String branch : branches) {
-			createMonthlyReports(month, year, branch, sortedLists.get(branch));
+			revenueReports.add(createMonthlyRevenueReport(sortedLists.get(branch), branch));
+			orderReports.add(createMonthlyOrdersReport(sortedLists.get(branch), branch));
 		}
 		// get the average
 		if (branches.size() > 0) {
@@ -267,71 +265,6 @@ public class ReportsController {
 	}
 
 	/**
-	 * Create the monthly reports(revenue and orders) simultaneously(to go over the
-	 * orders only once)
-	 * 
-	 * @param month      the reports month
-	 * @param year       the reports year
-	 * @param branchName the report branch
-	 * @param orders     list of the orders in this month for this branch
-	 */
-	@SuppressWarnings("deprecation")
-	private void createMonthlyReports(int month, int year, String branchName, ArrayList<Order> orders) {
-		OrdersReport newOrdersReport = new OrdersReport(month, year, ReportType.MONTHLY_ORDERS_REPORT, branchName);
-		RevenueReport newRevenueReport = new RevenueReport(month, year, ReportType.MONTHLY_REVENU_EREPORT, branchName);
-		// find the most popular item and the other details
-		int counter = 0;
-		HashMap<String, Integer> itemsCounter = new HashMap<String, Integer>();
-		HashMap<String, Double> itemsRevCounter = new HashMap<String, Double>();
-		double revenue = 0;
-		if (orders != null)
-			for (Order order : orders) {
-				order.setItems(dbController.getAllProductsInOrder(order.getOrderNumber()));
-				if (order.getItems() != null)
-					for (ProductInOrder item : order.getItems()) {
-						addToCounter(itemsCounter, item.getName(), item.getAmount());
-						addToRevCounter(itemsRevCounter, item.getName(), item.getAmount() * item.getPrice());
-						newOrdersReport.addOrderOnDay(order.getOrderDate().getDay());
-						newOrdersReport.addToCategory(item.getCategory(), item.getAmount());
-						newRevenueReport.addOrderRevenuOnDay(order.getOrderDate().getDay(), order.getPrice());
-						counter++;
-						revenue += order.getPrice();
-					}
-				avgOrders++;
-			}
-		if (counter == 0)
-			newRevenueReport.setAverageRevenuePerOrder(revenue);
-		else
-			newRevenueReport.setAverageRevenuePerOrder(roundDouble(revenue / counter));
-		// save the values
-		newRevenueReport.setTotalRevenue(roundDouble(revenue));
-		newRevenueReport.setAverageMonthlyRevenue(0);
-		newOrdersReport.setAvarageMonthlyOrders(0);
-		newOrdersReport.setTotalOrders(counter);
-		avgRev += revenue;
-		int maxAmount = 0;
-		double maxRevenu = 0;
-		String name1 = "", name2 = "";
-		for (String s : itemsCounter.keySet()) {
-			int temp = itemsCounter.get(s);
-			double tempRev = itemsRevCounter.get(s);
-			if (temp > maxAmount) {
-				maxAmount = temp;
-				name1 = s;
-			}
-			if (tempRev > maxRevenu) {
-				maxRevenu = tempRev;
-				name2 = s;
-			}
-		}
-		newOrdersReport.setMostPopularItem(name1);
-		newRevenueReport.setMostProfitableItem(name2);
-		// save the new reports
-		orderReports.add(newOrdersReport);
-		revenueReports.add(newRevenueReport);
-	}
-
-	/**
 	 * Add item to the item counter( by item name) for int
 	 * 
 	 * @param itemsCounter
@@ -373,5 +306,98 @@ public class ReportsController {
 	 */
 	private double roundDouble(double num) {
 		return Math.round(num * 100.0) / 100.0;
+	}
+
+	/**
+	 * create monthly revenue report for the given branch based on the given orders
+	 * list. 1. get the total revenue(sum of the orders prices) 2. get the average
+	 * revenue per order(total revenue/number of orders) 3. get revenue per day 4.
+	 * get most profitable item(the item who got the most profit)
+	 * 
+	 * @param orders
+	 * @param branchName
+	 * @return
+	 */
+	private RevenueReport createMonthlyRevenueReport(ArrayList<Order> orders, String branchName) {
+		RevenueReport newRevenueReport = new RevenueReport(month, year, ReportType.MONTHLY_REVENU_EREPORT, branchName);
+		// find the most popular item and the other details
+		int counter = 0;
+		HashMap<String, Double> itemsRevCounter = new HashMap<String, Double>();
+		double revenue = 0;
+		if (orders != null)
+			for (Order order : orders) {
+				order.setItems(dbController.getAllProductsInOrder(order.getOrderNumber()));
+				if (order.getItems() != null)
+					for (ProductInOrder item : order.getItems()) {
+						addToRevCounter(itemsRevCounter, item.getName(), item.getAmount() * item.getPrice());
+					}
+				newRevenueReport.addOrderRevenuOnDay(order.getOrderDate().toLocalDateTime().getDayOfMonth(),
+						order.getPrice());
+				counter++;
+				revenue += order.getPrice();
+			}
+		if (counter == 0)
+			newRevenueReport.setAverageRevenuePerOrder(revenue);
+		else
+			newRevenueReport.setAverageRevenuePerOrder(roundDouble(revenue / counter));
+		// save the values
+		newRevenueReport.setTotalRevenue(roundDouble(revenue));
+		newRevenueReport.setAverageMonthlyRevenue(0);
+		avgRev += revenue;
+		double maxRevenu = 0;
+		String itemName = "";
+		for (String tempName : itemsRevCounter.keySet()) {
+			double tempRev = itemsRevCounter.get(tempName);
+			if (tempRev > maxRevenu) {
+				maxRevenu = tempRev;
+				itemName = tempName;
+			}
+		}
+		newRevenueReport.setMostProfitableItem(itemName);
+		// save the new reports
+		return newRevenueReport;
+	}
+
+	/**
+	 * create monthly orders report, using the orders list: 1.get the total number
+	 * of orders. 2. get the most popular item. 3. count items in orders for each
+	 * category. 4. count orders per day 5. get the most popular item
+	 * 
+	 * @param orders
+	 * @param branchName
+	 * @return the new orders report
+	 */
+	private OrdersReport createMonthlyOrdersReport(ArrayList<Order> orders, String branchName) {
+		OrdersReport newOrdersReport = new OrdersReport(month, year, ReportType.MONTHLY_ORDERS_REPORT, branchName);
+		// find the most popular item and the other details
+		int counter = 0;
+		HashMap<String, Integer> itemsCounter = new HashMap<String, Integer>();
+		if (orders != null)
+			for (Order order : orders) {
+				order.setItems(dbController.getAllProductsInOrder(order.getOrderNumber()));
+				if (order.getItems() != null)
+					for (ProductInOrder item : order.getItems()) {
+						addToCounter(itemsCounter, item.getName(), item.getAmount());
+						newOrdersReport.addOrderOnDay(order.getOrderDate().toLocalDateTime().getDayOfMonth());
+						newOrdersReport.addToCategory(item.getCategory(), item.getAmount());
+					}
+				counter++;
+				avgOrders++;
+			}
+		// save the values
+		newOrdersReport.setAvarageMonthlyOrders(0);
+		newOrdersReport.setTotalOrders(counter);
+		int maxAmount = 0;
+		String itemName = "";
+		for (String tempName : itemsCounter.keySet()) {
+			int temp = itemsCounter.get(tempName);
+			if (temp > maxAmount) {
+				maxAmount = temp;
+				itemName = tempName;
+			}
+		}
+		newOrdersReport.setMostPopularItem(itemName);
+		// save the new reports
+		return newOrdersReport;
 	}
 }

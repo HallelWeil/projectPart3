@@ -14,7 +14,7 @@ import user.User;
 public class UserBoundary {
 
 	private UserController userController = new UserController();
-//in case we need the user details like UserID or Type to understand witch User GUI we should open 
+	//in case we need the user details like UserID or Type to understand witch User GUI we should open 
 	public static MsgController loginResults;
 	public static User CurrentUser;
 

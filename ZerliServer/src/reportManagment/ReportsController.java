@@ -179,7 +179,8 @@ public class ReportsController {
 		}
 		createQuarterlyOrdersReport(tempOrdersReports);
 		// the revenue report needs the total orders number from the orders report
-		createQuarterlyRevenueReport(tempRevenueReports, quarterlyOrdersReport.getTotalOrders());
+		quarterlyRevenueReport = createQuarterlyRevenueReport(tempRevenueReports,
+				quarterlyOrdersReport.getTotalOrders());
 		createQuarterlySatisfactionReport();
 	}
 
@@ -189,29 +190,33 @@ public class ReportsController {
 	 * @param tempRevenueReports the list of all the revenue reports for this
 	 *                           quarter
 	 * @param totalOrders        the total number of orders in the quarter
+	 * @return
 	 */
-	private void createQuarterlyRevenueReport(ArrayList<RevenueReport> tempRevenueReports, int totalOrders) {
+	private QuarterlyRevenueReport createQuarterlyRevenueReport(ArrayList<RevenueReport> tempRevenueReports,
+			int totalOrders) {
 		QuarterlyRevenueReport newReport = new QuarterlyRevenueReport(month / 3, year);
 		// local variables
 		int tempMonth;
 		// for each report add the report details to the quarterly report
-		for (RevenueReport report : tempRevenueReports) {
-			tempMonth = report.getMonth();
-			// get the revenue per day from the report, for each day of the month
-			double[] revenuePerDay = report.getRevenuePerDay();
-			for (int i = 0; i < revenuePerDay.length; i++) {
-				newReport.addRevenuOnDay(tempMonth, i + 1, revenuePerDay[i]);
+		if (tempRevenueReports != null) {
+			for (RevenueReport report : tempRevenueReports) {
+				tempMonth = report.getMonth();
+				// get the revenue per day from the report, for each day of the month
+				double[] revenuePerDay = report.getRevenuePerDay();
+				for (int i = 0; i < revenuePerDay.length; i++) {
+					newReport.addRevenuOnDay(tempMonth, i + 1, revenuePerDay[i]);
+				}
+				// add the report fields to the quarterly report
+				newReport.addProfitableItem(report.getMostProfitableItem());
+				newReport.addToTotalRevenue(report.getTotalRevenue());
+				newReport.setMonthlyAvarageRevenu(tempMonth, report.getAverageMonthlyRevenue());
 			}
-			// add the report fields to the quarterly report
-			newReport.addProfitableItem(report.getMostProfitableItem());
-			newReport.addToTotalRevenue(report.getTotalRevenue());
-			newReport.setMonthlyAvarageRevenu(tempMonth, report.getAverageMonthlyRevenue());
 		}
 		// if the total order is bigger than 0, get the average
 		if (totalOrders != 0)
 			newReport.setAverageRevenuePerOrder(roundDouble(newReport.getTotalRevenue() / totalOrders));
 		// save the newly created report
-		quarterlyRevenueReport = newReport;
+		return newReport;
 	}
 
 	/**
@@ -320,7 +325,7 @@ public class ReportsController {
 	 */
 	private RevenueReport createMonthlyRevenueReport(ArrayList<Order> orders, String branchName) {
 		RevenueReport newRevenueReport = new RevenueReport(month, year, ReportType.MONTHLY_REVENU_EREPORT, branchName);
-		// find the most popular item and the other details
+		// find the most profitable item and the other details
 		int counter = 0;
 		HashMap<String, Double> itemsRevCounter = new HashMap<String, Double>();
 		double revenue = 0;

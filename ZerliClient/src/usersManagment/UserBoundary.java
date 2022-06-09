@@ -13,8 +13,9 @@ import user.User;
  */
 public class UserBoundary {
 
-	private UserController userController = new UserController();
-	//in case we need the user details like UserID or Type to understand witch User GUI we should open 
+	private IUserController userController;
+	// in case we need the user details like UserID or Type to understand witch User
+	// GUI we should open
 	public static MsgController loginResults;
 	public static User CurrentUser;
 
@@ -22,6 +23,19 @@ public class UserBoundary {
 	 * Save the error string for errors
 	 */
 	public String errorMsg;
+
+	public UserBoundary() {
+		userController = new UserController();
+	}
+
+	/**
+	 * constructor for unit testing injection
+	 * 
+	 * @param userController
+	 */
+	public UserBoundary(IUserController userController) {
+		this.userController = userController;
+	}
 
 	/**
 	 * call the user controller action to login, return the needed result

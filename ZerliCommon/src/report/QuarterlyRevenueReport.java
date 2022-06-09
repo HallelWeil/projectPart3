@@ -52,7 +52,7 @@ public class QuarterlyRevenueReport extends Report {
 	public void addRevenuOnDay(int month, int day, double amount) {
 		if (day > 31 || day < 1 || amount <= 0)
 			return;
-		revenuePerDay[month % 3][day - 1] += amount;
+		revenuePerDay[(month - 1) % 3][day - 1] += amount;
 	}
 
 	public void addToTotalRevenue(double amount) {
@@ -61,7 +61,7 @@ public class QuarterlyRevenueReport extends Report {
 	}
 
 	public void setMonthlyAvarageRevenu(int month, double amount) {
-		avarageMonthlyRevenue[month % 3] = amount;
+		avarageMonthlyRevenue[(month - 1) % 3] = amount;
 	}
 
 	public double getTotalRevenue() {

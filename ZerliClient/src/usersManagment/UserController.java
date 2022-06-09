@@ -11,7 +11,7 @@ import msg.Msg;
  * @author halel
  *
  */
-public class UserController {
+public class UserController implements IUserController {
 
 	/**
 	 * loginResults saved the returned data from sendMsg method in clientController

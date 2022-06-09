@@ -58,6 +58,7 @@ public class ManagerApprovalConfirmed implements IGuiController {
 	@Override
 	public void openWindow() {
 		mainWindowManager.mainWindowController.showNewWindow(approvalConfirmedPane);
+		mainWindowManager.mainWindowController.changeWindowName("Manager - Request Approved");
 		if (order.getOrderStatus() == OrderStatus.CANCELED)
 			approveLabel.setText("Cancellation Approved");
 		orderTextArea.setText(order.toString());

@@ -106,7 +106,7 @@ public class TesterLoginServer {
 	@Test
 	public void checkLoginCorrectnonAuthorizedCustomerDetails() {
 		DBcon.updateUser("OrBalmas", UserType.NonAuthorizedCustomer, UserStatus.Active);
-		Msg res = loginCon.login("OrBalmas", "123456");
+		Msg res = loginCon.login("OrBalmas", "1234567");
 		assertEquals(res.type, MsgType.APPROVE_LOGIN);
 		user = (User) res.data;
 		assertEquals(user.getUsername(), "OrBalmas");
@@ -121,7 +121,7 @@ public class TesterLoginServer {
 	@Test
 	public void checkLoginCorrectAuthorizedCustomerDetails() {
 		DBcon.updateUser("OrBalmas", UserType.AuthorizedCustomer, UserStatus.Active);
-		Msg res = loginCon.login("OrBalmas", "123456");
+		Msg res = loginCon.login("OrBalmas", "1234567");
 		assertEquals(res.type, MsgType.APPROVE_LOGIN);
 		user = (User) res.data;
 		assertEquals(user.getUsername(), "OrBalmas");
@@ -204,7 +204,7 @@ public class TesterLoginServer {
 	@Test
 	public void checkLoginCorrectFrozenCustomerDetails() {
 		DBcon.updateUser("OrBalmas", UserType.AuthorizedCustomer, UserStatus.Frozen);
-		Msg res = loginCon.login("OrBalmas", "123456");
+		Msg res = loginCon.login("OrBalmas", "1234567");
 		assertEquals(res.type, MsgType.APPROVE_LOGIN);
 		user = (User) res.data;
 		assertEquals(user.getUsername(), "OrBalmas");
@@ -219,7 +219,7 @@ public class TesterLoginServer {
 	@Test
 	public void checkLoginCorrectNotActiveCustomerDetails() {
 		DBcon.updateUser("OrBalmas", UserType.AuthorizedCustomer, UserStatus.NotActive);
-		Msg res = loginCon.login("OrBalmas", "123456");
+		Msg res = loginCon.login("OrBalmas", "1234567");
 		assertEquals(res.type, MsgType.APPROVE_LOGIN);
 		user = (User) res.data;
 		assertEquals(user.getUsername(), "OrBalmas");

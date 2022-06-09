@@ -5,7 +5,7 @@ package UnitTestinData;
  *
  */
 public class DBINFO {
-	public static String DBname = "zelisystem";
+	public static String DBname = "zelisystemtest";
 	public static String DBUser = "root";
 	public static String DBPassword = "Aa123456";
 }
